@@ -8,22 +8,20 @@
 #include "include/IPixal.h"
 #include "include/DummyPixal.h"
 #include "include/RGBLight.h"
+#include "include/OpenDMXNetwork.h"
 
 using namespace std;
 
 int main()
 {
     cout << "Hello world!!!" << endl;
-    Bush *bush1 = new Bush(10, new DummyPixal(2), new DummyPixal(3), new DummyPixal(4), new DummyPixal(5));
-    cout << "Bush: " << bush1->getId() << endl;
-    bush1->setAll(100);
-    cout << "-----------------------------------------" << endl;
-    bush1->setAll(0);
-    cout << "-----------------------------------------" << endl;
-    bush1->setAll(10);
-
-    RGBLight *light1 = new RGBLight(new DummyPixal(22), new DummyPixal(24), new DummyPixal(25));
-    cout << "-----------------------------------------" << endl;
-    light1->turnOff();
+    OpenDMXNetwork *dmx = new OpenDMXNetwork("/dev/usb003");
+    RGBLight *light1 = dmx->getRGB(1);
+    RGBLight *light2 = dmx->getRGB(4);
+    RGBLight *light3 = dmx->getRGB(7);
+    light1->set(60,50,100);
+    light2->set(25,50,75);
+    light3->set(100,100,100);
+    dmx->doUpdate(100);
     return 0;
 }

@@ -12,10 +12,15 @@ RGBLight::RGBLight(IPixal *red, IPixal *green, IPixal *blue)
     this->blue = blue;
 }
 
+void RGBLight::set(int red, int green, int blue) {
+    this->red->setIntensity(red);
+    this->green->setIntensity(green);
+    this->blue->setIntensity(blue);
+}
+
+
 void RGBLight::turnOff() {
-    red->setIntensity(0);
-    green->setIntensity(0);
-    blue->setIntensity(0);
+    this->set(0,0,0);
 }
 
 RGBLight::~RGBLight()

@@ -9,6 +9,7 @@ class RGBLight
         RGBLight(IPixal *red, IPixal *green, IPixal *blue);
         virtual ~RGBLight();
         void turnOff();
+        void set(int red, int green, int blue);
     protected:
     private:
         IPixal *red;
