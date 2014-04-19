@@ -1,25 +1,29 @@
 # depslib dependency file v1.0
-1397929971 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
+1397931531 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
 	<iostream>
 	"include/Bush.h"
 	"include/IPixal.h"
 	"include/DummyPixal.h"
+	"include/RGBLight.h"
 
 1397929868 /home/ghormann/Documents/src/GregsLights/GregsLights/include/Bush.h
 	"IPixal.h"
 
-1397929616 /home/ghormann/Documents/src/GregsLights/GregsLights/include/IPixal.h
+1397930728 /home/ghormann/Documents/src/GregsLights/GregsLights/include/IPixal.h
 
-1397929614 /home/ghormann/Documents/src/GregsLights/GregsLights/include/DummyPixal.h
+1397930903 /home/ghormann/Documents/src/GregsLights/GregsLights/include/DummyPixal.h
 	"IPixal.h"
 
 1397929909 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/Bush.cpp
 	"../include/Bush.h"
 
-1397929748 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/DummyPixal.cpp
+1397930928 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/DummyPixal.cpp
 	<iostream>
 	"../include/DummyPixal.h"
 
-1397929732 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/IPixal.cpp
+1397930691 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/IPixal.cpp
+	"../include/IPixal.h"
+
+1397931578 /home/ghormann/Documents/src/GregsLights/GregsLights/include/RGBLight.h
 	"../include/IPixal.h"
 
