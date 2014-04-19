@@ -1,6 +1,10 @@
 # depslib dependency file v1.0
-1397935883 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
+1397937737 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
 	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<pthread.h>
+	<unistd.h>
 	"include/Bush.h"
 	"include/IPixal.h"
 	"include/DummyPixal.h"

@@ -17,7 +17,7 @@ IPixal* OpenDMXNetwork::getPixal(int channel)
     return  rc;
 }
 
-void OpenDMXNetwork::doUpdate(long ms) {
+void OpenDMXNetwork::doUpdate() {
     char greg[600];
     for (int j = 0; j < 10; j++) {
         sprintf(greg+2*j, "%02X", data[j]);

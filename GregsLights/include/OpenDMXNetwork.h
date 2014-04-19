@@ -12,7 +12,7 @@ public:
     RGBLight* getRGB(int start);
     IPixal* getPixal(int channel);
     virtual ~OpenDMXNetwork();
-    void doUpdate(long ms);
+    void doUpdate();
 protected:
 private:
     unsigned char data[513];
