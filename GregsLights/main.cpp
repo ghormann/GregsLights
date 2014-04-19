@@ -23,7 +23,7 @@ void *serial_main(void *args);
 int main()
 {
     pthread_t serial_t;  /* Thread for writing to serial interface */
-    dmx = new OpenDMXNetwork("/dev/usb003");
+    dmx = new OpenDMXNetwork((char *)"/dev/usb003");
     RGBLight *light1 = dmx->getRGB(1);
     RGBLight *light2 = dmx->getRGB(4);
     RGBLight *light3 = dmx->getRGB(7);
@@ -41,4 +41,6 @@ void * serial_main(void *args) {
         dmx->doUpdate();
         usleep(50 * 1000); // 50ms
     }
+
+    return NULL;
 }
