@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1397943687 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
+1397953356 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
 	<iostream>
 	<stdio.h>
 	<stdlib.h>
@@ -10,6 +10,7 @@
 	"include/DummyPixal.h"
 	"include/RGBLight.h"
 	"include/OpenDMXNetwork.h"
+	"include/LORNetwork.h"
 
 1397929868 /home/ghormann/Documents/src/GregsLights/GregsLights/include/Bush.h
 	"IPixal.h"
@@ -41,5 +42,16 @@
 
 1397943391 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/OpenDMXNetwork.cpp
 	"../include/OpenDMXNetwork.h"
+	<stdio.h>
+
+1397956157 /home/ghormann/Documents/src/GregsLights/GregsLights/include/LORNetwork.h
+	"IPixal.h"
+	"time.h"
+
+1397956204 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/LORNetwork.cpp
+	"../include/LORNetwork.h"
+	"../include/IPixal.h"
+	"time.h"
+	<iostream>
 	<stdio.h>
 
