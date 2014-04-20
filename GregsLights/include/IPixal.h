@@ -9,14 +9,14 @@
 
 class IPixal
 {
-    public:
-        void setIntensity(int pct);
-    protected:
-        virtual void setIntensity_ipml(int pct) = 0;
-        virtual int getMin() = 0;
-        virtual int getMax() = 0;
+public:
+    void setIntensity(int pct);
+protected:
+    virtual void setIntensity_ipml(int pct) = 0;
+    virtual int getMin() = 0;
+    virtual int getMax() = 0;
 
-    private:
+private:
 };
 
 #endif // IPIXAL_H

@@ -11,15 +11,18 @@ DummyPixal::DummyPixal(int newid)
     this->intensity = 0;
 }
 
-int DummyPixal::Getid() {
+int DummyPixal::Getid()
+{
     return id;
 }
 
-int DummyPixal::getMax() {
+int DummyPixal::getMax()
+{
     return 255;
 }
 
-int DummyPixal::getMin() {
+int DummyPixal::getMin()
+{
     return 0;
 }
 
