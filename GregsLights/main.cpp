@@ -14,11 +14,11 @@
 #include "include/RGBLight.h"
 #include "include/OpenDMXNetwork.h"
 #include "include/LORNetwork.h"
+#include "include/NetworkCollection.h"
 
 using namespace std;
 
-OpenDMXNetwork *dmx;
-LORNetwork *lor;
+NetworkCollection *networks;
 void *serial_main(void *args);
 
 
@@ -26,8 +26,12 @@ int main()
 {
     int i = 0;
     pthread_t serial_t;  /* Thread for writing to serial interface */
-    dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0");
-    lor = new LORNetwork((char*) "/dev/usb005");
+    networks = new NetworkCollection();
+    OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0");
+    LORNetwork *lor = new LORNetwork((char*) "/dev/usb005");
+    networks->addNetwork(dmx);
+    networks->addNetwork(lor);
+
     pthread_create(&serial_t, NULL, serial_main, (void*) NULL);
 
     RGBLight *light1 = dmx->getRGB(7);
@@ -53,8 +57,7 @@ void * serial_main(void *args)
 {
     while (1)
     {
-        dmx->doUpdate();
-        lor->doUpdate();
+        networks->doUpdate();
         usleep(50 * 1000); // 50ms
     }
 

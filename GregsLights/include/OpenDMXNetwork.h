@@ -3,17 +3,18 @@
 
 #include "Bulb.h"
 #include "RGBLight.h"
+#include "LightNetwork.h"
 #include "../include/serial.h"
 
 
-class OpenDMXNetwork
+class OpenDMXNetwork : public LightNetwork
 {
 public:
     OpenDMXNetwork(char * deviceName);
     RGBLight* getRGB(int start);
     Bulb* getBulb(int channel);
-    virtual ~OpenDMXNetwork();
     void doUpdate();
+    virtual ~OpenDMXNetwork();
 protected:
 private:
     unsigned char data[513];

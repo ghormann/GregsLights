@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1402778670 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
+1402782377 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
 	<iostream>
 	<stdio.h>
 	<stdlib.h>
@@ -11,6 +11,7 @@
 	"include/RGBLight.h"
 	"include/OpenDMXNetwork.h"
 	"include/LORNetwork.h"
+	"include/NetworkCollection.h"
 
 1402778129 /home/ghormann/Documents/src/GregsLights/GregsLights/include/Bush.h
 	"Bulb.h"
@@ -36,21 +37,23 @@
 1402778133 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/RGBLight.cpp
 	"../include/RGBLight.h"
 
-1402779795 /home/ghormann/Documents/src/GregsLights/GregsLights/include/OpenDMXNetwork.h
+1402780680 /home/ghormann/Documents/src/GregsLights/GregsLights/include/OpenDMXNetwork.h
 	"Bulb.h"
 	"RGBLight.h"
+	"LightNetwork.h"
 	"../include/serial.h"
 
-1402778133 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/OpenDMXNetwork.cpp
+1402780645 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/OpenDMXNetwork.cpp
 	"../include/OpenDMXNetwork.h"
 	<stdio.h>
 	<unistd.h>
 
-1402779759 /home/ghormann/Documents/src/GregsLights/GregsLights/include/LORNetwork.h
+1402781062 /home/ghormann/Documents/src/GregsLights/GregsLights/include/LORNetwork.h
 	"Bulb.h"
 	"time.h"
+	"LightNetwork.h"
 
-1402779727 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/LORNetwork.cpp
+1402780649 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/LORNetwork.cpp
 	"../include/LORNetwork.h"
 	"../include/Bulb.h"
 	"time.h"
@@ -77,4 +80,14 @@
 1402778755 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/Bulb.cpp
 	"../include/Bulb.h"
 	<stdio.h>
+
+1402780432 /home/ghormann/Documents/src/GregsLights/GregsLights/include/Network.h
+
+1402781455 /home/ghormann/Documents/src/GregsLights/GregsLights/include/LightNetwork.h
+
+1402782024 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/NetworkCollection.cpp
+	"../include/NetworkCollection.h"
+
+1402781975 /home/ghormann/Documents/src/GregsLights/GregsLights/include/NetworkCollection.h
+	"LightNetwork.h"
 
