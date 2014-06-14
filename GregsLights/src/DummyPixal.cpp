@@ -2,7 +2,7 @@
 #include "../include/DummyPixal.h"
 
 /*
- * THis is a dumy implement of IPixal that just prints changes to the screen
+ * THis is a dumy implement of Bulb that just prints changes to the screen
  */
 
 DummyPixal::DummyPixal(int newid)

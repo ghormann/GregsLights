@@ -2,6 +2,10 @@
 #include <stdio.h>
 #include <unistd.h>
 
+/*
+ * A network of DMX controls that are on channels 0 - 512 and using
+ * serial dervice with bauild of 250000 and 8N2 serial protocol.
+ */
 OpenDMXNetwork::OpenDMXNetwork(char * deviceName)
 {
     for (int i =0; i <513; i++)
@@ -28,6 +32,9 @@ Bulb* OpenDMXNetwork::getPixal(int channel)
     return  rc;
 }
 
+/*
+ * THis function must be called on a timer to preform updates
+ */
 void OpenDMXNetwork::doUpdate()
 {
 #ifdef GJH_DEBUG
@@ -49,6 +56,10 @@ void OpenDMXNetwork::doUpdate()
 
 }
 
+/*
+ * Returns an RGBLight that will right to the 3 consenstve channels
+ * starting with the start channel
+ */
 RGBLight* OpenDMXNetwork::getRGB(int start)
 {
     Bulb *r = this->getPixal(start);

@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // Name:        serial_posix.cpp
 // Purpose:
-// Author:      Joachim Buermann (adapted for xLights by Matt Brown)
+// Author:      Greg Horann addapted (from Joachim Buermann (adapted for xLights by Matt Brown))
 // Copyright:   (c) 2001 Joachim Buermann
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
@@ -16,7 +16,6 @@
 #include <string.h>
 #include "../include/serial.h"
 
-// Linux version
 
 SerialPort::SerialPort()
 {
