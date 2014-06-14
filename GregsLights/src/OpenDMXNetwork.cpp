@@ -1,5 +1,6 @@
 #include "../include/OpenDMXNetwork.h"
 #include <stdio.h>
+#include <unistd.h>
 
 OpenDMXNetwork::OpenDMXNetwork(char * deviceName)
 {
@@ -7,6 +8,16 @@ OpenDMXNetwork::OpenDMXNetwork(char * deviceName)
     {
         this->data[i] = 0;
     }
+    char errmsg[100];
+    serptr=new SerialPort();
+    int errcode=serptr->Open(deviceName, 250000, "8N2");
+    if (errcode < 0)
+    {
+        sprintf(errmsg,"unable to open serial port %s, error code=%d", deviceName, errcode);
+        printf("ERROR: %s", errmsg);
+        throw errmsg;
+    }
+    //printf("Opened: %s\n", deviceName);
 }
 
 IPixal* OpenDMXNetwork::getPixal(int channel)
@@ -17,7 +28,8 @@ IPixal* OpenDMXNetwork::getPixal(int channel)
     return  rc;
 }
 
-void OpenDMXNetwork::doUpdate() {
+void OpenDMXNetwork::doUpdate()
+{
     char greg[600];
     for (int j = 0; j < 10; j++)
     {
@@ -25,9 +37,18 @@ void OpenDMXNetwork::doUpdate() {
         greg[20] = '\0';
     }
     printf("Data: %s\n", greg);
+
+    if (serptr)
+    {
+        serptr->SendBreak();  // sends a 1 millisecond break
+        usleep(1000);      // mark after break (MAB) - 1 millisecond is overkill (8 microseconds is the minimum dmx requirement)
+        serptr->Write((char *)data,513);
+    }
+
 }
 
-RGBLight* OpenDMXNetwork::getRGB(int start) {
+RGBLight* OpenDMXNetwork::getRGB(int start)
+{
     IPixal *r = this->getPixal(start);
     IPixal *g = this->getPixal(start+1);
     IPixal *b = this->getPixal(start+2);
@@ -36,7 +57,7 @@ RGBLight* OpenDMXNetwork::getRGB(int start) {
 
 OpenDMXNetwork::~OpenDMXNetwork()
 {
-    //dtor
+    if (serptr) delete serptr;
 }
 
 void DMXPixal::setIntensity_ipml(int val)

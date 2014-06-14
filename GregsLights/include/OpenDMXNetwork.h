@@ -3,6 +3,7 @@
 
 #include "IPixal.h"
 #include "RGBLight.h"
+#include "../include/serial.h"
 
 
 class OpenDMXNetwork
@@ -16,6 +17,7 @@ public:
 protected:
 private:
     unsigned char data[513];
+    SerialPort* serptr;
 };
 
 class DMXPixal : public IPixal

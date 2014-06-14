@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1397953356 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
+1402776778 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
 	<iostream>
 	<stdio.h>
 	<stdlib.h>
@@ -12,10 +12,10 @@
 	"include/OpenDMXNetwork.h"
 	"include/LORNetwork.h"
 
-1397929868 /home/ghormann/Documents/src/GregsLights/GregsLights/include/Bush.h
+1397957410 /home/ghormann/Documents/src/GregsLights/GregsLights/include/Bush.h
 	"IPixal.h"
 
-1397930728 /home/ghormann/Documents/src/GregsLights/GregsLights/include/IPixal.h
+1397957411 /home/ghormann/Documents/src/GregsLights/GregsLights/include/IPixal.h
 
 1397930903 /home/ghormann/Documents/src/GregsLights/GregsLights/include/DummyPixal.h
 	"IPixal.h"
@@ -23,35 +23,52 @@
 1397929909 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/Bush.cpp
 	"../include/Bush.h"
 
-1397930928 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/DummyPixal.cpp
+1397957411 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/DummyPixal.cpp
 	<iostream>
 	"../include/DummyPixal.h"
 
 1397930691 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/IPixal.cpp
 	"../include/IPixal.h"
 
-1397934530 /home/ghormann/Documents/src/GregsLights/GregsLights/include/RGBLight.h
+1397957410 /home/ghormann/Documents/src/GregsLights/GregsLights/include/RGBLight.h
 	"../include/IPixal.h"
 
-1397934622 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/RGBLight.cpp
+1397957410 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/RGBLight.cpp
 	"../include/RGBLight.h"
 
-1397943411 /home/ghormann/Documents/src/GregsLights/GregsLights/include/OpenDMXNetwork.h
+1402775928 /home/ghormann/Documents/src/GregsLights/GregsLights/include/OpenDMXNetwork.h
 	"IPixal.h"
 	"RGBLight.h"
+	"../include/serial.h"
 
-1397943391 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/OpenDMXNetwork.cpp
+1402776962 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/OpenDMXNetwork.cpp
 	"../include/OpenDMXNetwork.h"
 	<stdio.h>
+	<unistd.h>
 
 1397956157 /home/ghormann/Documents/src/GregsLights/GregsLights/include/LORNetwork.h
 	"IPixal.h"
 	"time.h"
 
-1397956204 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/LORNetwork.cpp
+1397956825 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/LORNetwork.cpp
 	"../include/LORNetwork.h"
 	"../include/IPixal.h"
 	"time.h"
 	<iostream>
 	<stdio.h>
+
+1402776945 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/serial_posix.cpp
+	<errno.h>
+	<fcntl.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<unistd.h>
+	<linux/serial.h>
+	<stdio.h>
+	<string.h>
+	"../include/serial.h"
+
+1402774152 /home/ghormann/Documents/src/GregsLights/GregsLights/include/serial.h
+	<termios.h>
+	<cstddef>
 
