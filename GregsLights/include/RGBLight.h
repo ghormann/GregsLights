@@ -1,20 +1,20 @@
 #ifndef RGBLIGHT_H
 #define RGBLIGHT_H
 
-#include "../include/IPixal.h"
+#include "../include/Bulb.h"
 
 class RGBLight
 {
     public:
-        RGBLight(IPixal *red, IPixal *green, IPixal *blue);
+        RGBLight(Bulb *red, Bulb *green, Bulb *blue);
         virtual ~RGBLight();
         void turnOff();
     void set(int red, int green, int blue);
 protected:
     private:
-        IPixal *red;
-        IPixal *green;
-        IPixal *blue;
+        Bulb *red;
+        Bulb *green;
+        Bulb *blue;
 };
 
 #endif // RGBLIGHT_H

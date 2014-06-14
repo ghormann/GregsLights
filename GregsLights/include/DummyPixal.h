@@ -5,9 +5,9 @@
  * THis is a dumy implement of IPixal that just prints changes to the screen
  */
 
-#include "IPixal.h"
+#include "Bulb.h"
 
-class DummyPixal : public IPixal
+class DummyPixal : public Bulb
 {
 public:
     DummyPixal(int id);

@@ -1,6 +1,6 @@
 #include "../include/Bush.h"
 
-Bush::Bush(int id, IPixal *r, IPixal *g, IPixal *b, IPixal *w)
+Bush::Bush(int id, Bulb *r, Bulb *g, Bulb *b, Bulb *w)
 {
     this->bushId = id;
     this->red = r;

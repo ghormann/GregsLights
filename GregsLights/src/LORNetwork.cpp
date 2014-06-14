@@ -1,5 +1,5 @@
 #include "../include/LORNetwork.h"
-#include "../include/IPixal.h"
+#include "../include/Bulb.h"
 #include "time.h"
 #include <iostream>
 #include <stdio.h>
@@ -24,13 +24,15 @@ void LORNetwork::doUpdate()
     diff = (ts.tv_sec - last_ts.tv_sec) * 1000LL + ((ts.tv_nsec - last_ts.tv_nsec) /1000000LL);
     if ((diff < 0) || diff > 400) //400 ms
     {
+#ifdef GJH_DEBUG
         cout << "Send Heartbeat " << diff  << " " << (ts.tv_sec - last_ts.tv_sec) << endl;
+#endif
         last_ts.tv_nsec = ts.tv_nsec;
         last_ts.tv_sec = ts.tv_sec;
     }
 }
 
-IPixal* LORNetwork::getPixal(int device, int channel)
+Bulb* LORNetwork::getPixal(int device, int channel)
 {
     if (device < 1 || device > 127)
         throw "Invalid Device ID";
@@ -67,6 +69,9 @@ void LORPixal::setIntensity_ipml(int pct)
         sprintf(greg+2*j, "%02X", msg[j]);
         greg[6] = '\0';
     }
+
+#ifdef GJH_DEBUG
     printf("LOR: %s\n", greg);
+#endif
 
 }

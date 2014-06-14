@@ -20,7 +20,7 @@ OpenDMXNetwork::OpenDMXNetwork(char * deviceName)
     //printf("Opened: %s\n", deviceName);
 }
 
-IPixal* OpenDMXNetwork::getPixal(int channel)
+Bulb* OpenDMXNetwork::getPixal(int channel)
 {
     if (channel < 0 || channel > 512)
         throw "Invalid Channel";
@@ -30,6 +30,7 @@ IPixal* OpenDMXNetwork::getPixal(int channel)
 
 void OpenDMXNetwork::doUpdate()
 {
+#ifdef GJH_DEBUG
     char greg[600];
     for (int j = 0; j < 10; j++)
     {
@@ -37,6 +38,7 @@ void OpenDMXNetwork::doUpdate()
         greg[20] = '\0';
     }
     printf("Data: %s\n", greg);
+#endif
 
     if (serptr)
     {
@@ -49,9 +51,9 @@ void OpenDMXNetwork::doUpdate()
 
 RGBLight* OpenDMXNetwork::getRGB(int start)
 {
-    IPixal *r = this->getPixal(start);
-    IPixal *g = this->getPixal(start+1);
-    IPixal *b = this->getPixal(start+2);
+    Bulb *r = this->getPixal(start);
+    Bulb *g = this->getPixal(start+1);
+    Bulb *b = this->getPixal(start+2);
     return new RGBLight(r,g,b);
 }
 

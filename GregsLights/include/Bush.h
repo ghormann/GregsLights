@@ -1,22 +1,22 @@
 #ifndef BUSH_H
 #define BUSH_H
 
-#include "IPixal.h"
+#include "Bulb.h"
 
 class Bush
 {
 public:
-    Bush(int id,IPixal *red, IPixal *green, IPixal *blue, IPixal *white);
+    Bush(int id,Bulb *red, Bulb *green, Bulb *blue, Bulb *white);
     void setAll(int pct);
     int getId();
     virtual ~Bush();
 protected:
 private:
     int bushId;
-    IPixal *red;
-    IPixal *green;
-    IPixal *blue;
-    IPixal *white;
+    Bulb *red;
+    Bulb *green;
+    Bulb *blue;
+    Bulb *white;
 };
 
 #endif // BUSH_H

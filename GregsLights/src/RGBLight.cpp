@@ -5,7 +5,7 @@
 
 #include "../include/RGBLight.h"
 
-RGBLight::RGBLight(IPixal *red, IPixal *green, IPixal *blue)
+RGBLight::RGBLight(Bulb *red, Bulb *green, Bulb *blue)
 {
     this->red = red;
     this->green = green;

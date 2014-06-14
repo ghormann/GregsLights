@@ -1,5 +1,5 @@
-#ifndef IPIXAL_H
-#define IPIXAL_H
+#ifndef BULB_H
+#define BULB_H
 
 /*
  * Defines a single light (or pixal) that can have its intensity independantly
@@ -7,7 +7,7 @@
  * different measures
  */
 
-class IPixal
+class Bulb
 {
 public:
     void setIntensity(int pct);

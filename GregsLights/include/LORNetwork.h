@@ -1,7 +1,7 @@
 #ifndef LORNETWORK_H
 #define LORNETWORK_H
 
-#include "IPixal.h"
+#include "Bulb.h"
 #include "time.h"
 
 #define convertIntensity(i) ( (i) <= 0 ? 240 : ( (i) >= 100 ? 1 : 228 - 2*(i) ) )
@@ -11,7 +11,7 @@ class LORNetwork
 {
 public:
     LORNetwork(char * deviceName);
-    IPixal* getPixal(int device, int channel);
+    Bulb* getPixal(int device, int channel);
     virtual ~LORNetwork();
     void doUpdate();
 protected:
@@ -20,7 +20,7 @@ private:
 };
 
 
-class LORPixal : public IPixal
+class LORPixal : public Bulb
 {
 public:
     LORPixal(unsigned char device, unsigned char channel, LORNetwork *network);

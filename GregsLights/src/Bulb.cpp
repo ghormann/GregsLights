@@ -1,20 +1,23 @@
 /*
- * Defines a single light (or pixal) that can have its intensity independantly
+ * Defines a single Bulb that can have its intensity independantly
  * adjusted. Intensity is always passed as a percentage because DMX and LOR have
  * different measures
  */
 
-#include "../include/IPixal.h"
+#include "../include/Bulb.h"
+#include <stdio.h>
 
-void IPixal::setIntensity(int pct)
+void Bulb::setIntensity(int pct)
 {
     int value = 0;
-    if (pct >= 100)
+    if (pct > 100)
     {
         setIntensity_ipml(getMax());
+        printf("WARNING: Intensity > 100%: %d\n", pct);
     }
-    else if (pct <= 0)
+    else if (pct < 0)
     {
+        printf("WARNING: Intensity < 0%: %d\n", pct);
         setIntensity_ipml(getMin());
     }
     else

@@ -9,7 +9,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include "include/Bush.h"
-#include "include/IPixal.h"
+#include "include/Bulb.h"
 #include "include/DummyPixal.h"
 #include "include/RGBLight.h"
 #include "include/OpenDMXNetwork.h"
@@ -28,6 +28,8 @@ int main()
     pthread_t serial_t;  /* Thread for writing to serial interface */
     dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0");
     lor = new LORNetwork((char*) "/dev/usb005");
+    pthread_create(&serial_t, NULL, serial_main, (void*) NULL);
+
     RGBLight *light1 = dmx->getRGB(7);
     RGBLight *light2 = dmx->getRGB(10);
     RGBLight *light3 = dmx->getRGB(50);
@@ -35,14 +37,13 @@ int main()
     light2->set(25,50,75);
     light3->set(100,100,100);
 
-    pthread_create(&serial_t, NULL, serial_main, (void*) NULL);
     sleep(1);
-    for (i = 0; i < 100; i++)
+    for (i = 0; i <= 101; i++)
     {
-        printf("Loop: %d", i);
-        light1->set(i,i,i);
-        light2->set(i,i,i);
-        sleep(1);
+        printf("Loop: %d\n", i);
+        light1->set(i,0,0);
+        light2->set(0,0,i);
+        usleep(50*1000);
     }
 
     sleep(5);

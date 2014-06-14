@@ -1,7 +1,7 @@
 #ifndef OPENDMXNETWORK_H
 #define OPENDMXNETWORK_H
 
-#include "IPixal.h"
+#include "Bulb.h"
 #include "RGBLight.h"
 #include "../include/serial.h"
 
@@ -11,7 +11,7 @@ class OpenDMXNetwork
 public:
     OpenDMXNetwork(char * deviceName);
     RGBLight* getRGB(int start);
-    IPixal* getPixal(int channel);
+    Bulb* getPixal(int channel);
     virtual ~OpenDMXNetwork();
     void doUpdate();
 protected:
@@ -20,7 +20,7 @@ private:
     SerialPort* serptr;
 };
 
-class DMXPixal : public IPixal
+class DMXPixal : public Bulb
 {
 public:
     DMXPixal(unsigned char * pos)
