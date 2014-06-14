@@ -24,11 +24,11 @@ OpenDMXNetwork::OpenDMXNetwork(char * deviceName)
     //printf("Opened: %s\n", deviceName);
 }
 
-Bulb* OpenDMXNetwork::getPixal(int channel)
+Bulb* OpenDMXNetwork::getBulb(int channel)
 {
     if (channel < 0 || channel > 512)
         throw "Invalid Channel";
-    DMXPixal *rc = new DMXPixal(data+channel);
+    DMXBulb *rc = new DMXBulb(data+channel);
     return  rc;
 }
 
@@ -62,9 +62,9 @@ void OpenDMXNetwork::doUpdate()
  */
 RGBLight* OpenDMXNetwork::getRGB(int start)
 {
-    Bulb *r = this->getPixal(start);
-    Bulb *g = this->getPixal(start+1);
-    Bulb *b = this->getPixal(start+2);
+    Bulb *r = this->getBulb(start);
+    Bulb *g = this->getBulb(start+1);
+    Bulb *b = this->getBulb(start+2);
     return new RGBLight(r,g,b);
 }
 
@@ -73,7 +73,7 @@ OpenDMXNetwork::~OpenDMXNetwork()
     if (serptr) delete serptr;
 }
 
-void DMXPixal::setIntensity_ipml(int val)
+void DMXBulb::setIntensity_ipml(int val)
 {
     if (val < 0) val = 0;
     if (val > 255) val = 255;

@@ -11,7 +11,7 @@ class OpenDMXNetwork
 public:
     OpenDMXNetwork(char * deviceName);
     RGBLight* getRGB(int start);
-    Bulb* getPixal(int channel);
+    Bulb* getBulb(int channel);
     virtual ~OpenDMXNetwork();
     void doUpdate();
 protected:
@@ -20,10 +20,10 @@ private:
     SerialPort* serptr;
 };
 
-class DMXPixal : public Bulb
+class DMXBulb : public Bulb
 {
 public:
-    DMXPixal(unsigned char * pos)
+    DMXBulb(unsigned char * pos)
     {
         this->pos = pos;
     }

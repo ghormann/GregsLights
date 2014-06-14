@@ -32,7 +32,7 @@ void LORNetwork::doUpdate()
     }
 }
 
-Bulb* LORNetwork::getPixal(int device, int channel)
+Bulb* LORNetwork::getBulb(int device, int channel)
 {
     if (device < 1 || device > 127)
         throw "Invalid Device ID";
@@ -40,20 +40,20 @@ Bulb* LORNetwork::getPixal(int device, int channel)
     if (channel < 1 || channel > 16)
         throw "Invalid Channel ID";
 
-    LORPixal *rc =  new LORPixal((unsigned char) device, (unsigned char) channel, this);
+    LORBulb *rc =  new LORBulb((unsigned char) device, (unsigned char) channel, this);
     return rc;
 
 }
 
 
-LORPixal::LORPixal(unsigned char device, unsigned char channel, LORNetwork *network)
+LORBulb::LORBulb(unsigned char device, unsigned char channel, LORNetwork *network)
 {
     this->device = device;
     this->channel = channel;
     this->network = network;
 }
 
-void LORPixal::setIntensity_ipml(int pct)
+void LORBulb::setIntensity_ipml(int pct)
 {
     char greg[10]; // Debug ONly
     unsigned char msg[10];

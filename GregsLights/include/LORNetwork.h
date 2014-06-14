@@ -11,7 +11,7 @@ class LORNetwork
 {
 public:
     LORNetwork(char * deviceName);
-    Bulb* getPixal(int device, int channel);
+    Bulb* getBulb(int device, int channel);
     virtual ~LORNetwork();
     void doUpdate();
 protected:
@@ -20,10 +20,10 @@ private:
 };
 
 
-class LORPixal : public Bulb
+class LORBulb : public Bulb
 {
 public:
-    LORPixal(unsigned char device, unsigned char channel, LORNetwork *network);
+    LORBulb(unsigned char device, unsigned char channel, LORNetwork *network);
 protected:
     void setIntensity_ipml(int pct);
     int getMin()
