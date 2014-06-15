@@ -1,13 +1,7 @@
 # depslib dependency file v1.0
-1402782377 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
+1402793128 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
 	<iostream>
 	<stdio.h>
-	<stdlib.h>
-	<pthread.h>
-	<unistd.h>
-	"include/Bush.h"
-	"include/Bulb.h"
-	"include/DummyPixal.h"
 	"include/RGBLight.h"
 	"include/OpenDMXNetwork.h"
 	"include/LORNetwork.h"
@@ -85,9 +79,11 @@
 
 1402781455 /home/ghormann/Documents/src/GregsLights/GregsLights/include/LightNetwork.h
 
-1402782024 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/NetworkCollection.cpp
+1402792691 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/NetworkCollection.cpp
 	"../include/NetworkCollection.h"
 
-1402781975 /home/ghormann/Documents/src/GregsLights/GregsLights/include/NetworkCollection.h
+1402792469 /home/ghormann/Documents/src/GregsLights/GregsLights/include/NetworkCollection.h
 	"LightNetwork.h"
+	<pthread.h>
+	<unistd.h>
 

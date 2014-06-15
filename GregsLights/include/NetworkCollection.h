@@ -3,6 +3,8 @@
 
 #define MAX_LIGHT_NETWORKS 50
 #include "LightNetwork.h"
+#include <pthread.h>
+#include <unistd.h>
 
 
 /**
@@ -21,6 +23,8 @@ class NetworkCollection
     protected:
     private:
         LightNetwork* networks[50];
+        pthread_t serial_t;  /* Thread for writing to serial interface */
+
 };
 
 #endif // NETWORKCOLLECTION_H

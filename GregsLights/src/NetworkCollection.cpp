@@ -2,12 +2,30 @@
 
 #define MAX_LIGHT_NETWORKS 50
 
+void *update_thread(void *args);
+
+
 NetworkCollection::NetworkCollection()
 {
     for (int i = 0; i < MAX_LIGHT_NETWORKS; i++) {
         networks[i] = 0;
     }
+    pthread_create(&(this->serial_t), NULL, update_thread, (void*) this);
+
 }
+
+void * update_thread(void *args)
+{
+    NetworkCollection *ptr = (NetworkCollection *)args;
+    while (1)
+    {
+        ptr->doUpdate();
+        usleep(50 * 1000); // 50ms
+    }
+
+    return NULL;
+}
+
 
 void NetworkCollection::doUpdate() {
     int i = 0;
