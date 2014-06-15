@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-DGJH_DEBUG" />
 				</Compiler>
 				<Linker>
 					<Add option="-pthread" />
@@ -37,19 +38,24 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="include/Bulb.h" />
 		<Unit filename="include/Bush.h" />
 		<Unit filename="include/DummyPixal.h" />
-		<Unit filename="include/IPixal.h" />
 		<Unit filename="include/LORNetwork.h" />
+		<Unit filename="include/LightNetwork.h" />
+		<Unit filename="include/NetworkCollection.h" />
 		<Unit filename="include/OpenDMXNetwork.h" />
 		<Unit filename="include/RGBLight.h" />
+		<Unit filename="include/serial.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/Bulb.cpp" />
 		<Unit filename="src/Bush.cpp" />
 		<Unit filename="src/DummyPixal.cpp" />
-		<Unit filename="src/IPixal.cpp" />
 		<Unit filename="src/LORNetwork.cpp" />
+		<Unit filename="src/NetworkCollection.cpp" />
 		<Unit filename="src/OpenDMXNetwork.cpp" />
 		<Unit filename="src/RGBLight.cpp" />
+		<Unit filename="src/serial_posix.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

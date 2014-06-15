@@ -19,6 +19,27 @@ void RGBLight::set(int red, int green, int blue)
     this->blue->setIntensity(blue);
 }
 
+void RGBLight::setStdColor(RGB_COLOR color)
+{
+    switch(color)
+    {
+    case RED:
+        this->set(255,0,0);
+        break;
+    case GREEN:
+        this->set(0,100,0);
+        break;
+    case BLUE:
+        this->set(0,0,100);
+        break;
+    case YELLOW:
+        this->set(100,100,0);
+        break;
+    case PURPLE:
+        this->set(100,0,100);
+        break;
+    }
+}
 
 void RGBLight::turnOff()
 {

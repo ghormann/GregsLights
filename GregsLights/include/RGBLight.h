@@ -3,6 +3,14 @@
 
 #include "../include/Bulb.h"
 
+enum RGB_COLOR{
+  RED = 0,
+  GREEN,
+  BLUE,
+  YELLOW,
+  PURPLE
+};
+
 class RGBLight
 {
     public:
@@ -10,6 +18,7 @@ class RGBLight
         virtual ~RGBLight();
         void turnOff();
     void set(int red, int green, int blue);
+    void setStdColor(RGB_COLOR color);
 protected:
     private:
         Bulb *red;
