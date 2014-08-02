@@ -8,6 +8,17 @@ LORNetwork::LORNetwork(char * deviceName)
 {
     clock_gettime(CLOCK_MONOTONIC_RAW, &last_ts);
     last_ts.tv_sec -= 3;  // Subtrack 3 seconds to force update.
+
+    char errmsg[100];
+    serptr=new SerialPort();
+    int errcode=serptr->Open(deviceName, 115200, "8N1");
+    if (errcode < 0)
+    {
+        sprintf(errmsg,"unable to open serial port %s, error code=%d", deviceName, errcode);
+        printf("ERROR: %s", errmsg);
+        throw errmsg;
+    }
+
 }
 
 LORNetwork::~LORNetwork()
@@ -24,6 +35,16 @@ void LORNetwork::doUpdate()
     diff = (ts.tv_sec - last_ts.tv_sec) * 1000LL + ((ts.tv_nsec - last_ts.tv_nsec) /1000000LL);
     if ((diff < 0) || diff > 400) //400 ms
     {
+
+        unsigned char msg[10];
+        msg[0] = 0;
+        msg[1] = 0xFF;
+        msg[2] = 0x81;
+        msg[3] = 0x56;
+        msg[4] = 0;
+        if (serptr)
+            serptr->Write((char *)msg,5);
+
 #ifdef GJH_DEBUG
         cout << "Send Heartbeat " << diff  << " " << (ts.tv_sec - last_ts.tv_sec) << endl;
 #endif
@@ -55,7 +76,6 @@ LORBulb::LORBulb(unsigned char device, unsigned char channel, LORNetwork *networ
 
 void LORBulb::setIntensity_ipml(int pct)
 {
-    char greg[10]; // Debug ONly
     unsigned char msg[10];
     msg[0] = 0;
     msg[1] = device;
@@ -64,13 +84,19 @@ void LORBulb::setIntensity_ipml(int pct)
     msg[4] = channel + 127;
     msg[5] = 0;
 
+    if (network->serptr)
+        network->serptr->Write((char *)msg,6);
+
+
+#ifdef GJH_DEBUG
+    char greg[20]; // Debug ONly
     for (int j = 0; j < 6; j++)
     {
         sprintf(greg+2*j, "%02X", msg[j]);
-        greg[6] = '\0';
     }
+    greg[12] = '\0';
 
-#ifdef GJH_DEBUG
+
     printf("LOR: %s\n", greg);
 #endif
 

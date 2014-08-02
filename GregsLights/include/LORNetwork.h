@@ -4,6 +4,8 @@
 #include "Bulb.h"
 #include "time.h"
 #include "LightNetwork.h"
+#include "../include/serial.h"
+
 
 #define convertIntensity(i) ( (i) <= 0 ? 240 : ( (i) >= 100 ? 1 : 228 - 2*(i) ) )
 
@@ -15,6 +17,7 @@ public:
     Bulb* getBulb(int device, int channel);
     void doUpdate();
     virtual ~LORNetwork();
+    SerialPort* serptr;
 protected:
 private:
     struct timespec last_ts;

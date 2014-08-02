@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1402795690 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
+1407014047 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
 	<iostream>
 	<stdio.h>
 	"include/RGBLight.h"
@@ -42,12 +42,13 @@
 	<stdio.h>
 	<unistd.h>
 
-1402781062 /home/ghormann/Documents/src/GregsLights/GregsLights/include/LORNetwork.h
+1407013084 /home/ghormann/Documents/src/GregsLights/GregsLights/include/LORNetwork.h
 	"Bulb.h"
 	"time.h"
 	"LightNetwork.h"
+	"../include/serial.h"
 
-1402780649 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/LORNetwork.cpp
+1407014145 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/LORNetwork.cpp
 	"../include/LORNetwork.h"
 	"../include/Bulb.h"
 	"time.h"
