@@ -24,7 +24,7 @@ void RGBLight::setStdColor(RGB_COLOR color)
     switch(color)
     {
     case RED:
-        this->set(255,0,0);
+        this->set(100,0,0);
         break;
     case GREEN:
         this->set(0,100,0);

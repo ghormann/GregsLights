@@ -17,38 +17,50 @@ NetworkCollection *networks;
 
 void testDMX(OpenDMXNetwork *dmx)
 {
-    int i,j,k;
+    int i,j;
     int step = 25;
-    RGBLight *light1 = dmx->getRGB(7);
-    RGBLight *light2 = dmx->getRGB(10);
-    RGBLight *light3 = dmx->getRGB(50);
-    light1->setStdColor(PURPLE);
-    sleep(5);
-    light2->set(25,50,75);
-    light3->set(100,100,100);
+    int maxHouse = 4;
+    RGBLight *house[maxHouse + 1];
+    for (i = 1; i <=4; i++) {
+        int j = i*3+1;
+        printf("Light %d is %d\n", i, j);
+        house[i] = dmx->getRGB(j);
+    }
+    sleep(1);
+    printf("Purple\n");
+    for(i = 1; i<=4; i++) {
+        house[i]->setStdColor(PURPLE);
+    }
 
-    light1->set(50,0,50);
+    sleep(2);
+    printf("Red\n");
+    for(i = 1; i<=4; i++) {
+        house[i]->setStdColor(RED);
+    }
+    sleep(2);
+
+
+    sleep(2);
+    house[1]->set(50,0,50);
+    house[2]->set(25,50,75);
+    house[3]->set(100,100,100);
+    house[4]->set(100,100,100);
+
     sleep(5);
+
+    for (i = 0; i < 1000; i++)
+    {
+        printf("Random Loop: %d  \n", i);
+        house[(i%4)+1]->set(rand()%101,rand()%101,rand()%101);
+        usleep(50*1000);
+    }
+
 
     for (i = 0; i < 100; i++)
     {
         printf("Loop: %d  \n", i);
-        light1->set(i,0,i);
+        house[(i%4)+1]->set(i,0,i);
         usleep(150*1000);
-    }
-
-    for (i = 0; i <= 100; i+= step)
-    {
-        for (j=0; j <= 100; j+= step)
-        {
-            for (k=0; k <= 100; k += step)
-            {
-                printf("Loop: %d  %d  %d\n", i,j,k);
-                light1->set(i,j,k);
-                sleep(1);
-
-            }
-        }
     }
 
     sleep(5);
@@ -98,8 +110,8 @@ int main()
     networks->addNetwork(dmx);
     networks->addNetwork(lor);
     printf("Network Established\n");
-    //testDMX(dmx);
-    testLOR(lor);
+    testDMX(dmx);
+    //testLOR(lor);
 
     return 0;
 }
