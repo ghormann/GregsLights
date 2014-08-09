@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1407034555 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
+1407545755 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
 	<iostream>
 	<stdio.h>
 	<stdlib.h>
@@ -32,13 +32,13 @@
 1407034779 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/RGBLight.cpp
 	"../include/RGBLight.h"
 
-1402780680 /home/ghormann/Documents/src/GregsLights/GregsLights/include/OpenDMXNetwork.h
+1407544525 /home/ghormann/Documents/src/GregsLights/GregsLights/include/OpenDMXNetwork.h
 	"Bulb.h"
 	"RGBLight.h"
 	"LightNetwork.h"
 	"../include/serial.h"
 
-1402780645 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/OpenDMXNetwork.cpp
+1407545211 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/OpenDMXNetwork.cpp
 	"../include/OpenDMXNetwork.h"
 	<stdio.h>
 	<unistd.h>

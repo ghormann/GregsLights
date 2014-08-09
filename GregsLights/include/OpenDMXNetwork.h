@@ -6,19 +6,29 @@
 #include "LightNetwork.h"
 #include "../include/serial.h"
 
+/*
+ * This version works with the programer from Holiday Coro
+ */
+
+ enum RGB_TYPE{
+  OPENDMX = 0,
+  ACTIDONGLE
+};
+
 
 class OpenDMXNetwork : public LightNetwork
 {
 public:
-    OpenDMXNetwork(char * deviceName);
+    OpenDMXNetwork(char * deviceName, RGB_TYPE type);
     RGBLight* getRGB(int start);
     Bulb* getBulb(int channel);
     void doUpdate();
     virtual ~OpenDMXNetwork();
 protected:
 private:
-    unsigned char data[513];
+    unsigned char data[513 + 6];
     SerialPort* serptr;
+    int offset = 0;
 };
 
 class DMXBulb : public Bulb

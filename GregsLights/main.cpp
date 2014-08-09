@@ -21,23 +21,56 @@ void testDMX(OpenDMXNetwork *dmx)
     int step = 25;
     int maxHouse = 4;
     RGBLight *house[maxHouse + 1];
-    for (i = 1; i <=4; i++) {
+    for (i = 1; i <=4; i++)
+    {
         int j = i*3+1;
         printf("Light %d is %d\n", i, j);
         house[i] = dmx->getRGB(j);
     }
     sleep(1);
+
+    printf("Fade up\n");
+    for (j=1; j<=4; j++)
+    {
+        for (i=0; i<100; i++)
+        {
+            house[j]->set(i,0,0);
+            usleep(30000);
+        }
+        for (i=0; i<100; i++)
+        {
+            house[j]->set(0,i,0);
+            usleep(30000);
+        }
+        for (i=0; i<100; i++)
+        {
+            house[j]->set(0,0,100-i);
+            usleep(30000);
+        }
+    }
+
+    house[1]->set(10,10,10);
+    sleep(3);
+
+
     printf("Purple\n");
-    for(i = 1; i<=4; i++) {
+    for(i = 1; i<=4; i++)
+    {
         house[i]->setStdColor(PURPLE);
     }
 
     sleep(2);
     printf("Red\n");
-    for(i = 1; i<=4; i++) {
+    for(i = 1; i<=4; i++)
+    {
         house[i]->setStdColor(RED);
     }
     sleep(2);
+    printf("Blue\n");
+    for(i = 1; i<=4; i++)
+    {
+        house[i]->setStdColor(BLUE);
+    }
 
 
     sleep(2);
@@ -78,7 +111,8 @@ void testLOR(LORNetwork *lor)
     sleep(1);
     for (j = 1; j <=maxbulbs; j++)
     {
-        if (j%8 == 0) {
+        if (j%8 == 0)
+        {
             ++box;
             printf("Working on box %d\n", box);
         }
@@ -105,7 +139,8 @@ void testLOR(LORNetwork *lor)
 int main()
 {
     networks = new NetworkCollection();
-    OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0");
+    OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", ACTIDONGLE);
+    //OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", OPENDMX);
     LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB1");
     networks->addNetwork(dmx);
     networks->addNetwork(lor);
