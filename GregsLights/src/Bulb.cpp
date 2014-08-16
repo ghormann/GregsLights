@@ -13,11 +13,11 @@ void Bulb::setIntensity(int pct)
     if (pct > 100)
     {
         setIntensity_ipml(getMax());
-        printf("WARNING: Intensity > 100%: %d\n", pct);
+        printf("WARNING: Intensity > 100%% : %d\n", pct);
     }
     else if (pct < 0)
     {
-        printf("WARNING: Intensity < 0%: %d\n", pct);
+        printf("WARNING: Intensity < 0%% : %d\n", pct);
         setIntensity_ipml(getMin());
     }
     else

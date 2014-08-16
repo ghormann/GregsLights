@@ -7,10 +7,10 @@
 DisplayModel::DisplayModel(bool sendDMX)
 {
     networks = new NetworkCollection();
-    OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", ACTIDONGLE);
+    OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", ACTIDONGLE, sendDMX);
     //OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", OPENDMX);
 
-    LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB1");
+    LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB1", sendDMX);
     networks->addNetwork(dmx);
     networks->addNetwork(lor);
 

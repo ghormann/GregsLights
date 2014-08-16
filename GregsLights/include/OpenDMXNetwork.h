@@ -19,7 +19,7 @@
 class OpenDMXNetwork : public LightNetwork
 {
 public:
-    OpenDMXNetwork(char * deviceName, RGB_TYPE type);
+    OpenDMXNetwork(char * deviceName, RGB_TYPE type, bool sendData);
     RGBLight* getRGB(int start);
     Bulb* getBulb(int channel);
     void doUpdate();

@@ -19,7 +19,7 @@
 
 SerialPort::SerialPort()
 {
-    m_devname = "";
+    m_devname = 0;
     callback = -1;
     fd = -1;
 };

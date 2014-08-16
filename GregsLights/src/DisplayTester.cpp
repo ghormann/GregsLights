@@ -13,7 +13,6 @@ DisplayTester::DisplayTester(DisplayModel *m)
 void DisplayTester::testDMX()
 {
     int i,j;
-    int step = 25;
     int maxHouse = 4;
     RGBLight *house[maxHouse + 1];
     for (i = 1; i <=4; i++)

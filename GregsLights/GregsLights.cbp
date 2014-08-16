@@ -38,6 +38,9 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Linker>
+			<Add library="rt" />
+		</Linker>
 		<Unit filename="include/Bulb.h" />
 		<Unit filename="include/Bush.h" />
 		<Unit filename="include/DisplayModel.h" />

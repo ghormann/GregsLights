@@ -13,7 +13,7 @@
 class LORNetwork : public LightNetwork
 {
 public:
-    LORNetwork(char * deviceName);
+    LORNetwork(char * deviceName, bool sendData);
     Bulb* getBulb(int device, int channel);
     void doUpdate();
     virtual ~LORNetwork();

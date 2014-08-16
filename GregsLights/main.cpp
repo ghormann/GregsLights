@@ -11,7 +11,8 @@ using namespace std;
 
 int main()
 {
-    DisplayModel *model = new DisplayModel(true);
+    bool sendDMX = false;
+    DisplayModel *model = new DisplayModel(sendDMX);
     DisplayTester *tester = new DisplayTester(model);
 
     tester->testDMX();

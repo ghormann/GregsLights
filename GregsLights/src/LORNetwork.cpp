@@ -4,19 +4,23 @@
 #include <iostream>
 #include <stdio.h>
 
-LORNetwork::LORNetwork(char * deviceName)
+LORNetwork::LORNetwork(char * deviceName, bool sendData)
 {
     clock_gettime(CLOCK_MONOTONIC_RAW, &last_ts);
     last_ts.tv_sec -= 3;  // Subtrack 3 seconds to force update.
 
     char errmsg[100];
-    serptr=new SerialPort();
-    int errcode=serptr->Open(deviceName, 115200, "8N1");
-    if (errcode < 0)
+    serptr = NULL;
+    if (sendData)
     {
-        sprintf(errmsg,"unable to open serial port %s, error code=%d", deviceName, errcode);
-        printf("ERROR: %s", errmsg);
-        throw errmsg;
+        serptr=new SerialPort();
+        int errcode=serptr->Open(deviceName, 115200, "8N1");
+        if (errcode < 0)
+        {
+            sprintf(errmsg,"unable to open serial port %s, error code=%d", deviceName, errcode);
+            printf("ERROR: %s", errmsg);
+            throw errmsg;
+        }
     }
 
 }
@@ -42,7 +46,7 @@ void LORNetwork::doUpdate()
         msg[2] = 0x81;
         msg[3] = 0x56;
         msg[4] = 0;
-        if (serptr)
+        if (serptr) // Only if enabled
             serptr->Write((char *)msg,5);
 
 #ifdef GJH_DEBUG
