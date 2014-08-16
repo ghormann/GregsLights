@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1407545755 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
+1408217605 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
 	<iostream>
 	<stdio.h>
 	<stdlib.h>
@@ -7,6 +7,8 @@
 	"include/OpenDMXNetwork.h"
 	"include/LORNetwork.h"
 	"include/NetworkCollection.h"
+	"include/DisplayModel.h"
+	"include/DisplayTester.h"
 
 1402778129 /home/ghormann/Documents/src/GregsLights/GregsLights/include/Bush.h
 	"Bulb.h"
@@ -88,4 +90,23 @@
 	"LightNetwork.h"
 	<pthread.h>
 	<unistd.h>
+
+1408216607 /home/ghormann/Documents/src/GregsLights/GregsLights/include/DisplayModel.h
+	"RGBLight.h"
+	"NetworkCollection.h"
+
+1408216635 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/DisplayModel.cpp
+	"../include/DisplayModel.h"
+	"../include/RGBLight.h"
+	"../include/OpenDMXNetwork.h"
+	"../include/LORNetwork.h"
+	"../include/NetworkCollection.h"
+
+1408217472 /home/ghormann/Documents/src/GregsLights/GregsLights/include/DisplayTester.h
+	"DisplayModel.h"
+
+1408217657 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/DisplayTester.cpp
+	"../include/DisplayTester.h"
+	<stdio.h>
+	<stdlib.h>
 
