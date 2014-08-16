@@ -4,7 +4,7 @@
  * different measures
  */
 
-#include "../include/Bulb.h"
+#include "../../include/controller/Bulb.h"
 #include <stdio.h>
 
 void Bulb::setIntensity(int pct)

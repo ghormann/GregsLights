@@ -14,7 +14,7 @@
 #include <linux/serial.h>
 #include <stdio.h>
 #include <string.h>
-#include "../include/serial.h"
+#include "../../include/controller/serial.h"
 
 
 SerialPort::SerialPort()

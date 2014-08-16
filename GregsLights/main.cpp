@@ -3,8 +3,8 @@
  * Author: Greg Hormann - ghormann@gmail.com
  */
 
-#include "include/DisplayModel.h"
-#include "include/DisplayTester.h"
+#include "include/controller/DisplayModel.h"
+#include "include/controller/DisplayTester.h"
 
 using namespace std;
 

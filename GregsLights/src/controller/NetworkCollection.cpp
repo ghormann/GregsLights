@@ -1,4 +1,4 @@
-#include "../include/NetworkCollection.h"
+#include "../../include/controller/NetworkCollection.h"
 
 #define MAX_LIGHT_NETWORKS 50
 

@@ -1,5 +1,5 @@
-#include "../include/LORNetwork.h"
-#include "../include/Bulb.h"
+#include "../../include/controller/LORNetwork.h"
+#include "../../include/controller/Bulb.h"
 #include "time.h"
 #include <iostream>
 #include <stdio.h>

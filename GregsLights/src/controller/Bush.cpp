@@ -1,4 +1,4 @@
-#include "../include/Bush.h"
+#include "../../include/controller/Bush.h"
 
 Bush::Bush(int id, Bulb *r, Bulb *g, Bulb *b, Bulb *w)
 {

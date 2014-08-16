@@ -1,4 +1,4 @@
-#include "../include/OpenDMXNetwork.h"
+#include "../../include/controller/OpenDMXNetwork.h"
 #include <stdio.h>
 #include <unistd.h>
 

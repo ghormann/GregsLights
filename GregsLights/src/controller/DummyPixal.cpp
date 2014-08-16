@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../include/DummyPixal.h"
+#include "../../include/controller/DummyPixal.h"
 
 /*
  * THis is a dumy implement of Bulb that just prints changes to the screen

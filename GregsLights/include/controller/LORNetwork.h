@@ -4,7 +4,7 @@
 #include "Bulb.h"
 #include "time.h"
 #include "LightNetwork.h"
-#include "../include/serial.h"
+#include "serial.h"
 
 
 #define convertIntensity(i) ( (i) <= 0 ? 240 : ( (i) >= 100 ? 1 : 228 - 2*(i) ) )

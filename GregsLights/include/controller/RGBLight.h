@@ -1,7 +1,7 @@
 #ifndef RGBLIGHT_H
 #define RGBLIGHT_H
 
-#include "../include/Bulb.h"
+#include "Bulb.h"
 
 enum RGB_COLOR{
   RED = 0,

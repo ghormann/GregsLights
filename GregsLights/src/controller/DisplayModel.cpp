@@ -1,8 +1,8 @@
-#include "../include/DisplayModel.h"
-#include "../include/RGBLight.h"
-#include "../include/OpenDMXNetwork.h"
-#include "../include/LORNetwork.h"
-#include "../include/NetworkCollection.h"
+#include "../../include/controller/DisplayModel.h"
+#include "../../include/controller/RGBLight.h"
+#include "../../include/controller/OpenDMXNetwork.h"
+#include "../../include/controller/LORNetwork.h"
+#include "../../include/controller/NetworkCollection.h"
 
 DisplayModel::DisplayModel(bool sendDMX)
 {

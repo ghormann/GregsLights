@@ -4,7 +4,7 @@
 #include "Bulb.h"
 #include "RGBLight.h"
 #include "LightNetwork.h"
-#include "../include/serial.h"
+#include "serial.h"
 
 /*
  * This version works with the programer from Holiday Coro

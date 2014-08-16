@@ -3,7 +3,7 @@
  * mixed together to product any color
  */
 
-#include "../include/RGBLight.h"
+#include "../../include/controller/RGBLight.h"
 
 RGBLight::RGBLight(Bulb *red, Bulb *green, Bulb *blue)
 {
