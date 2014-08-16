@@ -11,12 +11,14 @@ class Bulb
 {
 public:
     void setIntensity(int pct);
+    int  getIntensity();
 protected:
     virtual void setIntensity_ipml(int pct) = 0;
     virtual int getMin() = 0;
     virtual int getMax() = 0;
 
 private:
+    int percentage;
 };
 
 #endif // IPIXAL_H

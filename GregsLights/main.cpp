@@ -3,20 +3,30 @@
  * Author: Greg Hormann - ghormann@gmail.com
  */
 
-#include "include/controller/DisplayModel.h"
-#include "include/controller/DisplayTester.h"
+#include <iostream>
+#include "include/DisplayModel.h"
+#include "include/DisplayTester.h"
 
 using namespace std;
 
 
 int main()
 {
-    bool sendDMX = false;
-    DisplayModel *model = new DisplayModel(sendDMX);
-    DisplayTester *tester = new DisplayTester(model);
+    try
+    {
+        bool sendDMX = false;
+        DisplayModel *model = new DisplayModel(sendDMX);
+        DisplayTester *tester = new DisplayTester(model);
 
-    tester->testDMX();
-    //testLOR(lor);
+        tester->testDMX();
+        //testLOR(lor);
+
+    }
+    catch (const char* msg)
+    {
+        cerr << msg << endl;
+        return 1;
+    }
 
     return 0;
 }

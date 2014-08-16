@@ -1,8 +1,9 @@
 #ifndef DISPLAYMODEL_H
 #define DISPLAYMODEL_H
 
-#include "RGBLight.h"
-#include "NetworkCollection.h"
+#include "controller/RGBLight.h"
+#include "controller/NetworkCollection.h"
+#include "CountdownClock.h"
 
 
 #define HOUSE_LIGHT_START 1
@@ -18,6 +19,7 @@ class DisplayModel
     private:
         NetworkCollection *networks;
         RGBLight *house[HOUSE_LIGHT_END + 1];
+        CountdownClock *clock;
 
 };
 

@@ -1,4 +1,4 @@
-#include "../../include/controller/DisplayTester.h"
+#include "../include/DisplayTester.h"
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -1,8 +1,8 @@
-#include "../../include/controller/DisplayModel.h"
-#include "../../include/controller/RGBLight.h"
-#include "../../include/controller/OpenDMXNetwork.h"
-#include "../../include/controller/LORNetwork.h"
-#include "../../include/controller/NetworkCollection.h"
+#include "../include/DisplayModel.h"
+#include "../include/controller/RGBLight.h"
+#include "../include/controller/OpenDMXNetwork.h"
+#include "../include/controller/LORNetwork.h"
+#include "../include/controller/NetworkCollection.h"
 
 DisplayModel::DisplayModel(bool sendDMX)
 {
@@ -20,6 +20,10 @@ DisplayModel::DisplayModel(bool sendDMX)
         int j = i*3+1;
         house[i] = dmx->getRGB(j);
     }
+
+    //setup Clock
+    this->clock = new CountdownClock();
+    this->clock->setActive(true);
 }
 
 
