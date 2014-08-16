@@ -40,6 +40,8 @@
 		</Compiler>
 		<Unit filename="include/Bulb.h" />
 		<Unit filename="include/Bush.h" />
+		<Unit filename="include/DisplayModel.h" />
+		<Unit filename="include/DisplayTester.h" />
 		<Unit filename="include/DummyPixal.h" />
 		<Unit filename="include/LORNetwork.h" />
 		<Unit filename="include/LightNetwork.h" />
@@ -50,6 +52,8 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Bulb.cpp" />
 		<Unit filename="src/Bush.cpp" />
+		<Unit filename="src/DisplayModel.cpp" />
+		<Unit filename="src/DisplayTester.cpp" />
 		<Unit filename="src/DummyPixal.cpp" />
 		<Unit filename="src/LORNetwork.cpp" />
 		<Unit filename="src/NetworkCollection.cpp" />
