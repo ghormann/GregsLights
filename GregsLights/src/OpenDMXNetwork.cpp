@@ -9,6 +9,7 @@
  */
 OpenDMXNetwork::OpenDMXNetwork(char * deviceName,RGB_TYPE type)
 {
+    offset = 0;
     for (int i =0; i <513; i++)
     {
         this->data[i] = 0;

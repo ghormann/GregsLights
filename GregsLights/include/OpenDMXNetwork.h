@@ -28,7 +28,7 @@ protected:
 private:
     unsigned char data[513 + 6];
     SerialPort* serptr;
-    int offset = 0;
+    int offset;
 };
 
 class DMXBulb : public Bulb
