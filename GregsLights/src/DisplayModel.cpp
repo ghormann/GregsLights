@@ -23,6 +23,11 @@ DisplayModel::DisplayModel(bool sendDMX)
 
     //setup Clock
     this->clock = new CountdownClock();
+    for (int i = 0; i < CLOCK_DIGITS; i++) {
+        for (int j = 0; j <7; j++) {
+            this->clock->setBulb(i,j, dmx->getBulb(50+(i*7)+j));
+        }
+    }
     this->clock->setActive(true);
 }
 
