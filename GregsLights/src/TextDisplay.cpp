@@ -1,6 +1,7 @@
 #include "../include/TextDisplay.h"
 
 #include <pthread.h>
+#include <curses.h>
 
 
 void * update_display(void *args)
@@ -20,7 +21,19 @@ TextDisplay::TextDisplay(DisplayModel *m)
 {
     //ctor
     this->model = m;
-    pthread_create(&(this->display_t), NULL, update_display, this);
+
+    if ((mainwin = initscr()) == NULL)
+    {
+        printf("Error loading ncursur\n");
+    }
+    else
+    {
+        noecho();
+        cbreak();
+        nodelay(mainwin, TRUE);
+        keypad(mainwin, TRUE);
+        pthread_create(&(this->display_t), NULL, update_display, this);
+    }
 
 }
 
@@ -32,7 +45,11 @@ TextDisplay::~TextDisplay()
 void TextDisplay::update()
 {
     CountdownClock *clock = model->getClock();
-    printf("%d\n", clock->getSecondsRemaining());
+    mvprintw(0, 0, "Clock: %d", clock->getSecondsRemaining());
+
+
+    //update display
+    refresh();
 }
 
 

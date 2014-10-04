@@ -2,6 +2,7 @@
 #define TEXTDISPLAY_H
 
 #include "DisplayModel.h"
+#include <curses.h>
 
 class TextDisplay
 {
@@ -12,6 +13,7 @@ class TextDisplay
     protected:
     private:
         DisplayModel *model;
+        WINDOW *mainwin;      /* Window for curser */
         pthread_t display_t;      /* Thread for writing to serial interface */
 };
 
