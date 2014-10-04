@@ -15,9 +15,6 @@
 					<Add option="-g" />
 					<Add option="-DGJH_DEBUG" />
 				</Compiler>
-				<Linker>
-					<Add option="-pthread" />
-				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/GregsLights" prefix_auto="1" extension_auto="1" />
@@ -30,20 +27,23 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add option="-pthread" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-Wno-write-strings" />
 		</Compiler>
 		<Linker>
+			<Add option="-pthread" />
+			<Add option="-lncurses" />
 			<Add library="rt" />
 		</Linker>
 		<Unit filename="include/CountdownClock.h" />
 		<Unit filename="include/DisplayModel.h" />
 		<Unit filename="include/DisplayTester.h" />
+		<Unit filename="include/TextDisplay.h" />
 		<Unit filename="include/controller/Bulb.h" />
 		<Unit filename="include/controller/Bush.h" />
 		<Unit filename="include/controller/DummyPixal.h" />
@@ -57,6 +57,7 @@
 		<Unit filename="src/CountdownClock.cpp" />
 		<Unit filename="src/DisplayModel.cpp" />
 		<Unit filename="src/DisplayTester.cpp" />
+		<Unit filename="src/TextDisplay.cpp" />
 		<Unit filename="src/controller/Bulb.cpp" />
 		<Unit filename="src/controller/Bush.cpp" />
 		<Unit filename="src/controller/DummyPixal.cpp" />

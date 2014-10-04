@@ -8,6 +8,10 @@ class Bush
 public:
     Bush(int id,Bulb *red, Bulb *green, Bulb *blue, Bulb *white);
     void setAll(int pct);
+    Bulb *getRed();
+    Bulb *getGreen();
+    Bulb *getBlue();
+    Bulb *getWhite();
     int getId();
     virtual ~Bush();
 protected:

@@ -19,6 +19,9 @@ class RGBLight
         void turnOff();
     void set(int red, int green, int blue);
     void setStdColor(RGB_COLOR color);
+    int getRed();
+    int getGreen();
+    int getBlue();
 protected:
     private:
         Bulb *red;

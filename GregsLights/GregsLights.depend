@@ -120,7 +120,7 @@
 	"RGBLight.h"
 	"NetworkCollection.h"
 
-1408225451 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/controller/RGBLight.h
+1412447872 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/controller/RGBLight.h
 	"Bulb.h"
 
 1408226416 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/controller/Bulb.h
@@ -146,14 +146,14 @@
 	<stdio.h>
 	<ctype.h>
 
-1408226484 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/controller/Bulb.cpp
+1412450415 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/controller/Bulb.cpp
 	"../../include/controller/Bulb.h"
 	<stdio.h>
 
-1408225487 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/controller/Bush.cpp
+1412452058 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/controller/Bush.cpp
 	"../../include/controller/Bush.h"
 
-1408223179 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/controller/Bush.h
+1412451970 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/controller/Bush.h
 	"Bulb.h"
 
 1408225509 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/controller/DisplayModel.cpp
@@ -206,7 +206,7 @@
 	<stdio.h>
 	<unistd.h>
 
-1408225610 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/controller/RGBLight.cpp
+1412448065 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/controller/RGBLight.cpp
 	"../../include/controller/RGBLight.h"
 
 1408225616 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/controller/serial_posix.cpp
@@ -220,23 +220,25 @@
 	<string.h>
 	"../../include/controller/serial.h"
 
-1412444652 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/DisplayModel.cpp
+1412454430 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/DisplayModel.cpp
 	"../include/DisplayModel.h"
 	"../include/controller/RGBLight.h"
 	"../include/controller/OpenDMXNetwork.h"
 	"../include/controller/LORNetwork.h"
 	"../include/controller/NetworkCollection.h"
+	"../include/controller/Bush.h"
 	<string.h>
 
-1412442824 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/DisplayModel.h
+1412451853 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/DisplayModel.h
 	"controller/RGBLight.h"
+	"controller/Bush.h"
 	"controller/NetworkCollection.h"
 	"CountdownClock.h"
 
 1412445134 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/DisplayTester.h
 	"DisplayModel.h"
 
-1412443837 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/DisplayTester.cpp
+1412448663 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/DisplayTester.cpp
 	"../include/DisplayTester.h"
 	<stdio.h>
 	<stdlib.h>
@@ -245,7 +247,8 @@
 	"DisplayModel.h"
 	<curses.h>
 
-1412444487 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/TextDisplay.cpp
+1412454342 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/TextDisplay.cpp
 	"../include/TextDisplay.h"
 	<pthread.h>
+	<curses.h>
 

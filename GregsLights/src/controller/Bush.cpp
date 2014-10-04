@@ -14,6 +14,26 @@ int Bush::getId()
     return bushId;
 }
 
+Bulb *Bush::getRed()
+{
+    return red;
+}
+
+Bulb *Bush::getGreen()
+{
+    return green;
+}
+
+Bulb *Bush::getBlue()
+{
+    return blue;
+}
+
+Bulb *Bush::getWhite()
+{
+    return white;
+}
+
 void Bush::setAll(int pct)
 {
     red->setIntensity(pct);
