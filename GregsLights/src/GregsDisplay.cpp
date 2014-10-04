@@ -20,8 +20,9 @@ void GregsDisplay::run() {
     while(1) {
         setAllOff();
         sleep(1);
+        model->getBush(1)->getBlue()->fade(2,100,5000);
         set_bush(1,GD_RED,50);
-        sleep(1);
+        sleep(6);
     }
 }
 

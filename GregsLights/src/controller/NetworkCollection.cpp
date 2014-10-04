@@ -1,4 +1,5 @@
 #include "../../include/controller/NetworkCollection.h"
+#include "../../include/controller/Bulb.h"
 
 #define MAX_LIGHT_NETWORKS 50
 
@@ -11,7 +12,7 @@ NetworkCollection::NetworkCollection()
         networks[i] = 0;
     }
     pthread_create(&(this->serial_t), NULL, update_thread, (void*) this);
-
+    pthread_create(&(this->bulb_t), NULL, Bulb::tickThread, (void*) NULL);
 }
 
 void * update_thread(void *args)

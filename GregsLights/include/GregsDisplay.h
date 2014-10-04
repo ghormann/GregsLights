@@ -1,7 +1,7 @@
 #ifndef GREGSDISPLAY_H
 #define GREGSDISPLAY_H
 
-#include "DisplayModel.h";
+#include "DisplayModel.h"
 
 class GregsDisplay
 {

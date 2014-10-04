@@ -34,7 +34,7 @@ private:
 class DMXBulb : public Bulb
 {
 public:
-    DMXBulb(unsigned char * pos)
+    DMXBulb(unsigned char * pos) : Bulb()
     {
         this->pos = pos;
     }

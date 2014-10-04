@@ -110,7 +110,7 @@
 	<stdio.h>
 	<stdlib.h>
 
-1412455610 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/main.cpp
+1412466431 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/main.cpp
 	<iostream>
 	"include/DisplayModel.h"
 	"include/DisplayTester.h"
@@ -124,9 +124,11 @@
 1412447872 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/controller/RGBLight.h
 	"Bulb.h"
 
-1408226416 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/controller/Bulb.h
+1412465412 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/controller/Bulb.h
+	<chrono>
+	<unistd.h>
 
-1408223179 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/controller/NetworkCollection.h
+1412464740 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/controller/NetworkCollection.h
 	"LightNetwork.h"
 	<pthread.h>
 	<unistd.h>
@@ -147,9 +149,10 @@
 	<stdio.h>
 	<ctype.h>
 
-1412450415 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/controller/Bulb.cpp
+1412466421 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/controller/Bulb.cpp
 	"../../include/controller/Bulb.h"
 	<stdio.h>
+	<chrono>
 
 1412452058 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/controller/Bush.cpp
 	"../../include/controller/Bush.h"
@@ -164,7 +167,7 @@
 	"../../include/controller/LORNetwork.h"
 	"../../include/controller/NetworkCollection.h"
 
-1408225443 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/controller/OpenDMXNetwork.h
+1412458647 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/controller/OpenDMXNetwork.h
 	"Bulb.h"
 	"RGBLight.h"
 	"LightNetwork.h"
@@ -192,15 +195,16 @@
 1408223179 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/controller/DummyPixal.h
 	"Bulb.h"
 
-1408225597 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/controller/LORNetwork.cpp
+1412458738 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/controller/LORNetwork.cpp
 	"../../include/controller/LORNetwork.h"
 	"../../include/controller/Bulb.h"
 	"time.h"
 	<iostream>
 	<stdio.h>
 
-1408225601 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/controller/NetworkCollection.cpp
+1412465353 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/controller/NetworkCollection.cpp
 	"../../include/controller/NetworkCollection.h"
+	"../../include/controller/Bulb.h"
 
 1408225605 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/controller/OpenDMXNetwork.cpp
 	"../../include/controller/OpenDMXNetwork.h"
@@ -253,9 +257,10 @@
 	<pthread.h>
 	<curses.h>
 
-1412455448 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/GregsDisplay.cpp
+1412466539 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/GregsDisplay.cpp
 	"../include/GregsDisplay.h"
+	"../include/controller/Bush.h"
 
-1412457121 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/GregsDisplay.h
+1412458553 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/GregsDisplay.h
 	"DisplayModel.h"
 
