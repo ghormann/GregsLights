@@ -43,6 +43,7 @@
 		<Unit filename="include/CountdownClock.h" />
 		<Unit filename="include/DisplayModel.h" />
 		<Unit filename="include/DisplayTester.h" />
+		<Unit filename="include/GregsDisplay.h" />
 		<Unit filename="include/TextDisplay.h" />
 		<Unit filename="include/controller/Bulb.h" />
 		<Unit filename="include/controller/Bush.h" />
@@ -57,6 +58,7 @@
 		<Unit filename="src/CountdownClock.cpp" />
 		<Unit filename="src/DisplayModel.cpp" />
 		<Unit filename="src/DisplayTester.cpp" />
+		<Unit filename="src/GregsDisplay.cpp" />
 		<Unit filename="src/TextDisplay.cpp" />
 		<Unit filename="src/controller/Bulb.cpp" />
 		<Unit filename="src/controller/Bush.cpp" />

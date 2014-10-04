@@ -110,11 +110,12 @@
 	<stdio.h>
 	<stdlib.h>
 
-1412444708 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/main.cpp
+1412455610 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/main.cpp
 	<iostream>
 	"include/DisplayModel.h"
 	"include/DisplayTester.h"
 	"include/TextDisplay.h"
+	"include/GregsDisplay.h"
 
 1408231123 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/controller/DisplayModel.h
 	"RGBLight.h"
@@ -251,4 +252,10 @@
 	"../include/TextDisplay.h"
 	<pthread.h>
 	<curses.h>
+
+1412455448 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/GregsDisplay.cpp
+	"../include/GregsDisplay.h"
+
+1412457121 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/GregsDisplay.h
+	"DisplayModel.h"
 
