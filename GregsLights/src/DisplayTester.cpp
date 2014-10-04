@@ -21,7 +21,7 @@ void DisplayTester::testDMX()
     }
     sleep(1);
 
-    printf("Fade up\n");
+    //printf("Fade up\n");
     for (j=1; j<=4; j++)
     {
         for (i=0; i<100; i++)
@@ -45,20 +45,20 @@ void DisplayTester::testDMX()
     sleep(3);
 
 
-    printf("Purple\n");
+    //printf("Purple\n");
     for(i = 1; i<=4; i++)
     {
         house[i]->setStdColor(PURPLE);
     }
 
     sleep(2);
-    printf("Red\n");
+    //printf("Red\n");
     for(i = 1; i<=4; i++)
     {
         house[i]->setStdColor(RED);
     }
     sleep(2);
-    printf("Blue\n");
+    //printf("Blue\n");
     for(i = 1; i<=4; i++)
     {
         house[i]->setStdColor(BLUE);
@@ -75,7 +75,7 @@ void DisplayTester::testDMX()
 
     for (i = 0; i < 1000; i++)
     {
-        printf("Random Loop: %d  \n", i);
+        //printf("Random Loop: %d  \n", i);
         house[(i%4)+1]->set(rand()%101,rand()%101,rand()%101);
         usleep(50*1000);
     }
@@ -83,7 +83,7 @@ void DisplayTester::testDMX()
 
     for (i = 0; i < 100; i++)
     {
-        printf("Loop: %d  \n", i);
+        //printf("Loop: %d  \n", i);
         house[(i%4)+1]->set(i,0,i);
         usleep(150*1000);
     }

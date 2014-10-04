@@ -110,10 +110,11 @@
 	<stdio.h>
 	<stdlib.h>
 
-1408231584 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/main.cpp
+1412443035 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/main.cpp
 	<iostream>
 	"include/DisplayModel.h"
 	"include/DisplayTester.h"
+	"include/TextDisplay.h"
 
 1408231123 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/controller/DisplayModel.h
 	"RGBLight.h"
@@ -134,10 +135,10 @@
 1408223179 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/controller/DisplayTester.h
 	"DisplayModel.h"
 
-1408242110 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/CountdownClock.cpp
+1412440580 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/CountdownClock.cpp
 	"../include/CountdownClock.h"
 
-1408242065 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/CountdownClock.h
+1412440401 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/CountdownClock.h
 	"controller/Bulb.h"
 	<pthread.h>
 	<unistd.h>
@@ -219,14 +220,15 @@
 	<string.h>
 	"../../include/controller/serial.h"
 
-1408237998 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/DisplayModel.cpp
+1412444652 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/DisplayModel.cpp
 	"../include/DisplayModel.h"
 	"../include/controller/RGBLight.h"
 	"../include/controller/OpenDMXNetwork.h"
 	"../include/controller/LORNetwork.h"
 	"../include/controller/NetworkCollection.h"
+	<string.h>
 
-1408231386 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/DisplayModel.h
+1412442824 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/DisplayModel.h
 	"controller/RGBLight.h"
 	"controller/NetworkCollection.h"
 	"CountdownClock.h"
@@ -234,8 +236,15 @@
 1408223179 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/DisplayTester.h
 	"DisplayModel.h"
 
-1408231439 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/DisplayTester.cpp
+1412443837 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/DisplayTester.cpp
 	"../include/DisplayTester.h"
 	<stdio.h>
 	<stdlib.h>
+
+1412444537 /home/ghormann/Downloads/greg/gregslights/GregsLights/include/TextDisplay.h
+	"DisplayModel.h"
+
+1412444487 source:/home/ghormann/Downloads/greg/gregslights/GregsLights/src/TextDisplay.cpp
+	"../include/TextDisplay.h"
+	<pthread.h>
 

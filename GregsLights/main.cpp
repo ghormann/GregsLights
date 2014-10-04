@@ -6,6 +6,7 @@
 #include <iostream>
 #include "include/DisplayModel.h"
 #include "include/DisplayTester.h"
+#include "include/TextDisplay.h"
 
 using namespace std;
 
@@ -17,6 +18,9 @@ int main()
         bool sendDMX = false;
         DisplayModel *model = new DisplayModel(sendDMX);
         DisplayTester *tester = new DisplayTester(model);
+
+        sleep(1); // Allow threads to start up
+        new TextDisplay(model);
 
         tester->testDMX();
         //testLOR(lor);

@@ -34,10 +34,16 @@ CountdownClock::~CountdownClock()
 {
 }
 
+int CountdownClock::getSecondsRemaining()
+{
+    return lastTick;
+}
+
+
 void CountdownClock::tick()
 {
-    char c_seconds[11];
     time_t t_now;
+    char seconds_c[11];  /* Number of Seconds in Charactor */
     int num[10];
     time(&t_now);
     int num_seconds = difftime(t_christmas, t_now);
@@ -55,22 +61,22 @@ void CountdownClock::tick()
         if (num_seconds <= 0)
         {
             num_seconds = 0;
-            sprintf(c_seconds, "0000000");
+            sprintf(seconds_c, "0000000");
         }
         else
         {
-            sprintf(c_seconds, "%7d", num_seconds);
+            sprintf(seconds_c, "%7d", num_seconds);
         }
 
         for (int i = 1; i < 7; i++)
         {
-            if (isblank(c_seconds[i]))
+            if (isblank(seconds_c[i]))
             {
                 num[i] = -1;
             }
             else
             {
-                num[i] = c_seconds[i] - 48;
+                num[i] = seconds_c[i] - 48;
             }
 
             s1=s2=s3=s4=s5=s6=s7=0;
@@ -130,7 +136,6 @@ void CountdownClock::tick()
         // Need to add code here.
 
         lastTick = num_seconds;
-        printf("Diff: %d\n", num_seconds);
     }
 
 }

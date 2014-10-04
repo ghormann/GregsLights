@@ -3,9 +3,17 @@
 #include "../include/controller/OpenDMXNetwork.h"
 #include "../include/controller/LORNetwork.h"
 #include "../include/controller/NetworkCollection.h"
+#include <string.h>
 
 DisplayModel::DisplayModel(bool sendDMX)
 {
+    //Initialize Memory Buffers
+    for (int i = 0; i < NUM_MESSAGE_BUFFERS; i++) {
+        messages[i] = new char[MAX_MESSAGE_LENGTH+1];
+        messages[i][0] = 0;
+    }
+
+    //
     networks = new NetworkCollection();
     OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", ACTIDONGLE, sendDMX);
     //OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", OPENDMX);
@@ -31,6 +39,26 @@ DisplayModel::DisplayModel(bool sendDMX)
     this->clock->setActive(true);
 }
 
+CountdownClock* DisplayModel::getClock()
+{
+    return clock;
+}
+
+void DisplayModel::setMessage(int i, char * msg)
+{
+    if (i < 0 ||  i >= NUM_MESSAGE_BUFFERS) {
+        throw "Invalid Message ID";
+    }
+
+    strncpy(msg, messages[i], MAX_MESSAGE_LENGTH);
+}
+
+char *DisplayModel::getMessage(int i) {
+    if (i <0 || i >= NUM_MESSAGE_BUFFERS) {
+        throw "Invalid Message ID";
+    }
+    return messages[i];
+}
 
 RGBLight* DisplayModel::getHouse(int id) {
     if (id < HOUSE_LIGHT_START) {
@@ -47,4 +75,5 @@ RGBLight* DisplayModel::getHouse(int id) {
 DisplayModel::~DisplayModel()
 {
     //dtor
+    // Really should remove messages.....
 }

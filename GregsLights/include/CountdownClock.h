@@ -22,6 +22,7 @@ class CountdownClock
         void setActive(bool);
         void tick();
         Bulb *getBulb(int digit, int segment);
+        int getSecondsRemaining();
     protected:
     private:
         Bulb *bulbs[CLOCK_DIGITS*7 + 1];
@@ -29,7 +30,7 @@ class CountdownClock
         struct tm tm_christmas;
         time_t t_christmas;
         int lastTick;
-        pthread_t clock_t;  /* Thread for writing to serial interface */
+        pthread_t clock_t;      /* Thread for writing to serial interface */
 
 };
 
