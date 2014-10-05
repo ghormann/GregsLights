@@ -23,7 +23,9 @@ Bulb::Bulb()
 
 Bulb *Bulb::firstBulb = 0;
 
-
+/**
+* duration is in milliseconds
+*/
 void Bulb::fade(int start, int stop, double duration)
 {
     start = start < 0 ? 0 : start;
@@ -32,7 +34,7 @@ void Bulb::fade(int start, int stop, double duration)
     stop = stop > 100 ? 100 : stop;
 
     setIntensity(start);
-    fadeStep = ((double)(stop-start)) / duration;
+    fadeStep = ((double)(stop-start)) / (duration*1000);
     fadeStop = stop;
 
     //printf("FadeStep: %f\n", fadeStep );
@@ -40,10 +42,10 @@ void Bulb::fade(int start, int stop, double duration)
 
 void * Bulb::tickThread(void *)
 {
+    auto begin = std::chrono::high_resolution_clock::now() ;
     while (1)
     {
-        auto begin = std::chrono::high_resolution_clock::now() ;
-        usleep(50 * 1000); // 100ms)
+        usleep(50 * 1000); // 50ms)
         auto end = std::chrono::high_resolution_clock::now() ;
         auto ticks = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin) ;
 
@@ -56,6 +58,7 @@ void * Bulb::tickThread(void *)
             current->fadeTick(duration);
             current = current->next;
         }
+        begin = end; // Save for next time
     }
 
     return NULL;

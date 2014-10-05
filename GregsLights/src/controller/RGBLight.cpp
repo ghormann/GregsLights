@@ -19,6 +19,13 @@ void RGBLight::set(int red, int green, int blue)
     this->blue->setIntensity(blue);
 }
 
+void RGBLight::fade(int red_s, int green_s, int blue_s, int red_e, int green_e, int blue_e, double dur)
+{
+    this->red->fade(red_s,red_e,dur);
+    this->green->fade(green_s,green_e,dur);
+    this->blue->fade(blue_s,blue_e,dur);
+}
+
 int RGBLight::getRed()
 {
     return this->red->getIntensity();
