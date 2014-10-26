@@ -49,6 +49,7 @@
 		<Unit filename="include/controller/Bulb.h" />
 		<Unit filename="include/controller/Bush.h" />
 		<Unit filename="include/controller/DummyPixal.h" />
+		<Unit filename="include/controller/E131Network.h" />
 		<Unit filename="include/controller/LORNetwork.h" />
 		<Unit filename="include/controller/LightNetwork.h" />
 		<Unit filename="include/controller/NetworkCollection.h" />
@@ -64,6 +65,7 @@
 		<Unit filename="src/controller/Bulb.cpp" />
 		<Unit filename="src/controller/Bush.cpp" />
 		<Unit filename="src/controller/DummyPixal.cpp" />
+		<Unit filename="src/controller/E131Network.cpp" />
 		<Unit filename="src/controller/LORNetwork.cpp" />
 		<Unit filename="src/controller/NetworkCollection.cpp" />
 		<Unit filename="src/controller/OpenDMXNetwork.cpp" />

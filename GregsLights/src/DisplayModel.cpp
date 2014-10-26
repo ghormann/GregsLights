@@ -2,6 +2,7 @@
 #include "../include/controller/RGBLight.h"
 #include "../include/controller/OpenDMXNetwork.h"
 #include "../include/controller/LORNetwork.h"
+#include "../include/controller/E131Network.h"
 #include "../include/controller/NetworkCollection.h"
 #include "../include/controller/Bush.h"
 #include <string.h>
@@ -21,8 +22,12 @@ DisplayModel::DisplayModel(bool sendDMX)
     //OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", OPENDMX);
 
     LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB1", sendDMX);
+
+    E131Network *sign = new E131Network("192.168.0.205");
+
     networks->addNetwork(dmx);
     networks->addNetwork(lor);
+    networks->addNetwork(sign);
 
     //set up houses
     for (int i = HOUSE_LIGHT_START; i <= HOUSE_LIGHT_END; i++)
