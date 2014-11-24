@@ -50,14 +50,64 @@ DisplayModel::DisplayModel(bool sendDMX)
 
     //setup Clock
     this->clock = new CountdownClock();
-    for (int i = 0; i < CLOCK_DIGITS; i++)
-    {
-        for (int j = 0; j <7; j++)
-        {
-            // Clock starts at DMX 100
-            this->clock->setBulb(i,j, dmx->getBulb(100+(i*7)+j));
-        }
-    }
+    int i = 100;   // Starting at the 100th spot
+    this->clock->setBulb(0,0,dmx->getBulb(i + 19));
+    this->clock->setBulb(0,1,dmx->getBulb(i + 15));
+    this->clock->setBulb(0,2,dmx->getBulb(i + 14));
+    this->clock->setBulb(0,3,dmx->getBulb(i + 20));
+    this->clock->setBulb(0,4,dmx->getBulb(i + 17));
+    this->clock->setBulb(0,5,dmx->getBulb(i + 18));
+    this->clock->setBulb(0,6,dmx->getBulb(i + 16));
+    // Next
+    this->clock->setBulb(1,0,dmx->getBulb(i + 12));
+    this->clock->setBulb(1,1,dmx->getBulb(i + 10));
+    this->clock->setBulb(1,2,dmx->getBulb(i + 13));
+    this->clock->setBulb(1,3,dmx->getBulb(i + 7));
+    this->clock->setBulb(1,4,dmx->getBulb(i + 9));
+    this->clock->setBulb(1,5,dmx->getBulb(i + 6));
+    this->clock->setBulb(1,6,dmx->getBulb(i + 11));
+    // Next
+    this->clock->setBulb(2,0,dmx->getBulb(i + 1));
+    this->clock->setBulb(2,1,dmx->getBulb(i + 0));
+    this->clock->setBulb(2,2,dmx->getBulb(i + 3));
+    this->clock->setBulb(2,3,dmx->getBulb(i + 5));
+    this->clock->setBulb(2,4,dmx->getBulb(i + 8));
+    this->clock->setBulb(2,5,dmx->getBulb(i + 4));
+    this->clock->setBulb(2,6,dmx->getBulb(i + 2));
+    // Next
+    this->clock->setBulb(3,0,dmx->getBulb(i + 50));
+    this->clock->setBulb(3,1,dmx->getBulb(i + 50));
+    this->clock->setBulb(3,2,dmx->getBulb(i + 50));
+    this->clock->setBulb(3,3,dmx->getBulb(i + 50));
+    this->clock->setBulb(3,4,dmx->getBulb(i + 50));
+    this->clock->setBulb(3,5,dmx->getBulb(i + 50));
+    this->clock->setBulb(3,6,dmx->getBulb(i + 50));
+    // Next
+    this->clock->setBulb(4,0,dmx->getBulb(i + 50));
+    this->clock->setBulb(4,1,dmx->getBulb(i + 50));
+    this->clock->setBulb(4,2,dmx->getBulb(i + 50));
+    this->clock->setBulb(4,3,dmx->getBulb(i + 50));
+    this->clock->setBulb(4,4,dmx->getBulb(i + 50));
+    this->clock->setBulb(4,5,dmx->getBulb(i + 50));
+    this->clock->setBulb(4,6,dmx->getBulb(i + 50));
+    // Next
+    this->clock->setBulb(5,0,dmx->getBulb(i + 50));
+    this->clock->setBulb(5,1,dmx->getBulb(i + 50));
+    this->clock->setBulb(5,2,dmx->getBulb(i + 50));
+    this->clock->setBulb(5,3,dmx->getBulb(i + 50));
+    this->clock->setBulb(5,4,dmx->getBulb(i + 50));
+    this->clock->setBulb(5,5,dmx->getBulb(i + 50));
+    this->clock->setBulb(5,6,dmx->getBulb(i + 50));
+    // Next
+    this->clock->setBulb(6,0,dmx->getBulb(i + 50));
+    this->clock->setBulb(6,1,dmx->getBulb(i + 50));
+    this->clock->setBulb(6,2,dmx->getBulb(i + 50));
+    this->clock->setBulb(6,3,dmx->getBulb(i + 50));
+    this->clock->setBulb(6,4,dmx->getBulb(i + 50));
+    this->clock->setBulb(6,5,dmx->getBulb(i + 50));
+    this->clock->setBulb(6,6,dmx->getBulb(i + 50));
+    // Next
+
     //this->clock->setActive(true);
 }
 

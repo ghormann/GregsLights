@@ -41,9 +41,12 @@ int CountdownClock::getSecondsRemaining()
 
 void CountdownClock::testALlOn()
 {
-    while(1) {
-        for (int i =0; i <7; i++) {
-            for (int j = 0; j<7; j++){
+    while(1)
+    {
+        for (int i =0; i <7; i++)
+        {
+            for (int j = 0; j<7; j++)
+            {
                 getBulb(i,j)->setIntensity(100);
 
             }
@@ -54,20 +57,22 @@ void CountdownClock::testALlOn()
 
 void CountdownClock::test()
 {
-    while(1) {
-        getBulb(0,0)->setIntensity(100);
-        sleep(1);
-        getBulb(0,0)->setIntensity(0);
-        sleep(1);
-        getBulb(0,0)->setIntensity(100);
-        sleep(1);
-        getBulb(0,0)->setIntensity(0);
-        sleep(1);
-        for (int i = 0; i < 7; i++)
+    while(1)
+    {
+        lastTick = 50000;
+        for (int i = 0; i < 3; i++)
+        {
+            getBulb(0,0)->setIntensity(100);
+            sleep(1);
+            getBulb(0,0)->setIntensity(0);
+            sleep(1);
+        }
+        for (int i = 0; i < 3; i++) // 3 sould be 7
         {
             for (int j = 0; j < 7; j++)
             {
                 getBulb(i,j)->setIntensity(100);
+                lastTick = i * 100 + j;
                 sleep(1);
                 getBulb(i,j)->setIntensity(0);
             }

@@ -53,7 +53,7 @@ void TextDisplay::update()
     CountdownClock *clock = model->getClock();
     mvprintw(0, 0, "%s", model->getMessage(1));
     mvprintw(1, 0, "%s", model->getMessage(2));
-    mvprintw(0, 64, "Clock: %d", clock->getSecondsRemaining());
+    mvprintw(0, 64, "Clock: %7d", clock->getSecondsRemaining());
 
 
     /*
