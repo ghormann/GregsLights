@@ -20,6 +20,8 @@ class CountdownClock
         virtual ~CountdownClock();
         void setBulb(int digit, int segment, Bulb *bulb);
         void setActive(bool);
+        void test();
+        void testALlOn();
         void tick();
         Bulb *getBulb(int digit, int segment);
         int getSecondsRemaining();

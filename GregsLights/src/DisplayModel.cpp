@@ -54,10 +54,11 @@ DisplayModel::DisplayModel(bool sendDMX)
     {
         for (int j = 0; j <7; j++)
         {
-            this->clock->setBulb(i,j, dmx->getBulb(50+(i*7)+j));
+            // Clock starts at DMX 100
+            this->clock->setBulb(i,j, dmx->getBulb(100+(i*7)+j));
         }
     }
-    this->clock->setActive(true);
+    //this->clock->setActive(true);
 }
 
 Bush* DisplayModel::getBush(int i)

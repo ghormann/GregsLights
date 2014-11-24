@@ -10,6 +10,12 @@ DisplayTester::DisplayTester(DisplayModel *m)
     //ctor
 }
 
+void DisplayTester::testClock()
+{
+    this->model->getClock()->testALlOn();
+    //this->model->getClock()->test();
+}
+
 void DisplayTester::testDMX()
 {
     int i,j;

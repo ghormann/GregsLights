@@ -1,82 +1,74 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="include/CountdownClock.h" open="0" top="0" tabpos="2">
-		<Cursor position="490" topLine="0" />
+	<File name="include/CountdownClock.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="435" topLine="8" />
+		</Cursor>
 	</File>
-	<File name="include/DisplayModel.h" open="1" top="0" tabpos="7">
-		<Cursor position="860" topLine="0" />
+	<File name="include/DisplayModel.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="include/DisplayTester.h" open="0" top="0" tabpos="0">
-		<Cursor position="249" topLine="0" />
+	<File name="include/controller/E131Network.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="include/GregsDisplay.h" open="0" top="0" tabpos="0">
-		<Cursor position="468" topLine="0" />
+	<File name="include/DisplayTester.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="204" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="include/TextDisplay.h" open="0" top="0" tabpos="0">
-		<Cursor position="91" topLine="0" />
+	<File name="src/DisplayModel.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2183" topLine="9" />
+		</Cursor>
 	</File>
-	<File name="include/controller/Bulb.h" open="0" top="0" tabpos="0">
-		<Cursor position="436" topLine="0" />
+	<File name="include/controller/LORNetwork.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="include/controller/Bush.h" open="0" top="0" tabpos="0">
-		<Cursor position="211" topLine="0" />
+	<File name="src/DisplayTester.cpp" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="238" topLine="1" />
+		</Cursor>
 	</File>
-	<File name="include/controller/E131Network.h" open="1" top="0" tabpos="5">
-		<Cursor position="475" topLine="0" />
+	<File name="src/controller/serial_posix.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="include/controller/LORNetwork.h" open="1" top="0" tabpos="4">
-		<Cursor position="358" topLine="0" />
+	<File name="include/TextDisplay.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="71" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="include/controller/NetworkCollection.h" open="0" top="0" tabpos="0">
-		<Cursor position="135" topLine="0" />
+	<File name="src/CountdownClock.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="862" topLine="40" />
+		</Cursor>
 	</File>
-	<File name="include/controller/OpenDMXNetwork.h" open="0" top="0" tabpos="0">
-		<Cursor position="662" topLine="14" />
+	<File name="src/GregsDisplay.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="include/controller/RGBLight.h" open="0" top="0" tabpos="0">
-		<Cursor position="411" topLine="0" />
+	<File name="main.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="579" topLine="17" />
+		</Cursor>
 	</File>
-	<File name="main.cpp" open="0" top="0" tabpos="3">
-		<Cursor position="440" topLine="0" />
+	<File name="src/controller/LORNetwork.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="src/CountdownClock.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="1364" topLine="52" />
-	</File>
-	<File name="src/DisplayModel.cpp" open="1" top="0" tabpos="8">
-		<Cursor position="850" topLine="5" />
-	</File>
-	<File name="src/GregsDisplay.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="710" topLine="55" />
-	</File>
-	<File name="src/TextDisplay.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="488" topLine="23" />
-	</File>
-	<File name="src/controller/Bulb.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="2243" topLine="58" />
-	</File>
-	<File name="src/controller/Bush.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="271" topLine="0" />
-	</File>
-	<File name="src/controller/DummyPixal.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="55" topLine="0" />
-	</File>
-	<File name="src/controller/E131Network.cpp" open="1" top="1" tabpos="6">
-		<Cursor position="1017" topLine="16" />
-	</File>
-	<File name="src/controller/LORNetwork.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="484" topLine="0" />
-	</File>
-	<File name="src/controller/NetworkCollection.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="440" topLine="0" />
-	</File>
-	<File name="src/controller/OpenDMXNetwork.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1547" topLine="0" />
-	</File>
-	<File name="src/controller/RGBLight.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="561" topLine="4" />
-	</File>
-	<File name="src/controller/serial_posix.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="579" topLine="3" />
+	<File name="src/controller/E131Network.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

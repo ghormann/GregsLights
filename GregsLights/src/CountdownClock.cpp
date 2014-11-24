@@ -39,6 +39,42 @@ int CountdownClock::getSecondsRemaining()
     return lastTick;
 }
 
+void CountdownClock::testALlOn()
+{
+    while(1) {
+        for (int i =0; i <7; i++) {
+            for (int j = 0; j<7; j++){
+                getBulb(i,j)->setIntensity(100);
+
+            }
+        }
+        sleep(5);
+    }
+}
+
+void CountdownClock::test()
+{
+    while(1) {
+        getBulb(0,0)->setIntensity(100);
+        sleep(1);
+        getBulb(0,0)->setIntensity(0);
+        sleep(1);
+        getBulb(0,0)->setIntensity(100);
+        sleep(1);
+        getBulb(0,0)->setIntensity(0);
+        sleep(1);
+        for (int i = 0; i < 7; i++)
+        {
+            for (int j = 0; j < 7; j++)
+            {
+                getBulb(i,j)->setIntensity(100);
+                sleep(1);
+                getBulb(i,j)->setIntensity(0);
+            }
+        }
+    }
+}
+
 
 void CountdownClock::tick()
 {
@@ -156,12 +192,12 @@ Bulb *CountdownClock::getBulb(int digit, int segment)
 {
     if (digit < 0 || digit > CLOCK_DIGITS -1 )
     {
-        throw "Invalid number of Digits";
+        throw "Invalid number of Digits (Get)";
     }
 
     if (segment < 0 || segment > 6 )
     {
-        throw "Invalid number of Segments";
+        throw "Invalid number of Segments (Get)";
     }
 
     int pos = digit * CLOCK_DIGITS + segment;
@@ -183,6 +219,7 @@ void CountdownClock::setBulb(int digit, int segment, Bulb *bulb)
 
     int pos = digit * CLOCK_DIGITS + segment;
     this->bulbs[pos] = bulb;
+    bulb->setIntensity(0);
 }
 
 void CountdownClock::setActive(bool makeActive)

@@ -16,16 +16,17 @@ int main()
 {
     try
     {
-        bool sendDMX = false;
+        bool sendDMX = true;
         DisplayModel *model = new DisplayModel(sendDMX);
         sleep(1); // Allow threads to start up
         new TextDisplay(model);
 
-        //DisplayTester *tester = new DisplayTester(model);
+        DisplayTester *tester = new DisplayTester(model);
         //tester->testDMX();
+        tester->testClock();
 
-        GregsDisplay *display = new GregsDisplay(model);
-        display->run();
+        //GregsDisplay *display = new GregsDisplay(model);
+        //display->run();
 
     }
     catch (const char* msg)
