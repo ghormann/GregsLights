@@ -23,7 +23,7 @@ DisplayModel::DisplayModel(bool sendDMX)
 
     LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB1", sendDMX);
 
-    E131Network *sign = new E131Network("192.168.0.205");
+    E131Network *sign = new E131Network("192.168.0.205", 100, 512);
 
     networks->addNetwork(dmx);
     networks->addNetwork(lor);
