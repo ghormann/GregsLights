@@ -16,11 +16,11 @@ CountdownClock::CountdownClock()
 
     time(&t_now);
     tm_now = localtime(&t_now);
-    tm_christmas.tm_sec    = 0;
-    tm_christmas.tm_min    = 0;
-    tm_christmas.tm_hour   = 0;
-    tm_christmas.tm_mday   = 25;
-    tm_christmas.tm_mon    = 11;
+    tm_christmas.tm_sec    = 0;     //0
+    tm_christmas.tm_min    = 0;     //0
+    tm_christmas.tm_hour   = 0;     //0
+    tm_christmas.tm_mday   = 25;    //25
+    tm_christmas.tm_mon    = 11;    //11
     tm_christmas.tm_year   = tm_now->tm_year;
     tm_christmas.tm_isdst  = tm_now->tm_isdst;
     tm_christmas.tm_zone   = tm_now->tm_zone;
@@ -152,6 +152,7 @@ void CountdownClock::tick()
         {
             num_seconds = 0;
             sprintf(seconds_c, "0000000");
+            special[SPECIAL_STROBE]->setIntensity(100);
         }
         else
         {
