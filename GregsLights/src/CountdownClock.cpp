@@ -110,15 +110,19 @@ void CountdownClock::tick()
             sprintf(seconds_c, "%7d", num_seconds);
         }
 
+        // The real digits are identifeid as 0-6, but they are the
+        // last digits, so we need to off set by one here when refereincing
+        // seconds_c
+
         for (int i = 0; i < 6; i++)   // Last 6 digits
         {
-            if (isblank(seconds_c[i]))
+            if (isblank(seconds_c[i+1]))
             {
                 num[i] = -1;
             }
             else
             {
-                num[i] = seconds_c[i] - 48;
+                num[i] = seconds_c[i+1] - 48;
             }
 
             s1=s2=s3=s4=s5=s6=s7=0;
@@ -206,7 +210,7 @@ Bulb *CountdownClock::getBulb(int digit, int segment)
         throw "Invalid number of Segments (Get)";
     }
 
-    int pos = digit * CLOCK_DIGITS + segment;
+    int pos = (digit * 7) + segment;
     return this->bulbs[pos];
 
 }
@@ -223,7 +227,7 @@ void CountdownClock::setBulb(int digit, int segment, Bulb *bulb)
         throw "Invalid number of Segments";
     }
 
-    int pos = digit * CLOCK_DIGITS + segment;
+    int pos = (digit * 7) + segment;
     this->bulbs[pos] = bulb;
     bulb->setIntensity(0);
 }

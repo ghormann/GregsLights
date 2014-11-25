@@ -123,7 +123,7 @@
 	<string.h>
 	"../../include/controller/serial.h"
 
-1416922138 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/CountdownClock.cpp
+1416922987 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/CountdownClock.cpp
 	"../include/CountdownClock.h"
 
 1416921490 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/DisplayModel.cpp
@@ -145,7 +145,7 @@
 	<pthread.h>
 	<curses.h>
 
-1416921928 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/DisplayTester.cpp
+1416923663 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/DisplayTester.cpp
 	"../include/DisplayTester.h"
 	<stdio.h>
 	<stdlib.h>
