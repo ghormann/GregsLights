@@ -43,7 +43,7 @@ void CountdownClock::testALlOn()
 {
     while(1)
     {
-        for (int i =0; i <7; i++)
+        for (int i =0; i <6; i++)
         {
             for (int j = 0; j<7; j++)
             {
@@ -51,7 +51,8 @@ void CountdownClock::testALlOn()
 
             }
         }
-        sleep(5);
+        getBulb(5,5)->setIntensity(100);
+        sleep(50);
     }
 }
 
@@ -60,14 +61,14 @@ void CountdownClock::test()
     while(1)
     {
         lastTick = 50000;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 9; i++)
         {
             getBulb(0,0)->setIntensity(100);
-            sleep(1);
+            usleep(300000);
             getBulb(0,0)->setIntensity(0);
-            sleep(1);
+            usleep(300000);
         }
-        for (int i = 0; i < 3; i++) // 3 sould be 7
+        for (int i = 0; i < 6; i++)   //0 to < 6
         {
             for (int j = 0; j < 7; j++)
             {
@@ -109,7 +110,7 @@ void CountdownClock::tick()
             sprintf(seconds_c, "%7d", num_seconds);
         }
 
-        for (int i = 1; i < 7; i++)
+        for (int i = 0; i < 6; i++)   // Last 6 digits
         {
             if (isblank(seconds_c[i]))
             {
@@ -232,16 +233,9 @@ void CountdownClock::setActive(bool makeActive)
 
     if (makeActive)
     {
-        for (int i = 0 ; i < CLOCK_DIGITS * 7; i++)
-        {
-            if (this->bulbs[i] == 0)
-                throw "CountdownClock: Not all of the bulbs have been initialized";
-            // Start thread
-            if (! this->clock_t)
-                pthread_create(&(this->clock_t), NULL, update_clock, this);
-        }
+        if (! this->clock_t)
+            pthread_create(&(this->clock_t), NULL, update_clock, this);
     }
-
     this->active = makeActive;
 }
 

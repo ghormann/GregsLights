@@ -13,7 +13,11 @@ DisplayTester::DisplayTester(DisplayModel *m)
 void DisplayTester::testClock()
 {
     //this->model->getClock()->testALlOn();
-    this->model->getClock()->test();
+    //this->model->getClock()->test();
+    this->model->getClock()->setActive(true);
+    while(1) {
+        sleep(10);
+    }
 }
 
 void DisplayTester::testDMX()

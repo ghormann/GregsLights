@@ -11,7 +11,7 @@
 
 
 
-#define CLOCK_DIGITS 7
+#define CLOCK_DIGITS 6
 
 class CountdownClock
 {
