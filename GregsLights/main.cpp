@@ -16,14 +16,15 @@ int main()
 {
     try
     {
-        bool sendDMX = true;
+        bool sendDMX = false;
         DisplayModel *model = new DisplayModel(sendDMX);
         sleep(1); // Allow threads to start up
         new TextDisplay(model);
 
         DisplayTester *tester = new DisplayTester(model);
         //tester->testDMX();
-        tester->testClock();
+        //tester->testClock();
+        tester->testSign();
 
         //GregsDisplay *display = new GregsDisplay(model);
         //display->run();

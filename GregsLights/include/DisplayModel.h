@@ -5,6 +5,8 @@
 #include "controller/Bush.h"
 #include "controller/NetworkCollection.h"
 #include "CountdownClock.h"
+#include "Sign.h"
+
 
 
 #define HOUSE_LIGHT_START 1
@@ -23,6 +25,7 @@ class DisplayModel
         RGBLight *getHouse(int id);
         Bush *getBush(int id);
         CountdownClock *getClock();
+        Sign * getSign();
         void setMessage(int id, char*);
         char *getMessage(int id);
     protected:
@@ -32,6 +35,7 @@ class DisplayModel
         Bush *bushes[BUSH_LIGHT_END+1];
         CountdownClock *clock;
         char *messages[NUM_MESSAGE_BUFFERS];
+        Sign *sign;
 
 };
 

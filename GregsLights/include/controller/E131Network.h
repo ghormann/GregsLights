@@ -16,7 +16,9 @@ class E131Network : public LightNetwork
     public:
         E131Network(char *ipAddr, int universeNumber, int numChannels);
         virtual ~E131Network();
+        void setIntensity(int id, unsigned char pct);
         void doUpdate();
+        void test();
     protected:
     private:
         struct sockaddr_in myaddr, remoteaddr;

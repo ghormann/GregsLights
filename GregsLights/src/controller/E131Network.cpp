@@ -7,6 +7,8 @@
 #include "../../include/controller/E131Network.h"
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <unistd.h>
+
 
 E131Network::E131Network(char *ipAddr, int universeNumber, int numChannels)
 {
@@ -223,7 +225,7 @@ E131Network::E131Network(char *ipAddr, int universeNumber, int numChannels)
     data[115]=hi + 0x70;  // DMP Protocol flags and length (high)
     data[116]=lo;  // 0x20b = 638 - 115
 
-
+    setIntensity(0,100);
 }
 
 E131Network::~E131Network()
@@ -231,6 +233,19 @@ E131Network::~E131Network()
 
 }
 
+void E131Network::test()
+{
+    for (int i = 0; i < num_channels; i++) {
+        setIntensity(i,100);
+        sleep(1);
+        setIntensity(i,0);
+    }
+}
+
+void E131Network::setIntensity(int id, unsigned char pct) {
+    data[id+126] = pct;
+    xNetwork_E131_changed = true;
+}
 
 void E131Network::doUpdate()
 {

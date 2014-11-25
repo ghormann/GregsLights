@@ -10,6 +10,7 @@ class DisplayTester
         DisplayTester(DisplayModel *model);
         void testDMX();
         void testClock();
+        void testSign();
         virtual ~DisplayTester();
     protected:
     private:

@@ -5,6 +5,7 @@
 #include "../include/controller/E131Network.h"
 #include "../include/controller/NetworkCollection.h"
 #include "../include/controller/Bush.h"
+#include "../include/Sign.h"
 #include <string.h>
 
 DisplayModel::DisplayModel(bool sendDMX)
@@ -22,12 +23,13 @@ DisplayModel::DisplayModel(bool sendDMX)
     //OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", OPENDMX);
 
     LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB1", sendDMX);
-
-    E131Network *sign = new E131Network("192.168.0.205", 100, 512);
+    E131Network *sign1 = new E131Network("192.168.0.39", 10, 512);
 
     networks->addNetwork(dmx);
     networks->addNetwork(lor);
-    networks->addNetwork(sign);
+    networks->addNetwork(sign1);
+
+    this->sign = new Sign(sign1);
 
     //set up houses
     for (int i = HOUSE_LIGHT_START; i <= HOUSE_LIGHT_END; i++)
@@ -157,6 +159,10 @@ RGBLight* DisplayModel::getHouse(int id)
     }
 
     return house[id];
+}
+
+Sign * DisplayModel::getSign(){
+    return sign;
 }
 
 DisplayModel::~DisplayModel()
