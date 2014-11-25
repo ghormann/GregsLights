@@ -99,7 +99,14 @@ DisplayModel::DisplayModel(bool sendDMX)
     this->clock->setBulb(5,4,dmx->getBulb(i + 15));
     this->clock->setBulb(5,5,dmx->getBulb(i + 16));
     this->clock->setBulb(5,6,dmx->getBulb(i + 18));
-    // Next
+    // Specials
+    this->clock->setSpecial(0, dmx->getBulb(i+21));
+    this->clock->setSpecial(1, dmx->getBulb(i+22));
+    this->clock->setSpecial(2, dmx->getBulb(i+23));
+    this->clock->setSpecial(3, dmx->getBulb(i+24));
+    this->clock->setSpecial(4, dmx->getBulb(i+25));
+    this->clock->setSpecial(5, dmx->getBulb(i+26));
+    this->clock->setSpecial(6, dmx->getBulb(i+27));
 
     //this->clock->setActive(true);
 }

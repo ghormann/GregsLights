@@ -51,8 +51,12 @@ void CountdownClock::testALlOn()
 
             }
         }
-        getBulb(5,5)->setIntensity(100);
-        sleep(50);
+        //getBulb(5,5)->setIntensity(100);
+        for (int i = 0; i < 6; i++)
+        {
+            special[i]->setIntensity(100);
+        }
+        sleep(2);
     }
 }
 
@@ -60,14 +64,31 @@ void CountdownClock::test()
 {
     while(1)
     {
-        lastTick = 50000;
-        for (int i = 0; i < 9; i++)
+
+        for (int i = 0; i < 3; i++)
         {
-            getBulb(0,0)->setIntensity(100);
-            usleep(300000);
-            getBulb(0,0)->setIntensity(0);
-            usleep(300000);
+            special[SPECIAL_STROBE]->setIntensity(100);
+            sleep(1);
+            special[SPECIAL_STROBE]->setIntensity(0);
+            sleep(1);
         }
+
+        special[SPECIAL_HORZ]->setIntensity(100);
+        sleep(1);
+        special[SPECIAL_HORZ]->setIntensity(0);
+
+        special[SPECIAL_P3]->setIntensity(100);
+        sleep(1);
+        special[SPECIAL_P3]->setIntensity(0);
+
+        special[SPECIAL_P5]->setIntensity(100);
+        sleep(1);
+        special[SPECIAL_P5]->setIntensity(0);
+
+        special[SPECIAL_P6]->setIntensity(100);
+        sleep(1);
+        special[SPECIAL_P6]->setIntensity(0);
+
         for (int i = 0; i < 6; i++)   //0 to < 6
         {
             for (int j = 0; j < 7; j++)
@@ -81,6 +102,33 @@ void CountdownClock::test()
     }
 }
 
+void CountdownClock::setFirst(int value) {
+
+    if (value == 3)
+    {
+        special[SPECIAL_HORZ]->setIntensity(100);
+        special[SPECIAL_P3]->setIntensity(100);
+        special[SPECIAL_P5]->setIntensity(0);
+        special[SPECIAL_P6]->setIntensity(100);
+    } else if (value == 2)
+    {
+        special[SPECIAL_HORZ]->setIntensity(100);
+        special[SPECIAL_P3]->setIntensity(100);
+        special[SPECIAL_P5]->setIntensity(100);
+        special[SPECIAL_P6]->setIntensity(0);
+    } else if (value == 1)
+    {
+        special[SPECIAL_HORZ]->setIntensity(0);
+        special[SPECIAL_P3]->setIntensity(100);
+        special[SPECIAL_P5]->setIntensity(0);
+        special[SPECIAL_P6]->setIntensity(100);
+    } else {
+        special[SPECIAL_HORZ]->setIntensity(0);
+        special[SPECIAL_P3]->setIntensity(0);
+        special[SPECIAL_P5]->setIntensity(0);
+        special[SPECIAL_P6]->setIntensity(0);
+    }
+}
 
 void CountdownClock::tick()
 {
@@ -108,6 +156,14 @@ void CountdownClock::tick()
         else
         {
             sprintf(seconds_c, "%7d", num_seconds);
+        }
+
+        // set tehe first Digit (Special)
+        if (isblank(seconds_c[0])){
+            setFirst(0);
+        } else {
+            num[0] = seconds_c[0] - 48;
+            setFirst(num[0]);
         }
 
         // The real digits are identifeid as 0-6, but they are the
@@ -213,6 +269,15 @@ Bulb *CountdownClock::getBulb(int digit, int segment)
     int pos = (digit * 7) + segment;
     return this->bulbs[pos];
 
+}
+
+void CountdownClock::setSpecial(int id, Bulb *bulb)
+{
+    if (id < 0 || id >6) {
+        throw "setSpecial: ID ust be between 0 and 6";
+    }
+    this->special[id] = bulb;
+    bulb->setIntensity(0);
 }
 
 void CountdownClock::setBulb(int digit, int segment, Bulb *bulb)

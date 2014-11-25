@@ -9,9 +9,21 @@
 #include <ctype.h>
 
 
+#define CLOCK_DIGITS    6
 
 
-#define CLOCK_DIGITS 6
+        //Special
+        //0: Strobe
+        //1: Not Used
+        //2: POS 6
+        //3: Horizontal
+        //4: POS 3
+        //5: POS 4
+#define SPECIAL_STROBE  0
+#define SPECIAL_P6      2
+#define SPECIAL_HORZ    3
+#define SPECIAL_P3      4
+#define SPECIAL_P5      5
 
 class CountdownClock
 {
@@ -19,15 +31,18 @@ class CountdownClock
         CountdownClock();
         virtual ~CountdownClock();
         void setBulb(int digit, int segment, Bulb *bulb);
+        void setSpecial(int id, Bulb *blub);
         void setActive(bool);
         void test();
         void testALlOn();
         void tick();
         Bulb *getBulb(int digit, int segment);
         int getSecondsRemaining();
+        void setFirst(int value);
     protected:
     private:
         Bulb *bulbs[CLOCK_DIGITS*7 + 1];
+        Bulb *special[8];
         bool active;
         struct tm tm_christmas;
         time_t t_christmas;
