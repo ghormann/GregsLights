@@ -4,6 +4,10 @@
 Sign::Sign(E131Network *n1)
 {
     this->net1 = n1;
+    for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
+    {
+        this->pixals[i] = n1->getRGB(i*3);
+    }
 }
 
 Sign::~Sign()
@@ -15,18 +19,15 @@ void Sign::test()
 {
     while (true)
     {
-        for (int i =0; i < 150; i++)
-        {
-            net1->setIntensity(i,100);
+        for (int i = 0; i < TOTAL_SIGN_PIXALS; i++) {
+            this->pixals[i]->set(100,0,0);
+            usleep(100000);
         }
         sleep(5);
-
-        for (int i = 0; i < 50; i++)
-        {
-            net1->setIntensity(i,100);
-            usleep(300000);
-            net1->setIntensity(i,0);
+        for (int i = 0; i < TOTAL_SIGN_PIXALS; i++) {
+            this->pixals[i]->set(0,100,0);
+            usleep(100000);
         }
+        sleep(5);
     }
-
 }

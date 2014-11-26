@@ -96,10 +96,4 @@ OpenDMXNetwork::~OpenDMXNetwork()
     if (serptr) delete serptr;
 }
 
-void DMXBulb::setIntensity_ipml(int val)
-{
-    if (val < 0) val = 0;
-    if (val > 255) val = 255;
-    pos[0] = (char) val;
-}
 

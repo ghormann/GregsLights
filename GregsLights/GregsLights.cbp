@@ -14,6 +14,7 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-DGJH_DEBUG" />
+					<Add directory="include" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -24,6 +25,7 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-pthread" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -45,9 +47,11 @@
 		<Unit filename="include/DisplayModel.h" />
 		<Unit filename="include/DisplayTester.h" />
 		<Unit filename="include/GregsDisplay.h" />
+		<Unit filename="include/Sign.h" />
 		<Unit filename="include/TextDisplay.h" />
 		<Unit filename="include/controller/Bulb.h" />
 		<Unit filename="include/controller/Bush.h" />
+		<Unit filename="include/controller/DMXBulb.h" />
 		<Unit filename="include/controller/DummyPixal.h" />
 		<Unit filename="include/controller/E131Network.h" />
 		<Unit filename="include/controller/LORNetwork.h" />
@@ -61,9 +65,11 @@
 		<Unit filename="src/DisplayModel.cpp" />
 		<Unit filename="src/DisplayTester.cpp" />
 		<Unit filename="src/GregsDisplay.cpp" />
+		<Unit filename="src/Sign.cpp" />
 		<Unit filename="src/TextDisplay.cpp" />
 		<Unit filename="src/controller/Bulb.cpp" />
 		<Unit filename="src/controller/Bush.cpp" />
+		<Unit filename="src/controller/DMXBulb.cpp" />
 		<Unit filename="src/controller/DummyPixal.cpp" />
 		<Unit filename="src/controller/E131Network.cpp" />
 		<Unit filename="src/controller/LORNetwork.cpp" />

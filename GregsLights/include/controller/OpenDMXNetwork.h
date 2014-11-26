@@ -5,6 +5,7 @@
 #include "RGBLight.h"
 #include "LightNetwork.h"
 #include "serial.h"
+#include "DMXBulb.h"
 
 /*
  * This version works with the programer from Holiday Coro
@@ -31,26 +32,6 @@ private:
     int offset;
 };
 
-class DMXBulb : public Bulb
-{
-public:
-    DMXBulb(unsigned char * pos) : Bulb()
-    {
-        this->pos = pos;
-    }
-protected:
-    void setIntensity_ipml(int pct);
-    int getMin()
-    {
-        return 0;
-    }
-    int getMax()
-    {
-        return 255;
-    }
-private:
-    unsigned char* pos;
-};
 
 
 #endif // OPENDMXNETWORK_H

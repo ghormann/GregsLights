@@ -2,6 +2,8 @@
 #define E131NETWORK_H
 
 #include "LightNetwork.h"
+#include "DMXBulb.h"
+#include "RGBLight.h"
 #include <netinet/in.h>
 
 
@@ -18,7 +20,8 @@ class E131Network : public LightNetwork
         virtual ~E131Network();
         void setIntensity(int id, unsigned char pct);
         void doUpdate();
-        void test();
+        RGBLight* getRGB(int start);
+        Bulb* getBulb(int channel);
     protected:
     private:
         struct sockaddr_in myaddr, remoteaddr;
@@ -29,5 +32,26 @@ class E131Network : public LightNetwork
         bool xNetwork_E131_changed;
         int num_channels;
 };
+
+class E131Bulb : public Bulb
+{
+public:
+    E131Bulb(unsigned char *data, bool *flag);
+    void setIntensity(int pct);
+protected:
+    void setIntensity_ipml(int pct);
+    int getMin()
+    {
+        return 0;
+    }
+    int getMax()
+    {
+        return 255;
+    }
+private:
+    unsigned char* pos;
+    bool *flag;
+};
+
 
 #endif // E131NETWORK_H

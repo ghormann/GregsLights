@@ -3,6 +3,8 @@
 
 #include "controller/E131Network.h"
 
+#define TOTAL_SIGN_PIXALS 50
+
 class Sign
 {
     public:
@@ -12,6 +14,7 @@ class Sign
     protected:
     private:
         E131Network *net1;
+        RGBLight *pixals[TOTAL_SIGN_PIXALS];
 };
 
 #endif // SIGN_H

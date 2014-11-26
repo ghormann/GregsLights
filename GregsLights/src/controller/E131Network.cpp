@@ -224,8 +224,6 @@ E131Network::E131Network(char *ipAddr, int universeNumber, int numChannels)
     lo = i & 0xff; // (low)
     data[115]=hi + 0x70;  // DMP Protocol flags and length (high)
     data[116]=lo;  // 0x20b = 638 - 115
-
-    setIntensity(0,100);
 }
 
 E131Network::~E131Network()
@@ -233,14 +231,6 @@ E131Network::~E131Network()
 
 }
 
-void E131Network::test()
-{
-    for (int i = 0; i < num_channels; i++) {
-        setIntensity(i,100);
-        sleep(1);
-        setIntensity(i,0);
-    }
-}
 
 void E131Network::setIntensity(int id, unsigned char pct) {
     data[id+126] = pct;
@@ -250,7 +240,7 @@ void E131Network::setIntensity(int id, unsigned char pct) {
 void E131Network::doUpdate()
 {
     //dtor
-    if (xNetwork_E131_changed || skipCount > 2)
+    if (xNetwork_E131_changed || skipCount > 10)
     {
         data[111]=sequenceNum;
         int slen=sizeof(remoteaddr);
@@ -266,5 +256,36 @@ void E131Network::doUpdate()
     {
         skipCount++;
     }
+}
 
+RGBLight* E131Network::getRGB(int start)
+{
+    Bulb *r = this->getBulb(start);
+    Bulb *g = this->getBulb(start+1);
+    Bulb *b = this->getBulb(start+2);
+    return new RGBLight(r,g,b);
+}
+
+
+Bulb* E131Network::getBulb(int channel)
+{
+    if (channel < 0 || channel > 512)
+        throw "Invalid Channel";
+    E131Bulb *rc = new E131Bulb(data+126+channel, &(this->xNetwork_E131_changed));
+    return  rc;
+}
+
+
+E131Bulb::E131Bulb(unsigned char *data, bool *flagPtr) : Bulb()
+{
+    this->pos = data;
+    this->flag = flagPtr;
+}
+
+void E131Bulb::setIntensity_ipml(int val)
+{
+    if (val < 0) val = 0;
+    if (val > 255) val = 255;
+    pos[0] = (char) val;
+    *(this->flag) = true;  // Mark Dirty
 }
