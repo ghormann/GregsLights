@@ -17,17 +17,51 @@ Sign::~Sign()
 
 void Sign::test()
 {
+    int betweenPixals = 2000;
+    int betweenColors = 2;
     while (true)
     {
         for (int i = 0; i < TOTAL_SIGN_PIXALS; i++) {
             this->pixals[i]->set(100,0,0);
-            usleep(100000);
+            usleep(betweenPixals);
         }
-        sleep(5);
+        sleep(betweenColors);
         for (int i = 0; i < TOTAL_SIGN_PIXALS; i++) {
             this->pixals[i]->set(0,100,0);
-            usleep(100000);
+            usleep(betweenPixals);
         }
-        sleep(5);
+        sleep(betweenColors);
+        for (int i = 0; i < TOTAL_SIGN_PIXALS; i++) {
+            this->pixals[i]->set(0,0,100);
+            usleep(betweenPixals);
+        }
+        sleep(betweenColors);
+
+        for (int i = 0; i < TOTAL_SIGN_PIXALS; i++) {
+            this->pixals[i]->set(100,100,100);
+            usleep(betweenPixals);
+        }
+        sleep(betweenColors);
+
+        for (int i = 0; i < TOTAL_SIGN_PIXALS; i++) {
+            pixals[i]->fade(100,100,100,100,0,0,betweenColors);
+        }
+        sleep(betweenColors);
+
+        for (int i = 0; i < TOTAL_SIGN_PIXALS; i++) {
+            pixals[i]->fade(100,0,0,0,100,0,betweenColors);
+        }
+        sleep(betweenColors);
+
+        for (int i = 0; i < TOTAL_SIGN_PIXALS; i++) {
+            pixals[i]->fade(0,100,0,0,0,100,betweenColors);
+        }
+        sleep(betweenColors);
+
+        for (int i = 0; i < TOTAL_SIGN_PIXALS; i++) {
+            pixals[i]->fade(0,0,100,0,0,0,betweenColors);
+        }
+        sleep(betweenColors);
+        sleep(2);
     }
 }

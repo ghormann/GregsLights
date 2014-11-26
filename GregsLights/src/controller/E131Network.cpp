@@ -240,7 +240,7 @@ void E131Network::setIntensity(int id, unsigned char pct) {
 void E131Network::doUpdate()
 {
     //dtor
-    if (xNetwork_E131_changed || skipCount > 10)
+    if (xNetwork_E131_changed || skipCount > 50)  // SKip Level is very dependant on Time bewteen updates.  Currently 50ms
     {
         data[111]=sequenceNum;
         int slen=sizeof(remoteaddr);

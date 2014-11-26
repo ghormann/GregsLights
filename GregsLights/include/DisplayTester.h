@@ -8,10 +8,14 @@ class DisplayTester
 {
     public:
         DisplayTester(DisplayModel *model);
+        virtual ~DisplayTester();
         void testDMX();
         void testClock();
         void testSign();
-        virtual ~DisplayTester();
+        void testAll();
+        static void * clockThread(void *);
+        static void * dmxThread(void *);
+        static void * signThread(void *);
     protected:
     private:
         DisplayModel *model;

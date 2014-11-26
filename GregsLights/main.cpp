@@ -24,7 +24,8 @@ int main()
         DisplayTester *tester = new DisplayTester(model);
         //tester->testDMX();
         //tester->testClock();
-        tester->testSign();
+        //tester->testSign();
+        tester->testAll();
 
         //GregsDisplay *display = new GregsDisplay(model);
         //display->run();

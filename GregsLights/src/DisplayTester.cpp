@@ -1,7 +1,7 @@
 #include "../include/DisplayTester.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <pthread.h>
 
 
 DisplayTester::DisplayTester(DisplayModel *m)
@@ -10,18 +10,56 @@ DisplayTester::DisplayTester(DisplayModel *m)
     //ctor
 }
 
+void DisplayTester::testAll() {
+    pthread_t clock_t;
+    pthread_t dmx_t;
+    pthread_t sign_t;
+    pthread_create(&(clock_t), NULL, DisplayTester::clockThread, (void*) this);
+    pthread_create(&(dmx_t), NULL, DisplayTester::dmxThread, (void*) this);
+    pthread_create(&(sign_t), NULL, DisplayTester::signThread, (void*) this);
+
+    pthread_join(clock_t, NULL);
+    pthread_join(dmx_t, NULL);
+    pthread_join(sign_t, NULL);
+}
+
 void DisplayTester::testSign()
 {
     this->model->getSign()->test();
 }
 
+void * DisplayTester::clockThread(void *args)
+{
+    DisplayTester *ptr = (DisplayTester *) args;
+    ptr->testClock();
+    return NULL;
+}
+
+void * DisplayTester::signThread(void *args)
+{
+    DisplayTester *ptr = (DisplayTester *) args;
+    ptr->testSign();
+    return NULL;
+}
+
+void * DisplayTester::dmxThread(void *args)
+{
+    DisplayTester *ptr = (DisplayTester *) args;
+    while(1) {
+        ptr->testDMX();
+    }
+
+    return NULL;
+}
+
+
 void DisplayTester::testClock()
 {
     //this->model->getClock()->testALlOn();
-    this->model->getClock()->test();
-    //this->model->getClock()->setActive(true);
+    //this->model->getClock()->test();
+    this->model->getClock()->setActive(true);
     while(1) {
-        sleep(10);
+        sleep(100);  // Needed because setActive starts its own thread.
     }
 }
 

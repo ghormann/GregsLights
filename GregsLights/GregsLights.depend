@@ -240,12 +240,13 @@
 	<stdio.h>
 	<ctype.h>
 
-1416954433 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/DisplayTester.cpp
+1416964876 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/DisplayTester.cpp
 	"../include/DisplayTester.h"
 	<stdio.h>
 	<stdlib.h>
+	<pthread.h>
 
-1416954404 /home/ghormann/Documents/src/gregslights/GregsLights/include/DisplayTester.h
+1416964379 /home/ghormann/Documents/src/gregslights/GregsLights/include/DisplayTester.h
 	"DisplayModel.h"
 
 1416954174 /home/ghormann/Documents/src/gregslights/GregsLights/include/DisplayModel.h
@@ -271,14 +272,14 @@
 	"DisplayModel.h"
 	<curses.h>
 
-1416954462 source:/home/ghormann/Documents/src/gregslights/GregsLights/main.cpp
+1416964908 source:/home/ghormann/Documents/src/gregslights/GregsLights/main.cpp
 	<iostream>
 	"include/DisplayModel.h"
 	"include/DisplayTester.h"
 	"include/TextDisplay.h"
 	"include/GregsDisplay.h"
 
-1416960136 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/controller/E131Network.cpp
+1416960908 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/controller/E131Network.cpp
 	<stdlib.h>
 	<ctype.h>
 	<stdio.h>
@@ -310,7 +311,7 @@
 1416959068 /home/ghormann/Documents/src/gregslights/GregsLights/include/Sign.h
 	"controller/E131Network.h"
 
-1416959320 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/Sign.cpp
+1416961365 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/Sign.cpp
 	"../include/Sign.h"
 	<unistd.h>
 
