@@ -9,6 +9,7 @@
  */
 OpenDMXNetwork::OpenDMXNetwork(char * deviceName,RGB_TYPE type, bool sendData)
 {
+    serptr = 0;   // Make sure it defaults to null pointer.
     offset = 0;
     for (int i =0; i <513; i++)
     {

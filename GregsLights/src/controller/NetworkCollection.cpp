@@ -18,6 +18,7 @@ NetworkCollection::NetworkCollection()
 void * update_thread(void *args)
 {
     NetworkCollection *ptr = (NetworkCollection *)args;
+    sleep(2);  // Allow other threads to start up before trying to send updates.
     while (1)
     {
         ptr->doUpdate();

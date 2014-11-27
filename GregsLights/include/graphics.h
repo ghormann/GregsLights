@@ -8,6 +8,9 @@
 
 //#include "wx/glcanvas.h"
 #include <wx/glcanvas.h>
+#include "DisplayModel.h"
+#include "DisplayTester.h"
+#include "TextDisplay.h"
 
 class BasicGLPane : public wxGLCanvas
 {
@@ -23,8 +26,9 @@ public:
 	int getHeight();
 
 	void render(wxPaintEvent& evt);
-	void prepare3DViewport(int topleft_x, int topleft_y, int bottomrigth_x, int bottomrigth_y);
 	void prepare2DViewport(int topleft_x, int topleft_y, int bottomrigth_x, int bottomrigth_y);
+
+	static void * refreshThread(void *);
 
 	// events
 	void mouseMoved(wxMouseEvent& event);
@@ -37,6 +41,9 @@ public:
 	void keyReleased(wxKeyEvent& event);
 
 	DECLARE_EVENT_TABLE()
+
+	private:
+        DisplayModel *model;
 };
 
 #endif // GRAPHICS_H_INCLUDED

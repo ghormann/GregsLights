@@ -191,7 +191,7 @@
 	<termios.h>
 	<cstddef>
 
-1416784375 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/controller/NetworkCollection.cpp
+1417062325 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/controller/NetworkCollection.cpp
 	"../../include/controller/NetworkCollection.h"
 	"../../include/controller/Bulb.h"
 
@@ -200,7 +200,7 @@
 	<pthread.h>
 	<unistd.h>
 
-1416956349 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/controller/OpenDMXNetwork.cpp
+1417062407 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/controller/OpenDMXNetwork.cpp
 	"../../include/controller/OpenDMXNetwork.h"
 	<stdio.h>
 	<unistd.h>
@@ -240,7 +240,7 @@
 	<stdio.h>
 	<ctype.h>
 
-1416964876 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/DisplayTester.cpp
+1417062061 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/DisplayTester.cpp
 	"../include/DisplayTester.h"
 	<stdio.h>
 	<stdlib.h>
@@ -297,7 +297,7 @@
 	"RGBLight.h"
 	<netinet/in.h>
 
-1416954514 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/DisplayModel.cpp
+1417064163 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/DisplayModel.cpp
 	"../include/DisplayModel.h"
 	"../include/controller/RGBLight.h"
 	"../include/controller/OpenDMXNetwork.h"
@@ -321,7 +321,7 @@
 1416956685 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/controller/DMXBulb.cpp
 	"../../include/controller/DMXBulb.h"
 
-1417012790 source:/home/ghormann/Documents/src/gregslights/GregsLights/mainFrame.cpp
+1417065824 source:/home/ghormann/Documents/src/gregslights/GregsLights/mainFrame.cpp
 	"wx/wx.h"
 	"wx/sizer.h"
 	"wx/glcanvas.h"
@@ -330,6 +330,7 @@
 	"OpenGL/gl.h"
 	<GL/glu.h>
 	<GL/gl.h>
+	<stdio.h>
 
 1416951975 /usr/local/include/wx-3.0/wx/wxprec.h
 	"wx/defs.h"
@@ -1986,7 +1987,10 @@
 1417057849 /usr/local/include/wx-3.0/wx/unix/glx11.h
 	<GL/glx.h>
 
-1417013310 /home/ghormann/Documents/src/gregslights/GregsLights/include/graphics.h
+1417062633 /home/ghormann/Documents/src/gregslights/GregsLights/include/graphics.h
 	<wx/wx.h>
 	<wx/glcanvas.h>
+	"DisplayModel.h"
+	"DisplayTester.h"
+	"TextDisplay.h"
 

@@ -18,9 +18,10 @@ void DisplayTester::testAll() {
     pthread_create(&(dmx_t), NULL, DisplayTester::dmxThread, (void*) this);
     pthread_create(&(sign_t), NULL, DisplayTester::signThread, (void*) this);
 
-    pthread_join(clock_t, NULL);
-    pthread_join(dmx_t, NULL);
-    pthread_join(sign_t, NULL);
+    // Join disabled becaue the graphics byild needs testAll to return....
+    //pthread_join(clock_t, NULL);
+    //pthread_join(dmx_t, NULL);
+    //pthread_join(sign_t, NULL);
 }
 
 void DisplayTester::testSign()

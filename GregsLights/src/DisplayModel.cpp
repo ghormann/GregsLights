@@ -10,6 +10,7 @@
 
 DisplayModel::DisplayModel(bool sendDMX)
 {
+    printf ("Starting Displya Model\n");
     //Initialize Memory Buffers
     for (int i = 0; i < NUM_MESSAGE_BUFFERS; i++)
     {
@@ -110,7 +111,6 @@ DisplayModel::DisplayModel(bool sendDMX)
     this->clock->setSpecial(5, dmx->getBulb(i+26));
     this->clock->setSpecial(6, dmx->getBulb(i+27));
 
-    //this->clock->setActive(true);
 }
 
 Bush* DisplayModel::getBush(int i)
