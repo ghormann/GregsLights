@@ -1,13 +1,22 @@
 #include "../include/Sign.h"
 #include <unistd.h>
 
-Sign::Sign(E131Network *n1)
+Sign::Sign(E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4)
 {
-    this->net1 = n1;
-    for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
+    for (int i = 0; i < 170; i++)
     {
         this->pixals[i] = n1->getRGB(i*3);
     }
+    for (int i = 0; i < 170; i++) {
+        this->pixals[i+170] = n2->getRGB(i*3);
+    }
+    for (int i = 0; i < 170; i++) {
+        this->pixals[i+170+170] = n3->getRGB(i*3);
+    }
+    for (int i = 0; i < 170; i++) {
+        this->pixals[i+170+170+170] = n4->getRGB(i*3);
+    }
+
 }
 
 Sign::~Sign()
@@ -25,7 +34,7 @@ RGBLight * Sign::getPixal(int i)
 
 void Sign::test()
 {
-    int betweenPixals = 2000;
+    int betweenPixals = 20000;
     int betweenColors = 2;
     while (true)
     {
