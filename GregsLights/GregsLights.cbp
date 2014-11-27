@@ -24,11 +24,23 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
-					<Add option="-pthread" />
 					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+				</Linker>
+			</Target>
+			<Target title="Graphics">
+				<Option output="GregsLights" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="`wx-config --cflags`" />
+				</Compiler>
+				<Linker>
+					<Add option="-lGL -lGLU" />
+					<Add option="`wx-config  --libs std,media,gl`" />
 				</Linker>
 			</Target>
 		</Build>
@@ -37,6 +49,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add option="-Wno-write-strings" />
+			<Add option="-pthread" />
 		</Compiler>
 		<Linker>
 			<Add option="-pthread" />
@@ -60,7 +73,16 @@
 		<Unit filename="include/controller/OpenDMXNetwork.h" />
 		<Unit filename="include/controller/RGBLight.h" />
 		<Unit filename="include/controller/serial.h" />
-		<Unit filename="main.cpp" />
+		<Unit filename="include/graphics.h">
+			<Option target="Graphics" />
+		</Unit>
+		<Unit filename="main.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="mainFrame.cpp">
+			<Option target="Graphics" />
+		</Unit>
 		<Unit filename="src/CountdownClock.cpp" />
 		<Unit filename="src/DisplayModel.cpp" />
 		<Unit filename="src/DisplayTester.cpp" />
