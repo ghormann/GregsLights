@@ -2,6 +2,7 @@
 #include "wx/sizer.h"
 #include "wx/glcanvas.h"
 #include "include/graphics.h"
+#include <wx/timer.h>
 
 // include OpenGL
 #ifdef __WXMAC__
@@ -42,22 +43,22 @@ bool MyApp::OnInit()
 
     frame->Show();
 
-    pthread_t refresh_t;
-    pthread_create(&(refresh_t), NULL, BasicGLPane::refreshThread, (void*) glPane);
+    RenderTimer *timer = new RenderTimer(glPane);
+    timer->Start(50); // REdray every 50 ms
     return true;
 }
 
 BEGIN_EVENT_TABLE(BasicGLPane, wxGLCanvas)
-EVT_MOTION(BasicGLPane::mouseMoved)
-EVT_LEFT_DOWN(BasicGLPane::mouseDown)
-EVT_LEFT_UP(BasicGLPane::mouseReleased)
-EVT_RIGHT_DOWN(BasicGLPane::rightClick)
-EVT_LEAVE_WINDOW(BasicGLPane::mouseLeftWindow)
-EVT_SIZE(BasicGLPane::resized)
-EVT_KEY_DOWN(BasicGLPane::keyPressed)
-EVT_KEY_UP(BasicGLPane::keyReleased)
-EVT_MOUSEWHEEL(BasicGLPane::mouseWheelMoved)
-EVT_PAINT(BasicGLPane::render)
+    EVT_MOTION(BasicGLPane::mouseMoved)
+    EVT_LEFT_DOWN(BasicGLPane::mouseDown)
+    EVT_LEFT_UP(BasicGLPane::mouseReleased)
+    EVT_RIGHT_DOWN(BasicGLPane::rightClick)
+    EVT_LEAVE_WINDOW(BasicGLPane::mouseLeftWindow)
+    EVT_SIZE(BasicGLPane::resized)
+    EVT_KEY_DOWN(BasicGLPane::keyPressed)
+    EVT_KEY_UP(BasicGLPane::keyReleased)
+    EVT_MOUSEWHEEL(BasicGLPane::mouseWheelMoved)
+    EVT_PAINT(BasicGLPane::render)
 END_EVENT_TABLE()
 
 
@@ -75,7 +76,7 @@ void BasicGLPane::keyReleased(wxKeyEvent& event) {}
 BasicGLPane::BasicGLPane(wxFrame* parent, int* args) :
     wxGLCanvas(parent, wxID_ANY, args, wxDefaultPosition, wxDefaultSize, wxFULL_REPAINT_ON_RESIZE)
 {
-	m_context = new wxGLContext(this);
+    m_context = new wxGLContext(this);
 
     // To avoid flashing on MSW
     SetBackgroundStyle(wxBG_STYLE_CUSTOM);
@@ -83,7 +84,7 @@ BasicGLPane::BasicGLPane(wxFrame* parent, int* args) :
     bool sendDMX = false;
     model = new DisplayModel(sendDMX);
     sleep(1); // Wait for threads
-    new TextDisplay(model);
+    //new TextDisplay(model);
 
     DisplayTester *tester = new DisplayTester(model);
     tester->testAll();
@@ -91,7 +92,7 @@ BasicGLPane::BasicGLPane(wxFrame* parent, int* args) :
 
 BasicGLPane::~BasicGLPane()
 {
-	delete m_context;
+    delete m_context;
 }
 
 void BasicGLPane::resized(wxSizeEvent& evt)
@@ -130,19 +131,22 @@ int BasicGLPane::getHeight()
     return GetSize().y;
 }
 
-void *BasicGLPane::refreshThread(void * args)
+RenderTimer::RenderTimer(BasicGLPane* pane) : wxTimer()
 {
-    BasicGLPane *ptr = (BasicGLPane *) args;
-    sleep(3);
-    while (1) {
-        ptr->Refresh();
-        usleep(1000000/30);
-    }
-
-    return NULL;
-
+    RenderTimer::pane = pane;
+    cnt = 0;
 }
 
+void RenderTimer::Notify()
+{
+    pane->Refresh();
+    /*
+    printf("Debug: Render: %d\n", cnt);
+    if (++cnt > 1000) {
+        cnt = 0;
+    }
+    */
+}
 
 void BasicGLPane::render( wxPaintEvent& evt )
 {
@@ -157,8 +161,8 @@ void BasicGLPane::render( wxPaintEvent& evt )
     prepare2DViewport(0,0,getWidth(), getHeight());
     glLoadIdentity();
 
-    // white background
-    glColor4f(1, 1, 1, 1);
+    // black background
+    glColor4f(0, 0, 0, 1);
     glBegin(GL_QUADS);
     glVertex3f(0,0,0);
     glVertex3f(getWidth(),0,0);
@@ -167,18 +171,22 @@ void BasicGLPane::render( wxPaintEvent& evt )
     glEnd();
 
     // red square
-    for (int i = 1; i< 25; i++)
+    for (int j = 0; j < 20; j++ )
     {
-        float red = ((float)model->getHouse((i%4)+1)->getRed()) / 100;
-        float green = ((float)model->getHouse((i%4)+1)->getGreen()) / 100;
-        float blue = ((float)model->getHouse((i%4)+1)->getBlue()) / 100;
-        glColor4f(red, green, blue, 1);
-        glBegin(GL_QUADS);
-        glVertex3f(i*12+4, 4, 0);
-        glVertex3f(i*12+4, 10, 0);
-        glVertex3f(i*12+10, 10, 0);
-        glVertex3f(i*12+10, 4, 0);
-        glEnd();
+        for (int i = 0; i< 44; i++)
+        {
+            RGBLight *pix = model->getSign()->getPixal(i);
+            float red = ((float)pix->getRed())  / 100;
+            float green = ((float)pix->getGreen()) / 100;
+            float blue = ((float)pix->getBlue()) / 100;
+            glColor4f(red, green, blue, 1);
+            glBegin(GL_QUADS);
+            glVertex3f(i*12+4, 4 + j*8, 0);
+            glVertex3f(i*12+4, 10 + j*8, 0);
+            glVertex3f(i*12+10, 10 + j*8, 0);
+            glVertex3f(i*12+10, 4 + j*8, 0);
+            glEnd();
+        }
     }
 
     glFlush();

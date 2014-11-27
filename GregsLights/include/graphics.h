@@ -6,11 +6,12 @@
     #include <wx/wx.h>
 #endif
 
-//#include "wx/glcanvas.h"
 #include <wx/glcanvas.h>
+#include <wx/timer.h>
 #include "DisplayModel.h"
 #include "DisplayTester.h"
 #include "TextDisplay.h"
+#include "controller/RGBLight.h"
 
 class BasicGLPane : public wxGLCanvas
 {
@@ -28,8 +29,6 @@ public:
 	void render(wxPaintEvent& evt);
 	void prepare2DViewport(int topleft_x, int topleft_y, int bottomrigth_x, int bottomrigth_y);
 
-	static void * refreshThread(void *);
-
 	// events
 	void mouseMoved(wxMouseEvent& event);
 	void mouseDown(wxMouseEvent& event);
@@ -44,6 +43,16 @@ public:
 
 	private:
         DisplayModel *model;
+};
+
+class RenderTimer : public wxTimer
+{
+public:
+    RenderTimer(BasicGLPane* pane);
+    void Notify();
+private:
+    BasicGLPane* pane;
+    int cnt;
 };
 
 #endif // GRAPHICS_H_INCLUDED

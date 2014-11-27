@@ -15,6 +15,14 @@ Sign::~Sign()
     //dtor
 }
 
+RGBLight * Sign::getPixal(int i)
+{
+    if (i < 0 || i >= TOTAL_SIGN_PIXALS) {
+        throw "Sign::getPixal must be between 0 and TOTAL_SIGN_PIXALS";
+    }
+    return this->pixals[i];
+}
+
 void Sign::test()
 {
     int betweenPixals = 2000;

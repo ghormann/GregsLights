@@ -11,6 +11,7 @@ class Sign
         Sign(E131Network *n1);
         virtual ~Sign();
         void test();
+        RGBLight * getPixal(int i);
     protected:
     private:
         E131Network *net1;

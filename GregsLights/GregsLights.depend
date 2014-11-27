@@ -308,10 +308,10 @@
 	"../include/Sign.h"
 	<string.h>
 
-1416959068 /home/ghormann/Documents/src/gregslights/GregsLights/include/Sign.h
+1417098095 /home/ghormann/Documents/src/gregslights/GregsLights/include/Sign.h
 	"controller/E131Network.h"
 
-1416961365 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/Sign.cpp
+1417098184 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/Sign.cpp
 	"../include/Sign.h"
 	<unistd.h>
 
@@ -321,11 +321,12 @@
 1416956685 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/controller/DMXBulb.cpp
 	"../../include/controller/DMXBulb.h"
 
-1417065824 source:/home/ghormann/Documents/src/gregslights/GregsLights/mainFrame.cpp
+1417100350 source:/home/ghormann/Documents/src/gregslights/GregsLights/mainFrame.cpp
 	"wx/wx.h"
 	"wx/sizer.h"
 	"wx/glcanvas.h"
 	"include/graphics.h"
+	<wx/timer.h>
 	"OpenGL/glu.h"
 	"OpenGL/gl.h"
 	<GL/glu.h>
@@ -1987,10 +1988,12 @@
 1417057849 /usr/local/include/wx-3.0/wx/unix/glx11.h
 	<GL/glx.h>
 
-1417062633 /home/ghormann/Documents/src/gregslights/GregsLights/include/graphics.h
+1417098434 /home/ghormann/Documents/src/gregslights/GregsLights/include/graphics.h
 	<wx/wx.h>
 	<wx/glcanvas.h>
+	<wx/timer.h>
 	"DisplayModel.h"
 	"DisplayTester.h"
 	"TextDisplay.h"
+	"controller/RGBLight.h"
 
