@@ -95,37 +95,47 @@ int Sign::drawLetter(char letter, RGB_COLOR color, int startX, int startY)
 {
     int x;
     int y;
+    int offset = 0;
+    char d[20][40];
+    for (x = 0; x < 20; x++)
+    {
+        for (y=0; y<40; y++)
+        {
+            d[x][y]='0';
+        }
+    }
     if (letter == 'M')
     {
-        x =  startX;
-        for (y = startY+2; y < startY + 14; y++)
-        {
-            getBoard(x,y)->setStdColor(color);
-        }
-        getBoard(++x,startY+3)->setStdColor(color);
-        getBoard(++x,startY+4)->setStdColor(color);
-        getBoard(++x,startY+5)->setStdColor(color);
-        getBoard(++x,startY+6)->setStdColor(color);
+        y=-1;
+        d[0][++y] = d[1][y] = d[2][y] = d[3][y]= d[4][y] =d[14][y]=d[15][y]=d[16][y]=d[17][y] = '1';
+        d[2][++y]=d[3][y]=d[4][y] = d[13][y] = d[14][y] = d[15][y] = '1'; //1
+        d[2][++y]=d[3][y]=d[4][y] =d[5][y]= d[13][y] = d[14][y] = d[15][y] = '1'; //2
+        d[2][++y]=d[4][y]=d[5][y]=d[12][y]=d[14][y]=d[15][y]='1'; //3
+        d[2][++y]=d[4][y]=d[5][y]=d[12][y]=d[14][y]=d[15][y]='1'; //4
+        d[2][++y]=d[4][y]=d[5][y]=d[6][y]=d[12][y]=d[14][y]=d[15][y]='1'; //5
+        d[2][++y]=d[5][y]=d[6][y]=d[11][y]=d[14][y]=d[15][y]='1'; //6
+        d[2][++y]=d[5][y]=d[6][y]=d[7][y]=d[11][y]=d[14][y]=d[15][y]='1'; //7
+        d[2][++y]=d[6][y]=d[7][y]=d[10][y]=d[14][y]=d[15][y]='1'; //8
+        d[2][++y]=d[6][y]=d[7][y]=d[10][y]=d[14][y]=d[15][y]='1'; //9
+        d[2][++y]=d[7][y]=d[8][y]=d[9][y]=d[14][y]=d[15][y]='1'; //10
+        d[2][++y]=d[7][y]=d[8][y]=d[9][y]=d[14][y]=d[15][y]='1'; //11
+        d[2][++y]=d[7][y]=d[8][y]=d[14][y]=d[15][y]='1'; //12
+        d[0][++y] = d[1][y] = d[2][y] = d[3][y]= d[4][y] =d[12][y]=d[13][y]=d[14][y]=d[15][y]=d[16][y]=d[17][y] = '1'; //13
 
-        getBoard(++x,startY+7)->setStdColor(color);
-
-        getBoard(++x,startY+6)->setStdColor(color);
-        getBoard(++x,startY+5)->setStdColor(color);
-        getBoard(++x,startY+4)->setStdColor(color);
-        getBoard(++x,startY+3)->setStdColor(color);
-
-        ++x;
-        for (y = startY+2; y < startY + 14; y++)
-        {
-            getBoard(x,y)->setStdColor(color);
-        }
-
-        return x+1;
+        offset=16;
     }
-    else
+
+    for (x = 0; x < 20; x++)
     {
-        return x;
+        for (y=0; y<40; y++)
+        {
+            if (d[x][y] == '1')
+                this->getBoard(startX+x, startY+y+2)->setStdColor(color);
+        }
     }
+
+    return offset;
+
 }
 
 void Sign::redrawDisplay()
