@@ -12,13 +12,13 @@ LD = g++
 WINDRES = windres
 
 INC = 
-CFLAGS = -std=c++0x -Wall -fexceptions -Wno-write-strings
+CFLAGS = -std=c++0x -Wall -fexceptions -Wno-write-strings -pthread
 RESINC = 
 LIBDIR = 
 LIB = -lrt
 LDFLAGS = -pthread -lncurses
 
-INC_DEBUG = $(INC) -Iinclude
+INC_DEBUG = $(INC) -Iinclude -Iinclude/controller
 CFLAGS_DEBUG = $(CFLAGS) -g -DGJH_DEBUG
 RESINC_DEBUG = $(RESINC)
 RCFLAGS_DEBUG = $(RCFLAGS)
@@ -29,8 +29,8 @@ OBJDIR_DEBUG = obj/Debug
 DEP_DEBUG = 
 OUT_DEBUG = bin/Debug/GregsLights
 
-INC_RELEASE = $(INC) -Iinclude
-CFLAGS_RELEASE = $(CFLAGS) -O2 -pthread
+INC_RELEASE = $(INC) -Iinclude -Iinclude/controller
+CFLAGS_RELEASE = $(CFLAGS) -O2
 RESINC_RELEASE = $(RESINC)
 RCFLAGS_RELEASE = $(RCFLAGS)
 LIBDIR_RELEASE = $(LIBDIR)
@@ -40,13 +40,26 @@ OBJDIR_RELEASE = obj/Release
 DEP_RELEASE = 
 OUT_RELEASE = bin/Release/GregsLights
 
-OBJ_DEBUG = $(OBJDIR_DEBUG)/src/controller/DMXBulb.o $(OBJDIR_DEBUG)/src/CountdownClock.o $(OBJDIR_DEBUG)/src/DisplayModel.o $(OBJDIR_DEBUG)/src/DisplayTester.o $(OBJDIR_DEBUG)/src/GregsDisplay.o $(OBJDIR_DEBUG)/src/Sign.o $(OBJDIR_DEBUG)/src/TextDisplay.o $(OBJDIR_DEBUG)/src/controller/Bulb.o $(OBJDIR_DEBUG)/src/controller/Bush.o $(OBJDIR_DEBUG)/main.o $(OBJDIR_DEBUG)/src/controller/DummyPixal.o $(OBJDIR_DEBUG)/src/controller/E131Network.o $(OBJDIR_DEBUG)/src/controller/LORNetwork.o $(OBJDIR_DEBUG)/src/controller/NetworkCollection.o $(OBJDIR_DEBUG)/src/controller/OpenDMXNetwork.o $(OBJDIR_DEBUG)/src/controller/RGBLight.o $(OBJDIR_DEBUG)/src/controller/serial_posix.o
+INC_GRAPHICS = $(INC) -Iinclude/controller
+CFLAGS_GRAPHICS = $(CFLAGS) -std=c++11 `wx-config --cflags`
+RESINC_GRAPHICS = $(RESINC)
+RCFLAGS_GRAPHICS = $(RCFLAGS)
+LIBDIR_GRAPHICS = $(LIBDIR)
+LIB_GRAPHICS = $(LIB)
+LDFLAGS_GRAPHICS = $(LDFLAGS) -lGL -lGLU `wx-config  --libs std,media,gl`
+OBJDIR_GRAPHICS = .objs
+DEP_GRAPHICS = 
+OUT_GRAPHICS = /GregsLights
 
-OBJ_RELEASE = $(OBJDIR_RELEASE)/src/controller/DMXBulb.o $(OBJDIR_RELEASE)/src/CountdownClock.o $(OBJDIR_RELEASE)/src/DisplayModel.o $(OBJDIR_RELEASE)/src/DisplayTester.o $(OBJDIR_RELEASE)/src/GregsDisplay.o $(OBJDIR_RELEASE)/src/Sign.o $(OBJDIR_RELEASE)/src/TextDisplay.o $(OBJDIR_RELEASE)/src/controller/Bulb.o $(OBJDIR_RELEASE)/src/controller/Bush.o $(OBJDIR_RELEASE)/main.o $(OBJDIR_RELEASE)/src/controller/DummyPixal.o $(OBJDIR_RELEASE)/src/controller/E131Network.o $(OBJDIR_RELEASE)/src/controller/LORNetwork.o $(OBJDIR_RELEASE)/src/controller/NetworkCollection.o $(OBJDIR_RELEASE)/src/controller/OpenDMXNetwork.o $(OBJDIR_RELEASE)/src/controller/RGBLight.o $(OBJDIR_RELEASE)/src/controller/serial_posix.o
+OBJ_DEBUG = $(OBJDIR_DEBUG)/src/controller/Bush.o $(OBJDIR_DEBUG)/src/CountdownClock.o $(OBJDIR_DEBUG)/src/DisplayModel.o $(OBJDIR_DEBUG)/src/DisplayTester.o $(OBJDIR_DEBUG)/src/GregsDisplay.o $(OBJDIR_DEBUG)/src/Sign.o $(OBJDIR_DEBUG)/src/TextDisplay.o $(OBJDIR_DEBUG)/src/controller/Bulb.o $(OBJDIR_DEBUG)/main.o $(OBJDIR_DEBUG)/src/controller/DMXBulb.o $(OBJDIR_DEBUG)/src/controller/DummyBulb.o $(OBJDIR_DEBUG)/src/controller/E131Network.o $(OBJDIR_DEBUG)/src/controller/LORNetwork.o $(OBJDIR_DEBUG)/src/controller/NetworkCollection.o $(OBJDIR_DEBUG)/src/controller/OpenDMXNetwork.o $(OBJDIR_DEBUG)/src/controller/RGBLight.o $(OBJDIR_DEBUG)/src/controller/serial_posix.o
 
-all: debug release
+OBJ_RELEASE = $(OBJDIR_RELEASE)/src/controller/Bush.o $(OBJDIR_RELEASE)/src/CountdownClock.o $(OBJDIR_RELEASE)/src/DisplayModel.o $(OBJDIR_RELEASE)/src/DisplayTester.o $(OBJDIR_RELEASE)/src/GregsDisplay.o $(OBJDIR_RELEASE)/src/Sign.o $(OBJDIR_RELEASE)/src/TextDisplay.o $(OBJDIR_RELEASE)/src/controller/Bulb.o $(OBJDIR_RELEASE)/main.o $(OBJDIR_RELEASE)/src/controller/DMXBulb.o $(OBJDIR_RELEASE)/src/controller/DummyBulb.o $(OBJDIR_RELEASE)/src/controller/E131Network.o $(OBJDIR_RELEASE)/src/controller/LORNetwork.o $(OBJDIR_RELEASE)/src/controller/NetworkCollection.o $(OBJDIR_RELEASE)/src/controller/OpenDMXNetwork.o $(OBJDIR_RELEASE)/src/controller/RGBLight.o $(OBJDIR_RELEASE)/src/controller/serial_posix.o
 
-clean: clean_debug clean_release
+OBJ_GRAPHICS = $(OBJDIR_GRAPHICS)/src/controller/Bush.o $(OBJDIR_GRAPHICS)/mainFrame.o $(OBJDIR_GRAPHICS)/src/CountdownClock.o $(OBJDIR_GRAPHICS)/src/DisplayModel.o $(OBJDIR_GRAPHICS)/src/DisplayTester.o $(OBJDIR_GRAPHICS)/src/GregsDisplay.o $(OBJDIR_GRAPHICS)/src/Sign.o $(OBJDIR_GRAPHICS)/src/TextDisplay.o $(OBJDIR_GRAPHICS)/src/controller/Bulb.o $(OBJDIR_GRAPHICS)/src/controller/DMXBulb.o $(OBJDIR_GRAPHICS)/src/controller/DummyBulb.o $(OBJDIR_GRAPHICS)/src/controller/E131Network.o $(OBJDIR_GRAPHICS)/src/controller/LORNetwork.o $(OBJDIR_GRAPHICS)/src/controller/NetworkCollection.o $(OBJDIR_GRAPHICS)/src/controller/OpenDMXNetwork.o $(OBJDIR_GRAPHICS)/src/controller/RGBLight.o $(OBJDIR_GRAPHICS)/src/controller/serial_posix.o
+
+all: debug release graphics
+
+clean: clean_debug clean_release clean_graphics
 
 before_debug: 
 	test -d bin/Debug || mkdir -p bin/Debug
@@ -61,8 +74,8 @@ debug: before_debug out_debug after_debug
 out_debug: before_debug $(OBJ_DEBUG) $(DEP_DEBUG)
 	$(LD) $(LIBDIR_DEBUG) -o $(OUT_DEBUG) $(OBJ_DEBUG)  $(LDFLAGS_DEBUG) $(LIB_DEBUG)
 
-$(OBJDIR_DEBUG)/src/controller/DMXBulb.o: src/controller/DMXBulb.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/controller/DMXBulb.cpp -o $(OBJDIR_DEBUG)/src/controller/DMXBulb.o
+$(OBJDIR_DEBUG)/src/controller/Bush.o: src/controller/Bush.cpp
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/controller/Bush.cpp -o $(OBJDIR_DEBUG)/src/controller/Bush.o
 
 $(OBJDIR_DEBUG)/src/CountdownClock.o: src/CountdownClock.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/CountdownClock.cpp -o $(OBJDIR_DEBUG)/src/CountdownClock.o
@@ -85,14 +98,14 @@ $(OBJDIR_DEBUG)/src/TextDisplay.o: src/TextDisplay.cpp
 $(OBJDIR_DEBUG)/src/controller/Bulb.o: src/controller/Bulb.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/controller/Bulb.cpp -o $(OBJDIR_DEBUG)/src/controller/Bulb.o
 
-$(OBJDIR_DEBUG)/src/controller/Bush.o: src/controller/Bush.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/controller/Bush.cpp -o $(OBJDIR_DEBUG)/src/controller/Bush.o
-
 $(OBJDIR_DEBUG)/main.o: main.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c main.cpp -o $(OBJDIR_DEBUG)/main.o
 
-$(OBJDIR_DEBUG)/src/controller/DummyPixal.o: src/controller/DummyPixal.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/controller/DummyPixal.cpp -o $(OBJDIR_DEBUG)/src/controller/DummyPixal.o
+$(OBJDIR_DEBUG)/src/controller/DMXBulb.o: src/controller/DMXBulb.cpp
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/controller/DMXBulb.cpp -o $(OBJDIR_DEBUG)/src/controller/DMXBulb.o
+
+$(OBJDIR_DEBUG)/src/controller/DummyBulb.o: src/controller/DummyBulb.cpp
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/controller/DummyBulb.cpp -o $(OBJDIR_DEBUG)/src/controller/DummyBulb.o
 
 $(OBJDIR_DEBUG)/src/controller/E131Network.o: src/controller/E131Network.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/controller/E131Network.cpp -o $(OBJDIR_DEBUG)/src/controller/E131Network.o
@@ -132,8 +145,8 @@ release: before_release out_release after_release
 out_release: before_release $(OBJ_RELEASE) $(DEP_RELEASE)
 	$(LD) $(LIBDIR_RELEASE) -o $(OUT_RELEASE) $(OBJ_RELEASE)  $(LDFLAGS_RELEASE) $(LIB_RELEASE)
 
-$(OBJDIR_RELEASE)/src/controller/DMXBulb.o: src/controller/DMXBulb.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/controller/DMXBulb.cpp -o $(OBJDIR_RELEASE)/src/controller/DMXBulb.o
+$(OBJDIR_RELEASE)/src/controller/Bush.o: src/controller/Bush.cpp
+	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/controller/Bush.cpp -o $(OBJDIR_RELEASE)/src/controller/Bush.o
 
 $(OBJDIR_RELEASE)/src/CountdownClock.o: src/CountdownClock.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/CountdownClock.cpp -o $(OBJDIR_RELEASE)/src/CountdownClock.o
@@ -156,14 +169,14 @@ $(OBJDIR_RELEASE)/src/TextDisplay.o: src/TextDisplay.cpp
 $(OBJDIR_RELEASE)/src/controller/Bulb.o: src/controller/Bulb.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/controller/Bulb.cpp -o $(OBJDIR_RELEASE)/src/controller/Bulb.o
 
-$(OBJDIR_RELEASE)/src/controller/Bush.o: src/controller/Bush.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/controller/Bush.cpp -o $(OBJDIR_RELEASE)/src/controller/Bush.o
-
 $(OBJDIR_RELEASE)/main.o: main.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c main.cpp -o $(OBJDIR_RELEASE)/main.o
 
-$(OBJDIR_RELEASE)/src/controller/DummyPixal.o: src/controller/DummyPixal.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/controller/DummyPixal.cpp -o $(OBJDIR_RELEASE)/src/controller/DummyPixal.o
+$(OBJDIR_RELEASE)/src/controller/DMXBulb.o: src/controller/DMXBulb.cpp
+	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/controller/DMXBulb.cpp -o $(OBJDIR_RELEASE)/src/controller/DMXBulb.o
+
+$(OBJDIR_RELEASE)/src/controller/DummyBulb.o: src/controller/DummyBulb.cpp
+	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/controller/DummyBulb.cpp -o $(OBJDIR_RELEASE)/src/controller/DummyBulb.o
 
 $(OBJDIR_RELEASE)/src/controller/E131Network.o: src/controller/E131Network.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/controller/E131Network.cpp -o $(OBJDIR_RELEASE)/src/controller/E131Network.o
@@ -190,5 +203,74 @@ clean_release:
 	rm -rf $(OBJDIR_RELEASE)/src
 	rm -rf $(OBJDIR_RELEASE)
 
-.PHONY: before_debug after_debug clean_debug before_release after_release clean_release
+before_graphics: 
+	test -d $(OBJDIR_GRAPHICS)/src/controller || mkdir -p $(OBJDIR_GRAPHICS)/src/controller
+	test -d $(OBJDIR_GRAPHICS) || mkdir -p $(OBJDIR_GRAPHICS)
+	test -d $(OBJDIR_GRAPHICS)/src || mkdir -p $(OBJDIR_GRAPHICS)/src
+
+after_graphics: 
+
+graphics: before_graphics out_graphics after_graphics
+
+out_graphics: before_graphics $(OBJ_GRAPHICS) $(DEP_GRAPHICS)
+	$(LD) $(LIBDIR_GRAPHICS) -o $(OUT_GRAPHICS) $(OBJ_GRAPHICS)  $(LDFLAGS_GRAPHICS) $(LIB_GRAPHICS)
+
+$(OBJDIR_GRAPHICS)/src/controller/Bush.o: src/controller/Bush.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/controller/Bush.cpp -o $(OBJDIR_GRAPHICS)/src/controller/Bush.o
+
+$(OBJDIR_GRAPHICS)/mainFrame.o: mainFrame.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c mainFrame.cpp -o $(OBJDIR_GRAPHICS)/mainFrame.o
+
+$(OBJDIR_GRAPHICS)/src/CountdownClock.o: src/CountdownClock.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/CountdownClock.cpp -o $(OBJDIR_GRAPHICS)/src/CountdownClock.o
+
+$(OBJDIR_GRAPHICS)/src/DisplayModel.o: src/DisplayModel.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/DisplayModel.cpp -o $(OBJDIR_GRAPHICS)/src/DisplayModel.o
+
+$(OBJDIR_GRAPHICS)/src/DisplayTester.o: src/DisplayTester.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/DisplayTester.cpp -o $(OBJDIR_GRAPHICS)/src/DisplayTester.o
+
+$(OBJDIR_GRAPHICS)/src/GregsDisplay.o: src/GregsDisplay.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/GregsDisplay.cpp -o $(OBJDIR_GRAPHICS)/src/GregsDisplay.o
+
+$(OBJDIR_GRAPHICS)/src/Sign.o: src/Sign.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/Sign.cpp -o $(OBJDIR_GRAPHICS)/src/Sign.o
+
+$(OBJDIR_GRAPHICS)/src/TextDisplay.o: src/TextDisplay.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/TextDisplay.cpp -o $(OBJDIR_GRAPHICS)/src/TextDisplay.o
+
+$(OBJDIR_GRAPHICS)/src/controller/Bulb.o: src/controller/Bulb.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/controller/Bulb.cpp -o $(OBJDIR_GRAPHICS)/src/controller/Bulb.o
+
+$(OBJDIR_GRAPHICS)/src/controller/DMXBulb.o: src/controller/DMXBulb.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/controller/DMXBulb.cpp -o $(OBJDIR_GRAPHICS)/src/controller/DMXBulb.o
+
+$(OBJDIR_GRAPHICS)/src/controller/DummyBulb.o: src/controller/DummyBulb.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/controller/DummyBulb.cpp -o $(OBJDIR_GRAPHICS)/src/controller/DummyBulb.o
+
+$(OBJDIR_GRAPHICS)/src/controller/E131Network.o: src/controller/E131Network.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/controller/E131Network.cpp -o $(OBJDIR_GRAPHICS)/src/controller/E131Network.o
+
+$(OBJDIR_GRAPHICS)/src/controller/LORNetwork.o: src/controller/LORNetwork.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/controller/LORNetwork.cpp -o $(OBJDIR_GRAPHICS)/src/controller/LORNetwork.o
+
+$(OBJDIR_GRAPHICS)/src/controller/NetworkCollection.o: src/controller/NetworkCollection.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/controller/NetworkCollection.cpp -o $(OBJDIR_GRAPHICS)/src/controller/NetworkCollection.o
+
+$(OBJDIR_GRAPHICS)/src/controller/OpenDMXNetwork.o: src/controller/OpenDMXNetwork.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/controller/OpenDMXNetwork.cpp -o $(OBJDIR_GRAPHICS)/src/controller/OpenDMXNetwork.o
+
+$(OBJDIR_GRAPHICS)/src/controller/RGBLight.o: src/controller/RGBLight.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/controller/RGBLight.cpp -o $(OBJDIR_GRAPHICS)/src/controller/RGBLight.o
+
+$(OBJDIR_GRAPHICS)/src/controller/serial_posix.o: src/controller/serial_posix.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/controller/serial_posix.cpp -o $(OBJDIR_GRAPHICS)/src/controller/serial_posix.o
+
+clean_graphics: 
+	rm -f $(OBJ_GRAPHICS) $(OUT_GRAPHICS)
+	rm -rf $(OBJDIR_GRAPHICS)/src/controller
+	rm -rf $(OBJDIR_GRAPHICS)
+	rm -rf $(OBJDIR_GRAPHICS)/src
+
+.PHONY: before_debug after_debug clean_debug before_release after_release clean_release before_graphics after_graphics clean_graphics
 
