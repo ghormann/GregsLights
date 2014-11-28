@@ -3,19 +3,26 @@
 
 #include "controller/E131Network.h"
 
-#define TOTAL_SIGN_PIXALS 170*4
+#define SIGN_WIDTH 48
+#define SIGN_HEIGHT 20
+#define TOTAL_SIGN_PIXALS SIGN_WIDTH * SIGN_HEIGHT
+
+#define SIGN_DUMMY_HEIGHT 50
+#define SIGN_DUMMY_WIDTH 200
 
 class Sign
 {
     public:
-        Sign(E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4);
+        Sign(E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6);
         virtual ~Sign();
         void test();
         RGBLight * getPixal(int i);
+        RGBLight * getPixal(int x, int y);
     protected:
     private:
         E131Network *net1;
         RGBLight *pixals[TOTAL_SIGN_PIXALS];
+        RGBLight *board[ SIGN_DUMMY_HEIGHT * SIGN_DUMMY_WIDTH];
 };
 
 #endif // SIGN_H

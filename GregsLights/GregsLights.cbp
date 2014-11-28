@@ -15,6 +15,7 @@
 					<Add option="-g" />
 					<Add option="-DGJH_DEBUG" />
 					<Add directory="include" />
+					<Add directory="include/controller" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -25,6 +26,7 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add directory="include" />
+					<Add directory="include/controller" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -37,6 +39,7 @@
 				<Compiler>
 					<Add option="-std=c++11" />
 					<Add option="`wx-config --cflags`" />
+					<Add directory="include/controller" />
 				</Compiler>
 				<Linker>
 					<Add option="-lGL -lGLU" />
@@ -65,7 +68,7 @@
 		<Unit filename="include/controller/Bulb.h" />
 		<Unit filename="include/controller/Bush.h" />
 		<Unit filename="include/controller/DMXBulb.h" />
-		<Unit filename="include/controller/DummyPixal.h" />
+		<Unit filename="include/controller/DummyBulb.h" />
 		<Unit filename="include/controller/E131Network.h" />
 		<Unit filename="include/controller/LORNetwork.h" />
 		<Unit filename="include/controller/LightNetwork.h" />
@@ -92,7 +95,7 @@
 		<Unit filename="src/controller/Bulb.cpp" />
 		<Unit filename="src/controller/Bush.cpp" />
 		<Unit filename="src/controller/DMXBulb.cpp" />
-		<Unit filename="src/controller/DummyPixal.cpp" />
+		<Unit filename="src/controller/DummyBulb.cpp" />
 		<Unit filename="src/controller/E131Network.cpp" />
 		<Unit filename="src/controller/LORNetwork.cpp" />
 		<Unit filename="src/controller/NetworkCollection.cpp" />

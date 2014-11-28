@@ -1,22 +1,35 @@
 #include "../include/Sign.h"
 #include <unistd.h>
+#include "../include/controller/DummyBulb.h"
 
-Sign::Sign(E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4)
+Sign::Sign(E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6)
 {
+    int cnt = 0;
     for (int i = 0; i < 170; i++)
     {
-        this->pixals[i] = n1->getRGB(i*3);
+        this->pixals[cnt++] = n1->getRGB(i*3);
     }
     for (int i = 0; i < 170; i++) {
-        this->pixals[i+170] = n2->getRGB(i*3);
+        this->pixals[cnt++] = n2->getRGB(i*3);
     }
     for (int i = 0; i < 170; i++) {
-        this->pixals[i+170+170] = n3->getRGB(i*3);
+        this->pixals[cnt++] = n3->getRGB(i*3);
     }
     for (int i = 0; i < 170; i++) {
-        this->pixals[i+170+170+170] = n4->getRGB(i*3);
+        this->pixals[cnt++] = n4->getRGB(i*3);
+    }
+    for (int i = 0; i < 170; i++) {
+        this->pixals[cnt++] = n5->getRGB(i*3);
+    }
+    for (int i = 0; i < 110; i++) {
+        this->pixals[cnt++] = n6->getRGB(i*3);
     }
 
+    // Setup Dummy Pials
+    for (int i = 0 ; i < (SIGN_DUMMY_HEIGHT * SIGN_DUMMY_WIDTH); i++)
+    {
+        this->board[i] = new RGBLight(new DummyBulb(), new DummyBulb(), new DummyBulb());
+    }
 }
 
 Sign::~Sign()
@@ -30,6 +43,11 @@ RGBLight * Sign::getPixal(int i)
         throw "Sign::getPixal must be between 0 and TOTAL_SIGN_PIXALS";
     }
     return this->pixals[i];
+}
+
+RGBLight *Sign::getPixal(int x, int y)
+{
+    return getPixal(y*SIGN_WIDTH + x);
 }
 
 void Sign::test()

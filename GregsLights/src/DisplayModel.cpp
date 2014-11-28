@@ -28,6 +28,9 @@ DisplayModel::DisplayModel(bool sendDMX)
     E131Network *sign2 = new E131Network("192.168.0.39", 11, 512);
     E131Network *sign3 = new E131Network("192.168.0.39", 12, 512);
     E131Network *sign4 = new E131Network("192.168.0.39", 13, 512);
+    E131Network *sign5 = new E131Network("192.168.0.39", 20, 512);
+    E131Network *sign6 = new E131Network("192.168.0.39", 21, 512);
+
 
     networks->addNetwork(dmx);
     networks->addNetwork(lor);
@@ -35,8 +38,10 @@ DisplayModel::DisplayModel(bool sendDMX)
     networks->addNetwork(sign2);
     networks->addNetwork(sign3);
     networks->addNetwork(sign4);
+    networks->addNetwork(sign5);
+    networks->addNetwork(sign6);
 
-    this->sign = new Sign(sign1, sign2, sign3, sign4);
+    this->sign = new Sign(sign1, sign2, sign3, sign4, sign5, sign6);
 
     //set up houses
     for (int i = HOUSE_LIGHT_START; i <= HOUSE_LIGHT_END; i++)

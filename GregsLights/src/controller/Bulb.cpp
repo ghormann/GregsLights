@@ -17,6 +17,7 @@ Bulb::Bulb()
 {
     fadeStep = 0;
     fadeStop = 0;
+    percentage = 0;
     this->next = firstBulb;
     firstBulb = this;
 }

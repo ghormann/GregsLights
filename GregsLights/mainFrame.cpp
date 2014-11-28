@@ -170,12 +170,12 @@ void BasicGLPane::render( wxPaintEvent& evt )
     glVertex3f(0,getHeight(),0);
     glEnd();
 
-    // red square
-    for (int j = 0; j < 20; j++ )
+    // The Grid
+    for (int j = 0; j < SIGN_HEIGHT; j++ )
     {
-        for (int i = 0; i< 44; i++)
+        for (int i = 0; i< SIGN_WIDTH; i++)
         {
-            RGBLight *pix = model->getSign()->getPixal(i);
+            RGBLight *pix = model->getSign()->getPixal(i,j);
             float red = ((float)pix->getRed())  / 100;
             float green = ((float)pix->getGreen()) / 100;
             float blue = ((float)pix->getBlue()) / 100;
