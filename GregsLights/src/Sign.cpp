@@ -81,7 +81,7 @@ void Sign::scrollSecondsUntil()
     }
 
     int pos = drawLetter('R', RED, 0,0) + 2;
-    pos += drawLetter('O', RED, pos,0) + 2;
+    pos += drawLetter('S', RED, pos,0) + 2;
     pos += drawLetter('A', RED, pos,0) + 2;
     setDisplayPosition(0,0);
     sleep(50);
@@ -371,6 +371,39 @@ int Sign::drawLetter(char letter, RGB_COLOR color, int startX, int startY)
         d[12][13]=d[10][13]=d[11][13] =d[13][13]= '1';
 
         offset = 14;
+    }
+    else if (letter == 'S')
+    {
+        y=0;
+        d[2][y]=d[3][y]=d[4][y]=d[7][y] = '1';
+        y=1;
+        d[1][y]=d[2][y]=d[5][y]=d[6][y]=d[7][y] = '1';
+        y=2;
+        d[0][y]=d[1][y]=d[6][y]=d[7][y] = '1';
+        y=3;
+        d[0][y]=d[1][y]=d[7][y] = '1';
+        y=4;
+        d[0][y]=d[1][y]=d[2][y]=d[7][y] = '1';
+        y=5;
+        d[3][y]=d[1][y]=d[2][y] = '1';
+        y=6;
+        d[2][y]=d[3][y]=d[4][y]=d[5][y] = '1';
+        y=7;
+        d[4][y]=d[5][y]=d[6][y] = '1';
+        y=8;
+        d[5][y]=d[6][y]=d[7][y] = '1';
+        y=9;
+        d[0][y] = d[6][y]=d[7][y]=d[8][y] = '1';
+        y=10;
+        d[0][y] = d[7][y]=d[8][y] = '1';
+        y=11;
+        d[0][y] =d[1][y]= d[7][y]=d[8][y] = '1';
+        y=12;
+        d[0][y] =d[1][y] =d[2][y]= d[6][y]=d[7][y] = '1';
+        y=13;
+        d[0][y] =d[3][y] =d[4][y]= d[5][y]=d[6][y] = '1';
+
+        offset = 9;
     }
 
     for (x = 0; x < 20; x++)
