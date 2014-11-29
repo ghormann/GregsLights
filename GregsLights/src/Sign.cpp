@@ -81,7 +81,7 @@ void Sign::scrollSecondsUntil()
     }
 
     int pos = drawLetter('R', RED, 0,0) + 2;
-    pos += drawLetter('H', RED, pos,0) + 2;
+    pos += drawLetter('L', RED, pos,0) + 2;
     pos += drawLetter('A', RED, pos,0) + 2;
     setDisplayPosition(0,0);
     sleep(50);
@@ -222,6 +222,40 @@ int Sign::drawLetter(char letter, RGB_COLOR color, int startX, int startY)
             d[2][y]=d[3][y]=d[11][y]=d[12][y] = '1';
         }
         offset=15;
+    }
+    else if (letter == 'I')
+    {
+        for (x=0; x<6; x++)
+        {
+            d[x][0]=d[x][13]='1';
+        }
+
+        for (y=0; y<14; y++)
+        {
+            d[2][y]=d[3][y]='1';
+        }
+
+        offset = 6;
+    }
+    else if (letter == 'L')
+    {
+        for (x=0; x<6; x++)
+        {
+            d[x][0] = '1';
+        }
+
+        for (y=0; y<14; y++)
+        {
+            d[2][y] = d[3][y] = '1';
+        }
+
+        for (x=0; x < 11; x++)
+        {
+            d[x][13] = '1';
+        }
+
+        d[9][12]=d[10][12]=d[10][11]=d[11][11]=d[11][10] = '1';
+        offset = 12;
     }
     else if (letter == 'M')
     {
