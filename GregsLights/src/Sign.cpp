@@ -20,7 +20,7 @@ Sign::Sign(E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E
     {
         this->pixals[cnt++] = n3->getRGB(i*3);
     }
-    for (int i = 0; i < 170; i++)
+    for (int i = 0; i < 140; i++)
     {
         this->pixals[cnt++] = n4->getRGB(i*3);
     }
@@ -28,7 +28,7 @@ Sign::Sign(E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E
     {
         this->pixals[cnt++] = n5->getRGB(i*3);
     }
-    for (int i = 0; i < 110; i++)
+    for (int i = 0; i < 140; i++)
     {
         this->pixals[cnt++] = n6->getRGB(i*3);
     }

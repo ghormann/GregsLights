@@ -31,15 +31,17 @@ DisplayModel::DisplayModel(bool sendDMX)
     E131Network *sign5 = new E131Network("192.168.0.39", 20, 512);
     E131Network *sign6 = new E131Network("192.168.0.39", 21, 512);
 
-
-    networks->addNetwork(dmx);
-    networks->addNetwork(lor);
-    networks->addNetwork(sign1);
-    networks->addNetwork(sign2);
-    networks->addNetwork(sign3);
-    networks->addNetwork(sign4);
-    networks->addNetwork(sign5);
-    networks->addNetwork(sign6);
+    if (sendDMX)
+    {
+        networks->addNetwork(dmx);
+        networks->addNetwork(lor);
+        networks->addNetwork(sign1);
+        networks->addNetwork(sign2);
+        networks->addNetwork(sign3);
+        networks->addNetwork(sign4);
+        networks->addNetwork(sign5);
+        networks->addNetwork(sign6);
+    }
 
     this->sign = new Sign(sign1, sign2, sign3, sign4, sign5, sign6);
 
@@ -58,7 +60,8 @@ DisplayModel::DisplayModel(bool sendDMX)
     bushes[5] = new Bush(5,lor->getBulb(3,5), lor->getBulb(3,6), lor->getBulb(3,7), lor->getBulb(3,8));
     bushes[6] = new Bush(6,lor->getBulb(4,1), lor->getBulb(4,2), lor->getBulb(4,3), lor->getBulb(4,4));
 
-    for (int i = BUSH_LIGHT_START; i <= BUSH_LIGHT_END; i++) {
+    for (int i = BUSH_LIGHT_START; i <= BUSH_LIGHT_END; i++)
+    {
         bushes[i]->setAll(0);
     }
 
@@ -172,7 +175,8 @@ RGBLight* DisplayModel::getHouse(int id)
     return house[id];
 }
 
-Sign * DisplayModel::getSign(){
+Sign * DisplayModel::getSign()
+{
     return sign;
 }
 
