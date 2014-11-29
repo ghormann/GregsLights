@@ -57,8 +57,8 @@ DisplayModel::DisplayModel(bool sendDMX)
     bushes[2] = new Bush(2,lor->getBulb(1,5), lor->getBulb(1,6), lor->getBulb(1,7), lor->getBulb(1,8));
     bushes[3] = new Bush(3,lor->getBulb(2,1), lor->getBulb(2,2), lor->getBulb(2,3), lor->getBulb(2,4));
     bushes[4] = new Bush(4,lor->getBulb(3,1), lor->getBulb(3,2), lor->getBulb(3,3), lor->getBulb(3,4));
-    bushes[5] = new Bush(5,lor->getBulb(3,5), lor->getBulb(3,6), lor->getBulb(3,7), lor->getBulb(3,8));
-    bushes[6] = new Bush(6,lor->getBulb(4,1), lor->getBulb(4,2), lor->getBulb(4,3), lor->getBulb(4,4));
+    bushes[5] = new Bush(5,lor->getBulb(4,1), lor->getBulb(4,2), lor->getBulb(4,3), lor->getBulb(4,4));
+    bushes[6] = new Bush(6,lor->getBulb(4,5), lor->getBulb(4,6), lor->getBulb(4,7), lor->getBulb(4,8));
 
     for (int i = BUSH_LIGHT_START; i <= BUSH_LIGHT_END; i++)
     {
