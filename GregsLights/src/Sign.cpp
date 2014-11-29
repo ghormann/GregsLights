@@ -81,7 +81,7 @@ void Sign::scrollSecondsUntil()
     }
 
     int pos = drawLetter('R', RED, 0,0) + 2;
-    pos += drawLetter('C', RED, pos,0) + 2;
+    pos += drawLetter('D', RED, pos,0) + 2;
     pos += drawLetter('A', RED, pos,0) + 2;
     setDisplayPosition(0,0);
     sleep(50);
@@ -154,179 +154,202 @@ int Sign::drawLetter(char letter, RGB_COLOR color, int startX, int startY)
         for (x=4; x<9; x++)
         {
             d[x][13] = '1';
-            }
-            offset = 12;
         }
-
-        else if (letter == 'E')
-        {
-            for (x=0; x < 12; x++)
-            {
-                d[x][0] = d[x][13]='1';
-            }
-            for (y=0; y<14; y++)
-            {
-                d[2][y] = d[3][y] = '1';
-            }
-            d[10][1]=d[11][1]=d[11][2] = '1';
-            d[12][10]=d[11][11]=d[11][12]=d[10][12]='1';
-            for (x=2; x<10; x++)
-                d[x][6] = '1';
-
-            for (y=4; y<9; y++)
-                d[9][y] = '1';
-
-            offset = 13;
-        }
-        else if (letter == 'M')
-        {
-            y=-1;
-            ++y;
-            d[0][y] = d[1][y] = d[2][y] = d[3][y]= d[4][y] =d[14][y]=d[15][y]=d[16][y]=d[17][y] = '1';
-            ++y;
-            d[2][y]=d[3][y]=d[4][y] = d[13][y] = d[14][y] = d[15][y] = '1'; //1
-            ++y;
-            d[2][y]=d[3][y]=d[4][y] =d[5][y]= d[13][y] = d[14][y] = d[15][y] = '1'; //2
-            ++y;
-            d[2][y]=d[4][y]=d[5][y]=d[12][y]=d[14][y]=d[15][y]='1'; //3
-            ++y;
-            d[2][y]=d[4][y]=d[5][y]=d[12][y]=d[14][y]=d[15][y]='1'; //4
-            ++y;
-            d[2][y]=d[4][y]=d[5][y]=d[6][y]=d[12][y]=d[14][y]=d[15][y]='1'; //5
-            ++y;
-            d[2][y]=d[5][y]=d[6][y]=d[11][y]=d[14][y]=d[15][y]='1'; //6
-            ++y;
-            d[2][y]=d[5][y]=d[6][y]=d[7][y]=d[11][y]=d[14][y]=d[15][y]='1'; //7
-            ++y;
-            d[2][y]=d[6][y]=d[7][y]=d[10][y]=d[14][y]=d[15][y]='1'; //8
-            ++y;
-            d[2][y]=d[6][y]=d[7][y]=d[10][y]=d[14][y]=d[15][y]='1'; //9
-            ++y;
-            d[2][y]=d[7][y]=d[8][y]=d[9][y]=d[14][y]=d[15][y]='1'; //10
-            ++y;
-            d[2][y]=d[7][y]=d[8][y]=d[9][y]=d[14][y]=d[15][y]='1'; //11
-            ++y;
-            d[2][y]=d[7][y]=d[8][y]=d[14][y]=d[15][y]='1'; //12
-            ++y;
-            d[0][y] = d[1][y] = d[2][y] = d[3][y]= d[4][y] =d[12][y]=d[13][y]=d[14][y]=d[15][y]=d[16][y]=d[17][y] = '1'; //13
-
-            offset=17;
-        }
-        else if (letter == 'R')
-        {
-            for (x=0; x<9; x++)
-            {
-                d[x][0] = '1';
-            }
-            for (y=0; y<14; y++)
-            {
-                d[2][y] = d[3][y] = '1';
-            }
-            d[8][1] = d[9][1]=d[9][2]=d[10][2]='1';
-            d[9][3]=d[10][3]=d[9][4]=d[10][4] = '1';
-            d[8][5]=d[9][5]='1';
-            for (x=4; x<9; x++)
-            {
-                d[x][6]='1';
-            }
-            d[6][7]=d[7][7]=d[6][8]=d[7][8]=d[8][8]='1';
-            d[7][9]=d[8][9]=d[8][10]=d[9][10]='1';
-            d[8][11]=d[9][11]=d[10][11] = '1';
-            d[9][12]=d[10][12]=d[11][12] = '1';
-            for (x=0; x<6; x++)
-            {
-                d[x][13] = '1';
-            }
-            d[12][13]=d[10][13]=d[11][13] =d[13][13]= '1';
-
-            offset = 14;
-        }
-
-        for (x = 0; x < 20; x++)
-        {
-            for (y=0; y<40; y++)
-            {
-                if (d[x][y] == '1')
-                    this->getBoard(startX+x, startY+y+2)->setStdColor(color);
-            }
-        }
-
-        return offset;
-
+        offset = 12;
     }
-
-    void Sign::redrawDisplay()
+    else if (letter == 'D')
     {
-        this->setDisplayPosition(currentX, currentY);
+        for (x=0; x<10; x++)
+        {
+            d[x][0] = d[x][13] = '1';
+        }
+        for (y=0; y<14; y++)
+        {
+            d[2][y] = d[3][y] = '1';
+        }
+
+        for (y=4; y<10; y++)
+        {
+            d[12][y] = d[13][y] = '1';
+        }
+
+        d[9][1]=d[10][1]=d[11][1] = '1'; //1
+        d[12][2]=d[10][2]=d[11][2] = '1'; //2
+        d[11][3]=d[12][3] = '1'; //3
+        d[11][10]=d[12][10] = '1'; //10
+        d[10][11]=d[11][11] = '1'; //11
+        d[9][12]=d[10][12] = '1'; //12
+        offset = 14;
+    }
+    else if (letter == 'E')
+    {
+        for (x=0; x < 12; x++)
+        {
+            d[x][0] = d[x][13]='1';
+        }
+        for (y=0; y<14; y++)
+        {
+            d[2][y] = d[3][y] = '1';
+        }
+        d[10][1]=d[11][1]=d[11][2] = '1';
+        d[12][10]=d[11][11]=d[11][12]=d[10][12]='1';
+        for (x=2; x<10; x++)
+            d[x][6] = '1';
+
+        for (y=4; y<9; y++)
+            d[9][y] = '1';
+
+        offset = 13;
+    }
+    else if (letter == 'M')
+    {
+        y=-1;
+        ++y;
+        d[0][y] = d[1][y] = d[2][y] = d[3][y]= d[4][y] =d[14][y]=d[15][y]=d[16][y]=d[17][y] = '1';
+        ++y;
+        d[2][y]=d[3][y]=d[4][y] = d[13][y] = d[14][y] = d[15][y] = '1'; //1
+        ++y;
+        d[2][y]=d[3][y]=d[4][y] =d[5][y]= d[13][y] = d[14][y] = d[15][y] = '1'; //2
+        ++y;
+        d[2][y]=d[4][y]=d[5][y]=d[12][y]=d[14][y]=d[15][y]='1'; //3
+        ++y;
+        d[2][y]=d[4][y]=d[5][y]=d[12][y]=d[14][y]=d[15][y]='1'; //4
+        ++y;
+        d[2][y]=d[4][y]=d[5][y]=d[6][y]=d[12][y]=d[14][y]=d[15][y]='1'; //5
+        ++y;
+        d[2][y]=d[5][y]=d[6][y]=d[11][y]=d[14][y]=d[15][y]='1'; //6
+        ++y;
+        d[2][y]=d[5][y]=d[6][y]=d[7][y]=d[11][y]=d[14][y]=d[15][y]='1'; //7
+        ++y;
+        d[2][y]=d[6][y]=d[7][y]=d[10][y]=d[14][y]=d[15][y]='1'; //8
+        ++y;
+        d[2][y]=d[6][y]=d[7][y]=d[10][y]=d[14][y]=d[15][y]='1'; //9
+        ++y;
+        d[2][y]=d[7][y]=d[8][y]=d[9][y]=d[14][y]=d[15][y]='1'; //10
+        ++y;
+        d[2][y]=d[7][y]=d[8][y]=d[9][y]=d[14][y]=d[15][y]='1'; //11
+        ++y;
+        d[2][y]=d[7][y]=d[8][y]=d[14][y]=d[15][y]='1'; //12
+        ++y;
+        d[0][y] = d[1][y] = d[2][y] = d[3][y]= d[4][y] =d[12][y]=d[13][y]=d[14][y]=d[15][y]=d[16][y]=d[17][y] = '1'; //13
+
+        offset=17;
+    }
+    else if (letter == 'R')
+    {
+        for (x=0; x<9; x++)
+        {
+            d[x][0] = '1';
+        }
+        for (y=0; y<14; y++)
+        {
+            d[2][y] = d[3][y] = '1';
+        }
+        d[8][1] = d[9][1]=d[9][2]=d[10][2]='1';
+        d[9][3]=d[10][3]=d[9][4]=d[10][4] = '1';
+        d[8][5]=d[9][5]='1';
+        for (x=4; x<9; x++)
+        {
+            d[x][6]='1';
+        }
+        d[6][7]=d[7][7]=d[6][8]=d[7][8]=d[8][8]='1';
+        d[7][9]=d[8][9]=d[8][10]=d[9][10]='1';
+        d[8][11]=d[9][11]=d[10][11] = '1';
+        d[9][12]=d[10][12]=d[11][12] = '1';
+        for (x=0; x<6; x++)
+        {
+            d[x][13] = '1';
+        }
+        d[12][13]=d[10][13]=d[11][13] =d[13][13]= '1';
+
+        offset = 14;
     }
 
-    void Sign::setDisplayPosition(int xOffset, int yOffset)
+    for (x = 0; x < 20; x++)
     {
-        for (int i =0; i < SIGN_WIDTH; i++)
+        for (y=0; y<40; y++)
         {
-            for (int j = 0; j < SIGN_HEIGHT; j++)
-            {
-                this->getPixal(i,j)->copyFrom(this->getBoard(i+xOffset,j+yOffset));
-            }
+            if (d[x][y] == '1')
+                this->getBoard(startX+x, startY+y+2)->setStdColor(color);
         }
     }
 
-    void Sign::test()
+    return offset;
+
+}
+
+void Sign::redrawDisplay()
+{
+    this->setDisplayPosition(currentX, currentY);
+}
+
+void Sign::setDisplayPosition(int xOffset, int yOffset)
+{
+    for (int i =0; i < SIGN_WIDTH; i++)
     {
-        int betweenPixals = 9000;
-        int betweenColors = 2;
-        scrollSecondsUntil();
-        while (true)
+        for (int j = 0; j < SIGN_HEIGHT; j++)
         {
-            for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
-            {
-                this->pixals[i]->set(100,0,0);
-                usleep(betweenPixals);
-            }
-            sleep(betweenColors);
-            for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
-            {
-                this->pixals[i]->set(0,100,0);
-                usleep(betweenPixals);
-            }
-            sleep(betweenColors);
-            for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
-            {
-                this->pixals[i]->set(0,0,100);
-                usleep(betweenPixals);
-            }
-            sleep(betweenColors);
-
-            for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
-            {
-                this->pixals[i]->set(100,100,100);
-                usleep(betweenPixals);
-            }
-            sleep(betweenColors);
-
-            for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
-            {
-                pixals[i]->fade(100,100,100,100,0,0,betweenColors);
-            }
-            sleep(betweenColors);
-
-            for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
-            {
-                pixals[i]->fade(100,0,0,0,100,0,betweenColors);
-            }
-            sleep(betweenColors);
-
-            for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
-            {
-                pixals[i]->fade(0,100,0,0,0,100,betweenColors);
-            }
-            sleep(betweenColors);
-
-            for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
-            {
-                pixals[i]->fade(0,0,100,0,0,0,betweenColors);
-            }
-            sleep(betweenColors);
-            sleep(2);
+            this->getPixal(i,j)->copyFrom(this->getBoard(i+xOffset,j+yOffset));
         }
     }
+}
+
+void Sign::test()
+{
+    int betweenPixals = 9000;
+    int betweenColors = 2;
+    scrollSecondsUntil();
+    while (true)
+    {
+        for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
+        {
+            this->pixals[i]->set(100,0,0);
+            usleep(betweenPixals);
+        }
+        sleep(betweenColors);
+        for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
+        {
+            this->pixals[i]->set(0,100,0);
+            usleep(betweenPixals);
+        }
+        sleep(betweenColors);
+        for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
+        {
+            this->pixals[i]->set(0,0,100);
+            usleep(betweenPixals);
+        }
+        sleep(betweenColors);
+
+        for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
+        {
+            this->pixals[i]->set(100,100,100);
+            usleep(betweenPixals);
+        }
+        sleep(betweenColors);
+
+        for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
+        {
+            pixals[i]->fade(100,100,100,100,0,0,betweenColors);
+        }
+        sleep(betweenColors);
+
+        for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
+        {
+            pixals[i]->fade(100,0,0,0,100,0,betweenColors);
+        }
+        sleep(betweenColors);
+
+        for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
+        {
+            pixals[i]->fade(0,100,0,0,0,100,betweenColors);
+        }
+        sleep(betweenColors);
+
+        for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
+        {
+            pixals[i]->fade(0,0,100,0,0,0,betweenColors);
+        }
+        sleep(betweenColors);
+        sleep(2);
+    }
+}
