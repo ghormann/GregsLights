@@ -80,10 +80,11 @@ void Sign::scrollSecondsUntil()
         }
     }
 
-    int pos = drawLetter('M', RED, 0,0);
-    pos = drawLetter('E', RED, pos+2,0);
+    int pos = drawLetter('R', RED, 0,0) + 2;
+    pos += drawLetter('E', RED, pos,0) + 2;
+    pos += drawLetter('A', RED, pos,0) + 2;
     setDisplayPosition(0,0);
-    sleep(5);
+    sleep(50);
 
     for (int i = 0; i < 40; i++)
     {
@@ -105,7 +106,38 @@ int Sign::drawLetter(char letter, RGB_COLOR color, int startX, int startY)
             d[x][y]='0';
         }
     }
-    if (letter == 'E')
+    if (letter == 'A')
+    {
+        d[7][0]=d[6][1]=d[7][1]=d[6][2]=d[7][2]=d[8][2] = '1'; //0, 1, 2
+        d[5][3]=d[7][3]=d[8][3] = '1'; // 3
+        d[5][4]=d[9][4]=d[8][4] = '1'; //4
+        d[5][5]=d[9][5]=d[8][5] = '1'; //5
+        d[4][6]=d[9][6]=d[8][6] = '1'; //6
+        d[4][7]=d[9][7]=d[10][7] = '1'; // 7
+        for (x=3; x<11; x++)
+        {
+            d[x][8] = '1';
+        }
+        d[3][9]=d[9][9]=d[10][9] = '1'; //9
+        d[2][10]=d[10][10]=d[11][10] = '1'; //10
+        d[2][11]=d[10][11]=d[11][11] = '1'; //11
+        d[1][12]=d[2][12]=d[10][12]=d[11][12]=d[12][12]='1';
+        d[0][13]=d[1][13]=d[2][13]=d[3][13] = '1';
+        for (x=9; x<14; x++)
+        {
+            d[x][13] = '1';
+        }
+
+
+        offset = 14;
+    }
+    else if (letter == 'C')
+    {
+
+        offset = 12;
+    }
+
+    else if (letter == 'E')
     {
         for (x=0; x < 12; x++)
         {
@@ -123,7 +155,7 @@ int Sign::drawLetter(char letter, RGB_COLOR color, int startX, int startY)
         for (y=4; y<9; y++)
             d[9][y] = '1';
 
-        offset = 12;
+        offset = 13;
     }
     else if (letter == 'M')
     {
@@ -159,6 +191,35 @@ int Sign::drawLetter(char letter, RGB_COLOR color, int startX, int startY)
 
         offset=17;
     }
+    else if (letter == 'R')
+    {
+        for (x=0; x<9; x++)
+        {
+            d[x][0] = '1';
+        }
+        for (y=0; y<14; y++)
+        {
+            d[2][y] = d[3][y] = '1';
+        }
+        d[8][1] = d[9][1]=d[9][2]=d[10][2]='1';
+        d[9][3]=d[10][3]=d[9][4]=d[10][4] = '1';
+        d[8][5]=d[9][5]='1';
+        for (x=4; x<9; x++)
+        {
+            d[x][6]='1';
+        }
+        d[6][7]=d[7][7]=d[6][8]=d[7][8]=d[8][8]='1';
+        d[7][9]=d[8][9]=d[8][10]=d[9][10]='1';
+        d[8][11]=d[9][11]=d[10][11] = '1';
+        d[9][12]=d[10][12]=d[11][12] = '1';
+        for (x=0; x<6; x++)
+        {
+            d[x][13] = '1';
+        }
+        d[12][13]=d[10][13]=d[11][13] =d[13][13]= '1';
+
+        offset = 14;
+    }
 
     for (x = 0; x < 20; x++)
     {
@@ -193,7 +254,7 @@ void Sign::test()
 {
     int betweenPixals = 9000;
     int betweenColors = 2;
-    //scrollSecondsUntil();
+    scrollSecondsUntil();
     while (true)
     {
         for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
