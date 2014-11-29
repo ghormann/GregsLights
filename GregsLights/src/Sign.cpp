@@ -81,7 +81,7 @@ void Sign::scrollSecondsUntil()
     }
 
     int pos = drawLetter('R', RED, 0,0) + 2;
-    pos += drawLetter('S', RED, pos,0) + 2;
+    pos += drawLetter('U', RED, pos,0) + 2;
     pos += drawLetter('A', RED, pos,0) + 2;
     setDisplayPosition(0,0);
     sleep(50);
@@ -405,13 +405,58 @@ int Sign::drawLetter(char letter, RGB_COLOR color, int startX, int startY)
 
         offset = 9;
     }
+    else if (letter == 'T')
+    {
+
+        for (x=0; x<12; x++)
+        {
+            d[x][0] = '1';
+        }
+
+        for(y=0; y<14; y++)
+        {
+            d[5][y] = d[6][y] = '1';
+        }
+        d[0][1]=d[1][1]=d[0][2]=d[10][1]=d[11][1]=d[11][2] = '1';
+
+        for (x=3; x<9; x++)
+        {
+            d[x][13] = '1';
+        }
+
+        offset = 12;
+    }
+    else if (letter == 'U')
+    {
+        for (x=0; x<6; x++)
+        {
+            d[x][0] = '1';
+        }
+        for (x=10; x<15; x++)
+        {
+            d[x][0] = '1';
+        }
+
+        for(y=1; y<11; y++)
+        {
+            d[2][y]=d[3][y]=d[12][y] = '1';
+        }
+        d[3][11]=d[4][11]=d[11][11] = '1';
+        d[3][12]=d[4][12]=d[5][12]=d[10][12]=d[11][12] = '1';
+        for (x = 5; x<10; x++)
+        {
+            d[x][13] = '1';
+        }
+
+        offset=15;
+    }
 
     for (x = 0; x < 20; x++)
     {
         for (y=0; y<40; y++)
         {
             if (d[x][y] == '1')
-                this->getBoard(startX+x, startY+y+2)->setStdColor(color);
+                this->getBoard(startX+x, startY+y+3)->setStdColor(color);
         }
     }
 
