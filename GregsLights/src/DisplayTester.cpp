@@ -10,13 +10,16 @@ DisplayTester::DisplayTester(DisplayModel *m)
     //ctor
 }
 
-void DisplayTester::testAll() {
+void DisplayTester::testAll()
+{
     pthread_t clock_t;
     pthread_t dmx_t;
     pthread_t sign_t;
+    pthread_t bush_t;
     pthread_create(&(clock_t), NULL, DisplayTester::clockThread, (void*) this);
     pthread_create(&(dmx_t), NULL, DisplayTester::dmxThread, (void*) this);
     pthread_create(&(sign_t), NULL, DisplayTester::signThread, (void*) this);
+    pthread_create(&(bush_t), NULL, DisplayTester::bushThread, (void*) this);
 
     // Join disabled becaue the graphics byild needs testAll to return....
     //pthread_join(clock_t, NULL);
@@ -46,10 +49,20 @@ void * DisplayTester::signThread(void *args)
 void * DisplayTester::dmxThread(void *args)
 {
     DisplayTester *ptr = (DisplayTester *) args;
-    while(1) {
+    while(1)
+    {
         ptr->testDMX();
     }
 
+    return NULL;
+}
+
+void *DisplayTester::bushThread(void *args)
+{
+    DisplayTester *ptr = (DisplayTester *) args;
+    while(1) {
+        ptr->testBushes();
+    }
     return NULL;
 }
 
@@ -59,8 +72,40 @@ void DisplayTester::testClock()
     //this->model->getClock()->testALlOn();
     //this->model->getClock()->test();
     this->model->getClock()->setActive(true);
-    while(1) {
+    while(1)
+    {
         sleep(100);  // Needed because setActive starts its own thread.
+    }
+}
+
+void DisplayTester::testBushes()
+{
+    while(1)
+    {
+        for (int i=BUSH_LIGHT_START; i<= BUSH_LIGHT_END; i++)
+        {
+            model->getBush(i)->getRed()->setIntensity(100);
+            model->getBush(i)->getWhite()->setIntensity(0);
+        }
+        sleep(1);
+        for (int i=BUSH_LIGHT_START; i<=BUSH_LIGHT_END; i++)
+        {
+            model->getBush(i)->getRed()->setIntensity(0);
+            model->getBush(i)->getGreen()->setIntensity(100);
+        }
+        sleep(1);
+        for (int i=BUSH_LIGHT_START; i<=BUSH_LIGHT_END; i++)
+        {
+            model->getBush(i)->getGreen()->setIntensity(0);
+            model->getBush(i)->getBlue()->setIntensity(100);
+        }
+        sleep(1);
+        for (int i=BUSH_LIGHT_START; i<=BUSH_LIGHT_END; i++)
+        {
+            model->getBush(i)->getBlue()->setIntensity(0);
+            model->getBush(i)->getWhite()->setIntensity(100);
+        }
+        sleep(1);
     }
 }
 
@@ -147,7 +192,8 @@ void DisplayTester::testDMX()
     sleep(5);
 
     model->setMessage(1, "House off\n");
-    for (i = HOUSE_LIGHT_START; i <= HOUSE_LIGHT_END; i++) {
+    for (i = HOUSE_LIGHT_START; i <= HOUSE_LIGHT_END; i++)
+    {
         house[i]->turnOff();
     }
 
