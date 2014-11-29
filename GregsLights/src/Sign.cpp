@@ -70,26 +70,48 @@ RGBLight *Sign::getBoard(int x, int y)
     return board[pos];
 }
 
-void Sign::scrollSecondsUntil()
+void Sign::scrollSecondsUntil(RGB_COLOR fgColor, RGB_COLOR bgColor)
 {
     for (int i = 0; i < SIGN_DUMMY_WIDTH; i++)
     {
         for (int j = 0; j < SIGN_DUMMY_HEIGHT; j++)
         {
-            getBoard(i,j)->setStdColor(GREEN);
+            getBoard(i,j)->setStdColor(bgColor);
         }
     }
 
-    int pos = drawLetter('R', RED, 0,0) + 2;
-    pos += drawLetter('Y', RED, pos,0) + 2;
-    pos += drawLetter('A', RED, pos,0) + 2;
-    setDisplayPosition(0,0);
-    sleep(50);
+    int pos = 50;
+    pos += drawLetter('S', fgColor, pos,0) + 2;
+    pos += drawLetter('E', fgColor, pos,0) + 2;
+    pos += drawLetter('C', fgColor, pos,0) + 2;
+    pos += drawLetter('O', fgColor, pos,0) + 2;
+    pos += drawLetter('N', fgColor, pos,0) + 2;
+    pos += drawLetter('D', fgColor, pos,0) + 2;
+    pos += drawLetter('S', fgColor, pos,0) + 2;
+    pos += 9;
+    pos += drawLetter('U', fgColor, pos,0) + 2;
+    pos += drawLetter('N', fgColor, pos,0) + 2;
+    pos += drawLetter('T', fgColor, pos,0) + 2;
+    pos += drawLetter('I', fgColor, pos,0) + 2;
+    pos += drawLetter('L', fgColor, pos,0) + 2;
+    pos += 9;
+    pos += drawLetter('C', fgColor, pos,0) + 2;
+    pos += drawLetter('H', fgColor, pos,0) + 2;
+    pos += drawLetter('R', fgColor, pos,0) + 2;
+    pos += drawLetter('I', fgColor, pos,0) + 2;
+    pos += drawLetter('S', fgColor, pos,0) + 2;
+    pos += drawLetter('T', fgColor, pos,0) + 2;
+    pos += drawLetter('M', fgColor, pos,0) + 2;
+    pos += drawLetter('A', fgColor, pos,0) + 2;
+    pos += drawLetter('S', fgColor, pos,0) + 2;
+    //pos += drawLetter('!', fgColor, pos,0) + 2;
 
-    for (int i = 0; i < 40; i++)
+    setDisplayPosition(0,0);
+
+    for (int i = 0; i < pos; i++)
     {
         setDisplayPosition(i,0);
-        sleep(1);
+        usleep(50000);
     }
 }
 
@@ -500,6 +522,24 @@ int Sign::drawLetter(char letter, RGB_COLOR color, int startX, int startY)
 
         offset=15;
     }
+    else {
+        //?
+        for (x=0; x<9; x++)
+        {
+            d[x][0] = '1';
+            d[x][7] = '1';
+        }
+        for (y=0; y<8; y++)
+        {
+            d[8][y] = '1';
+        }
+        for (y=9; y<13; y++)
+        {
+            d[4][y] = '1';
+        }
+
+        offset = 10;
+    }
 
     for (x = 0; x < 20; x++)
     {
@@ -532,9 +572,9 @@ void Sign::setDisplayPosition(int xOffset, int yOffset)
 
 void Sign::test()
 {
-    int betweenPixals = 9000;
+    int betweenPixals = 5000;
     int betweenColors = 2;
-    scrollSecondsUntil();
+    scrollSecondsUntil(WHITE, BLACK);
     while (true)
     {
         for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)

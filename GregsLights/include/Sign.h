@@ -8,7 +8,7 @@
 #define TOTAL_SIGN_PIXALS SIGN_WIDTH * SIGN_HEIGHT
 
 #define SIGN_DUMMY_HEIGHT 50
-#define SIGN_DUMMY_WIDTH 200
+#define SIGN_DUMMY_WIDTH 1000
 
 class Sign
 {
@@ -16,7 +16,7 @@ class Sign
         Sign(E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6);
         virtual ~Sign();
         void test();
-        void scrollSecondsUntil();
+        void scrollSecondsUntil(RGB_COLOR fgColor, RGB_COLOR bgColor);
         RGBLight * getPixal(int i);
         RGBLight * getPixal(int x, int y);
     protected:

@@ -66,6 +66,11 @@ void RGBLight::setStdColor(RGB_COLOR color)
     case PURPLE:
         this->set(100,0,100);
         break;
+    case BLACK:
+        this->set(0,0,0);
+        break;
+    case WHITE:
+        this->set(100,100,100);
     }
 }
 

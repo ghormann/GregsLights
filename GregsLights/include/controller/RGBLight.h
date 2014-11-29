@@ -9,7 +9,9 @@ enum RGB_COLOR
     GREEN,
     BLUE,
     YELLOW,
-    PURPLE
+    PURPLE,
+    BLACK,
+    WHITE
 };
 
 class RGBLight
