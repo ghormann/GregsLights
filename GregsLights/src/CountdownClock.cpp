@@ -28,6 +28,8 @@ CountdownClock::CountdownClock()
 
     t_christmas = mktime(&tm_christmas);
 
+    sprintf(message, "Created Clock");
+
 }
 
 CountdownClock::~CountdownClock()
@@ -41,6 +43,7 @@ int CountdownClock::getSecondsRemaining()
 
 void CountdownClock::testALlOn()
 {
+    sprintf(message, "All on");
     while(1)
     {
         for (int i =0; i <6; i++)
@@ -62,6 +65,8 @@ void CountdownClock::testALlOn()
 
 void CountdownClock::test()
 {
+    sprintf(message, "Testing Clock");
+
     while(1)
     {
 
