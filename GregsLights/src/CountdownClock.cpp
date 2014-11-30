@@ -145,6 +145,20 @@ void CountdownClock::tick()
     int s6 = 0;
     int s7 = 0;
 
+    struct tm *tm_now = localtime(&t_now);
+
+
+    // Not on douring the day
+    if (tm_now->tm_hour > 8 || tm_now->tm_hour < 17)
+    {
+        for (int i = 0 ; i < CLOCK_DIGITS * 7; i++)
+        {
+            this->bulbs[i] = 0;
+        }
+        lastTick = -1;
+        return;
+    }
+
 
     if (lastTick != num_seconds)
     {
