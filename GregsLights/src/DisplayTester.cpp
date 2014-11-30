@@ -83,8 +83,8 @@ void *DisplayTester::bushThread(void *args)
 void DisplayTester::testClock()
 {
     //this->model->getClock()->testALlOn();
-    this->model->getClock()->test();
-    //this->model->getClock()->setActive(true);
+    //this->model->getClock()->test();
+    this->model->getClock()->setActive(true);
     while(1)
     {
         sleep(100);  // Needed because setActive starts its own thread.

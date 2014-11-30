@@ -130,6 +130,11 @@ void CountdownClock::setFirst(int value) {
     }
 }
 
+char * CountdownClock::getMessage()
+{
+    return message;
+}
+
 void CountdownClock::tick()
 {
     time_t t_now;
@@ -149,8 +154,14 @@ void CountdownClock::tick()
 
 
     // Not on douring the day
-    if (tm_now->tm_hour > 8 || tm_now->tm_hour < 17)
+    if (tm_now->tm_hour > 7 && tm_now->tm_hour < 16)
     {
+        sprintf(message, "Sleeping (%02d:%02d)",
+                    tm_now->tm_hour,
+                    tm_now->tm_min);
+            sleep(60);
+            sprintf(message, "Running");
+
         for (int i = 0 ; i < CLOCK_DIGITS * 7; i++)
         {
             this->bulbs[i] = 0;

@@ -33,7 +33,7 @@ void Snowmen::run()
     {
         time(&now_t);
         now = localtime(&now_t);
-        while(now->tm_hour > 8 && now->tm_hour < 17 && !skip_time_check)
+        while(now->tm_hour > 7 && now->tm_hour < 16 && !skip_time_check)
         {
             sprintf(message2, "Sleeping 10 minutes(%02d:%02d)",
                     now->tm_hour,

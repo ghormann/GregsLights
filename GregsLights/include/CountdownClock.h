@@ -39,11 +39,13 @@ class CountdownClock
         Bulb *getBulb(int digit, int segment);
         int getSecondsRemaining();
         void setFirst(int value);
+        char * getMessage();
     protected:
     private:
         Bulb *bulbs[CLOCK_DIGITS*7 + 1];
         Bulb *special[8];
         bool active;
+        char message[100];
         struct tm tm_christmas;
         time_t t_christmas;
         int lastTick;
