@@ -52,6 +52,14 @@ DisplayModel::DisplayModel(bool sendDMX)
         house[i] = dmx->getRGB(j);
     }
 
+    //setup Snowmen
+    this->snowmen = new Snowmen();
+    for (int i =0; i < 7; i++)
+    {
+        snowmen->setBulb(i, lor->getBulb(6,i+1));
+        snowmen->setBulb(i+7, lor->getBulb(7,i+1));
+    }
+
     // setup Bushes;
     bushes[1] = new Bush(1,lor->getBulb(1,1), lor->getBulb(1,2), lor->getBulb(1,3), lor->getBulb(1,4));
     bushes[2] = new Bush(2,lor->getBulb(1,5), lor->getBulb(1,6), lor->getBulb(1,7), lor->getBulb(1,8));
@@ -173,6 +181,10 @@ RGBLight* DisplayModel::getHouse(int id)
     }
 
     return house[id];
+}
+
+Snowmen * DisplayModel::getSnowmen() {
+    return snowmen;
 }
 
 Sign * DisplayModel::getSign()

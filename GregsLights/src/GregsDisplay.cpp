@@ -6,7 +6,6 @@
 #define GD_BLUE 2
 #define GD_WHITE 3
 
-#define write_data(a)  usleep((a)*1000000)
 
 GregsDisplay::GregsDisplay(DisplayModel *m)
 {

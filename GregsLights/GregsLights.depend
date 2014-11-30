@@ -247,30 +247,31 @@
 	<stdio.h>
 	<ctype.h>
 
-1417319231 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/DisplayTester.cpp
+1417365220 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/DisplayTester.cpp
 	"../include/DisplayTester.h"
 	<stdio.h>
 	<stdlib.h>
 	<pthread.h>
 
-1417319231 /home/ghormann/Documents/src/gregslights/GregsLights/include/DisplayTester.h
+1417364983 /home/ghormann/Documents/src/gregslights/GregsLights/include/DisplayTester.h
 	"DisplayModel.h"
 
-1416954174 /home/ghormann/Documents/src/gregslights/GregsLights/include/DisplayModel.h
+1417365092 /home/ghormann/Documents/src/gregslights/GregsLights/include/DisplayModel.h
 	"controller/RGBLight.h"
 	"controller/Bush.h"
 	"controller/NetworkCollection.h"
 	"CountdownClock.h"
 	"Sign.h"
+	"Snowmen.h"
 
-1416784375 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/GregsDisplay.cpp
+1417365301 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/GregsDisplay.cpp
 	"../include/GregsDisplay.h"
 	"../include/controller/Bush.h"
 
 1416784375 /home/ghormann/Documents/src/gregslights/GregsLights/include/GregsDisplay.h
 	"DisplayModel.h"
 
-1416952366 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/TextDisplay.cpp
+1417365522 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/TextDisplay.cpp
 	"../include/TextDisplay.h"
 	<pthread.h>
 	<curses.h>
@@ -304,7 +305,7 @@
 	"RGBLight.h"
 	<netinet/in.h>
 
-1417319231 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/DisplayModel.cpp
+1417365127 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/DisplayModel.cpp
 	"../include/DisplayModel.h"
 	"../include/controller/RGBLight.h"
 	"../include/controller/OpenDMXNetwork.h"
@@ -2032,4 +2033,16 @@
 
 1417183920 /home/ghormann/Documents/src/GregsLights/GregsLights/include/controller/DummyBulb.h
 	"Bulb.h"
+
+1417365507 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/Snowmen.cpp
+	"../include/Snowmen.h"
+	<stdio.h>
+	<unistd.h>
+	<time.h>
+	<stdlib.h>
+	<string.h>
+
+1417364837 /home/ghormann/Documents/src/gregslights/GregsLights/include/Snowmen.h
+	"pthread.h"
+	"controller/Bulb.h"
 

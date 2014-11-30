@@ -6,7 +6,7 @@
 #include "controller/NetworkCollection.h"
 #include "CountdownClock.h"
 #include "Sign.h"
-
+#include "Snowmen.h"
 
 
 #define HOUSE_LIGHT_START 1
@@ -26,6 +26,7 @@ class DisplayModel
         Bush *getBush(int id);
         CountdownClock *getClock();
         Sign * getSign();
+        Snowmen * getSnowmen();
         void setMessage(int id, char*);
         char *getMessage(int id);
     protected:
@@ -36,6 +37,7 @@ class DisplayModel
         CountdownClock *clock;
         char *messages[NUM_MESSAGE_BUFFERS];
         Sign *sign;
+        Snowmen *snowmen;
 
 };
 

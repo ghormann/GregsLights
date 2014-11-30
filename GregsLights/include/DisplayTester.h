@@ -18,6 +18,7 @@ class DisplayTester
         static void * dmxThread(void *);
         static void * bushThread(void *);
         static void * signThread(void *);
+        static void * snowmenThread(void *);
     protected:
     private:
         DisplayModel *model;

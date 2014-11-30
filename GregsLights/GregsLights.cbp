@@ -40,6 +40,7 @@
 					<Add option="-std=c++11" />
 					<Add option="`wx-config --cflags`" />
 					<Add directory="include/controller" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-lGL -lGLU" />
@@ -64,6 +65,7 @@
 		<Unit filename="include/DisplayTester.h" />
 		<Unit filename="include/GregsDisplay.h" />
 		<Unit filename="include/Sign.h" />
+		<Unit filename="include/Snowmen.h" />
 		<Unit filename="include/TextDisplay.h" />
 		<Unit filename="include/controller/Bulb.h" />
 		<Unit filename="include/controller/Bush.h" />
@@ -91,6 +93,7 @@
 		<Unit filename="src/DisplayTester.cpp" />
 		<Unit filename="src/GregsDisplay.cpp" />
 		<Unit filename="src/Sign.cpp" />
+		<Unit filename="src/Snowmen.cpp" />
 		<Unit filename="src/TextDisplay.cpp" />
 		<Unit filename="src/controller/Bulb.cpp" />
 		<Unit filename="src/controller/Bush.cpp" />

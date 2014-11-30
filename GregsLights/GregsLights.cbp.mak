@@ -40,7 +40,7 @@ OBJDIR_RELEASE = obj/Release
 DEP_RELEASE = 
 OUT_RELEASE = bin/Release/GregsLights
 
-INC_GRAPHICS = $(INC) -Iinclude/controller
+INC_GRAPHICS = $(INC) -Iinclude/controller -Iinclude
 CFLAGS_GRAPHICS = $(CFLAGS) -std=c++11 `wx-config --cflags`
 RESINC_GRAPHICS = $(RESINC)
 RCFLAGS_GRAPHICS = $(RCFLAGS)
@@ -51,11 +51,11 @@ OBJDIR_GRAPHICS = .objs
 DEP_GRAPHICS = 
 OUT_GRAPHICS = /GregsLights
 
-OBJ_DEBUG = $(OBJDIR_DEBUG)/src/controller/Bush.o $(OBJDIR_DEBUG)/src/CountdownClock.o $(OBJDIR_DEBUG)/src/DisplayModel.o $(OBJDIR_DEBUG)/src/DisplayTester.o $(OBJDIR_DEBUG)/src/GregsDisplay.o $(OBJDIR_DEBUG)/src/Sign.o $(OBJDIR_DEBUG)/src/TextDisplay.o $(OBJDIR_DEBUG)/src/controller/Bulb.o $(OBJDIR_DEBUG)/main.o $(OBJDIR_DEBUG)/src/controller/DMXBulb.o $(OBJDIR_DEBUG)/src/controller/DummyBulb.o $(OBJDIR_DEBUG)/src/controller/E131Network.o $(OBJDIR_DEBUG)/src/controller/LORNetwork.o $(OBJDIR_DEBUG)/src/controller/NetworkCollection.o $(OBJDIR_DEBUG)/src/controller/OpenDMXNetwork.o $(OBJDIR_DEBUG)/src/controller/RGBLight.o $(OBJDIR_DEBUG)/src/controller/serial_posix.o
+OBJ_DEBUG = $(OBJDIR_DEBUG)/src/controller/Bush.o $(OBJDIR_DEBUG)/src/CountdownClock.o $(OBJDIR_DEBUG)/src/DisplayModel.o $(OBJDIR_DEBUG)/src/DisplayTester.o $(OBJDIR_DEBUG)/src/GregsDisplay.o $(OBJDIR_DEBUG)/src/Sign.o $(OBJDIR_DEBUG)/src/Snowmen.o $(OBJDIR_DEBUG)/src/TextDisplay.o $(OBJDIR_DEBUG)/src/controller/Bulb.o $(OBJDIR_DEBUG)/main.o $(OBJDIR_DEBUG)/src/controller/DMXBulb.o $(OBJDIR_DEBUG)/src/controller/DummyBulb.o $(OBJDIR_DEBUG)/src/controller/E131Network.o $(OBJDIR_DEBUG)/src/controller/LORNetwork.o $(OBJDIR_DEBUG)/src/controller/NetworkCollection.o $(OBJDIR_DEBUG)/src/controller/OpenDMXNetwork.o $(OBJDIR_DEBUG)/src/controller/RGBLight.o $(OBJDIR_DEBUG)/src/controller/serial_posix.o
 
-OBJ_RELEASE = $(OBJDIR_RELEASE)/src/controller/Bush.o $(OBJDIR_RELEASE)/src/CountdownClock.o $(OBJDIR_RELEASE)/src/DisplayModel.o $(OBJDIR_RELEASE)/src/DisplayTester.o $(OBJDIR_RELEASE)/src/GregsDisplay.o $(OBJDIR_RELEASE)/src/Sign.o $(OBJDIR_RELEASE)/src/TextDisplay.o $(OBJDIR_RELEASE)/src/controller/Bulb.o $(OBJDIR_RELEASE)/main.o $(OBJDIR_RELEASE)/src/controller/DMXBulb.o $(OBJDIR_RELEASE)/src/controller/DummyBulb.o $(OBJDIR_RELEASE)/src/controller/E131Network.o $(OBJDIR_RELEASE)/src/controller/LORNetwork.o $(OBJDIR_RELEASE)/src/controller/NetworkCollection.o $(OBJDIR_RELEASE)/src/controller/OpenDMXNetwork.o $(OBJDIR_RELEASE)/src/controller/RGBLight.o $(OBJDIR_RELEASE)/src/controller/serial_posix.o
+OBJ_RELEASE = $(OBJDIR_RELEASE)/src/controller/Bush.o $(OBJDIR_RELEASE)/src/CountdownClock.o $(OBJDIR_RELEASE)/src/DisplayModel.o $(OBJDIR_RELEASE)/src/DisplayTester.o $(OBJDIR_RELEASE)/src/GregsDisplay.o $(OBJDIR_RELEASE)/src/Sign.o $(OBJDIR_RELEASE)/src/Snowmen.o $(OBJDIR_RELEASE)/src/TextDisplay.o $(OBJDIR_RELEASE)/src/controller/Bulb.o $(OBJDIR_RELEASE)/main.o $(OBJDIR_RELEASE)/src/controller/DMXBulb.o $(OBJDIR_RELEASE)/src/controller/DummyBulb.o $(OBJDIR_RELEASE)/src/controller/E131Network.o $(OBJDIR_RELEASE)/src/controller/LORNetwork.o $(OBJDIR_RELEASE)/src/controller/NetworkCollection.o $(OBJDIR_RELEASE)/src/controller/OpenDMXNetwork.o $(OBJDIR_RELEASE)/src/controller/RGBLight.o $(OBJDIR_RELEASE)/src/controller/serial_posix.o
 
-OBJ_GRAPHICS = $(OBJDIR_GRAPHICS)/src/controller/Bush.o $(OBJDIR_GRAPHICS)/mainFrame.o $(OBJDIR_GRAPHICS)/src/CountdownClock.o $(OBJDIR_GRAPHICS)/src/DisplayModel.o $(OBJDIR_GRAPHICS)/src/DisplayTester.o $(OBJDIR_GRAPHICS)/src/GregsDisplay.o $(OBJDIR_GRAPHICS)/src/Sign.o $(OBJDIR_GRAPHICS)/src/TextDisplay.o $(OBJDIR_GRAPHICS)/src/controller/Bulb.o $(OBJDIR_GRAPHICS)/src/controller/DMXBulb.o $(OBJDIR_GRAPHICS)/src/controller/DummyBulb.o $(OBJDIR_GRAPHICS)/src/controller/E131Network.o $(OBJDIR_GRAPHICS)/src/controller/LORNetwork.o $(OBJDIR_GRAPHICS)/src/controller/NetworkCollection.o $(OBJDIR_GRAPHICS)/src/controller/OpenDMXNetwork.o $(OBJDIR_GRAPHICS)/src/controller/RGBLight.o $(OBJDIR_GRAPHICS)/src/controller/serial_posix.o
+OBJ_GRAPHICS = $(OBJDIR_GRAPHICS)/src/controller/Bush.o $(OBJDIR_GRAPHICS)/mainFrame.o $(OBJDIR_GRAPHICS)/src/CountdownClock.o $(OBJDIR_GRAPHICS)/src/DisplayModel.o $(OBJDIR_GRAPHICS)/src/DisplayTester.o $(OBJDIR_GRAPHICS)/src/GregsDisplay.o $(OBJDIR_GRAPHICS)/src/Sign.o $(OBJDIR_GRAPHICS)/src/Snowmen.o $(OBJDIR_GRAPHICS)/src/TextDisplay.o $(OBJDIR_GRAPHICS)/src/controller/Bulb.o $(OBJDIR_GRAPHICS)/src/controller/DMXBulb.o $(OBJDIR_GRAPHICS)/src/controller/DummyBulb.o $(OBJDIR_GRAPHICS)/src/controller/E131Network.o $(OBJDIR_GRAPHICS)/src/controller/LORNetwork.o $(OBJDIR_GRAPHICS)/src/controller/NetworkCollection.o $(OBJDIR_GRAPHICS)/src/controller/OpenDMXNetwork.o $(OBJDIR_GRAPHICS)/src/controller/RGBLight.o $(OBJDIR_GRAPHICS)/src/controller/serial_posix.o
 
 all: debug release graphics
 
@@ -91,6 +91,9 @@ $(OBJDIR_DEBUG)/src/GregsDisplay.o: src/GregsDisplay.cpp
 
 $(OBJDIR_DEBUG)/src/Sign.o: src/Sign.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/Sign.cpp -o $(OBJDIR_DEBUG)/src/Sign.o
+
+$(OBJDIR_DEBUG)/src/Snowmen.o: src/Snowmen.cpp
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/Snowmen.cpp -o $(OBJDIR_DEBUG)/src/Snowmen.o
 
 $(OBJDIR_DEBUG)/src/TextDisplay.o: src/TextDisplay.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/TextDisplay.cpp -o $(OBJDIR_DEBUG)/src/TextDisplay.o
@@ -162,6 +165,9 @@ $(OBJDIR_RELEASE)/src/GregsDisplay.o: src/GregsDisplay.cpp
 
 $(OBJDIR_RELEASE)/src/Sign.o: src/Sign.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/Sign.cpp -o $(OBJDIR_RELEASE)/src/Sign.o
+
+$(OBJDIR_RELEASE)/src/Snowmen.o: src/Snowmen.cpp
+	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/Snowmen.cpp -o $(OBJDIR_RELEASE)/src/Snowmen.o
 
 $(OBJDIR_RELEASE)/src/TextDisplay.o: src/TextDisplay.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/TextDisplay.cpp -o $(OBJDIR_RELEASE)/src/TextDisplay.o
@@ -235,6 +241,9 @@ $(OBJDIR_GRAPHICS)/src/GregsDisplay.o: src/GregsDisplay.cpp
 
 $(OBJDIR_GRAPHICS)/src/Sign.o: src/Sign.cpp
 	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/Sign.cpp -o $(OBJDIR_GRAPHICS)/src/Sign.o
+
+$(OBJDIR_GRAPHICS)/src/Snowmen.o: src/Snowmen.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/Snowmen.cpp -o $(OBJDIR_GRAPHICS)/src/Snowmen.o
 
 $(OBJDIR_GRAPHICS)/src/TextDisplay.o: src/TextDisplay.cpp
 	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/TextDisplay.cpp -o $(OBJDIR_GRAPHICS)/src/TextDisplay.o
