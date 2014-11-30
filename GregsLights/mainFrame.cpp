@@ -189,6 +189,58 @@ void BasicGLPane::render( wxPaintEvent& evt )
         }
     }
 
+    // Bushes
+    for (int i = BUSH_LIGHT_START; i <= BUSH_LIGHT_END; i++)
+    {
+        Bush * bush = model->getBush(i);
+        float blue = ((float)bush->getBlue()->getIntensity()) / 100;
+        float red = ((float)bush->getRed()->getIntensity()) / 100;
+        float green = ((float)bush->getGreen()->getIntensity()) / 100;
+        float white = ((float)bush->getWhite()->getIntensity()) / 100;
+        int offset = 0;
+        if (i>3)
+        {
+            offset=50;
+        }
+        glColor4f(red, green, blue, 1);
+        glBegin(GL_QUADS);
+        glVertex3f(i*30+4+offset, 4 +300, 0);
+        glVertex3f(i*30+4+offset, 20 + 300, 0);
+        glVertex3f(i*30+20+offset, 20 + 300, 0);
+        glVertex3f(i*30+20+offset, 4 + 300, 0);
+        glEnd();
+
+        // white
+        glColor4f(white, white, white, 1);
+        glBegin(GL_QUADS);
+        glVertex3f(i*30+4+offset, 4 +330, 0);
+        glVertex3f(i*30+4+offset, 20 + 330, 0);
+        glVertex3f(i*30+20+offset, 20 + 330, 0);
+        glVertex3f(i*30+20+offset, 4 + 330, 0);
+        glEnd();
+    }
+
+    for (int i = HOUSE_LIGHT_START; i <= HOUSE_LIGHT_END; i++)
+    {
+        RGBLight *pix = model->getHouse(i);
+        float red = ((float)pix->getRed())  / 100;
+        float green = ((float)pix->getGreen()) / 100;
+        float blue = ((float)pix->getBlue()) / 100;
+        int offset = -30;
+
+        if (i > 2)
+            offset = 30;
+
+        glColor4f(red, green, blue, 1);
+        glBegin(GL_QUADS);
+        glVertex3f(i*50+4+offset, 4 + 370, 0);
+        glVertex3f(i*50+4+offset, 40 + 370, 0);
+        glVertex3f(i*50+40+offset, 40 + 370, 0);
+        glVertex3f(i*50+40+offset, 4 + 370, 0);
+        glEnd();
+
+    }
+
     glFlush();
     SwapBuffers();
 }
