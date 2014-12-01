@@ -165,7 +165,6 @@ void CountdownClock::tick()
                     tm_now->tm_hour,
                     tm_now->tm_min);
             sleep(60);
-            sprintf(message, "Running");
 
         for (int i = 0 ; i < CLOCK_DIGITS * 7; i++)
         {
@@ -178,6 +177,7 @@ void CountdownClock::tick()
 
     if (lastTick != num_seconds)
     {
+        sprintf(message, "Running");
         if (num_seconds <= 0)
         {
             num_seconds = 0;

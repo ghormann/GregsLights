@@ -20,14 +20,11 @@ int main()
         DisplayModel *model = new DisplayModel(sendDMX);
         sleep(1); // Allow threads to start up
         new TextDisplay(model);
-        DisplayTester *tester = new DisplayTester(model);
-        //tester->testDMX();
-        //tester->testClock();
-        //tester->testSign();
-        tester->testAll();
+        //DisplayTester *tester = new DisplayTester(model);
+        //tester->testAll();
 
-        //GregsDisplay *display = new GregsDisplay(model);
-        //display->run();
+        GregsDisplay *display = new GregsDisplay(model);
+        display->run();
 
         while(1) {
             sleep(60);

@@ -31,6 +31,18 @@ void RGBLight::fade(int red_s, int green_s, int blue_s, int red_e, int green_e, 
     this->blue->fade(blue_s,blue_e,dur);
 }
 
+Bulb *RGBLight::getRedBulb() {
+    return this->red;
+}
+
+Bulb *RGBLight::getGreenBulb() {
+    return this->green;
+}
+
+Bulb *RGBLight::getBlueBulb() {
+    return this->blue;
+}
+
 int RGBLight::getRed()
 {
     return this->red->getIntensity();

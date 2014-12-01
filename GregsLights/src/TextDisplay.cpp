@@ -51,10 +51,10 @@ TextDisplay::~TextDisplay()
 void TextDisplay::update()
 {
     CountdownClock *clock = model->getClock();
-    mvprintw(0, 0, "%s", model->getMessage(1));
-    mvprintw(1, 0, "%s", model->getMessage(2));
-    mvprintw(2, 0, "Snowmen: %s", model->getSnowmen()->getMessage());
-    mvprintw(3, 0, "Clock: %s", model->getClock()->getMessage());
+    mvprintw(0, 0, "%-60s", model->getMessage(1));
+    mvprintw(1, 0, "%-60s", model->getMessage(2));
+    mvprintw(2, 0, "Snowmen: %-60s", model->getSnowmen()->getMessage());
+    mvprintw(3, 0, "Clock: %-60s", model->getClock()->getMessage());
 
     mvprintw(0, 64, "Clock: %7d", clock->getSecondsRemaining());
 

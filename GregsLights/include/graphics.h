@@ -10,6 +10,7 @@
 #include <wx/timer.h>
 #include "DisplayModel.h"
 #include "DisplayTester.h"
+#include "GregsDisplay.h"
 #include "TextDisplay.h"
 #include "controller/RGBLight.h"
 

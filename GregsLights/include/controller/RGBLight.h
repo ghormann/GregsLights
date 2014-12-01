@@ -8,10 +8,10 @@ enum RGB_COLOR
     RED = 0,
     GREEN,
     BLUE,
+    WHITE,
     YELLOW,
     PURPLE,
-    BLACK,
-    WHITE
+    BLACK
 };
 
 class RGBLight
@@ -27,6 +27,9 @@ public:
     int getRed();
     int getGreen();
     int getBlue();
+    Bulb *getRedBulb();
+    Bulb *getGreenBulb();
+    Bulb *getBlueBulb();
 protected:
 private:
     Bulb *red;

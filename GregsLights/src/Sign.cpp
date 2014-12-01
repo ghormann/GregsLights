@@ -598,14 +598,14 @@ void Sign::test()
 
         for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
         {
-            this->pixals[i]->set(100,100,100);
+            this->pixals[i]->set(100,100,0);
             usleep(betweenPixals);
         }
         sleep(betweenColors);
 
         for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
         {
-            pixals[i]->fade(100,100,100,100,0,0,betweenColors);
+            pixals[i]->fade(100,100,0,100,0,0,betweenColors);
         }
         sleep(betweenColors);
 
