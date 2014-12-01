@@ -56,7 +56,15 @@ RGBLight * Sign::getPixal(int i)
 
 RGBLight *Sign::getPixal(int x, int y)
 {
-    return getPixal(y*SIGN_WIDTH + x);
+    int xmod = x%2;
+    int pos = 0;
+    if (xmod == 0)
+    {
+        pos = x * SIGN_HEIGHT + y;
+    } else {
+        pos = x*SIGN_HEIGHT + (SIGN_HEIGHT-1) - y;
+    }
+    return getPixal(pos);
 }
 
 RGBLight *Sign::getBoard(int x, int y)
@@ -522,7 +530,8 @@ int Sign::drawLetter(char letter, RGB_COLOR color, int startX, int startY)
 
         offset=15;
     }
-    else {
+    else
+    {
         //?
         for (x=0; x<9; x++)
         {
@@ -572,13 +581,24 @@ void Sign::setDisplayPosition(int xOffset, int yOffset)
 
 void Sign::test()
 {
-    int betweenPixals = 300000;
+    int betweenPixals = 10000;
     int betweenColors = 2;
-    //scrollSecondsUntil(WHITE, BLACK);
     this->pixals[0]->set(100,100,100);
     sleep(3);
+    scrollSecondsUntil(WHITE, BLACK);
+
     while (true)
     {
+        for (int x = 0; x < SIGN_WIDTH; x++)
+        {
+            for (int y = 0; y < SIGN_HEIGHT; y++)
+            {
+                getPixal(x,y)->set(100,0,0);
+                usleep(betweenPixals);
+            }
+        }
+        sleep(betweenColors);
+
         for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
         {
             this->pixals[i]->set(100,0,0);
