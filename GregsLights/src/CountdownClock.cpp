@@ -355,7 +355,10 @@ void CountdownClock::setActive(bool makeActive)
     if (makeActive)
     {
         if (! this->clock_t)
+        {
+            setAllOff();
             pthread_create(&(this->clock_t), NULL, update_clock, this);
+        }
     }
     this->active = makeActive;
 }
