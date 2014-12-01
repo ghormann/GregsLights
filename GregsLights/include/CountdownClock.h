@@ -36,6 +36,7 @@ class CountdownClock
         void test();
         void testALlOn();
         void tick();
+        void setAllOff();
         Bulb *getBulb(int digit, int segment);
         int getSecondsRemaining();
         void setFirst(int value);

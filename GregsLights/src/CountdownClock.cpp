@@ -107,7 +107,24 @@ void CountdownClock::test()
     }
 }
 
-void CountdownClock::setFirst(int value) {
+void CountdownClock::setAllOff()
+{
+    for (int i = 0; i < 6; i++)   //0 to < 6
+    {
+        for (int j = 0; j < 7; j++)
+        {
+            getBulb(i,j)->setIntensity(0);
+        }
+    }
+    special[SPECIAL_HORZ]->setIntensity(0);
+    special[SPECIAL_P3]->setIntensity(0);
+    special[SPECIAL_P5]->setIntensity(0);
+    special[SPECIAL_P6]->setIntensity(0);
+
+}
+
+void CountdownClock::setFirst(int value)
+{
 
     if (value == 3)
     {
@@ -115,19 +132,23 @@ void CountdownClock::setFirst(int value) {
         special[SPECIAL_P3]->setIntensity(100);
         special[SPECIAL_P5]->setIntensity(0);
         special[SPECIAL_P6]->setIntensity(100);
-    } else if (value == 2)
+    }
+    else if (value == 2)
     {
         special[SPECIAL_HORZ]->setIntensity(100);
         special[SPECIAL_P3]->setIntensity(100);
         special[SPECIAL_P5]->setIntensity(100);
         special[SPECIAL_P6]->setIntensity(0);
-    } else if (value == 1)
+    }
+    else if (value == 1)
     {
         special[SPECIAL_HORZ]->setIntensity(0);
         special[SPECIAL_P3]->setIntensity(100);
         special[SPECIAL_P5]->setIntensity(0);
         special[SPECIAL_P6]->setIntensity(100);
-    } else {
+    }
+    else
+    {
         special[SPECIAL_HORZ]->setIntensity(0);
         special[SPECIAL_P3]->setIntensity(0);
         special[SPECIAL_P5]->setIntensity(0);
@@ -159,18 +180,14 @@ void CountdownClock::tick()
 
 
     // Not on douring the day
-    if (tm_now->tm_hour > 7 && tm_now->tm_hour < 16)
+    if (tm_now->tm_hour > 9 && tm_now->tm_hour < 17)
     {
         sprintf(message, "Sleeping (%02d:%02d)",
-                    tm_now->tm_hour,
-                    tm_now->tm_min);
-            sleep(60);
-
-        for (int i = 0 ; i < CLOCK_DIGITS * 7; i++)
-        {
-            this->bulbs[i] = 0;
-        }
+                tm_now->tm_hour,
+                tm_now->tm_min);
+        setAllOff();
         lastTick = -1;
+        sleep(60);
         return;
     }
 
@@ -190,9 +207,12 @@ void CountdownClock::tick()
         }
 
         // set tehe first Digit (Special)
-        if (isblank(seconds_c[0])){
+        if (isblank(seconds_c[0]))
+        {
             setFirst(0);
-        } else {
+        }
+        else
+        {
             num[0] = seconds_c[0] - 48;
             setFirst(num[0]);
         }
@@ -304,7 +324,8 @@ Bulb *CountdownClock::getBulb(int digit, int segment)
 
 void CountdownClock::setSpecial(int id, Bulb *bulb)
 {
-    if (id < 0 || id >6) {
+    if (id < 0 || id >6)
+    {
         throw "setSpecial: ID ust be between 0 and 6";
     }
     this->special[id] = bulb;
