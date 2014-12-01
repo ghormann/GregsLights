@@ -572,9 +572,11 @@ void Sign::setDisplayPosition(int xOffset, int yOffset)
 
 void Sign::test()
 {
-    int betweenPixals = 5000;
+    int betweenPixals = 300000;
     int betweenColors = 2;
-    scrollSecondsUntil(WHITE, BLACK);
+    //scrollSecondsUntil(WHITE, BLACK);
+    this->pixals[0]->set(100,100,100);
+    sleep(3);
     while (true)
     {
         for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
