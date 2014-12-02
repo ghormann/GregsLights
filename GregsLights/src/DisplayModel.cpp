@@ -54,10 +54,10 @@ DisplayModel::DisplayModel(bool sendDMX)
 
     //setup Snowmen
     this->snowmen = new Snowmen();
-    for (int i =0; i < 7; i++)
+    for (int i =0; i < 8; i++)
     {
         snowmen->setBulb(i, lor->getBulb(6,i+1));
-        snowmen->setBulb(i+7, lor->getBulb(7,i+1));
+        snowmen->setBulb(i+8, lor->getBulb(7,i+1));
     }
 
     // setup Bushes;

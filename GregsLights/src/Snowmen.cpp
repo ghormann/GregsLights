@@ -38,11 +38,11 @@ void Snowmen::run()
             sprintf(message2, "Sleeping 10 minutes(%02d:%02d)",
                     now->tm_hour,
                     now->tm_min);
+            setBodies(false);
             sleep(600);
             time(&now_t);
             now = localtime(&now_t);
         }
-
         do_it_snowmen();
     }
 }
@@ -58,7 +58,7 @@ void Snowmen::do_it_snowmen()
      * 13% 6   second sleep
      * 25% 1   second sleep
      */
-
+    setBodies(true);
     switch(random() %8)
     {
     case 0:
@@ -499,12 +499,20 @@ void Snowmen::miss_going_left(double pause)
 } /* End function hit_low_left */
 
 
+void Snowmen::setBodies(bool on)
+{
+    bulbs[7]->setIntensity(on ? 100 : 0);
+    bulbs[15]->setIntensity(on ? 100 : 0);
+
+}
+
 /*
   Just run some test statuses
 */
 void Snowmen::test_snowmen(void)
 {
     int i;
+    setBodies(true);
 
     for (i=1; i < 3; i++)
     {
@@ -541,13 +549,14 @@ void Snowmen::test_snowmen(void)
     }
 } /* end test_snowmen */
 
-char * Snowmen::getMessage() {
+char * Snowmen::getMessage()
+{
     return message2;
 }
 
 void Snowmen::set_snowmen(int side, int a, int b,int c,int d,int e,int f,int g)
 {
-    int offset = ((side == RIGHT) ? 7 : 0);
+    int offset = ((side == RIGHT) ? 8 : 0);
 
     bulbs[0+offset]->setIntensity(a);
     bulbs[1+offset]->setIntensity(b);
