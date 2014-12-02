@@ -61,7 +61,9 @@ RGBLight *Sign::getPixal(int x, int y)
     if (xmod == 0)
     {
         pos = x * SIGN_HEIGHT + y;
-    } else {
+    }
+    else
+    {
         pos = x*SIGN_HEIGHT + (SIGN_HEIGHT-1) - y;
     }
     return getPixal(pos);
@@ -76,6 +78,26 @@ RGBLight *Sign::getBoard(int x, int y)
     }
 
     return board[pos];
+}
+
+void Sign::staticSecondsUntil(RGB_COLOR fgColor, RGB_COLOR bgColor)
+{
+    for (int i = 0; i < SIGN_WIDTH; i++)
+    {
+        for (int j = 0; j < SIGN_HEIGHT; j++)
+        {
+            getBoard(i,j)->setStdColor(bgColor);
+        }
+    }
+    int x=0;
+    int y=0;
+    x +=drawLetterSmall('M', fgColor, x,y) +2;
+    x +=drawLetterSmall('E', fgColor, x,y) +2;
+    x +=drawLetterSmall('L', fgColor, x,y) +2;
+    x +=drawLetterSmall('I', fgColor, x,y) +2;
+    x +=drawLetterSmall('H', fgColor, x,y) +2;
+    setDisplayPosition(0,0);
+
 }
 
 void Sign::scrollSecondsUntil(RGB_COLOR fgColor, RGB_COLOR bgColor)
@@ -563,6 +585,367 @@ int Sign::drawLetter(char letter, RGB_COLOR color, int startX, int startY)
 
 }
 
+int Sign::drawLetterSmall(char letter,RGB_COLOR color, int startX, int startY)
+{
+    int x=0;
+    int y=0;
+    int offset = 0;
+    char d[10][10];
+    for (x = 0; x < 10; x++)
+    {
+        for (y=0; y<10; y++)
+        {
+            d[x][y]='0';
+        }
+    }
+
+    if (letter == 'A')
+    {
+        d[3][0]=d[3][1]=d[2][2]=d[4][2]='1';
+        d[2][3]=d[4][3]='1';
+        d[1][4]=d[5][4]=d[1][5]=d[5][5] = '1';
+        for (x=1; x< 6; x++)
+        {
+            d[x][6]='1';
+        }
+        d[0][7]=d[0][8]=d[6][7]=d[6][8]='1';
+        offset = 7;
+    }
+    else if (letter == 'C')
+    {
+        for (x=1; x< 5; x++)
+        {
+            d[x][0]=d[x][8]='1';
+        }
+
+        d[5][1]=d[5][7]='1';
+
+        for (int y=1; y<8; y++)
+        {
+            d[0][y]='1';
+        }
+        offset = 6;
+    }
+    else if (letter == 'D')
+    {
+        for (y=0; y<9; y++)
+        {
+            d[0][y]='1';
+        }
+        for (x=0; x<4; x++)
+        {
+            d[x][0]=d[x][8]='1';
+        }
+        d[4][1]=d[4][7]='1';
+        for (y=2; y<7; y++)
+        {
+            d[5][y]='1';
+        }
+        offset = 6;
+    }
+    else if (letter == 'E')
+    {
+        for (x=0; x < 5; x++)
+        {
+            d[x][0] = d[x][4]= d[x][8]='1';
+        }
+        for (y = 0; y < 8; y++)
+        {
+            d[0][y]='1';
+        }
+        d[4][4]='0';
+        offset = 5;
+    }
+    else if (letter == 'H')
+    {
+        for (x=0; x<6; x++)
+        {
+            d[x][4] = '1';
+        }
+        for (y=0; y<9; y++)
+        {
+            d[0][y]=d[5][y] = '1';
+        }
+
+        offset=6;
+    }
+    else if (letter == 'I')
+    {
+
+        for (y=0; y<9; y++)
+        {
+            d[0][y]='1';
+        }
+
+        offset = 1;
+    }
+    else if (letter == 'L')
+    {
+        for (y=0; y<9; y++)
+        {
+            d[0][y]='1';
+            d[y][8] = '1';
+        }
+        d[5][8]=d[6][8]=d[7][8]=d[8][8]='0';
+
+        offset = 5;
+    }
+    else if (letter == 'M')
+    {
+        for (y=0; y<9; y++)
+        {
+            d[0][y]='1';
+            d[6][y] = '1';
+        }
+        d[1][2]=d[5][2]='1';
+        d[1][3]=d[5][3]='1';
+        d[2][4]=d[4][4]='1';
+        d[2][5]=d[4][5]='1';
+        d[3][6]='1';
+
+        offset=7;
+    }
+    else if (letter == 'N')
+    {
+        for (x=0; x<4; x++)
+        {
+            d[x][0] = '1';
+        }
+
+        for (x=11; x<16; x++)
+        {
+            d[x][0] = '1';
+        }
+
+        for (y=0; y<14; y++)
+        {
+            d[3][y] = d[13][y] = '1';
+        }
+        for (x=1; x< 6; x++)
+        {
+            d[x][13] = '1';
+        }
+
+        x=2;
+        for (y=1; y<13; y++)
+        {
+            d[x][y] = d[x+1][y] = '1';
+            ++x;
+        }
+        d[10][10]=d[11][11]=d[12][12] = '1';
+        d[14][12]=d[14][13] = '0';
+        offset=16;
+    }
+    else if (letter == 'O')
+    {
+
+        for (x=4; x<9; x++)
+        {
+            d[x][0] = d[x][13] = '1';
+        }
+
+        for (y=4; y<10; y++)
+        {
+            d[0][y]=d[1][y]=d[11][y]=d[12][y] = '1';
+        }
+        d[2][1]=d[3][1]=d[9][1] = d[10][1] = '1';
+        d[2][2] = d[10][2]=d[11][2] = '1';
+        d[1][3]=d[2][3]=d[10][3]=d[11][3] = '1';
+        d[1][10]=d[2][10]=d[10][10]=d[11][10] = '1';
+        d[1][11]=d[2][11]=d[10][11] = '1';
+        d[2][12]=d[3][12]=d[10][12]=d[9][12] = '1';
+
+        offset = 13;
+    }
+    else if (letter == 'R')
+    {
+        for (x=0; x<9; x++)
+        {
+            d[x][0] = '1';
+        }
+        for (y=0; y<14; y++)
+        {
+            d[2][y] = d[3][y] = '1';
+        }
+        d[8][1] = d[9][1]=d[9][2]=d[10][2]='1';
+        d[9][3]=d[10][3]=d[9][4]=d[10][4] = '1';
+        d[8][5]=d[9][5]='1';
+        for (x=4; x<9; x++)
+        {
+            d[x][6]='1';
+        }
+        d[6][7]=d[7][7]=d[6][8]=d[7][8]=d[8][8]='1';
+        d[7][9]=d[8][9]=d[8][10]=d[9][10]='1';
+        d[8][11]=d[9][11]=d[10][11] = '1';
+        d[9][12]=d[10][12]=d[11][12] = '1';
+        for (x=0; x<6; x++)
+        {
+            d[x][13] = '1';
+        }
+        d[12][13]=d[10][13]=d[11][13] =d[13][13]= '1';
+
+        offset = 14;
+    }
+    else if (letter == 'S')
+    {
+        y=0;
+        d[2][y]=d[3][y]=d[4][y]=d[7][y] = '1';
+        y=1;
+        d[1][y]=d[2][y]=d[5][y]=d[6][y]=d[7][y] = '1';
+        y=2;
+        d[0][y]=d[1][y]=d[6][y]=d[7][y] = '1';
+        y=3;
+        d[0][y]=d[1][y]=d[7][y] = '1';
+        y=4;
+        d[0][y]=d[1][y]=d[2][y]=d[7][y] = '1';
+        y=5;
+        d[3][y]=d[1][y]=d[2][y] = '1';
+        y=6;
+        d[2][y]=d[3][y]=d[4][y]=d[5][y] = '1';
+        y=7;
+        d[4][y]=d[5][y]=d[6][y] = '1';
+        y=8;
+        d[5][y]=d[6][y]=d[7][y] = '1';
+        y=9;
+        d[0][y] = d[6][y]=d[7][y]=d[8][y] = '1';
+        y=10;
+        d[0][y] = d[7][y]=d[8][y] = '1';
+        y=11;
+        d[0][y] =d[1][y]= d[7][y]=d[8][y] = '1';
+        y=12;
+        d[0][y] =d[1][y] =d[2][y]= d[6][y]=d[7][y] = '1';
+        y=13;
+        d[0][y] =d[3][y] =d[4][y]= d[5][y]=d[6][y] = '1';
+
+        offset = 9;
+    }
+    else if (letter == 'T')
+    {
+
+        for (x=0; x<12; x++)
+        {
+            d[x][0] = '1';
+        }
+
+        for(y=0; y<14; y++)
+        {
+            d[5][y] = d[6][y] = '1';
+        }
+        d[0][1]=d[1][1]=d[0][2]=d[10][1]=d[11][1]=d[11][2] = '1';
+
+        for (x=3; x<9; x++)
+        {
+            d[x][13] = '1';
+        }
+
+        offset = 12;
+    }
+    else if (letter == 'U')
+    {
+        for (x=0; x<6; x++)
+        {
+            d[x][0] = '1';
+        }
+        for (x=10; x<15; x++)
+        {
+            d[x][0] = '1';
+        }
+
+        for(y=1; y<11; y++)
+        {
+            d[2][y]=d[3][y]=d[12][y] = '1';
+        }
+        d[3][11]=d[4][11]=d[11][11] = '1';
+        d[3][12]=d[4][12]=d[5][12]=d[10][12]=d[11][12] = '1';
+        for (x = 5; x<10; x++)
+        {
+            d[x][13] = '1';
+        }
+
+        offset=15;
+    }
+    else if (letter == 'X')
+    {
+        for (x=0; x<15; x++)
+        {
+            d[x][0]=d[x][13]='1';
+        }
+        d[7][0]=d[8][0]=d[7][13]=d[5][13]=d[6][13]='0';
+        d[2][1]=d[3][1]=d[4][1]=d[11][1]=d[12][1]='1';
+        d[3][2]=d[4][2]=d[10][2]=d[11][2]='1';
+        d[4][3]=d[5][3]=d[10][3]='1';
+        d[5][4]=d[6][4]=d[9][4]='1';
+        d[5][5]=d[6][5]=d[7][5]=d[8][5]='1';
+        d[6][6]=d[7][6]='1';
+        d[7][7]=d[8][7]='1';
+        d[6][8]=d[7][8]=d[8][8]=d[9][8] = '1';
+        d[5][9]=d[8][9]=d[9][9] = '1';
+        d[4][10]=d[5][10]=d[9][10]=d[10][10] = '1';
+        d[3][11]=d[4][11]=d[10][11]=d[11][11] = '1';
+        d[2][12]=d[3][12]=d[10][12]=d[11][12]=d[12][12] = '1';
+
+
+        offset=15;
+    }
+
+    else if (letter == 'Y')
+    {
+
+        for (x=0; x<15; x++)
+        {
+            d[x][0] = '1';
+        }
+        d[7][0]=d[8][0]=d[9][0] = '0';
+
+        d[2][1]=d[3][1]=d[4][1]=d[12][1]='1';
+        d[3][2]=d[4][2]=d[11][2]='1';
+        d[4][3]=d[5][3]=d[11][3]='1';
+        d[5][4]=d[6][4]=d[10][4]='1';
+        d[5][5]=d[6][5]=d[9][5]='1';
+        d[6][6]=d[7][6]=d[9][6]='1';
+        for (y=7; y<14; y++)
+        {
+            d[7][y]=d[8][y]='1';
+        }
+        for(x=5; x<11; x++)
+        {
+            d[x][13]='1';
+        }
+
+        offset=15;
+    }
+    else
+    {
+        //?
+        for (x=0; x<9; x++)
+        {
+            d[x][0] = '1';
+            d[x][7] = '1';
+        }
+        for (y=0; y<8; y++)
+        {
+            d[8][y] = '1';
+        }
+        for (y=9; y<13; y++)
+        {
+            d[4][y] = '1';
+        }
+
+        offset = 10;
+    }
+
+    for (x = 0; x < 10; x++)
+    {
+        for (y=0; y<10; y++)
+        {
+            if (d[x][y] == '1')
+                this->getBoard(startX+x, startY+y)->setStdColor(color);
+        }
+    }
+
+    return offset;
+}
+
 void Sign::redrawDisplay()
 {
     this->setDisplayPosition(currentX, currentY);
@@ -584,7 +967,9 @@ void Sign::test()
     int betweenPixals = 10000;
     int betweenColors = 2;
     this->pixals[0]->set(100,100,100);
-    sleep(3);
+    //sleep(3);
+    staticSecondsUntil(RED, GREEN);
+    sleep(50);
     scrollSecondsUntil(WHITE, BLACK);
 
     while (true)

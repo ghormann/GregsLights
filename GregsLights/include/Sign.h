@@ -17,6 +17,7 @@ class Sign
         virtual ~Sign();
         void test();
         void scrollSecondsUntil(RGB_COLOR fgColor, RGB_COLOR bgColor);
+        void staticSecondsUntil(RGB_COLOR fgColor, RGB_COLOR bgColor);
         RGBLight * getPixal(int i);
         RGBLight * getPixal(int x, int y);
     protected:
@@ -24,6 +25,7 @@ class Sign
         void setDisplayPosition(int x, int y);
         void redrawDisplay();
         int drawLetter(char letter, RGB_COLOR color, int x, int y);
+        int drawLetterSmall(char letter, RGB_COLOR color, int x, int y);
     private:
         int currentX;
         int currentY;
