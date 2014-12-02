@@ -844,16 +844,17 @@ void Sign::setDisplayPosition(int xOffset, int yOffset)
 
 void Sign::test()
 {
-    int betweenPixals = 10000;
+    int betweenPixals = 3000;
     int betweenColors = 2;
     this->pixals[0]->set(100,100,100);
     //sleep(3);
-    staticSecondsUntil(RED, GREEN);
-    sleep(50);
-    scrollSecondsUntil(WHITE, BLACK);
 
     while (true)
     {
+        staticSecondsUntil(RED, GREEN);
+        sleep(5);
+        scrollSecondsUntil(WHITE, BLACK);
+
         for (int x = 0; x < SIGN_WIDTH; x++)
         {
             for (int y = 0; y < SIGN_HEIGHT; y++)

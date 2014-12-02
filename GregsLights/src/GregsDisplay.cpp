@@ -21,17 +21,47 @@ void GregsDisplay::do_it_bushes()
 
     while(1)
     {
-
         setAllOff();
         sleep(1);
         time(&now_t);
         now = localtime(&now_t);
-        while(now->tm_hour > 7 && now->tm_hour < 16 && !skip_time_check)
+        /*
+        * During the day (9am-5pm): make sure all boxes are off.
+        * From 5pm - 11pm: run the standard display on the bushes
+        * From 11pm-6am: just have the spotlights on the house
+        */
+
+        while ( ( now->tm_hour == 8 && now->tm_min > 59) ||
+                ( (now->tm_hour > 8)  && now->tm_hour < 17)
+              )
+            /* 9:59am - 5pm */
         {
-            sprintf(model->getMessage(1), "Sleeping 10 minutes(%02d:%02d)",
+            if (skip_time_check)
+            {
+                break;
+            }
+            sprintf(model->getMessage(1), "Sleeping 1 minutes during day (%02d:%02d)",
                     now->tm_hour,
                     now->tm_min);
-            sleep(600);
+            setAllOff();
+            sleep(60);
+            time(&now_t);
+            now = localtime(&now_t);
+        }
+
+        while ( (now->tm_hour == 23) ||     /* 11pm - 6am */
+                (now->tm_hour >=0 && now->tm_hour <6)  )
+        {
+            if (skip_time_check)
+            {
+                break;
+            }
+
+            sprintf(model->getMessage(1), "Sleeping 1 minutes at night(%02d:%02d)",
+                    now->tm_hour,
+                    now->tm_min);
+            setAllOff();
+            sleep(60);
             time(&now_t);
             now = localtime(&now_t);
         }
