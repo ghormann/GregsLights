@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1417101173 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
+1417486049 source:/home/ghormann/Documents/src/GregsLights/GregsLights/main.cpp
 	<iostream>
 	"include/DisplayModel.h"
 	"include/DisplayTester.h"
@@ -14,7 +14,7 @@
 	"Sign.h"
 	"Snowmen.h"
 
-1417271619 /home/ghormann/Documents/src/GregsLights/GregsLights/include/controller/RGBLight.h
+1417486049 /home/ghormann/Documents/src/GregsLights/GregsLights/include/controller/RGBLight.h
 	"Bulb.h"
 
 1416104148 /home/ghormann/Documents/src/GregsLights/GregsLights/include/controller/Bulb.h
@@ -46,7 +46,7 @@
 	"DisplayModel.h"
 	<curses.h>
 
-1416104148 /home/ghormann/Documents/src/GregsLights/GregsLights/include/GregsDisplay.h
+1417486049 /home/ghormann/Documents/src/GregsLights/GregsLights/include/GregsDisplay.h
 	"DisplayModel.h"
 
 1417183920 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/Bulb.cpp
@@ -115,7 +115,7 @@
 	"serial.h"
 	"DMXBulb.h"
 
-1417271619 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/RGBLight.cpp
+1417486049 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/RGBLight.cpp
 	"../../include/controller/RGBLight.h"
 
 1416104148 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/serial_posix.cpp
@@ -129,10 +129,10 @@
 	<string.h>
 	"../../include/controller/serial.h"
 
-1417388104 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/CountdownClock.cpp
+1417486049 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/CountdownClock.cpp
 	"../include/CountdownClock.h"
 
-1417386968 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/DisplayModel.cpp
+1417486214 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/DisplayModel.cpp
 	"../include/DisplayModel.h"
 	"../include/controller/RGBLight.h"
 	"../include/controller/OpenDMXNetwork.h"
@@ -143,11 +143,12 @@
 	"../include/Sign.h"
 	<string.h>
 
-1417386968 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/GregsDisplay.cpp
+1417486049 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/GregsDisplay.cpp
 	"../include/GregsDisplay.h"
 	"../include/controller/Bush.h"
+	<string.h>
 
-1417387621 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/TextDisplay.cpp
+1417486049 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/TextDisplay.cpp
 	"../include/TextDisplay.h"
 	<pthread.h>
 	<curses.h>
@@ -2019,7 +2020,7 @@
 1417101173 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/DMXBulb.cpp
 	"../../include/controller/DMXBulb.h"
 
-1417271619 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/Sign.cpp
+1417486049 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/Sign.cpp
 	"../include/Sign.h"
 	<unistd.h>
 	"../include/controller/DummyBulb.h"
@@ -2049,11 +2050,11 @@
 	"pthread.h"
 	"controller/Bulb.h"
 
-1417386968 /home/ghormann/Documents/src/GregsLights/GregsLights/include/Snowmen.h
+1417486566 /home/ghormann/Documents/src/GregsLights/GregsLights/include/Snowmen.h
 	"pthread.h"
 	"controller/Bulb.h"
 
-1417387290 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/Snowmen.cpp
+1417486533 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/Snowmen.cpp
 	"../include/Snowmen.h"
 	<stdio.h>
 	<unistd.h>
