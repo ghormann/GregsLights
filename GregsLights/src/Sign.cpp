@@ -100,7 +100,7 @@ void Sign::staticSecondsUntil(RGBColor *fgColor, RGBColor *bgColor)
     x +=drawLetterSmall('D', fgColor, x,y) +1;
     x +=drawLetterSmall('S', fgColor, x,y) +1;
 
-    x=12;
+    x=8;
     y=11;
     x +=drawLetterSmall('T', fgColor, x,y) +1;
     x +=drawLetterSmall('O', fgColor, x,y) +1;
@@ -668,6 +668,17 @@ int Sign::drawLetterSmall(char letter, RGBColor* color, int startX, int startY)
         d[4][4]='0';
         offset = 5;
     }
+    else if (letter == 'G')
+    {
+        d[1][0]=d[2][0]=d[3][0]=d[4][0] = '1';
+        d[0][1]=d[0][2]=d[5][1]=d[0][3]=d[0][4] = '1';
+        d[5][4]=d[4][4]=d[3][4]='1';
+        d[0][5]=d[5][5]=d[0][6]=d[5][6]='1';
+        d[0][7]=d[4][7]=d[5][7]=d[5][8]='1';
+        d[1][8]=d[2][8]=d[3][8] = '1';
+
+        offset=6;
+    }
     else if (letter == 'H')
     {
         for (x=0; x<6; x++)
@@ -852,10 +863,28 @@ void Sign::test()
 
     while (true)
     {
-        RGBColor *lightGreen = new RGBColor(0,25,0);
+        RGBColor *lightGreen = new RGBColor(0,15,0);
         staticSecondsUntil(RGBColor::RED, lightGreen);
         delete lightGreen;
         sleep(5);
+
+        lightGreen = new RGBColor(0,25,0);
+        staticSecondsUntil(RGBColor::RED, lightGreen);
+        delete lightGreen;
+        sleep(5);
+
+        lightGreen = new RGBColor(0,35,0);
+        staticSecondsUntil(RGBColor::RED, lightGreen);
+        delete lightGreen;
+        sleep(5);
+
+        lightGreen = new RGBColor(0,45,0);
+        staticSecondsUntil(RGBColor::RED, lightGreen);
+        delete lightGreen;
+        sleep(5);
+
+
+
         scrollSecondsUntil(RGBColor::WHITE, RGBColor::BLACK);
 
         for (int x = 0; x < SIGN_WIDTH; x++)
