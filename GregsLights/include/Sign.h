@@ -16,16 +16,16 @@ class Sign
         Sign(E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6);
         virtual ~Sign();
         void test();
-        void scrollSecondsUntil(RGB_COLOR fgColor, RGB_COLOR bgColor);
-        void staticSecondsUntil(RGB_COLOR fgColor, RGB_COLOR bgColor);
+        void scrollSecondsUntil(RGBColor *fgColor, RGBColor *bgColor);
+        void staticSecondsUntil(RGBColor *fgColor, RGBColor *bgColor);
         RGBLight * getPixal(int i);
         RGBLight * getPixal(int x, int y);
     protected:
         RGBLight * getBoard(int x, int y);
         void setDisplayPosition(int x, int y);
         void redrawDisplay();
-        int drawLetter(char letter, RGB_COLOR color, int x, int y);
-        int drawLetterSmall(char letter, RGB_COLOR color, int x, int y);
+        int drawLetter(char letter, RGBColor *color, int x, int y);
+        int drawLetterSmall(char letter, RGBColor *color, int x, int y);
     private:
         int currentX;
         int currentY;

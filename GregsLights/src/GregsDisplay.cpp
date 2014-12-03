@@ -2,6 +2,11 @@
 #include "../include/controller/Bush.h"
 #include <string.h>
 
+#define RED 0
+#define GREEN 1
+#define BLUE 2
+#define WHITE 3
+
 
 GregsDisplay::GregsDisplay(DisplayModel *m)
 {

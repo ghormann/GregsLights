@@ -3,6 +3,7 @@
 #include "../include/controller/DummyBulb.h"
 #include <stdio.h>
 
+
 Sign::Sign(E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6)
 {
     currentX = 0;
@@ -80,13 +81,13 @@ RGBLight *Sign::getBoard(int x, int y)
     return board[pos];
 }
 
-void Sign::staticSecondsUntil(RGB_COLOR fgColor, RGB_COLOR bgColor)
+void Sign::staticSecondsUntil(RGBColor *fgColor, RGBColor *bgColor)
 {
     for (int i = 0; i < SIGN_WIDTH; i++)
     {
         for (int j = 0; j < SIGN_HEIGHT; j++)
         {
-            getBoard(i,j)->setStdColor(bgColor);
+            getBoard(i,j)->set(bgColor);
         }
     }
     int x=1;
@@ -111,13 +112,13 @@ void Sign::staticSecondsUntil(RGB_COLOR fgColor, RGB_COLOR bgColor)
 
 }
 
-void Sign::scrollSecondsUntil(RGB_COLOR fgColor, RGB_COLOR bgColor)
+void Sign::scrollSecondsUntil(RGBColor *fgColor, RGBColor *bgColor)
 {
     for (int i = 0; i < SIGN_DUMMY_WIDTH; i++)
     {
         for (int j = 0; j < SIGN_DUMMY_HEIGHT; j++)
         {
-            getBoard(i,j)->setStdColor(bgColor);
+            getBoard(i,j)->set(bgColor);
         }
     }
 
@@ -156,7 +157,7 @@ void Sign::scrollSecondsUntil(RGB_COLOR fgColor, RGB_COLOR bgColor)
     }
 }
 
-int Sign::drawLetter(char letter, RGB_COLOR color, int startX, int startY)
+int Sign::drawLetter(char letter, RGBColor *color, int startX, int startY)
 {
     int x=0;
     int y=0;
@@ -588,7 +589,7 @@ int Sign::drawLetter(char letter, RGB_COLOR color, int startX, int startY)
         for (y=0; y<40; y++)
         {
             if (d[x][y] == '1')
-                this->getBoard(startX+x, startY+y+3)->setStdColor(color);
+                this->getBoard(startX+x, startY+y+3)->set(color);
         }
     }
 
@@ -596,7 +597,7 @@ int Sign::drawLetter(char letter, RGB_COLOR color, int startX, int startY)
 
 }
 
-int Sign::drawLetterSmall(char letter,RGB_COLOR color, int startX, int startY)
+int Sign::drawLetterSmall(char letter, RGBColor* color, int startX, int startY)
 {
     int x=0;
     int y=0;
@@ -819,7 +820,7 @@ int Sign::drawLetterSmall(char letter,RGB_COLOR color, int startX, int startY)
         for (y=0; y<10; y++)
         {
             if (d[x][y] == '1')
-                this->getBoard(startX+x, startY+y)->setStdColor(color);
+                this->getBoard(startX+x, startY+y)->set(color);
         }
     }
 
@@ -851,9 +852,11 @@ void Sign::test()
 
     while (true)
     {
-        staticSecondsUntil(RED, GREEN);
+        RGBColor *lightGreen = new RGBColor(0,25,0);
+        staticSecondsUntil(RGBColor::RED, lightGreen);
+        delete lightGreen;
         sleep(5);
-        scrollSecondsUntil(WHITE, BLACK);
+        scrollSecondsUntil(RGBColor::WHITE, RGBColor::BLACK);
 
         for (int x = 0; x < SIGN_WIDTH; x++)
         {

@@ -161,20 +161,20 @@ void DisplayTester::testDMX()
     model->setMessage(1, "Purple\n");
     for(i = 1; i<=4; i++)
     {
-        house[i]->setStdColor(PURPLE);
+        house[i]->set(RGBColor::PURPLE);
     }
 
     sleep(2);
     model->setMessage(1, "Red\n");
     for(i = 1; i<=4; i++)
     {
-        house[i]->setStdColor(RED);
+        house[i]->set(RGBColor::RED);
     }
     sleep(2);
     model->setMessage(1, "Blue\n");
     for(i = 1; i<=4; i++)
     {
-        house[i]->setStdColor(BLUE);
+        house[i]->set(RGBColor::BLUE);
     }
 
 

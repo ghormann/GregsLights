@@ -221,10 +221,11 @@
 	"serial.h"
 	"DMXBulb.h"
 
-1417406515 /home/ghormann/Documents/src/gregslights/GregsLights/include/controller/RGBLight.h
+1417571105 /home/ghormann/Documents/src/gregslights/GregsLights/include/controller/RGBLight.h
 	"Bulb.h"
+	"RGBColor.h"
 
-1417402018 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/controller/RGBLight.cpp
+1417571144 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/controller/RGBLight.cpp
 	"../../include/controller/RGBLight.h"
 
 1416784375 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/controller/serial_posix.cpp
@@ -238,7 +239,7 @@
 	<string.h>
 	"../../include/controller/serial.h"
 
-1417476225 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/CountdownClock.cpp
+1417495516 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/CountdownClock.cpp
 	"../include/CountdownClock.h"
 
 1417475589 /home/ghormann/Documents/src/gregslights/GregsLights/include/CountdownClock.h
@@ -249,7 +250,7 @@
 	<stdio.h>
 	<ctype.h>
 
-1417399733 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/DisplayTester.cpp
+1417572306 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/DisplayTester.cpp
 	"../include/DisplayTester.h"
 	<stdio.h>
 	<stdlib.h>
@@ -266,7 +267,7 @@
 	"Sign.h"
 	"Snowmen.h"
 
-1417495291 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/GregsDisplay.cpp
+1417572557 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/GregsDisplay.cpp
 	"../include/GregsDisplay.h"
 	"../include/controller/Bush.h"
 	<string.h>
@@ -308,7 +309,7 @@
 	"RGBLight.h"
 	<netinet/in.h>
 
-1417490566 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/DisplayModel.cpp
+1417570165 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/DisplayModel.cpp
 	"../include/DisplayModel.h"
 	"../include/controller/RGBLight.h"
 	"../include/controller/OpenDMXNetwork.h"
@@ -319,10 +320,10 @@
 	"../include/Sign.h"
 	<string.h>
 
-1417479784 /home/ghormann/Documents/src/gregslights/GregsLights/include/Sign.h
+1417572673 /home/ghormann/Documents/src/gregslights/GregsLights/include/Sign.h
 	"controller/E131Network.h"
 
-1417493625 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/Sign.cpp
+1417495598 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/Sign.cpp
 	"../include/Sign.h"
 	<unistd.h>
 	"../include/controller/DummyBulb.h"
@@ -2061,4 +2062,9 @@
 	<time.h>
 	<stdlib.h>
 	<string.h>
+
+1417571748 /home/ghormann/Documents/src/gregslights/GregsLights/include/controller/RGBColor.h
+
+1417572254 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/controller/RGBColor.cpp
+	"../../include/controller/RGBColor.h"
 
