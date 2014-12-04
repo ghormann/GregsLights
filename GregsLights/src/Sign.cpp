@@ -67,6 +67,27 @@ RGBLight *Sign::getPixal(int x, int y)
     {
         pos = x*SIGN_HEIGHT + (SIGN_HEIGHT-1) - y;
     }
+
+    /*
+    || FIx the mistakes that occured during wiring
+    */
+    if (x == 2 && y > 13)
+    {
+        pos +=1;
+    }
+
+    else if (x == 3)
+    {
+        if (y == 13)
+        {
+            pos -= 12;
+        }
+        else if (y > 13)
+        {
+            pos += 1;
+        }
+
+    }
     return getPixal(pos);
 }
 
@@ -854,36 +875,62 @@ void Sign::setDisplayPosition(int xOffset, int yOffset)
     }
 }
 
+void Sign::testGridLayout()
+{
+    for (int y =0; y < SIGN_HEIGHT; y++)
+    {
+        for (int x = 0; x< SIGN_WIDTH; x++)
+        {
+            getPixal(x,y)->set(RGBColor::RED);
+        }
+        sleep(1);
+        for (int x = 0; x< SIGN_WIDTH; x++)
+        {
+            getPixal(x,y)->set(RGBColor::BLACK);
+        }
+    }
+
+
+    for (int x = 0; x< SIGN_WIDTH; x++)
+    {
+        for (int y =0; y < SIGN_HEIGHT; y++)
+        {
+            getPixal(x,y)->set(RGBColor::RED);
+        }
+        sleep(1);
+        for (int y = 0; y< SIGN_HEIGHT; y++)
+        {
+            getPixal(x,y)->set(RGBColor::BLACK);
+        }
+    }
+
+
+}
+
 void Sign::test()
 {
-    int betweenPixals = 3000;
+    int betweenPixals = 300;
     int betweenColors = 2;
     this->pixals[0]->set(100,100,100);
-    //sleep(3);
+    sleep(1);
+    this->pixals[0]->set(RGBColor::BLACK);
+
 
     while (true)
     {
-        RGBColor *lightGreen = new RGBColor(0,15,0);
-        staticSecondsUntil(RGBColor::RED, lightGreen);
+        RGBColor *lightGreen = new RGBColor(0,0,5);
+        for (int i =0; i < 4; i++)
+        {
+            staticSecondsUntil(RGBColor::GREEN, lightGreen);
+            sleep(1);
+            staticSecondsUntil(RGBColor::RED, lightGreen);
+            sleep(1);
+            staticSecondsUntil(RGBColor::PURPLE, lightGreen);
+            sleep(1);
+        }
         delete lightGreen;
-        sleep(5);
 
-        lightGreen = new RGBColor(0,25,0);
-        staticSecondsUntil(RGBColor::RED, lightGreen);
-        delete lightGreen;
-        sleep(5);
-
-        lightGreen = new RGBColor(0,35,0);
-        staticSecondsUntil(RGBColor::RED, lightGreen);
-        delete lightGreen;
-        sleep(5);
-
-        lightGreen = new RGBColor(0,45,0);
-        staticSecondsUntil(RGBColor::RED, lightGreen);
-        delete lightGreen;
-        sleep(5);
-
-
+        scrollSecondsUntil(RGBColor::RED, RGBColor::BLACK);
 
         scrollSecondsUntil(RGBColor::WHITE, RGBColor::BLACK);
 

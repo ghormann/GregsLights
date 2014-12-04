@@ -16,6 +16,7 @@ class Sign
         Sign(E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6);
         virtual ~Sign();
         void test();
+        void testGridLayout();
         void scrollSecondsUntil(RGBColor *fgColor, RGBColor *bgColor);
         void staticSecondsUntil(RGBColor *fgColor, RGBColor *bgColor);
         RGBLight * getPixal(int i);
