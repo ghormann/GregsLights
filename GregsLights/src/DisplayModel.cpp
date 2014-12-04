@@ -35,22 +35,23 @@ DisplayModel::DisplayModel(bool sendDMX)
     {
         networks->addNetwork(dmx);
         networks->addNetwork(lor);
+        /*
         networks->addNetwork(sign1);
         networks->addNetwork(sign2);
         networks->addNetwork(sign3);
         networks->addNetwork(sign4);
         networks->addNetwork(sign5);
         networks->addNetwork(sign6);
+        */
     }
 
     this->sign = new Sign(sign1, sign2, sign3, sign4, sign5, sign6);
 
     //set up houses
-    for (int i = HOUSE_LIGHT_START; i <= HOUSE_LIGHT_END; i++)
-    {
-        int j = i*3+1;
-        house[i] = dmx->getRGB(j);
-    }
+    house[1] = dmx->getRGB(14);
+    house[2] = dmx->getRGB(10);
+    house[3] = dmx->getRGB(7);
+    house[4] = dmx->getRGB(4);
 
     //setup Snowmen
     this->snowmen = new Snowmen();
