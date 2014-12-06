@@ -1031,7 +1031,7 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
     {
         int width = 10;
         int mid = 5;
-    int x =0, y=0;
+        int x =0, y=0;
 
         char d[width][SIGN_HEIGHT];
 
@@ -1079,8 +1079,10 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
 
         y=11;
 
-        for (int i = 2; i < width-1; i++) {
-            for (int j=y; j<y+4; j++) {
+        for (int i = 2; i < width-1; i++)
+        {
+            for (int j=y; j<y+4; j++)
+            {
                 d[i][j]=1;
             }
         }
@@ -1096,8 +1098,10 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
         ++y;
         d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
 
-        for (int i = 0; i < width; i++) {
-            for (int j=0; j<SIGN_HEIGHT; j++) {
+        for (int i = 0; i < width; i++)
+        {
+            for (int j=0; j<SIGN_HEIGHT; j++)
+            {
                 if (d[i][j]==1)
                     getBoard(i+startX,j+startY)->set(RGBColor::WHITE);
             }
