@@ -137,13 +137,7 @@ void Sign::staticSecondsToGo(RGBColor *fgColor, RGBColor *bgColor)
 
 void Sign::scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text)
 {
-    for (int i = 0; i < SIGN_DUMMY_WIDTH; i++)
-    {
-        for (int j = 0; j < SIGN_DUMMY_HEIGHT; j++)
-        {
-            getBoard(i,j)->set(bgColor);
-        }
-    }
+    setDummyBackground(bgColor);
 
     int textLen = strlen(text);
     int pos = 50;
@@ -1004,6 +998,114 @@ void Sign::flashSecondsToGo(int times, double delay)
 
 }
 
+void Sign::setDummyBackground(RGBColor *bgColor)
+{
+    for (int i = 0; i < SIGN_DUMMY_WIDTH; i++)
+    {
+        for (int j = 0; j < SIGN_DUMMY_HEIGHT; j++)
+        {
+            getBoard(i,j)->set(bgColor);
+        }
+    }
+}
+
+void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
+{
+
+    if (type == SIGN_TREE)
+    {
+        startX+=(SIGN_HEIGHT-3)/2;
+        for (int i = 0; i < SIGN_HEIGHT-3; i++)
+        {
+            int start = startX-i/2;
+            int stop = startX+i/2+1;
+            while (start < stop)
+            {
+                this->getBoard(start++, startY+i)->set(RGBColor::GREEN);
+            }
+        }
+        getBoard(startX,startY)->set(RGBColor::YELLOW);
+    }
+
+    if (type==SIGN_SNOWMEN)
+    {
+        int width = 10;
+        int mid = 5;
+    int x =0, y=0;
+
+        char d[width][SIGN_HEIGHT];
+
+
+        //head
+        y=1;   // One down...
+        d[mid][y]=1;
+        ++y;
+        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
+        ++y;
+        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
+        ++y;
+        d[mid][y]=1;
+
+        //d[mid+1][4] = 0;
+
+        //Middle
+
+        ++y;
+        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
+
+        ++y;
+        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
+        d[mid+2][y]=d[mid-2][y]=1;
+
+        ++y;
+        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
+        d[mid+2][y]=d[mid-2][y]=1;
+
+        ++y;
+        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
+
+        // Base
+        ++y;
+        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
+
+        ++y;
+        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
+        d[mid+2][y]=d[mid-2][y]=1;
+
+        ++y;
+        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
+        d[mid+2][y]=d[mid-2][y]=1;
+
+
+        y=11;
+
+        for (int i = 2; i < width-1; i++) {
+            for (int j=y; j<y+4; j++) {
+                d[i][j]=1;
+            }
+        }
+
+        y+=4;
+        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
+        d[mid+2][y]=d[mid-2][y]=1;
+
+        ++y;
+        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
+        d[mid+2][y]=d[mid-2][y]=1;
+
+        ++y;
+        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
+
+        for (int i = 0; i < width; i++) {
+            for (int j=0; j<SIGN_HEIGHT; j++) {
+                if (d[i][j]==1)
+                    getBoard(i+startX,j+startY)->set(RGBColor::WHITE);
+            }
+        }
+    }
+}
+
+
 void Sign::test()
 {
     int betweenPixals = 300;
@@ -1012,8 +1114,19 @@ void Sign::test()
     sleep(1);
     this->pixals[0]->set(RGBColor::BLACK);
 
+
     while (true)
     {
+        setDummyBackground(RGBColor::BLACK);
+        setDisplayPosition(0,0);
+        drawSpecial(0,0, SIGN_SNOWMEN);
+        drawSpecial(20,1, SIGN_TREE);
+        setDisplayPosition(0,0);
+        sleep(60);
+
+
+
+
         //flashSecondsToGo(4, 0.4);
         //scrollText(RGBColor::RED, RGBColor::BLACK, "SECONDS UNTIL CHRISTMAS");
         //scrollText(RGBColor::WHITE, RGBColor::BLACK, "MERRY CHRISTMAS FROM THE HORMANN'S");

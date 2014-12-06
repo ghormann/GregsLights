@@ -10,6 +10,11 @@
 #define SIGN_DUMMY_HEIGHT 50
 #define SIGN_DUMMY_WIDTH 1000
 
+enum SIGN_SPECIAL {
+    SIGN_TREE = 0,
+    SIGN_SNOWMEN
+};
+
 class Sign
 {
     public:
@@ -28,6 +33,8 @@ class Sign
         void redrawDisplay();
         int drawLetter(char letter, RGBColor *color, int x, int y);
         int drawLetterSmall(char letter, RGBColor *color, int x, int y);
+        void setDummyBackground(RGBColor *bgColor);
+        void drawSpecial(int x, int y, SIGN_SPECIAL type);
     private:
         int currentX;
         int currentY;
