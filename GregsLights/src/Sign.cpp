@@ -102,9 +102,10 @@ RGBLight *Sign::getBoard(int x, int y)
     return board[pos];
 }
 
-void Sign::staticSecondsUntil(RGBColor *fgColor, RGBColor *bgColor)
+void Sign::staticSecondsToGo(RGBColor *fgColor, RGBColor *bgColor)
 {
     for (int i = 0; i < SIGN_WIDTH; i++)
+
     {
         for (int j = 0; j < SIGN_HEIGHT; j++)
         {
@@ -907,6 +908,22 @@ void Sign::testGridLayout()
 
 }
 
+void Sign::flashSecondsToGo(int times, double delay)
+{
+        RGBColor *bgColor = new RGBColor(0,0,5);
+        for (int i =0; i < times; i++)
+        {
+            staticSecondsToGo(RGBColor::GREEN, bgColor);
+            gjhSleep(delay);
+            staticSecondsToGo(RGBColor::RED, bgColor);
+            gjhSleep(delay);
+            staticSecondsToGo(RGBColor::PURPLE, bgColor);
+            gjhSleep(delay);
+        }
+        delete bgColor;
+
+}
+
 void Sign::test()
 {
     int betweenPixals = 300;
@@ -915,20 +932,9 @@ void Sign::test()
     sleep(1);
     this->pixals[0]->set(RGBColor::BLACK);
 
-
     while (true)
     {
-        RGBColor *lightGreen = new RGBColor(0,0,5);
-        for (int i =0; i < 4; i++)
-        {
-            staticSecondsUntil(RGBColor::GREEN, lightGreen);
-            sleep(1);
-            staticSecondsUntil(RGBColor::RED, lightGreen);
-            sleep(1);
-            staticSecondsUntil(RGBColor::PURPLE, lightGreen);
-            sleep(1);
-        }
-        delete lightGreen;
+        flashSecondsToGo(4, 0.4);
 
         scrollSecondsUntil(RGBColor::RED, RGBColor::BLACK);
 

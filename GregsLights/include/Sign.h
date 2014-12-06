@@ -18,7 +18,8 @@ class Sign
         void test();
         void testGridLayout();
         void scrollSecondsUntil(RGBColor *fgColor, RGBColor *bgColor);
-        void staticSecondsUntil(RGBColor *fgColor, RGBColor *bgColor);
+        void staticSecondsToGo(RGBColor *fgColor, RGBColor *bgColor);
+        void flashSecondsToGo(int times, double delay);
         RGBLight * getPixal(int i);
         RGBLight * getPixal(int x, int y);
     protected:
