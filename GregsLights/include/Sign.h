@@ -17,7 +17,7 @@ class Sign
         virtual ~Sign();
         void test();
         void testGridLayout();
-        void scrollSecondsUntil(RGBColor *fgColor, RGBColor *bgColor);
+        void scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text);
         void staticSecondsToGo(RGBColor *fgColor, RGBColor *bgColor);
         void flashSecondsToGo(int times, double delay);
         RGBLight * getPixal(int i);

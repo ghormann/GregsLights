@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include "../include/controller/DummyBulb.h"
 #include <stdio.h>
+#include <string.h>
 
 
 Sign::Sign(E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6)
@@ -134,7 +135,7 @@ void Sign::staticSecondsToGo(RGBColor *fgColor, RGBColor *bgColor)
 
 }
 
-void Sign::scrollSecondsUntil(RGBColor *fgColor, RGBColor *bgColor)
+void Sign::scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text)
 {
     for (int i = 0; i < SIGN_DUMMY_WIDTH; i++)
     {
@@ -144,31 +145,12 @@ void Sign::scrollSecondsUntil(RGBColor *fgColor, RGBColor *bgColor)
         }
     }
 
+    int textLen = strlen(text);
     int pos = 50;
-    pos += drawLetter('S', fgColor, pos,0) + 2;
-    pos += drawLetter('E', fgColor, pos,0) + 2;
-    pos += drawLetter('C', fgColor, pos,0) + 2;
-    pos += drawLetter('O', fgColor, pos,0) + 2;
-    pos += drawLetter('N', fgColor, pos,0) + 2;
-    pos += drawLetter('D', fgColor, pos,0) + 2;
-    pos += drawLetter('S', fgColor, pos,0) + 2;
-    pos += 9;
-    pos += drawLetter('U', fgColor, pos,0) + 2;
-    pos += drawLetter('N', fgColor, pos,0) + 2;
-    pos += drawLetter('T', fgColor, pos,0) + 2;
-    pos += drawLetter('I', fgColor, pos,0) + 2;
-    pos += drawLetter('L', fgColor, pos,0) + 2;
-    pos += 9;
-    pos += drawLetter('C', fgColor, pos,0) + 2;
-    pos += drawLetter('H', fgColor, pos,0) + 2;
-    pos += drawLetter('R', fgColor, pos,0) + 2;
-    pos += drawLetter('I', fgColor, pos,0) + 2;
-    pos += drawLetter('S', fgColor, pos,0) + 2;
-    pos += drawLetter('T', fgColor, pos,0) + 2;
-    pos += drawLetter('M', fgColor, pos,0) + 2;
-    pos += drawLetter('A', fgColor, pos,0) + 2;
-    pos += drawLetter('S', fgColor, pos,0) + 2;
-    //pos += drawLetter('!', fgColor, pos,0) + 2;
+    for (int i = 0; i < textLen; i++)
+    {
+        pos += drawLetter(text[i],fgColor,pos,0) + 2;
+    }
 
     setDisplayPosition(0,0);
 
@@ -192,7 +174,11 @@ int Sign::drawLetter(char letter, RGBColor *color, int startX, int startY)
             d[x][y]='0';
         }
     }
-    if (letter == 'A')
+    if (letter == ' ')
+    {
+        offset = 7;
+    }
+    else if (letter == 'A')
     {
         d[7][0]=d[6][1]=d[7][1]=d[6][2]=d[7][2]=d[8][2] = '1'; //0, 1, 2
         d[5][3]=d[7][3]=d[8][3] = '1'; // 3
@@ -286,6 +272,29 @@ int Sign::drawLetter(char letter, RGBColor *color, int startX, int startY)
             d[9][y] = '1';
 
         offset = 13;
+    }
+    else if (letter == 'F')
+    {
+        for (x=0; x<11; x++)
+        {
+            d[x][0] = '1';
+            if (x < 6)
+                d[x][13] = '1';
+        }
+        d[9][1]=d[10][1]=d[10][2] = '1';
+        d[8][6]=d[8][5]=d[8][4]=d[8][7]=d[8][8]='1';
+
+        for (y=0; y<14; y++)
+        {
+            d[2][y]=d[3][y]='1';
+        }
+
+        for (x=2; x<9; x++)
+        {
+            d[x][6]='1';
+        }
+
+        offset = 11;
     }
     else if (letter == 'H')
     {
@@ -536,6 +545,29 @@ int Sign::drawLetter(char letter, RGBColor *color, int startX, int startY)
 
         offset=15;
     }
+    else if (letter =='V')
+    {
+        for (x=0; x<15; x++)
+        {
+            if (x < 5 || x > 10)
+                d[x][0] = '1';
+        }
+        d[2][1]=d[3][1]=d[4][1]=d[13][1]=d[12][1]='1';
+        d[2][2]=d[3][2]=d[12][2]='1';
+        d[2][3]=d[3][3]=d[12][3]='1';
+        d[4][4]=d[11][4]='1';
+        d[4][5]=d[5][5]=d[11][5]='1';
+        d[4][6]=d[5][6]=d[11][6]='1';
+        d[5][7]=d[6][7]=d[10][7]='1';
+        d[5][8]=d[6][8]=d[10][8]='1';
+        d[6][9]=d[7][9]=d[9][9]='1';
+        d[6][10]=d[7][10]=d[9][10]='1';
+        d[6][11]=d[7][11]=d[9][11]='1';
+        d[7][12]=d[8][12]=d[7][13]=d[8][13]='1';
+
+
+        offset=15;
+    }
     else if (letter == 'X')
     {
         for (x=0; x<15; x++)
@@ -586,24 +618,30 @@ int Sign::drawLetter(char letter, RGBColor *color, int startX, int startY)
 
         offset=15;
     }
+
+    else if (letter == 0x27)  // ' character
+    {
+        d[1][0]=d[2][0]=d[1][1]=d[2][1] = '1';
+        d[0][2]=d[1][2] = '1';
+        offset=3;
+    }
+
     else
     {
-        //?
-        for (x=0; x<9; x++)
+        // ?
+        d[2][0]=d[3][0]=d[4][0]=d[5][0] = '1';
+        d[1][1]=d[2][1]=d[5][1]=d[6][1] = '1';
+        for (y = 2; y< 5; y++)
         {
-            d[x][0] = '1';
-            d[x][7] = '1';
+            d[0][y]=d[1][y]=d[6][y]=d[7][y] = '1';
         }
-        for (y=0; y<8; y++)
-        {
-            d[8][y] = '1';
-        }
-        for (y=9; y<13; y++)
-        {
-            d[4][y] = '1';
-        }
+        d[5][5]=d[6][5]=d[5][6]=d[6][6]=d[5][7]='1';
+        d[4][8]=d[3][9]=d[3][10] = '1';
+        d[3][12]=d[4][12]=d[3][13]=d[4][13]='1';
 
-        offset = 10;
+
+        offset=8;
+
     }
 
     for (x = 0; x < 20; x++)
@@ -838,6 +876,11 @@ int Sign::drawLetterSmall(char letter, RGBColor* color, int startX, int startY)
 
         offset=7;
     }
+    else if (letter == 0x27)
+    {
+        d[1][0]=d[2][0]=d[1][1] = '1';
+        offset=3;
+    }
     else
     {
         //?
@@ -910,17 +953,17 @@ void Sign::testGridLayout()
 
 void Sign::flashSecondsToGo(int times, double delay)
 {
-        RGBColor *bgColor = new RGBColor(0,0,5);
-        for (int i =0; i < times; i++)
-        {
-            staticSecondsToGo(RGBColor::GREEN, bgColor);
-            gjhSleep(delay);
-            staticSecondsToGo(RGBColor::RED, bgColor);
-            gjhSleep(delay);
-            staticSecondsToGo(RGBColor::PURPLE, bgColor);
-            gjhSleep(delay);
-        }
-        delete bgColor;
+    RGBColor *bgColor = new RGBColor(0,0,5);
+    for (int i =0; i < times; i++)
+    {
+        staticSecondsToGo(RGBColor::GREEN, bgColor);
+        gjhSleep(delay);
+        staticSecondsToGo(RGBColor::RED, bgColor);
+        gjhSleep(delay);
+        staticSecondsToGo(RGBColor::PURPLE, bgColor);
+        gjhSleep(delay);
+    }
+    delete bgColor;
 
 }
 
@@ -934,11 +977,12 @@ void Sign::test()
 
     while (true)
     {
-        flashSecondsToGo(4, 0.4);
+        //flashSecondsToGo(4, 0.4);
+        //scrollText(RGBColor::RED, RGBColor::BLACK, "SECONDS UNTIL CHRISTMAS");
+        //scrollText(RGBColor::WHITE, RGBColor::BLACK, "MERRY CHRISTMAS FROM THE HORMANN'S");
+        //scrollText(RGBColor::GREEN, RGBColor::BLACK, "ARE YOU READY FOR CHRISTMAS?");
+        scrollText(RGBColor::GREEN, RGBColor::BLACK, "HAVE YOU BEEN NAUGHTY OR NICE?");
 
-        scrollSecondsUntil(RGBColor::RED, RGBColor::BLACK);
-
-        scrollSecondsUntil(RGBColor::WHITE, RGBColor::BLACK);
 
         for (int x = 0; x < SIGN_WIDTH; x++)
         {
