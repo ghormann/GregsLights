@@ -1024,17 +1024,30 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
                 this->getBoard(start++, startY+i)->set(RGBColor::GREEN);
             }
         }
-        getBoard(startX,startY)->set(RGBColor::YELLOW);
+        // Add lights
+        getBoard(startX, startY+3)->set(RGBColor::RED);
+        getBoard(startX, startY+6)->set(RGBColor::PURPLE);
+        getBoard(startX-3, startY+7)->set(RGBColor::PURPLE);
+        getBoard(startX+2, startY+8)->set(RGBColor::BLUE);
+        getBoard(startX+4, startY+10)->set(RGBColor::RED);
+        getBoard(startX-4, startY+10)->set(RGBColor::BLUE);
+        getBoard(startX-1, startY+11)->set(RGBColor::RED);
+        getBoard(startX+2, startY+12)->set(RGBColor::BLUE);
+        getBoard(startX-6, startY+13)->set(RGBColor::RED);
+        getBoard(startX-4, startY+14)->set(RGBColor::PURPLE);
+        getBoard(startX-0, startY+14)->set(RGBColor::PURPLE);
+        getBoard(startX+5, startY+15)->set(RGBColor::RED);
+
+        getBoard(startX,startY)->set(RGBColor::YELLOW); // start at top
     }
 
     if (type==SIGN_SNOWMEN)
     {
         int width = 10;
         int mid = 5;
-        int x =0, y=0;
+        int y=0;
 
         char d[width][SIGN_HEIGHT];
-
 
         //head
         y=1;   // One down...
@@ -1077,7 +1090,7 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
         d[mid+2][y]=d[mid-2][y]=1;
 
 
-        y=11;
+        ++y;
 
         for (int i = 2; i < width-1; i++)
         {
