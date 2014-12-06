@@ -23,13 +23,15 @@ DisplayModel::DisplayModel(bool sendDMX)
     OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", ACTIDONGLE, sendDMX);
     //OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", OPENDMX);
 
+    char *signIP = "192.168.0.39";
+
     LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB1", sendDMX);
-    E131Network *sign1 = new E131Network("192.168.0.39", 10, 512);
-    E131Network *sign2 = new E131Network("192.168.0.39", 11, 512);
-    E131Network *sign3 = new E131Network("192.168.0.39", 12, 512);
-    E131Network *sign4 = new E131Network("192.168.0.39", 13, 512);
-    E131Network *sign5 = new E131Network("192.168.0.39", 20, 512);
-    E131Network *sign6 = new E131Network("192.168.0.39", 21, 512);
+    E131Network *sign1 = new E131Network(signIP, 10, 512);
+    E131Network *sign2 = new E131Network(signIP, 11, 512);
+    E131Network *sign3 = new E131Network(signIP, 12, 512);
+    E131Network *sign4 = new E131Network(signIP, 13, 512);
+    E131Network *sign5 = new E131Network(signIP, 20, 512);
+    E131Network *sign6 = new E131Network(signIP, 21, 512);
 
     if (sendDMX)
     {
