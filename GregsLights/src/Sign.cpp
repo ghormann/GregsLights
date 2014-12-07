@@ -172,6 +172,12 @@ int Sign::drawLetter(char letter, RGBColor *color, int startX, int startY)
     {
         offset = 7;
     }
+    else if (letter == '.')
+    {
+
+        d[0][13]=d[0][12]=d[1][13]=d[1][12]='1';
+        offset=3;
+    }
     else if (letter == '^')
     {
         drawSpecial(startX,startY, SIGN_TREE);
@@ -1129,17 +1135,14 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
         d[mid+2][y]=d[mid-2][y]=1;
 
 
-        ++y;
-
-        for (int i = 2; i < width-1; i++)
+        for (int i = 1; i < width; i++)
         {
-            for (int j=y; j<y+4; j++)
+            for (int j=y; j<y+5; j++)
             {
                 d[i][j]=1;
             }
         }
-
-        y+=4;
+        y+=5;
         d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
         d[mid+2][y]=d[mid-2][y]=1;
 
@@ -1161,6 +1164,17 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
     }
 }
 
+void Sign::wipeToRight(RGBColor *color, double delay)
+{
+    for (int x=0; x< SIGN_WIDTH; x++)
+    {
+        for (int y=0; y< SIGN_HEIGHT; y++) {
+            this->getPixal(x,y)->set(color);
+        }
+        gjhSleep(delay);
+    }
+}
+
 
 void Sign::test()
 {
@@ -1173,21 +1187,47 @@ void Sign::test()
 
     while (true)
     {
+        double textSpeed = 0.04;
         setDummyBackground(RGBColor::BLACK);
         setDisplayPosition(0,0);
+
+        scrollText(RGBColor::PURPLE, RGBColor::BLACK, "SANTA IS COMMING.... ARE YOU READY?", textSpeed);
+
+
+        RGBColor *bgColor = new RGBColor(5,0,5);
+        staticSecondsToGo(RGBColor::GREEN, bgColor);
+        delete bgColor;
+
+        sleep(3);
+
+        bgColor = new RGBColor(0,5,0);
+        staticSecondsToGo(RGBColor::RED, bgColor);
+        delete bgColor;
+
+        sleep(3);
+        flashSecondsToGo(1,1.0);
+        flashSecondsToGo(1,0.7);
+        flashSecondsToGo(2,0.5);
+        flashSecondsToGo(2,0.4);
+        flashSecondsToGo(2,0.3);
+        flashSecondsToGo(4,0.2);
+        flashSecondsToGo(6,0.1);
+        sleep(5);
+
+        wipeToRight(RGBColor::BLACK, 0.05);
+        /*
         drawSpecial(0,0, SIGN_SNOWMEN);
         drawSpecial(20,1, SIGN_TREE);
         setDisplayPosition(0,0);
-        sleep(1);
+        sleep(60);
+        */
 
 
 
-        double textSpeed = 0.04;
-        //flashSecondsToGo(4, 0.4);
+        scrollText(RGBColor::GREEN, RGBColor::BLACK, "ARE YOU READY FOR CHRISTMAS?", textSpeed);
         scrollText(RGBColor::RED, RGBColor::BLACK, "SECONDS UNTIL CHRISTMAS", textSpeed);
         scrollText(RGBColor::WHITE, RGBColor::BLACK, "^MERRY CHRISTMAS FROM THE HORMANN'S ^", textSpeed);
-        scrollText(RGBColor::GREEN, RGBColor::BLACK, "ARE YOU READY FOR CHRISTMAS?", textSpeed);
-        scrollText(RGBColor::GREEN, RGBColor::BLACK, "HAVE YOU BEEN NAUGHTY OR NICE?", textSpeed);
+        scrollText(RGBColor::PURPLE, RGBColor::BLACK, "HAVE YOU BEEN NAUGHTY OR NICE?", textSpeed);
 
 
         for (int x = 0; x < SIGN_WIDTH; x++)

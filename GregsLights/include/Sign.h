@@ -35,6 +35,7 @@ class Sign
         int drawLetterSmall(char letter, RGBColor *color, int x, int y);
         void setDummyBackground(RGBColor *bgColor);
         void drawSpecial(int x, int y, SIGN_SPECIAL type);
+        void wipeToRight(RGBColor *color, double delay);
     private:
         int currentX;
         int currentY;
