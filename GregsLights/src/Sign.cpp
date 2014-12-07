@@ -135,7 +135,7 @@ void Sign::staticSecondsToGo(RGBColor *fgColor, RGBColor *bgColor)
 
 }
 
-void Sign::scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text)
+void Sign::scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, double speed)
 {
     setDummyBackground(bgColor);
 
@@ -151,7 +151,7 @@ void Sign::scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text)
     for (int i = 0; i < pos; i++)
     {
         setDisplayPosition(i,0);
-        usleep(50000);
+        gjhSleep(speed);
     }
 }
 
@@ -171,6 +171,11 @@ int Sign::drawLetter(char letter, RGBColor *color, int startX, int startY)
     if (letter == ' ')
     {
         offset = 7;
+    }
+    else if (letter == '^')
+    {
+        drawSpecial(startX,startY, SIGN_TREE);
+        return 20;
     }
     else if (letter == 'A')
     {
@@ -326,6 +331,40 @@ int Sign::drawLetter(char letter, RGBColor *color, int startX, int startY)
         }
 
         offset = 11;
+    }
+    else if (letter == 'G')
+    {
+        for (x=4; x<9; x++)
+        {
+            d[x][0]=d[x][13]='1';
+        }
+        d[11][0]=d[3][1]=d[4][1]=d[9][1]='1';
+        d[10][1]=d[11][1]=d[2][2]='1';
+        d[10][2]=d[11][2]=d[11][3]='1';
+        d[1][3]=d[2][3]='1';
+        for (y=4; y<10; y++)
+        {
+            d[0][y]=d[1][y]='1';
+        }
+        d[0][4]=d[0][10]=0;
+        d[1][10]=d[2][10] = '1';
+
+        for (x=8; x<14; x++)
+        {
+            d[x][7]='1';
+        }
+
+        for(y=7; y<13; y++)
+        {
+            d[10][y]=d[11][y]='1';
+        }
+        d[9][13]=d[9][12]='1';
+        d[2][9]=d[1][10]=d[2][10]='1';
+        d[1][11]=d[2][11]=d[3][11]='1';
+        d[2][12]=d[3][12]=d[4][12]='1';
+
+
+        offset = 14;
     }
     else if (letter == 'H')
     {
@@ -1139,16 +1178,16 @@ void Sign::test()
         drawSpecial(0,0, SIGN_SNOWMEN);
         drawSpecial(20,1, SIGN_TREE);
         setDisplayPosition(0,0);
-        sleep(60);
+        sleep(1);
 
 
 
-
+        double textSpeed = 0.04;
         //flashSecondsToGo(4, 0.4);
-        //scrollText(RGBColor::RED, RGBColor::BLACK, "SECONDS UNTIL CHRISTMAS");
-        //scrollText(RGBColor::WHITE, RGBColor::BLACK, "MERRY CHRISTMAS FROM THE HORMANN'S");
-        //scrollText(RGBColor::GREEN, RGBColor::BLACK, "ARE YOU READY FOR CHRISTMAS?");
-        scrollText(RGBColor::GREEN, RGBColor::BLACK, "HAVE YOU BEEN NAUGHTY OR NICE?");
+        scrollText(RGBColor::RED, RGBColor::BLACK, "SECONDS UNTIL CHRISTMAS", textSpeed);
+        scrollText(RGBColor::WHITE, RGBColor::BLACK, "^MERRY CHRISTMAS FROM THE HORMANN'S ^", textSpeed);
+        scrollText(RGBColor::GREEN, RGBColor::BLACK, "ARE YOU READY FOR CHRISTMAS?", textSpeed);
+        scrollText(RGBColor::GREEN, RGBColor::BLACK, "HAVE YOU BEEN NAUGHTY OR NICE?", textSpeed);
 
 
         for (int x = 0; x < SIGN_WIDTH; x++)

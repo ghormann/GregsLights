@@ -22,7 +22,7 @@ class Sign
         virtual ~Sign();
         void test();
         void testGridLayout();
-        void scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text);
+        void scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, double speed);
         void staticSecondsToGo(RGBColor *fgColor, RGBColor *bgColor);
         void flashSecondsToGo(int times, double delay);
         RGBLight * getPixal(int i);
