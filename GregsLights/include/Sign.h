@@ -27,6 +27,7 @@ class Sign
         void flashSecondsToGo(int times, double delay);
         RGBLight * getPixal(int i);
         RGBLight * getPixal(int x, int y);
+        void run();
     protected:
         RGBLight * getBoard(int x, int y);
         void setDisplayPosition(int x, int y);
@@ -39,6 +40,8 @@ class Sign
     private:
         int currentX;
         int currentY;
+        bool skipTimeCheck;
+        char message[80];
         E131Network *net1;
         RGBLight *pixals[TOTAL_SIGN_PIXALS];
         RGBLight *board[ SIGN_DUMMY_HEIGHT * SIGN_DUMMY_WIDTH];

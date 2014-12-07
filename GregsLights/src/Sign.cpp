@@ -7,6 +7,8 @@
 
 Sign::Sign(E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6)
 {
+    skipTimeCheck = false;
+    sprintf(message, "Waiting....");
     currentX = 0;
     currentY = 0;
     int cnt = 0;
@@ -137,6 +139,7 @@ void Sign::staticSecondsToGo(RGBColor *fgColor, RGBColor *bgColor)
 
 void Sign::scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, double speed)
 {
+    sprintf(message, "Scroll: %s", text);
     setDummyBackground(bgColor);
 
     int textLen = strlen(text);
@@ -1168,7 +1171,8 @@ void Sign::wipeToRight(RGBColor *color, double delay)
 {
     for (int x=0; x< SIGN_WIDTH; x++)
     {
-        for (int y=0; y< SIGN_HEIGHT; y++) {
+        for (int y=0; y< SIGN_HEIGHT; y++)
+        {
             this->getPixal(x,y)->set(color);
         }
         gjhSleep(delay);
@@ -1176,8 +1180,90 @@ void Sign::wipeToRight(RGBColor *color, double delay)
 }
 
 
+void Sign::run()
+{
+    time_t t_now;
+    time(&t_now);
+    struct tm *tm_now = localtime(&t_now);
+
+    // Not on douring the day
+    if (tm_now->tm_hour > 9 && tm_now->tm_hour < 17 && !skipTimeCheck)
+    {
+        sprintf(message, "Sleeping (%02d:%02d)",
+                tm_now->tm_hour,
+                tm_now->tm_min);
+        setDummyBackground(RGBColor::BLACK);
+        setDisplayPosition(0,0);
+        sleep(60);
+        return;
+    }
+
+    //
+    // Do what a sign should do
+    //
+
+
+    double textSpeed = 0.04;
+    RGBColor *bgColor = 0;
+    setDummyBackground(RGBColor::BLACK);
+    setDisplayPosition(0,0);
+
+
+    //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "HOW MANY TIMES PER DAY DO YOU CHECK THIS CLOCK?", textSpeed);
+    scrollText(RGBColor::PURPLE, RGBColor::BLACK, "SANTA IS COMING.... ARE YOU READY?", textSpeed);
+
+
+    sprintf(message, "Flashing Seconds To Go");
+    bgColor = new RGBColor(5,0,5);
+    staticSecondsToGo(RGBColor::GREEN, bgColor);
+    delete bgColor;
+
+    sleep(3);
+
+    bgColor = new RGBColor(0,5,0);
+    staticSecondsToGo(RGBColor::RED, bgColor);
+    delete bgColor;
+    sleep(3);
+    flashSecondsToGo(1,1.0);
+    flashSecondsToGo(1,0.7);
+    flashSecondsToGo(2,0.5);
+    flashSecondsToGo(2,0.4);
+    flashSecondsToGo(2,0.3);
+    flashSecondsToGo(4,0.2);
+    flashSecondsToGo(6,0.1);
+    sleep(5);
+
+    wipeToRight(RGBColor::BLACK, 0.05);
+
+
+
+    scrollText(RGBColor::GREEN, RGBColor::BLACK, "ARE YOU READY FOR CHRISTMAS?", textSpeed);
+    scrollText(RGBColor::GREEN, RGBColor::BLACK, "I BET THE CHILDREN ARE....", textSpeed);
+
+    // Few Christimas Trees
+    bgColor = new RGBColor(5,0,5);
+    setDummyBackground(bgColor);
+    drawSpecial(1,2,SIGN_TREE);
+    drawSpecial(30,2,SIGN_TREE);
+    setDisplayPosition(0,0);
+    delete bgColor;
+    sleep(6);
+
+
+    scrollText(RGBColor::RED, RGBColor::BLACK, "SECONDS UNTIL CHRISTMAS", textSpeed);
+    scrollText(RGBColor::WHITE, RGBColor::BLACK, "^MERRY CHRISTMAS FROM THE HORMANN'S ^", textSpeed);
+    scrollText(RGBColor::PURPLE, RGBColor::BLACK, "HAVE YOU BEEN NAUGHTY OR NICE?", textSpeed);
+
+
+}
+
 void Sign::test()
 {
+    while (1)
+    {
+        run();
+    }
+
     int betweenPixals = 300;
     int betweenColors = 2;
     this->pixals[0]->set(100,100,100);
@@ -1187,47 +1273,9 @@ void Sign::test()
 
     while (true)
     {
-        double textSpeed = 0.04;
         setDummyBackground(RGBColor::BLACK);
         setDisplayPosition(0,0);
 
-        scrollText(RGBColor::PURPLE, RGBColor::BLACK, "SANTA IS COMMING.... ARE YOU READY?", textSpeed);
-
-
-        RGBColor *bgColor = new RGBColor(5,0,5);
-        staticSecondsToGo(RGBColor::GREEN, bgColor);
-        delete bgColor;
-
-        sleep(3);
-
-        bgColor = new RGBColor(0,5,0);
-        staticSecondsToGo(RGBColor::RED, bgColor);
-        delete bgColor;
-
-        sleep(3);
-        flashSecondsToGo(1,1.0);
-        flashSecondsToGo(1,0.7);
-        flashSecondsToGo(2,0.5);
-        flashSecondsToGo(2,0.4);
-        flashSecondsToGo(2,0.3);
-        flashSecondsToGo(4,0.2);
-        flashSecondsToGo(6,0.1);
-        sleep(5);
-
-        wipeToRight(RGBColor::BLACK, 0.05);
-        /*
-        drawSpecial(0,0, SIGN_SNOWMEN);
-        drawSpecial(20,1, SIGN_TREE);
-        setDisplayPosition(0,0);
-        sleep(60);
-        */
-
-
-
-        scrollText(RGBColor::GREEN, RGBColor::BLACK, "ARE YOU READY FOR CHRISTMAS?", textSpeed);
-        scrollText(RGBColor::RED, RGBColor::BLACK, "SECONDS UNTIL CHRISTMAS", textSpeed);
-        scrollText(RGBColor::WHITE, RGBColor::BLACK, "^MERRY CHRISTMAS FROM THE HORMANN'S ^", textSpeed);
-        scrollText(RGBColor::PURPLE, RGBColor::BLACK, "HAVE YOU BEEN NAUGHTY OR NICE?", textSpeed);
 
 
         for (int x = 0; x < SIGN_WIDTH; x++)

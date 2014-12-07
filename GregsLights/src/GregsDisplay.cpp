@@ -1028,7 +1028,7 @@ void * GregsDisplay::signThread(void *args)
     GregsDisplay *ptr = (GregsDisplay *) args;
     while (1)
     {
-        ptr->getModel()->getSign()->test();
+        ptr->getModel()->getSign()->run();
     }
     return NULL;
 }
