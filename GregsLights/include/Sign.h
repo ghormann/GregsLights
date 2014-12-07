@@ -28,6 +28,7 @@ class Sign
         RGBLight * getPixal(int i);
         RGBLight * getPixal(int x, int y);
         void run();
+        char *getMessage();
     protected:
         RGBLight * getBoard(int x, int y);
         void setDisplayPosition(int x, int y);

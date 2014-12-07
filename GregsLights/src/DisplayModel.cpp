@@ -37,14 +37,12 @@ DisplayModel::DisplayModel(bool sendDMX)
     {
         networks->addNetwork(dmx);
         networks->addNetwork(lor);
-        /*
         networks->addNetwork(sign1);
         networks->addNetwork(sign2);
         networks->addNetwork(sign3);
         networks->addNetwork(sign4);
         networks->addNetwork(sign5);
         networks->addNetwork(sign6);
-        */
     }
 
     this->sign = new Sign(sign1, sign2, sign3, sign4, sign5, sign6);

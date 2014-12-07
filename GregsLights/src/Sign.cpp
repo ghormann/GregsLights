@@ -1179,6 +1179,11 @@ void Sign::wipeToRight(RGBColor *color, double delay)
     }
 }
 
+char *Sign::getMessage()
+{
+    return message;
+}
+
 
 void Sign::run()
 {
@@ -1187,15 +1192,18 @@ void Sign::run()
     struct tm *tm_now = localtime(&t_now);
 
     // Not on douring the day
-    if (tm_now->tm_hour > 9 && tm_now->tm_hour < 17 && !skipTimeCheck)
+    if (tm_now->tm_hour > 9 && tm_now->tm_hour < 17)
     {
         sprintf(message, "Sleeping (%02d:%02d)",
                 tm_now->tm_hour,
                 tm_now->tm_min);
         setDummyBackground(RGBColor::BLACK);
         setDisplayPosition(0,0);
-        sleep(60);
-        return;
+        if (!skipTimeCheck)
+        {
+            sleep(60);
+            return;
+        }
     }
 
     //
