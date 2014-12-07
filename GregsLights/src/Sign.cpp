@@ -1218,7 +1218,7 @@ void Sign::run()
 
 
     //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "HOW MANY TIMES PER DAY DO YOU CHECK THIS CLOCK?", textSpeed);
-    scrollText(RGBColor::PURPLE, RGBColor::BLACK, "SANTA IS COMING.... ARE YOU READY?", textSpeed);
+    scrollText(RGBColor::PURPLE, RGBColor::BLACK, "HE IS COMING.... ARE YOU READY?", textSpeed);
 
 
     sprintf(message, "Flashing Seconds To Go");
