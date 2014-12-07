@@ -20,7 +20,7 @@
 class DisplayModel
 {
     public:
-        DisplayModel(bool sendDMX);
+        DisplayModel(bool sendDMX, int skip_time_check, int show_new_year);
         virtual ~DisplayModel();
         RGBLight *getHouse(int id);
         Bush *getBush(int id);
@@ -29,6 +29,7 @@ class DisplayModel
         Snowmen * getSnowmen();
         void setMessage(int id, char*);
         char *getMessage(int id);
+        bool isSkipTimeCheck();
     protected:
     private:
         NetworkCollection *networks;
@@ -38,6 +39,8 @@ class DisplayModel
         char *messages[NUM_MESSAGE_BUFFERS];
         Sign *sign;
         Snowmen *snowmen;
+        bool skipTimeCheck;
+        bool newYears;
 
 };
 

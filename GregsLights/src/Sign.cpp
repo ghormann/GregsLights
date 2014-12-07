@@ -5,10 +5,10 @@
 #include <string.h>
 
 
-Sign::Sign(E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6)
+Sign::Sign(bool skipTime, E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6)
 {
-    skipTimeCheck = false;
     sprintf(message, "Waiting....");
+    this->skipTimeCheck = skipTime;
     currentX = 0;
     currentY = 0;
     int cnt = 0;

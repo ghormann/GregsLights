@@ -8,9 +8,11 @@
 #include "../include/Sign.h"
 #include <string.h>
 
-DisplayModel::DisplayModel(bool sendDMX)
+
+
+DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
 {
-    printf ("Starting Displya Model\n");
+    this->skipTimeCheck = (skip_time_check == TRUE? true : false);
     //Initialize Memory Buffers
     for (int i = 0; i < NUM_MESSAGE_BUFFERS; i++)
     {
@@ -45,7 +47,7 @@ DisplayModel::DisplayModel(bool sendDMX)
         networks->addNetwork(sign6);
     }
 
-    this->sign = new Sign(sign1, sign2, sign3, sign4, sign5, sign6);
+    this->sign = new Sign(skipTimeCheck, sign1, sign2, sign3, sign4, sign5, sign6);
 
     //set up houses
     house[1] = dmx->getRGB(13);
@@ -54,7 +56,7 @@ DisplayModel::DisplayModel(bool sendDMX)
     house[4] = dmx->getRGB(4);
 
     //setup Snowmen
-    this->snowmen = new Snowmen();
+    this->snowmen = new Snowmen(this->skipTimeCheck);
     for (int i =0; i < 8; i++)
     {
         snowmen->setBulb(i, lor->getBulb(5,i+1));
@@ -75,7 +77,7 @@ DisplayModel::DisplayModel(bool sendDMX)
     }
 
     //setup Clock
-    this->clock = new CountdownClock();
+    this->clock = new CountdownClock(this->skipTimeCheck, this->newYears);
     int i = 100;   // Starting at the 100th spot
     this->clock->setBulb(0,0,dmx->getBulb(i + 19));
     this->clock->setBulb(0,1,dmx->getBulb(i + 15));
@@ -134,6 +136,10 @@ DisplayModel::DisplayModel(bool sendDMX)
     this->clock->setSpecial(5, dmx->getBulb(i+26));
     this->clock->setSpecial(6, dmx->getBulb(i+27));
 
+}
+
+bool DisplayModel::isSkipTimeCheck() {
+    return this->skipTimeCheck;
 }
 
 Bush* DisplayModel::getBush(int i)

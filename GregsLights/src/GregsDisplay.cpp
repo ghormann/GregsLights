@@ -11,7 +11,7 @@
 GregsDisplay::GregsDisplay(DisplayModel *m)
 {
     this->model = m;
-    skip_time_check = false;
+    skip_time_check = m->isSkipTimeCheck();
 }
 
 GregsDisplay::~GregsDisplay()

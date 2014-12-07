@@ -1,7 +1,9 @@
 #include "../include/CountdownClock.h"
 
-CountdownClock::CountdownClock()
+CountdownClock::CountdownClock(bool skip_time_check, bool show_new_year)
 {
+    this->skipTimeCheck = skip_time_check;
+    this->newYears = show_new_year;
     this->active = false;
     this->clock_t = 0;
     this->lastTick = 0;
@@ -181,13 +183,16 @@ void CountdownClock::tick()
     // Not on douring the day
     if (tm_now->tm_hour > 9 && tm_now->tm_hour < 17)
     {
-        sprintf(message, "Sleeping (%02d:%02d)",
-                tm_now->tm_hour,
-                tm_now->tm_min);
-        setAllOff();
-        lastTick = -1;
-        sleep(60);
-        return;
+        if (skipTimeCheck == false)
+        {
+            sprintf(message, "Sleeping (%02d:%02d)",
+                    tm_now->tm_hour,
+                    tm_now->tm_min);
+            setAllOff();
+            lastTick = -1;
+            sleep(60);
+            return;
+        }
     }
 
 

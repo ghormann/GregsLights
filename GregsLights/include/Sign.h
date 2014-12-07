@@ -10,6 +10,13 @@
 #define SIGN_DUMMY_HEIGHT 50
 #define SIGN_DUMMY_WIDTH 1000
 
+#undef TRUE
+#define TRUE    1
+
+#undef FALSE
+#define FALSE   0
+
+
 enum SIGN_SPECIAL {
     SIGN_TREE = 0,
     SIGN_SNOWMEN
@@ -18,7 +25,7 @@ enum SIGN_SPECIAL {
 class Sign
 {
     public:
-        Sign(E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6);
+        Sign(bool skipTime, E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6);
         virtual ~Sign();
         void test();
         void testGridLayout();

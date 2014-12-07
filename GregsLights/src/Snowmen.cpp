@@ -12,11 +12,11 @@
 
 
 
-Snowmen::Snowmen()
+Snowmen::Snowmen(bool skipTime)
 {
     //ctor
     snowman_t = 0;
-    skip_time_check = false;
+    skip_time_check = skipTime;
     strcpy(message2, "Starting up");
 }
 

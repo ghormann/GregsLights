@@ -83,8 +83,8 @@ void *DisplayTester::bushThread(void *args)
 void DisplayTester::testClock()
 {
     //this->model->getClock()->testALlOn();
-    //this->model->getClock()->test();
-    this->model->getClock()->setActive(true);
+    this->model->getClock()->test();
+    //this->model->getClock()->setActive(true);
     while(1)
     {
         sleep(100);  // Needed because setActive starts its own thread.
@@ -132,6 +132,20 @@ void DisplayTester::testDMX()
         house[i] = model->getHouse(i);
     }
     sleep(1);
+
+    while (1)
+    {
+        for (int i = 1; i <=4; i++)
+        {
+            house[i]->set(RGBColor::RED);
+            sleep(1);
+            house[i]->set(RGBColor::GREEN);
+            sleep(1);
+            house[i]->set(RGBColor::BLUE);
+            sleep(1);
+            house[i]->set(RGBColor::BLACK);
+        }
+    }
 
     model->setMessage(1, "Fade Up");
     for (j=1; j<=4; j++)

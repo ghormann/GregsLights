@@ -11,7 +11,7 @@
 class Snowmen
 {
 public:
-    Snowmen();
+    Snowmen(bool skipTime);
     virtual ~Snowmen();
     void test_snowmen(void);
     void run();
