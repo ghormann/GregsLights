@@ -19,6 +19,8 @@ class RGBColor
         static RGBColor *WHITE;
         static RGBColor *ORANGE;
         static RGBColor *GREY;
+        static RGBColor *BROWN;
+        static RGBColor *LIGHTBROWN;
         static RGBColor * getRandom();
 
     protected:

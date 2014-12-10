@@ -188,6 +188,12 @@ int Sign::drawLetter(char letter, RGBColor *color, int startX, int startY)
         drawSpecial(startX,startY, SIGN_TREE);
         return 20;
     }
+    else if (letter == '+')
+    {
+        drawSpecial(startX,startY+3, SIGN_DEER);
+        return 15;
+
+    }
     else if (letter == 'A')
     {
         d[7][0]=d[6][1]=d[7][1]=d[6][2]=d[7][2]=d[8][2] = '1'; //0, 1, 2
@@ -1331,10 +1337,85 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
 //19
         d[5][19]=d[6][19]=d[7][19]=RGBColor::GREY;
 
-        //15][SIGN_HEIGHT
         for (x =0; x<15; x++)
         {
             for (y=0; y<SIGN_HEIGHT; y++)
+            {
+                if (d[x][y] != 0)
+                    getBoard(x+startX,y+startY)->set(d[x][y]);
+            }
+        }
+
+    }
+    else if (type == SIGN_DEER)
+    {
+        int x=0;
+        int y=0;
+        RGBColor *d[15][14] ;
+        for (x=0; x<15; x++)
+        {
+            for (y=0; y<14; y++)
+            {
+                d[x][y]=0;
+            }
+        }
+
+//0
+        d[7][0]=d[11][0]=RGBColor::BROWN;
+//1
+        d[8][1]=d[9][1]=d[12][1]=RGBColor::BROWN;
+//2
+        d[9][2]=d[10][2]=d[11][2]=d[14][2]=RGBColor::BROWN;
+//3
+        d[6][3]=RGBColor::LIGHTBROWN;
+        d[9][3]=d[13][3]=RGBColor::BROWN;
+//4
+        d[6][4]=d[7][4]=RGBColor::LIGHTBROWN;
+        d[8][4]=d[9][4]=d[11][4]=d[12][4]=d[13][4]=d[14][4]=RGBColor::BROWN;
+//5
+        d[6][5]=d[8][5]=RGBColor::LIGHTBROWN;
+        d[9][5]=d[11][5]=RGBColor::BROWN;
+//6+7
+        for(x=6; x<12; x++)
+        {
+            d[x][6]=d[x][7]=RGBColor::LIGHTBROWN;
+        }
+        d[10][6]=RGBColor::BROWN;
+        d[5][7]=d[12][7]=RGBColor::LIGHTBROWN;
+//8
+        d[4][8]=d[5][8]=d[8][8]=d[9][8]=d[10][8]=d[12][8]=RGBColor::LIGHTBROWN;
+        d[6][8]=d[7][8]=d[11][8]=RGBColor::WHITE;
+//9
+        for(x=3; x<13; x++)
+        {
+            d[x][9]=RGBColor::LIGHTBROWN;
+        }
+        d[6][9]=RGBColor::BLACK;
+        d[7][9]=d[10][9]=d[11][9]=RGBColor::WHITE;
+//10
+        d[1][10]=RGBColor::RED;
+        for(x=2; x<12; x++)
+        {
+            d[x][10]=RGBColor::LIGHTBROWN;
+        }
+        d[5][10]=d[6][10]=RGBColor::BLACK;
+        d[7][10]=RGBColor::WHITE;
+//11
+        d[0][11]=d[1][11]=RGBColor::RED;
+        for(x=4; x<11; x++)
+        {
+            d[x][11]=RGBColor::LIGHTBROWN;
+        }
+        d[5][11]=d[6][11]=RGBColor::WHITE;
+//12+13
+        for(x=4; x<11; x++)
+        {
+            d[x][12]=d[x][13]=RGBColor::LIGHTBROWN;
+        }
+
+        for (x =0; x<15; x++)
+        {
+            for (y=0; y<14; y++)
             {
                 if (d[x][y] != 0)
                     getBoard(x+startX,y+startY)->set(d[x][y]);
@@ -1556,12 +1637,18 @@ void Sign::test()
 {
     while (1)
     {
-        //sleep(2);
-        skipTimeCheck = true;
-        //scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
-        //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "ARE YOU READY FOR CHRISTMAS?      I BET THE KIDS ARE....", 0.04);
-        fewTrees();
 
+        /*
+                RGBColor *bgColor = new RGBColor(5,0,5);
+                setDummyBackground(bgColor);
+                drawSpecial(0,0,SIGN_DEER);
+                setDisplayPosition(0,0);
+                sleep(60);
+        */
+
+        skipTimeCheck = true;
+        scrollText(RGBColor::getRandom(), RGBColor::BLACK, "+ HAVE YOU BEEN NAUGHTY OR NICE? +", 0.04);
+        //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "ARE YOU READY FOR CHRISTMAS?      I BET THE KIDS ARE....", 0.04);
         run();
     }
 

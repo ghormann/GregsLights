@@ -45,7 +45,7 @@ char * MessageGenerator::getMessage()
         case 4:
             return "^MERRY CHRISTMAS FROM THE HORMANN FAMILY ^";
         case 5:
-            return "HAVE YOU BEEN NAUGHTY OR NICE?";
+            return "+ HAVE YOU BEEN NAUGHTY OR NICE? +";
         case 6:
             return "JOIN US AT MIDNIGHT TO SEE THE CLOCK HIT ZERO";
 

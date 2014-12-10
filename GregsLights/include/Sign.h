@@ -21,7 +21,8 @@
 enum SIGN_SPECIAL {
     SIGN_TREE = 0,
     SIGN_SNOWMEN,
-    SIGN_CANDY
+    SIGN_CANDY,
+    SIGN_DEER
 };
 
 class Sign
