@@ -1190,6 +1190,7 @@ void Sign::run()
     time_t t_now;
     time(&t_now);
     struct tm *tm_now = localtime(&t_now);
+    double textSpeed = 0.04;
 
     // Not on douring the day
     if (tm_now->tm_hour > 9 && tm_now->tm_hour < 17)
@@ -1211,7 +1212,6 @@ void Sign::run()
     //
 
 
-    double textSpeed = 0.04;
     RGBColor *bgColor = 0;
     setDummyBackground(RGBColor::BLACK);
     setDisplayPosition(0,0);
@@ -1267,9 +1267,13 @@ void Sign::run()
 
 void Sign::test()
 {
+    double textSpeed = 0.04;
+
     while (1)
     {
-        run();
+        //run();
+        scrollText(RGBColor::PURPLE, RGBColor::BLACK, "HOW MANY TIMES PER DAY DO YOU CHECK THIS CLOCK?", textSpeed);
+
     }
 
     int betweenPixals = 300;

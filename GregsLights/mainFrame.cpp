@@ -82,7 +82,7 @@ BasicGLPane::BasicGLPane(wxFrame* parent, int* args) :
     SetBackgroundStyle(wxBG_STYLE_CUSTOM);
 
     bool sendDMX = false;
-    model = new DisplayModel(sendDMX);
+    model = new DisplayModel(sendDMX, FALSE, FALSE);
     sleep(1); // Wait for threads
     //new TextDisplay(model);
 
