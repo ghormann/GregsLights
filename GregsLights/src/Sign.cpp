@@ -411,6 +411,44 @@ int Sign::drawLetter(char letter, RGBColor *color, int startX, int startY)
 
         offset = 6;
     }
+    else if (letter == 'K')
+    {
+        for (x=0; x<6; x++)
+        {
+            d[x][0]='1';
+            d[x][13]='1';
+        }
+
+        for (x=9; x<14; x++)
+        {
+            d[x][0]='1';
+            d[x][13]='1';
+        }
+        for (y=0; y<14; y++)
+        {
+            d[2][y]=d[3][y]='1';
+        }
+        x=5;
+        y=6;
+        while (y <13)
+        {
+            d[x][y]=d[x-1][y]=d[x+1][y]='1';
+            ++x;
+            ++y;
+        }
+
+        y=5;
+        x=6;
+        while (y>0)
+        {
+            d[x][y]='1';
+            --y;
+            ++x;
+        }
+        d[11][1]='1';
+
+        offset = 14;
+    }
     else if (letter == 'L')
     {
         for (x=0; x<6; x++)
@@ -516,6 +554,28 @@ int Sign::drawLetter(char letter, RGBColor *color, int startX, int startY)
         d[2][12]=d[3][12]=d[10][12]=d[9][12] = '1';
 
         offset = 13;
+    }
+    else if (letter == 'P')
+    {
+        for (x=0; x<9; x++)
+        {
+            d[x][0]='1';
+            if (x<6)
+                d[x][13]='1';
+        }
+        for (y=0; y<14; y++)
+        {
+            d[2][y]=d[3][y]='1';
+        }
+
+        for (x=4; x<9; x++)
+        {
+            d[x][7]='1';
+        }
+        d[8][1]=d[9][1]=d[9][2]=d[10][2]='1';
+        d[9][3]=d[10][3]=d[9][4]=d[10][4]='1';
+        d[9][5]=d[10][5]=d[8][6]=d[9][6]='1';
+        offset=11;
     }
     else if (letter == 'R')
     {
@@ -1269,7 +1329,7 @@ void Sign::run()
     setDisplayPosition(0,0);
 
 
-    //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "HOW MANY TIMES PER DAY DO YOU CHECK THIS CLOCK?", textSpeed);
+    scrollText(RGBColor::PURPLE, RGBColor::BLACK, "HOW MANY TIMES PER DAY DO YOU CHECK THIS CLOCK?", textSpeed);
     scrollText(RGBColor::PURPLE, RGBColor::BLACK, "HE IS COMING.... ARE YOU READY?", textSpeed);
 
 
@@ -1298,7 +1358,7 @@ void Sign::run()
 
 
     scrollText(RGBColor::GREEN, RGBColor::BLACK, "ARE YOU READY FOR CHRISTMAS?", textSpeed);
-    scrollText(RGBColor::GREEN, RGBColor::BLACK, "I BET THE CHILDREN ARE....", textSpeed);
+    scrollText(RGBColor::GREEN, RGBColor::BLACK, "I BET THE KIDS ARE....", textSpeed);
 
     // Few Christimas Trees
     bgColor = new RGBColor(5,0,5);
@@ -1311,7 +1371,7 @@ void Sign::run()
 
 
     scrollText(RGBColor::RED, RGBColor::BLACK, "SECONDS UNTIL CHRISTMAS", textSpeed);
-    scrollText(RGBColor::WHITE, RGBColor::BLACK, "^MERRY CHRISTMAS FROM THE HORMANN'S ^", textSpeed);
+    scrollText(RGBColor::WHITE, RGBColor::BLACK, "^MERRY CHRISTMAS FROM THE HORMANN FAMILY ^", textSpeed);
     scrollText(RGBColor::PURPLE, RGBColor::BLACK, "HAVE YOU BEEN NAUGHTY OR NICE?", textSpeed);
 
 
@@ -1319,12 +1379,19 @@ void Sign::run()
 
 void Sign::test()
 {
-    double textSpeed = 0.4;
+    double textSpeed = 0.04;
 
     while (1)
     {
         //run();
-        scrollText(RGBColor::PURPLE, RGBColor::BLACK, "WWHOW MANY TIMES PER DAY DO YOU CHECK THIS CLOCK?", textSpeed);
+        //scrollText(RGBColor::RED, RGBColor::BLACK, "RED", textSpeed);
+        //scrollText(RGBColor::GREEN, RGBColor::BLACK, "GREEN", textSpeed);
+        //scrollText(RGBColor::BLUE, RGBColor::BLACK, "BLUE", textSpeed);
+        //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "PURPLE", textSpeed);
+        //scrollText(RGBColor::YELLOW, RGBColor::BLACK, "YELLOW", textSpeed);
+        RGBColor *test = new RGBColor(75,0,100);
+        scrollText(test, RGBColor::BLACK, "TEST", textSpeed);
+        delete test;
 
     }
 

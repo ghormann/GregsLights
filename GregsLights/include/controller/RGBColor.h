@@ -17,6 +17,7 @@ class RGBColor
         static RGBColor *BLACK;
         static RGBColor *YELLOW;
         static RGBColor *WHITE;
+        static RGBColor *ORANGE;
 
     protected:
     private:

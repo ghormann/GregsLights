@@ -33,4 +33,5 @@ RGBColor* RGBColor::BLACK = new RGBColor(0,0,0);
 RGBColor* RGBColor::PURPLE = new RGBColor(100,0,100);
 RGBColor* RGBColor::YELLOW = new RGBColor(100,100,0);
 RGBColor* RGBColor::WHITE = new RGBColor(100,100,100);
+RGBColor* RGBColor::ORANGE = new RGBColor(100,50,0);
 

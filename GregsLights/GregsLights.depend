@@ -2066,9 +2066,9 @@
 	<stdlib.h>
 	<string.h>
 
-1417571748 /home/ghormann/Documents/src/gregslights/GregsLights/include/controller/RGBColor.h
+1418216478 /home/ghormann/Documents/src/gregslights/GregsLights/include/controller/RGBColor.h
 
-1417572254 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/controller/RGBColor.cpp
+1418216443 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/controller/RGBColor.cpp
 	"../../include/controller/RGBColor.h"
 
 1417970213 /home/ghormann/Documents/src/GregsLights/GregsLights/include/controller/RGBColor.h
