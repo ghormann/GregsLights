@@ -647,6 +647,58 @@ int Sign::drawLetter(char letter, RGBColor *color, int startX, int startY)
 
         offset=15;
     }
+    else if (letter == 'W')
+    {
+        for (x=0; x< 12; x++)
+        {
+            d[x][0] = '1';
+        }
+        y=0;
+        d[5][y]=d[6][y]='0';
+        d[15][y]=d[16][y]=d[17][y]=d[18][y]='1';
+
+        ++y; //1
+        d[1][y]=d[2][y]=d[3][y]=d[8][y]=d[9][y]=d[10][y]='1';
+        d[16][y]=d[17][y]='1';
+
+        ++y; //2
+        d[2][y]=d[3][y]=d[9][y]=d[10][y]=d[16][y]='1';
+
+        ++y; //3
+        d[2][y]=d[3][y]=d[9][y]=d[10][y]=d[16][y]='1';
+
+        ++y; //4
+        d[2][y]=d[3][y]=d[8][y]=d[10][y]=d[11][y]=d[16][y]='1';
+
+        ++y;//5
+        d[3][y]=d[4][y]=d[8][y]=d[10][y]=d[11][y]=d[15][y]='1';
+
+        ++y; //6
+        d[3][y]=d[4][y]=d[8][y]=d[10][y]=d[11][y]=d[15][y]='1';
+
+        ++y; //7
+        d[3][y]=d[4][y]=d[7][y]=d[11][y]=d[12][y]=d[15][y]='1';
+
+        ++y; //8
+        d[4][y]=d[5][y]=d[7][y]=d[11][y]=d[12][y]=d[14][y]=d[15][y]='1';
+
+        ++y; //9
+        d[4][y]=d[5][y]=d[7][y]=d[11][y]=d[12][y]=d[14][y]='1';
+
+        ++y; //10
+        d[4][y]=d[5][y]=d[6][y]=d[12][y]=d[13][y]=d[14][y]='1';
+
+        ++y; //11
+        d[5][y]=d[6][y]=d[12][y]=d[13][y]=d[14][y]='1';
+
+        ++y; //12
+        d[5][y]=d[6][y]=d[13][y]='1';
+
+        ++y;
+        d[5][y]=d[13][y]='1';
+
+        offset=19;
+    }
     else if (letter == 'X')
     {
         for (x=0; x<15; x++)
@@ -1267,12 +1319,12 @@ void Sign::run()
 
 void Sign::test()
 {
-    double textSpeed = 0.04;
+    double textSpeed = 0.4;
 
     while (1)
     {
         //run();
-        scrollText(RGBColor::PURPLE, RGBColor::BLACK, "HOW MANY TIMES PER DAY DO YOU CHECK THIS CLOCK?", textSpeed);
+        scrollText(RGBColor::PURPLE, RGBColor::BLACK, "WWHOW MANY TIMES PER DAY DO YOU CHECK THIS CLOCK?", textSpeed);
 
     }
 
