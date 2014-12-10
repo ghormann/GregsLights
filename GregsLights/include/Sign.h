@@ -2,6 +2,7 @@
 #define SIGN_H
 
 #include "controller/E131Network.h"
+#include "MessageGenerator.h"
 
 #define SIGN_WIDTH 48
 #define SIGN_HEIGHT 20
@@ -53,6 +54,7 @@ class Sign
         E131Network *net1;
         RGBLight *pixals[TOTAL_SIGN_PIXALS];
         RGBLight *board[ SIGN_DUMMY_HEIGHT * SIGN_DUMMY_WIDTH];
+        MessageGenerator *generator;
 };
 
 #endif // SIGN_H

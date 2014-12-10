@@ -12,6 +12,7 @@ Sign::Sign(bool skipTime, E131Network *n1, E131Network *n2, E131Network *n3, E13
     currentX = 0;
     currentY = 0;
     int cnt = 0;
+    this->generator = new MessageGenerator();
     for (int i = 0; i < 170; i++)
     {
         this->pixals[cnt++] = n1->getRGB(i*3);
@@ -809,6 +810,24 @@ int Sign::drawLetter(char letter, RGBColor *color, int startX, int startY)
 
         offset=15;
     }
+    else if (letter == 'Z')
+    {
+        for (x=0; x<10; x++)
+        {
+            d[x][0]=d[x][13]='1';
+        }
+        d[0][1]=d[1][1]=d[7][1]=d[8][1]='1';
+        d[0][2]=d[7][2]=d[8][2]='1';
+        d[0][3]=d[6][3]=d[7][3]='1';
+        d[5][4]=d[6][4]=d[5][5]=d[6][5]='1';
+        d[4][6]=d[5][6]=d[3][7]=d[4][7]='1';
+        d[3][8]=d[4][8]=d[2][9]=d[3][9]='1';
+        d[1][10]=d[2][10]=d[10][10]='1';
+        d[0][11]=d[1][11]=d[10][11]='1';
+        d[0][12]=d[1][12]=d[9][12]=d[10][12]='1';
+
+        offset = 11;
+    }
 
     else if (letter == 0x27)  // ' character
     {
@@ -1304,6 +1323,7 @@ void Sign::run()
     struct tm *tm_now = localtime(&t_now);
     double textSpeed = 0.04;
 
+
     // Not on douring the day
     if (tm_now->tm_hour > 9 && tm_now->tm_hour < 17)
     {
@@ -1331,7 +1351,6 @@ void Sign::run()
 
     scrollText(RGBColor::PURPLE, RGBColor::BLACK, "HOW MANY TIMES PER DAY DO YOU CHECK THIS CLOCK?", textSpeed);
     scrollText(RGBColor::PURPLE, RGBColor::BLACK, "HE IS COMING.... ARE YOU READY?", textSpeed);
-
 
     sprintf(message, "Flashing Seconds To Go");
     bgColor = new RGBColor(5,0,5);
@@ -1383,16 +1402,11 @@ void Sign::test()
 
     while (1)
     {
-        //run();
-        //scrollText(RGBColor::RED, RGBColor::BLACK, "RED", textSpeed);
-        //scrollText(RGBColor::GREEN, RGBColor::BLACK, "GREEN", textSpeed);
-        //scrollText(RGBColor::BLUE, RGBColor::BLACK, "BLUE", textSpeed);
-        //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "PURPLE", textSpeed);
-        //scrollText(RGBColor::YELLOW, RGBColor::BLACK, "YELLOW", textSpeed);
-        RGBColor *test = new RGBColor(75,0,100);
-        scrollText(test, RGBColor::BLACK, "TEST", textSpeed);
-        delete test;
+        skipTimeCheck = true;
+        //scrollText(RGBColor::PURPLE, RGBColor::BLACK, generator->getMessage(), textSpeed);
+        scrollText(RGBColor::PURPLE, RGBColor::BLACK, "JZJZWILL YOU JOIN US AT MIDNIGHT TO SEE THE CLOCK HIT ZERO?", textSpeed);
 
+        //run();
     }
 
     int betweenPixals = 300;

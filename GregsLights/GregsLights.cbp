@@ -64,6 +64,7 @@
 		<Unit filename="include/DisplayModel.h" />
 		<Unit filename="include/DisplayTester.h" />
 		<Unit filename="include/GregsDisplay.h" />
+		<Unit filename="include/MessageGenerator.h" />
 		<Unit filename="include/Sign.h" />
 		<Unit filename="include/Snowmen.h" />
 		<Unit filename="include/TextDisplay.h" />
@@ -93,6 +94,7 @@
 		<Unit filename="src/DisplayModel.cpp" />
 		<Unit filename="src/DisplayTester.cpp" />
 		<Unit filename="src/GregsDisplay.cpp" />
+		<Unit filename="src/MessageGenerator.cpp" />
 		<Unit filename="src/Sign.cpp" />
 		<Unit filename="src/Snowmen.cpp" />
 		<Unit filename="src/TextDisplay.cpp" />
