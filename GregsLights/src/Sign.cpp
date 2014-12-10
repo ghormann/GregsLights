@@ -1241,8 +1241,10 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
         int x;
         int y;
         RGBColor * d[15][SIGN_HEIGHT];
-        for (int x = 0 ; x<15; x++) {
-            for (y=0; y<SIGN_HEIGHT; y++) {
+        for (int x = 0 ; x<15; x++)
+        {
+            for (y=0; y<SIGN_HEIGHT; y++)
+            {
                 d[x][y]=0;
             }
         }
@@ -1430,6 +1432,19 @@ void Sign::wipeToRight(RGBColor *color, double delay)
     }
 }
 
+void Sign::wipeDown(RGBColor *color, double delay)
+{
+    for (int y=0; y<SIGN_HEIGHT; y++)
+    {
+        for (int x=0; x< SIGN_WIDTH; x++)
+        {
+            this->getPixal(x,y)->set(color);
+        }
+        gjhSleep(delay);
+    }
+}
+
+
 char *Sign::getMessage()
 {
     return message;
@@ -1520,12 +1535,19 @@ void Sign::fewTrees()
     // Few Christimas Trees
     RGBColor *bgColor = new RGBColor(5,0,5);
     setDummyBackground(bgColor);
-    drawSpecial(1,2,SIGN_TREE);
-    drawSpecial(30,2,SIGN_TREE);
-    setDisplayPosition(0,0);
+    int y=SIGN_HEIGHT+5;
+    drawSpecial(0,2,SIGN_TREE);
+    drawSpecial(16,0, SIGN_CANDY);
+    drawSpecial(31,2,SIGN_TREE);
+    setDisplayPosition(0,y);
+    while(y>=0)
+    {
+        setDisplayPosition(0,y--);
+        gjhSleep(0.06);
+    }
     delete bgColor;
     sleep(6);
-
+    wipeDown(RGBColor::BLACK, 0.06);
 
 
 }
@@ -1538,13 +1560,7 @@ void Sign::test()
         skipTimeCheck = true;
         //scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
         //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "ARE YOU READY FOR CHRISTMAS?      I BET THE KIDS ARE....", 0.04);
-        RGBColor *bgColor = new RGBColor(0,0,0);
-        setDummyBackground(bgColor);
-        drawSpecial(1,0,SIGN_CANDY);
-        drawSpecial(30,2,SIGN_TREE);
-        setDisplayPosition(0,0);
-        delete bgColor;
-        sleep(60);
+        fewTrees();
 
         run();
     }

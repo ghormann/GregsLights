@@ -47,6 +47,7 @@ class Sign
         void setDummyBackground(RGBColor *bgColor);
         void drawSpecial(int x, int y, SIGN_SPECIAL type);
         void wipeToRight(RGBColor *color, double delay);
+        void wipeDown(RGBColor *color, double delay);
         void rotateSecondsToGo();
         void fewTrees();
     private:
