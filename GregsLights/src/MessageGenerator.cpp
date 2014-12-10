@@ -29,7 +29,7 @@ char * MessageGenerator::getMessage()
         int i = lastId;
         while (i == lastId)
         {
-            i = rand() % 6;  // Don't show same message twice in a row.
+            i = rand() % 7;  // Don't show same message twice in a row.
         }
         lastId = i;   //
         switch (i)
@@ -39,13 +39,16 @@ char * MessageGenerator::getMessage()
         case 1:
             return "HE IS COMING.... ARE YOU READY?";
         case 2:
-            return "ARE YOU READY FOR CHRISTMAS?          I BET THE KIDS ARE....";
+            return "ARE YOU READY FOR CHRISTMAS?      I BET THE KIDS ARE....";
         case 3:
             return "SECONDS UNTIL CHRISTMAS";
         case 4:
             return "^MERRY CHRISTMAS FROM THE HORMANN FAMILY ^";
         case 5:
             return "HAVE YOU BEEN NAUGHTY OR NICE?";
+        case 6:
+            return "JOIN US AT MIDNIGHT TO SEE THE CLOCK HIT ZERO";
+
 
         }
 

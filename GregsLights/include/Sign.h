@@ -20,7 +20,8 @@
 
 enum SIGN_SPECIAL {
     SIGN_TREE = 0,
-    SIGN_SNOWMEN
+    SIGN_SNOWMEN,
+    SIGN_CANDY
 };
 
 class Sign
@@ -46,6 +47,8 @@ class Sign
         void setDummyBackground(RGBColor *bgColor);
         void drawSpecial(int x, int y, SIGN_SPECIAL type);
         void wipeToRight(RGBColor *color, double delay);
+        void rotateSecondsToGo();
+        void fewTrees();
     private:
         int currentX;
         int currentY;

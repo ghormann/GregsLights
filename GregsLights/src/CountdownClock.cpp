@@ -181,7 +181,7 @@ void CountdownClock::tick()
     struct tm *tm_now = localtime(&t_now);
 
     // Not on douring the day
-    if (tm_now->tm_hour > 9 && tm_now->tm_hour < 17)
+    if (tm_now->tm_hour >= 9 && tm_now->tm_hour < 17)
     {
         if (skipTimeCheck == false)
         {

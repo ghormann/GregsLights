@@ -3,6 +3,7 @@
 #include "../include/controller/DummyBulb.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 
 Sign::Sign(bool skipTime, E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6)
@@ -411,6 +412,22 @@ int Sign::drawLetter(char letter, RGBColor *color, int startX, int startY)
         }
 
         offset = 6;
+    }
+    else if (letter == 'J')
+    {
+        for (x=2; x<8; x++)
+        {
+            d[x][0]='1';
+        }
+
+        for (y=0; y<12; y++)
+        {
+            d[4][y]=d[5][y]='1';
+        }
+        d[0][11]=d[1][11]='1';
+        d[0][12]=d[1][12]=d[2][12]=d[4][12]='1';
+        d[1][13]=d[2][13]=d[3][13]='1';
+        offset=8;
     }
     else if (letter == 'K')
     {
@@ -1219,8 +1236,111 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
 
         getBoard(startX,startY)->set(RGBColor::YELLOW); // start at top
     }
+    else if (type == SIGN_CANDY)
+    {
+        int x;
+        int y;
+        RGBColor * d[15][SIGN_HEIGHT];
+        for (int x = 0 ; x<15; x++) {
+            for (y=0; y<SIGN_HEIGHT; y++) {
+                d[x][y]=0;
+            }
+        }
+        for (x=4; x<11; x++)
+        {
 
-    if (type==SIGN_SNOWMEN)
+            d[x][0]=RGBColor::GREY;
+        }
+//1
+        d[3][1]=d[4][1]=RGBColor::GREY;
+        d[5][1]=d[6][1]=RGBColor::RED;
+        d[10][1]=RGBColor::RED;
+        d[11][1]=d[12][1]=RGBColor::GREY;
+        d[7][1]=d[8][1]=d[9][1]=RGBColor::WHITE;
+//2
+        d[2][2]=d[13][2]=RGBColor::GREY;
+        d[5][2]=d[6][2]=d[7][2]=RGBColor::RED;
+        d[11][2]=d[12][2]=RGBColor::RED;
+        d[3][2]=d[4][2]=d[8][2]=d[9][2]=d[10][2]=RGBColor::WHITE;
+//3
+        d[1][3]=d[13][3]=RGBColor::GREY;
+        d[2][3]=d[6][3]=d[7][3]=d[8][3]=d[12][3]=RGBColor::RED;
+        d[3][3]=d[4][3]=d[5][3]=d[9][3]=d[10][3]=d[11][3]=RGBColor::WHITE;
+//4
+        d[0][4]=d[6][4]=d[7][4]=d[8][4]=d[9][4]=d[14][4]=RGBColor::GREY;
+        d[1][4]=d[2][4]=d[3][4]=d[13][4]=RGBColor::RED;
+        d[4][4]=d[5][4]=d[10][4]=d[11][4]=d[12][4]=RGBColor::WHITE;
+//5
+        d[0][5]=d[4][5]=d[5][5]=d[10][5]=d[14][5]=RGBColor::GREY;
+        d[2][5]=d[3][5]=RGBColor::RED;
+        d[1][5]=d[11][5]=d[12][5]=d[13][5]=RGBColor::WHITE;
+//6
+        d[0][6]=d[3][6]=d[10][6]=d[14][6]=RGBColor::GREY;
+        d[1][6]=d[2][6]=d[12][6]=d[13][6]=RGBColor::WHITE;
+        d[11][6]=RGBColor::RED;
+//7
+        d[1][7]=d[2][7]=d[10][7]=d[14][7]=RGBColor::GREY;
+        d[11][7]=d[12][7]=RGBColor::RED;
+        d[13][7]=RGBColor::WHITE;
+//8
+        d[9][8]=d[14][8]=RGBColor::GREY;
+        d[10][8]=RGBColor::WHITE;
+        d[11][8]=d[12][8]=d[13][8]=RGBColor::RED;
+//9
+        d[9][9]=d[13][9]=RGBColor::GREY;
+        d[10][9]=d[11][9]=RGBColor::WHITE;
+        d[12][9]=RGBColor::RED;
+//10
+        d[8][10]=d[13][10]=RGBColor::GREY;
+        d[9][10]=RGBColor::RED;
+        d[10][10]=d[11][10]=d[12][10]=RGBColor::WHITE;
+//11
+        d[8][11]=d[12][11]=RGBColor::GREY;
+        d[9][11]=d[10][11]=RGBColor::RED;
+        d[11][11]=RGBColor::WHITE;
+//12
+        d[7][12]=d[12][12]=RGBColor::GREY;
+        d[8][12]=RGBColor::WHITE;
+        d[9][12]=d[10][12]=d[11][12]=RGBColor::RED;
+//13
+        d[6][13]=d[11][13]=RGBColor::GREY;
+        d[7][13]=d[8][13]=d[9][13]=RGBColor::WHITE;
+        d[10][13]=RGBColor::RED;
+//14
+        d[5][14]=d[11][14]=RGBColor::GREY;
+        d[6][14]=d[7][14]=RGBColor::RED;
+        d[8][14]=d[9][14]=d[10][14]=RGBColor::WHITE;
+//15
+        d[5][15]=d[10][15]=RGBColor::GREY;
+        d[6][15]=d[7][15]=d[8][15]=RGBColor::RED;
+        d[9][15]=RGBColor::WHITE;
+//16
+        d[4][16]=d[10][16]=RGBColor::GREY;
+        d[5][16]=d[6][16]=RGBColor::WHITE;
+        d[7][16]=d[8][16]=d[9][16]=RGBColor::RED;
+//17
+        d[4][17]=d[9][17]=RGBColor::GREY;
+        d[5][17]=d[6][17]=d[7][17]=RGBColor::WHITE;
+        d[8][17]=RGBColor::RED;
+//18
+        d[4][18]=d[8][18]=RGBColor::GREY;
+        d[5][18]=RGBColor::RED;
+        d[6][18]=d[7][18]=RGBColor::WHITE;
+//19
+        d[5][19]=d[6][19]=d[7][19]=RGBColor::GREY;
+
+        //15][SIGN_HEIGHT
+        for (x =0; x<15; x++)
+        {
+            for (y=0; y<SIGN_HEIGHT; y++)
+            {
+                if (d[x][y] != 0)
+                    getBoard(x+startX,y+startY)->set(d[x][y]);
+            }
+        }
+
+    }
+    else if (type==SIGN_SNOWMEN)
     {
         int width = 10;
         int mid = 5;
@@ -1315,45 +1435,10 @@ char *Sign::getMessage()
     return message;
 }
 
-
-void Sign::run()
+void Sign::rotateSecondsToGo()
 {
-    time_t t_now;
-    time(&t_now);
-    struct tm *tm_now = localtime(&t_now);
-    double textSpeed = 0.04;
-
-
-    // Not on douring the day
-    if (tm_now->tm_hour > 9 && tm_now->tm_hour < 17)
-    {
-        sprintf(message, "Sleeping (%02d:%02d)",
-                tm_now->tm_hour,
-                tm_now->tm_min);
-        setDummyBackground(RGBColor::BLACK);
-        setDisplayPosition(0,0);
-        if (!skipTimeCheck)
-        {
-            sleep(60);
-            return;
-        }
-    }
-
-    //
-    // Do what a sign should do
-    //
-
-
-    RGBColor *bgColor = 0;
-    setDummyBackground(RGBColor::BLACK);
-    setDisplayPosition(0,0);
-
-
-    scrollText(RGBColor::PURPLE, RGBColor::BLACK, "HOW MANY TIMES PER DAY DO YOU CHECK THIS CLOCK?", textSpeed);
-    scrollText(RGBColor::PURPLE, RGBColor::BLACK, "HE IS COMING.... ARE YOU READY?", textSpeed);
-
     sprintf(message, "Flashing Seconds To Go");
-    bgColor = new RGBColor(5,0,5);
+    RGBColor *bgColor = new RGBColor(5,0,5);
     staticSecondsToGo(RGBColor::GREEN, bgColor);
     delete bgColor;
 
@@ -1373,14 +1458,67 @@ void Sign::run()
     sleep(5);
 
     wipeToRight(RGBColor::BLACK, 0.05);
+}
+
+void Sign::run()
+{
+    int lastOne = -1;
+    time_t t_now;
+    time(&t_now);
+    struct tm *tm_now = localtime(&t_now);
+    double textSpeed = 0.04;
 
 
+    // Not on douring the day
+    if (tm_now->tm_hour >= 9 && tm_now->tm_hour < 17)
+    {
+        sprintf(message, "Sleeping (%02d:%02d)",
+                tm_now->tm_hour,
+                tm_now->tm_min);
+        setDummyBackground(RGBColor::BLACK);
+        setDisplayPosition(0,0);
+        if (!skipTimeCheck)
+        {
+            sleep(60);
+            return;
+        }
+    }
 
-    scrollText(RGBColor::GREEN, RGBColor::BLACK, "ARE YOU READY FOR CHRISTMAS?", textSpeed);
-    scrollText(RGBColor::GREEN, RGBColor::BLACK, "I BET THE KIDS ARE....", textSpeed);
+    //
+    // Do what a sign should do
+    //
 
+    setDummyBackground(RGBColor::BLACK);
+    setDisplayPosition(0,0);
+
+    int i = lastOne;
+    while (i == lastOne)
+    {
+        i= rand() %7;   // Don't have them back to back
+    }
+    lastOne = i;
+    switch(i)
+    {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+        scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), textSpeed);
+        break;
+    case 5:
+        rotateSecondsToGo();
+        break;
+    case 6:
+        fewTrees();
+        break;
+    }
+}
+
+void Sign::fewTrees()
+{
     // Few Christimas Trees
-    bgColor = new RGBColor(5,0,5);
+    RGBColor *bgColor = new RGBColor(5,0,5);
     setDummyBackground(bgColor);
     drawSpecial(1,2,SIGN_TREE);
     drawSpecial(30,2,SIGN_TREE);
@@ -1389,24 +1527,26 @@ void Sign::run()
     sleep(6);
 
 
-    scrollText(RGBColor::RED, RGBColor::BLACK, "SECONDS UNTIL CHRISTMAS", textSpeed);
-    scrollText(RGBColor::WHITE, RGBColor::BLACK, "^MERRY CHRISTMAS FROM THE HORMANN FAMILY ^", textSpeed);
-    scrollText(RGBColor::PURPLE, RGBColor::BLACK, "HAVE YOU BEEN NAUGHTY OR NICE?", textSpeed);
-
 
 }
 
 void Sign::test()
 {
-    double textSpeed = 0.04;
-
     while (1)
     {
+        //sleep(2);
         skipTimeCheck = true;
-        //scrollText(RGBColor::PURPLE, RGBColor::BLACK, generator->getMessage(), textSpeed);
-        scrollText(RGBColor::PURPLE, RGBColor::BLACK, "JZJZWILL YOU JOIN US AT MIDNIGHT TO SEE THE CLOCK HIT ZERO?", textSpeed);
+        //scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
+        //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "ARE YOU READY FOR CHRISTMAS?      I BET THE KIDS ARE....", 0.04);
+        RGBColor *bgColor = new RGBColor(0,0,0);
+        setDummyBackground(bgColor);
+        drawSpecial(1,0,SIGN_CANDY);
+        drawSpecial(30,2,SIGN_TREE);
+        setDisplayPosition(0,0);
+        delete bgColor;
+        sleep(60);
 
-        //run();
+        run();
     }
 
     int betweenPixals = 300;
