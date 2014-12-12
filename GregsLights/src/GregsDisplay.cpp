@@ -76,13 +76,13 @@ void GregsDisplay::do_it_bushes()
         // Step 1 - Rotate_some
         setAllOff();
         write_data(0.1);
-        rotate_some();
+        //rotate_some();
 
         // STEP 2
-        fadeThroughAll(5, 2);
+        //fadeThroughAll(5, 2);
 
         // STEP 3
-        fade_offset();
+        //fade_offset();
 
         // Step 4
         moveFasterRight();
@@ -217,9 +217,12 @@ void GregsDisplay::fade_offset()
     double sleepBetween = duration/6;
 
     sprintf(model->getMessage(1),"Fade Offset");
-    setAllToColor(WHITE,100);
-    setAllHouse(BLUE,100);
-    write_data(sleepBetween);
+    fadeAllBush(WHITE,0,100,3.0);
+    fadeAllHouse(BLUE,0,100,3.0);
+    //setAllToColor(WHITE,100);
+    //setAllHouse(BLUE,100);
+
+    write_data(3.0);
 
     for (color=RED; color <=WHITE; color++)
     {
@@ -501,10 +504,6 @@ void GregsDisplay::chase_right(int baseColor, int diffColor, double startDuratio
     int bush = 1;
     sprintf(model->getMessage(1),"Chase Right - Duration: %f", duration);
     setAllOff();
-    write_data(.1);
-    setAllOff();
-    write_data(.1);
-
     setAllToColor(baseColor, 100);
     setAllHouse(baseColor, 100);
     write_data(.1);
@@ -527,22 +526,6 @@ void GregsDisplay::chase_right(int baseColor, int diffColor, double startDuratio
         duration -= (duration * decreasePct);
     }
 
-}
-
-void GregsDisplay::fadeAllColor(int color, int start, int end, double duration)
-{
-    int i;
-    for (i=1; i<=6; i++)
-    {
-        fade_bush(i, color, start, end, duration);
-    }
-    write_data(duration);
-
-    for (i=1; i<=6; i++)
-    {
-        set_bush(i, color, end);
-    }
-    write_data(0.1);
 }
 
 /*
@@ -667,7 +650,7 @@ void GregsDisplay::fadeWhite()
         else
             fade_house(i, RED, 0, 100, 2.0);
     }
-    fadeAllColor(WHITE, 0, 100, 2.0);
+    fadeAllBush(WHITE, 0, 100, 2.0);
 
     for (i=1; i <= 4; i++)
     {
@@ -687,7 +670,7 @@ void GregsDisplay::fadeWhite()
             else
                 fade_house(j, RED, 100, 35, duration);
         }
-        fadeAllColor(WHITE, 100, 35, duration);
+        fadeAllBush(WHITE, 100, 35, duration);
         for (j=1; j <= 4; j++)
         {
             if (j%2)
@@ -704,7 +687,7 @@ void GregsDisplay::fadeWhite()
             else
                 fade_house(j, RED, 35, 100, duration);
         }
-        fadeAllColor(WHITE, 35, 100, duration);
+        fadeAllBush(WHITE, 35, 100, duration);
         for (j=1; j <= 4; j++)
         {
             if (j%2)
@@ -738,6 +721,10 @@ void GregsDisplay::moveFasterRight()
     int i;
     strcpy(model->getMessage(1),"MoveFasterRight");
     setAllOff();
+    fadeAllBush(RED,0,100,3.0);
+    fadeAllHouse(RED,0,100,3.0);
+    write_data(3.0);
+
     chase_right(RED, GREEN, 1.3, 0.05, 0.1);
     setAllToColor(RED, 100);
     setAllToColor(GREEN, 0);
@@ -797,7 +784,6 @@ void GregsDisplay::moveFromMiddle()
     setAllHouse(BLUE,100);
     write_data(duration + 0.1);
     setAllToColor(GREEN, 100);
-    write_data(.1);
 
     // Really Start it
     duration=1.3;
@@ -891,17 +877,18 @@ void GregsDisplay::rotate_some()
     }
     write_data(3);
 
+    duration = 4.0;
     for (i = 1; i<=6; i++)
     {
-        fade_bush(i, (i-1)%4, 100,0,4.0);
+        fade_bush(i, (i-1)%4, 100,0, duration);
     }
 
-    model->getHouse(1)->fade(100,0,0,0,0,0,10);
-    model->getHouse(2)->fade(0,0,100,0,0,0,10);
-    model->getHouse(2)->fade(0,0,100,0,0,0,10);
-    model->getHouse(3)->fade(0,100,0,0,0,0,10);
+    for (int i = 1; i <= 4; i++)
+    {
+        model->getHouse(i)->fadeTo(0,0,0,duration);
+    }
 
-    write_data(4.0);
+    write_data(duration);
 
 }
 

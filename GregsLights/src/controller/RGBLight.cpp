@@ -39,6 +39,12 @@ void RGBLight::fade(int red_s, int green_s, int blue_s, int red_e, int green_e, 
     this->blue->fade(blue_s,blue_e,dur);
 }
 
+// Fade from current to....
+void RGBLight::fadeTo(int red_e, int green_e, int blue_e, double dur)
+{
+    this->fade(getRed(), getGreen(), getBlue(), red_e, green_e, blue_e, dur);
+}
+
 Bulb *RGBLight::getRedBulb()
 {
     return this->red;

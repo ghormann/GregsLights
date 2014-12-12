@@ -38,7 +38,6 @@ private:
     void fadeWhite();
     void fade_offset();
     void set_house(int light, int color, int intensity);
-    void fadeAllColor(int color, int start, int end, double duration);
     void fade_house(int light, int color, int s_intensity, int f_intensity, double duration);
     void rotate_all(double duration, int cycles);
     void chase_left(int baseColor, int diffColor, double startDuration,
