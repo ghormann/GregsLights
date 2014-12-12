@@ -41,6 +41,11 @@ void Bulb::fade(int start, int stop, double duration)
     //printf("FadeStep: %f\n", fadeStep );
 }
 
+void Bulb::fadeTo(int stop, double duration)
+{
+    this->fade(getIntensity(),stop,duration);
+}
+
 void * Bulb::tickThread(void *)
 {
     auto begin = std::chrono::high_resolution_clock::now() ;

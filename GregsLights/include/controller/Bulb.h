@@ -18,6 +18,7 @@ public:
     void setIntensity(int pct);
     int  getIntensity();
     void fade(int start, int stop, double duration);
+    void fadeTo(int stop, double duration);
     static void * tickThread(void *);
 protected:
     virtual void setIntensity_ipml(int pct) = 0;

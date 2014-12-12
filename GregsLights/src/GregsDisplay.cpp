@@ -76,25 +76,25 @@ void GregsDisplay::do_it_bushes()
         // Step 1 - Rotate_some
         setAllOff();
         write_data(0.1);
-        //rotate_some();
+        rotate_some();
 
         // STEP 2
-        //fadeThroughAll(5, 2);
+        fadeThroughAll(5, 2);
 
         // STEP 3
-        //fade_offset();
+        fade_offset();
 
         // Step 4
-        //moveFasterRight();
+        moveFasterRight();
 
         // Step 5
-        //moveFromMiddle();
+        moveFromMiddle();
         // Step 6
         fadeWhite();
         // Step 7
         redGreenFade();
         // Step 8
-        change_one();
+        change_one();  // Still doesn't fade 100% correctly.
 
     }
 
@@ -543,13 +543,14 @@ void GregsDisplay::change_one()
     int mult = 3;
     sprintf(model->getMessage(1),"Change_one: Set initial Colors");
     setAllOff();
-    write_data(0.1);
 
     for (i = 1; i <=6; i++)
     {
         colors[i] = i;
     }
     colors[7] = 0; // House
+
+
 
     /*
     || Colors
@@ -635,6 +636,20 @@ void GregsDisplay::change_one()
         }
         write_data(duration * 1.5);
     }
+
+    for (int i = HOUSE_LIGHT_START; i <= HOUSE_LIGHT_END; i++)
+    {
+        model->getHouse(i)->fadeTo(0,0,0, 3.0);
+    }
+
+    for (int i = BUSH_LIGHT_START; i <= BUSH_LIGHT_END; i++)
+    {
+        model->getBush(i)->getBlue()->fadeTo(0,3.0);
+        model->getBush(i)->getRed()->fadeTo(0,3.0);
+        model->getBush(i)->getGreen()->fadeTo(0,3.0);
+        model->getBush(i)->getWhite()->fadeTo(0,3.0);
+    }
+    write_data(3.0);
 
 }
 

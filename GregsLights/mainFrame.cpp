@@ -86,11 +86,11 @@ BasicGLPane::BasicGLPane(wxFrame* parent, int* args) :
     sleep(1); // Wait for threads
     //new TextDisplay(model);
 
-    //DisplayTester *tester = new DisplayTester(model);
-    //tester->testAll();
+    DisplayTester *tester = new DisplayTester(model);
+    tester->testAll();
 
-    GregsDisplay *display = new GregsDisplay(model);
-    display->run();
+    //GregsDisplay *display = new GregsDisplay(model);
+    //display->run();
 }
 
 BasicGLPane::~BasicGLPane()
