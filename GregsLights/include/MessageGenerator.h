@@ -1,6 +1,7 @@
 #ifndef MESSAGEGENERATOR_H
 #define MESSAGEGENERATOR_H
 
+#define MESSAGE_GENERATOR_SIZE 7
 
 class MessageGenerator
 {
@@ -11,7 +12,9 @@ class MessageGenerator
     protected:
     private:
         bool isChristmas;
-        int lastId;
+        void clear();
+        void checkClear();
+        char bitmap[MESSAGE_GENERATOR_SIZE];
 };
 
 #endif // MESSAGEGENERATOR_H

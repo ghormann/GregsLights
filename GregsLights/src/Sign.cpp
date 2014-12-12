@@ -1647,9 +1647,9 @@ void Sign::test()
         */
 
         skipTimeCheck = true;
-        scrollText(RGBColor::getRandom(), RGBColor::BLACK, "+ HAVE YOU BEEN NAUGHTY OR NICE? +", 0.04);
+        scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
         //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "ARE YOU READY FOR CHRISTMAS?      I BET THE KIDS ARE....", 0.04);
-        run();
+        //run();
     }
 
     int betweenPixals = 300;

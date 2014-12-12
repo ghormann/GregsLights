@@ -13,8 +13,7 @@ MessageGenerator::MessageGenerator()
     struct tm *tm_now = localtime(&t_now);
 
     isChristmas = (tm_now->tm_mday <= 25 ? true : false);
-    lastId = -1;
-
+    clear();
 }
 
 MessageGenerator::~MessageGenerator()
@@ -22,16 +21,34 @@ MessageGenerator::~MessageGenerator()
     //dtor
 }
 
+void MessageGenerator::clear(){
+    for (int i = 0; i < MESSAGE_GENERATOR_SIZE; i++)
+    {
+        bitmap[i] = 0;
+    }
+
+}
+
+void MessageGenerator::checkClear() {
+    for (int i = 0; i < MESSAGE_GENERATOR_SIZE; i++) {
+        if (bitmap[i] == 0) return;
+    }
+    // If we got this far, everything is used up.  Clear it.
+    clear();
+}
+
 char * MessageGenerator::getMessage()
 {
+    checkClear();
+
     if (isChristmas)
     {
-        int i = lastId;
-        while (i == lastId)
+        int i = 3;
+        while (bitmap[i] == 1)
         {
-            i = rand() % 7;  // Don't show same message twice in a row.
+            i = rand() % MESSAGE_GENERATOR_SIZE;  // Don't show same message twice in a row.
         }
-        lastId = i;   //
+        bitmap[i] = 1;
         switch (i)
         {
         case 0:
