@@ -85,10 +85,10 @@ void GregsDisplay::do_it_bushes()
         //fade_offset();
 
         // Step 4
-        moveFasterRight();
+        //moveFasterRight();
 
         // Step 5
-        moveFromMiddle();
+        //moveFromMiddle();
         // Step 6
         fadeWhite();
         // Step 7
@@ -651,15 +651,7 @@ void GregsDisplay::fadeWhite()
             fade_house(i, RED, 0, 100, 2.0);
     }
     fadeAllBush(WHITE, 0, 100, 2.0);
-
-    for (i=1; i <= 4; i++)
-    {
-        if (i%2)
-            set_house(i, GREEN, 100);
-        else
-            set_house(i, RED, 100);
-    }
-    write_data(.1);
+    write_data(2.0);
 
     for (i=1; i < 3; i++)
     {
@@ -671,14 +663,7 @@ void GregsDisplay::fadeWhite()
                 fade_house(j, RED, 100, 35, duration);
         }
         fadeAllBush(WHITE, 100, 35, duration);
-        for (j=1; j <= 4; j++)
-        {
-            if (j%2)
-                set_house(j, GREEN, 35);
-            else
-                set_house(j, RED, 35);
-        }
-        write_data(1);
+        write_data(duration);
 
         for (j=1; j <= 4; j++)
         {
@@ -688,14 +673,7 @@ void GregsDisplay::fadeWhite()
                 fade_house(j, RED, 35, 100, duration);
         }
         fadeAllBush(WHITE, 35, 100, duration);
-        for (j=1; j <= 4; j++)
-        {
-            if (j%2)
-                set_house(j, GREEN, 100);
-            else
-                set_house(j, RED, 100);
-        }
-        write_data(1);
+        write_data(duration);
     }
     sprintf(model->getMessage(1),"Fade WHITE OFF");
     for (i=1; i<=6; i++)
