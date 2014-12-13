@@ -188,6 +188,11 @@ int Sign::drawLetter(char letter, RGBColor *color, int startX, int startY)
         drawSpecial(startX,startY, SIGN_TREE);
         return 20;
     }
+    else if (letter == '\\')
+    {
+        drawSpecial(startX,startY, SIGN_TREE_2);
+        return 14;
+    }
     else if (letter == '+')
     {
         drawSpecial(startX,startY+3, SIGN_DEER);
@@ -1425,6 +1430,100 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
 
         getBoard(startX,startY)->set(RGBColor::YELLOW); // start at top
     }
+    else if (type==SIGN_TREE_2)
+    {
+        int x;
+        int y;
+        RGBColor * d[15][SIGN_HEIGHT];
+        for (int x = 0 ; x<15; x++)
+        {
+            for (y=0; y<SIGN_HEIGHT; y++)
+            {
+                d[x][y]=0;
+            }
+        }
+
+        // start tree
+        d[6][0]=d[7][0]=d[6][2]=d[7][2]=RGBColor::YELLOW;
+        d[5][1]=d[6][1]=d[7][1]=d[8][1]=RGBColor::YELLOW;
+
+        y=3;
+        while (y<7)
+        {
+            for (x=6-y+3; x<y+5; x++)
+            {
+                d[x][y]=RGBColor::GREEN;
+            }
+            ++y;
+        }
+
+        y=7;
+        while (y<11)
+        {
+            for (x=12-y; x<y+2; x++)
+            {
+                d[x][y]=RGBColor::GREEN;
+            }
+            ++y;
+        }
+
+        y=11;
+        while (y<15)
+        {
+            for (x=15-y; x<y-1; x++)
+            {
+                d[x][y]=RGBColor::GREEN;
+            }
+            ++y;
+        }
+
+        for (y =15; y<18; y++)
+        {
+            d[5][y]=d[6][y]=d[7][y]=d[8][y]=RGBColor::BROWN;
+        }
+        for (x=3; x<11; x++)
+        {
+            d[x][18]=RGBColor::RED;
+        }
+        d[2][7]=d[11][7]=d[1][11]=d[12][11]=RGBColor::YELLOW;
+        d[0][15]=d[13][15]=RGBColor::YELLOW;
+        d[3][16]=d[10][16]=RGBColor::RED;
+        d[3][17]=d[4][17]=d[9][17]=d[10][17]=RGBColor::RED;
+
+        d[7][4]=d[6][5]=d[5][6]=RGBColor::RED;
+
+        x=8;
+        y=7;
+        while (y < 12)
+        {
+            d[x][y]=RGBColor::RED;
+            --x;
+            ++y;
+        }
+
+        x=9;
+        y=11;
+        while (y < 15)
+        {
+            d[x][y]=RGBColor::RED;
+            --x;
+            ++y;
+        }
+
+
+        //END TREE
+
+
+        for (x =0; x<15; x++)
+        {
+            for (y=0; y<SIGN_HEIGHT; y++)
+            {
+                if (d[x][y] != 0)
+                    getBoard(x+startX,y+startY)->set(d[x][y]);
+            }
+        }
+
+    }
     else if (type == SIGN_CANDY)
     {
         int x;
@@ -1814,16 +1913,14 @@ void Sign::test()
     while (1)
     {
 
-        /*
-                RGBColor *bgColor = new RGBColor(5,0,5);
-                setDummyBackground(bgColor);
-                drawSpecial(0,0,SIGN_DEER);
-                setDisplayPosition(0,0);
-                sleep(60);
-        */
+        RGBColor *bgColor = new RGBColor(15,0,15);
+        setDummyBackground(bgColor);
+        drawSpecial(0,0,SIGN_TREE_2);
+        setDisplayPosition(0,0);
+        sleep(60);
 
-        scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
-        //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "56789", 0.1);
+        //scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
+        //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "\\56\\789", 0.1);
         //run();
     }
 
