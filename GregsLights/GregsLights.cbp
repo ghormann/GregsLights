@@ -68,6 +68,7 @@
 		<Unit filename="include/Sign.h" />
 		<Unit filename="include/Snowmen.h" />
 		<Unit filename="include/TextDisplay.h" />
+		<Unit filename="include/TimeInfo.h" />
 		<Unit filename="include/controller/Bulb.h" />
 		<Unit filename="include/controller/Bush.h" />
 		<Unit filename="include/controller/DMXBulb.h" />
@@ -98,6 +99,7 @@
 		<Unit filename="src/Sign.cpp" />
 		<Unit filename="src/Snowmen.cpp" />
 		<Unit filename="src/TextDisplay.cpp" />
+		<Unit filename="src/TimeInfo.cpp" />
 		<Unit filename="src/controller/Bulb.cpp" />
 		<Unit filename="src/controller/Bush.cpp" />
 		<Unit filename="src/controller/DMXBulb.cpp" />

@@ -3,6 +3,7 @@
 
 #include "controller/E131Network.h"
 #include "MessageGenerator.h"
+#include "TimeInfo.h"
 
 #define SIGN_WIDTH 48
 #define SIGN_HEIGHT 20
@@ -54,7 +55,7 @@ class Sign
     private:
         int currentX;
         int currentY;
-        bool skipTimeCheck;
+        TimeInfo *timeInfo;
         char message[80];
         E131Network *net1;
         RGBLight *pixals[TOTAL_SIGN_PIXALS];

@@ -2,6 +2,7 @@
 #define COUNTDOWNCLOCK_H
 
 #include "controller/Bulb.h"
+#include "TimeInfo.h"
 #include <pthread.h>
 #include <unistd.h>
 #include <time.h>
@@ -47,11 +48,8 @@ class CountdownClock
         Bulb *special[8];
         bool active;
         char message[100];
-        struct tm tm_christmas;
-        time_t t_christmas;
         int lastTick;
-        bool skipTimeCheck;
-        bool newYears;
+        TimeInfo *timeinfo;
         pthread_t clock_t;      /* Thread for writing to serial interface */
 
 };

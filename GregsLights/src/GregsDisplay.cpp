@@ -11,7 +11,7 @@
 GregsDisplay::GregsDisplay(DisplayModel *m)
 {
     this->model = m;
-    skip_time_check = m->isSkipTimeCheck();
+    timeinfo = new TimeInfo(m->isSkipTimeCheck(), m->isNewYears());
 }
 
 GregsDisplay::~GregsDisplay()
@@ -21,57 +21,18 @@ GregsDisplay::~GregsDisplay()
 
 void GregsDisplay::do_it_bushes()
 {
-    time_t now_t;
-    struct tm *now;
 
     while(1)
     {
         setAllOff();
         sleep(1);
-        time(&now_t);
-        now = localtime(&now_t);
-        /*
-        * During the day (9am-5pm): make sure all boxes are off.
-        * From 5pm - 11pm: run the standard display on the bushes
-        * From 11pm-6am: just have the spotlights on the house
-        */
 
-        while ( ( now->tm_hour == 8 && now->tm_min > 59) ||
-                ( (now->tm_hour > 8)  && now->tm_hour < 17)
-              )
-            /* 9:59am - 5pm */
-        {
-            if (skip_time_check)
-            {
-                break;
-            }
-            sprintf(model->getMessage(1), "Sleeping 1 minutes during day (%02d:%02d)",
-                    now->tm_hour,
-                    now->tm_min);
+        while (timeinfo->isDayLight()) {
+            sprintf(model->getMessage(1), "Sleeping 1 minutes during day (%02d)",
+                    timeinfo->getHourOfDay());
             setAllOff();
             sleep(60);
-            time(&now_t);
-            now = localtime(&now_t);
         }
-
-        while ( (now->tm_hour == 23) ||     /* 11pm - 6am */
-                (now->tm_hour >=0 && now->tm_hour <6)  )
-        {
-            if (skip_time_check)
-            {
-                break;
-            }
-
-            sprintf(model->getMessage(1), "Sleeping 1 minutes at night(%02d:%02d)",
-                    now->tm_hour,
-                    now->tm_min);
-            setAllOff();
-            sleep(60);
-            time(&now_t);
-            now = localtime(&now_t);
-        }
-
-        // This is the real display
 
         // Step 1 - Rotate_some
         setAllOff();

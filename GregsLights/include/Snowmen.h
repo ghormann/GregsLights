@@ -3,6 +3,7 @@
 
 #include "pthread.h"
 #include "controller/Bulb.h"
+#include "TimeInfo.h"
 #define SNOWMEN_MAX_BULBS 18
 
 #define write_data(pause)  usleep((pause) * 1000000)
@@ -30,10 +31,10 @@ protected:
     void set_snowmen(int side, int,int,int,int,int,int,int);
 private:
     pthread_t snowman_t;
-    bool skip_time_check;
     char message2[100];
     Bulb *bulbs[SNOWMEN_MAX_BULBS];
     void setBodies(bool on);
+    TimeInfo *timeinfo;
 };
 
 #endif // SNOWMEN_H

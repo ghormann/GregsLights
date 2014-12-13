@@ -30,6 +30,7 @@ class DisplayModel
         void setMessage(int id, char*);
         char *getMessage(int id);
         bool isSkipTimeCheck();
+        bool isNewYears();
     protected:
     private:
         NetworkCollection *networks;

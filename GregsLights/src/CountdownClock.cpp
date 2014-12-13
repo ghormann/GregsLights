@@ -2,34 +2,15 @@
 
 CountdownClock::CountdownClock(bool skip_time_check, bool show_new_year)
 {
-    this->skipTimeCheck = skip_time_check;
-    this->newYears = show_new_year;
     this->active = false;
     this->clock_t = 0;
     this->lastTick = 0;
+    this->timeinfo = new TimeInfo(skip_time_check,show_new_year);
 
     for (int i = 0 ; i < CLOCK_DIGITS * 7; i++)
     {
         this->bulbs[i] = 0;
     }
-
-    time_t t_now;
-    struct tm *tm_now;
-
-    time(&t_now);
-    tm_now = localtime(&t_now);
-    tm_christmas.tm_sec    = 0;     //0
-    tm_christmas.tm_min    = 0;     //0
-    tm_christmas.tm_hour   = 0;     //0
-    tm_christmas.tm_mday   = 25;    //25
-    tm_christmas.tm_mon    = 11;    //11
-    tm_christmas.tm_year   = tm_now->tm_year;
-    tm_christmas.tm_isdst  = tm_now->tm_isdst;
-    tm_christmas.tm_zone   = tm_now->tm_zone;
-    tm_christmas.tm_gmtoff = tm_now->tm_gmtoff;
-
-    t_christmas = mktime(&tm_christmas);
-
     sprintf(message, "Created Clock");
 
 }
@@ -165,11 +146,9 @@ char * CountdownClock::getMessage()
 
 void CountdownClock::tick()
 {
-    time_t t_now;
     char seconds_c[11];  /* Number of Seconds in Charactor */
+    int num_seconds = timeinfo->getSecondsUntil();
     int num[10];
-    time(&t_now);
-    int num_seconds = difftime(t_christmas, t_now);
     int s1 = 0;
     int s2 = 0;
     int s3 = 0;
@@ -178,21 +157,15 @@ void CountdownClock::tick()
     int s6 = 0;
     int s7 = 0;
 
-    struct tm *tm_now = localtime(&t_now);
 
     // Not on douring the day
-    if (tm_now->tm_hour >= 9 && tm_now->tm_hour < 17)
+    if (timeinfo->isDayLight())
     {
-        if (skipTimeCheck == false)
-        {
-            sprintf(message, "Sleeping (%02d:%02d)",
-                    tm_now->tm_hour,
-                    tm_now->tm_min);
-            setAllOff();
-            lastTick = -1;
-            sleep(60);
-            return;
-        }
+        sprintf(message, "Sleeping 60 seconds: %d", timeinfo->getHourOfDay());
+        setAllOff();
+        lastTick = -1;
+        sleep(60);
+        return;
     }
 
 

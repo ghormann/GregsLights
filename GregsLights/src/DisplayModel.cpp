@@ -142,6 +142,11 @@ bool DisplayModel::isSkipTimeCheck() {
     return this->skipTimeCheck;
 }
 
+bool DisplayModel::isNewYears()
+{
+    return this->newYears;
+}
+
 Bush* DisplayModel::getBush(int i)
 {
     if (i < BUSH_LIGHT_START || i > BUSH_LIGHT_END )

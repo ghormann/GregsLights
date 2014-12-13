@@ -9,7 +9,7 @@
 Sign::Sign(bool skipTime, E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6)
 {
     sprintf(message, "Waiting....");
-    this->skipTimeCheck = skipTime;
+    this->timeInfo = new TimeInfo(skipTime, false);
     currentX = 0;
     currentY = 0;
     int cnt = 0;
@@ -1559,25 +1559,18 @@ void Sign::rotateSecondsToGo()
 void Sign::run()
 {
     int lastOne = -1;
-    time_t t_now;
-    time(&t_now);
-    struct tm *tm_now = localtime(&t_now);
     double textSpeed = 0.04;
 
 
     // Not on douring the day
-    if (tm_now->tm_hour >= 9 && tm_now->tm_hour < 17)
+    if (timeInfo->isDayLight())
     {
-        sprintf(message, "Sleeping (%02d:%02d)",
-                tm_now->tm_hour,
-                tm_now->tm_min);
+        sprintf(message, "Sleeping During the day (%02d)",
+                timeInfo->getHourOfDay());
         setDummyBackground(RGBColor::BLACK);
         setDisplayPosition(0,0);
-        if (!skipTimeCheck)
-        {
-            sleep(60);
-            return;
-        }
+        sleep(60);
+        return;
     }
 
     //
@@ -1646,7 +1639,6 @@ void Sign::test()
                 sleep(60);
         */
 
-        skipTimeCheck = true;
         scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
         //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "ARE YOU READY FOR CHRISTMAS?      I BET THE KIDS ARE....", 0.04);
         //run();

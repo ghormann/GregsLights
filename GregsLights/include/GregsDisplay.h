@@ -2,6 +2,7 @@
 #define GREGSDISPLAY_H
 
 #include "DisplayModel.h"
+#include "TimeInfo.h"
 
 class GregsDisplay
 {
@@ -12,8 +13,8 @@ public:
     DisplayModel *getModel();
 protected:
 private:
-    bool skip_time_check;
     DisplayModel *model;
+    TimeInfo *timeinfo;
     static void * dmxThread(void *);
     static void * bushThread(void *);
     static void * signThread(void *);
