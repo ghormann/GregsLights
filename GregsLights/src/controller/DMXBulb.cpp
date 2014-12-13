@@ -1,7 +1,7 @@
 #include "../../include/controller/DMXBulb.h"
 
 
-DMXBulb::DMXBulb(unsigned char * pos) : Bulb()
+DMXBulb::DMXBulb(unsigned char * pos) : Bulb(true)
     {
         this->pos = pos;
     }

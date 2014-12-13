@@ -71,7 +71,7 @@ Bulb* LORNetwork::getBulb(int device, int channel)
 }
 
 
-LORBulb::LORBulb(unsigned char device, unsigned char channel, LORNetwork *network) : Bulb()
+LORBulb::LORBulb(unsigned char device, unsigned char channel, LORNetwork *network) : Bulb(true)
 {
     this->device = device;
     this->channel = channel;

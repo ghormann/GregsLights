@@ -14,7 +14,7 @@
 class Bulb
 {
 public:
-    Bulb();
+    Bulb(bool fadeAble);
     void setIntensity(int pct);
     int  getIntensity();
     void fade(int start, int stop, double duration);

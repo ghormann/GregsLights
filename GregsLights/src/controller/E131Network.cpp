@@ -276,7 +276,7 @@ Bulb* E131Network::getBulb(int channel)
 }
 
 
-E131Bulb::E131Bulb(unsigned char *data, bool *flagPtr) : Bulb()
+E131Bulb::E131Bulb(unsigned char *data, bool *flagPtr) : Bulb(true)
 {
     this->pos = data;
     this->flag = flagPtr;

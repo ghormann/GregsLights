@@ -13,13 +13,16 @@ int Bulb::getIntensity()
     return this->percentage;
 }
 
-Bulb::Bulb()
+Bulb::Bulb(bool fadeAble)
 {
     fadeStep = 0;
     fadeStop = 0;
     percentage = 0;
-    this->next = firstBulb;
-    firstBulb = this;
+    if (fadeAble)
+    {
+        this->next = firstBulb;
+        firstBulb = this;
+    }
 }
 
 Bulb *Bulb::firstBulb = 0;
