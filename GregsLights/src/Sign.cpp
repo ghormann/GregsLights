@@ -1946,6 +1946,8 @@ void Sign::clear()
 
 void Sign::fewTrees()
 {
+    sprintf(message, "A Few Trees");
+
     // Few Christimas Trees
     RGBColor *bgColor = new RGBColor(5,0,5);
     setDummyBackground(bgColor);
@@ -1987,6 +1989,8 @@ void Sign::moveBall(int x, RGBColor *bgColor, int startY)
 
 void Sign::snowballFight()
 {
+    sprintf(message, "Snowball Fights");
+
     RGBColor *bgColor = new RGBColor(0,0,10);
     RGBColor *fgColor = RGBColor::PURPLE;
     setDummyBackground(bgColor);
