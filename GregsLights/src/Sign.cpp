@@ -1822,8 +1822,8 @@ void Sign::test()
                 sleep(60);
         */
 
-        //scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
-        scrollText(RGBColor::PURPLE, RGBColor::BLACK, "56789", 0.1);
+        scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
+        //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "56789", 0.1);
         //run();
     }
 
