@@ -1,7 +1,7 @@
 #ifndef MESSAGEGENERATOR_H
 #define MESSAGEGENERATOR_H
 
-#define MESSAGE_GENERATOR_SIZE 8
+#define MESSAGE_GENERATOR_SIZE 9
 
 #include "TimeInfo.h"
 

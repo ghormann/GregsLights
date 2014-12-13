@@ -48,7 +48,7 @@ char * MessageGenerator::getMessage()
 
     if (isChristmas)
     {
-        int i = 7;
+        int i = 8;
         while (bitmap[i] == 1)
         {
             i = rand() % MESSAGE_GENERATOR_SIZE;  // Don't show same message twice in a row.
@@ -73,6 +73,8 @@ char * MessageGenerator::getMessage()
         case 7:
             sprintf(message, "\\ ONLY %d HOURS LEFT \\", timeInfo->getHoursUntil());
             return message;
+        case 8:
+            return "$ THOSE SNOWMEN ARE ALWAYS HAVING A SNOWBALL FIGHT #";
 
 
         }

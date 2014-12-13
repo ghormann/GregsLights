@@ -188,6 +188,16 @@ int Sign::drawLetter(char letter, RGBColor *color, int startX, int startY)
         drawSpecial(startX,startY, SIGN_TREE);
         return 20;
     }
+    else if (letter == '$')
+    {
+        drawSpecial(startX,startY, SIGN_SNOWMEN);
+        return 14;
+    }
+    else if (letter == '#')
+    {
+        drawSpecial(startX,startY, SIGN_SNOWMEN_REVERSE);
+        return 14;
+    }
     else if (letter == '\\')
     {
         drawSpecial(startX,startY, SIGN_TREE_2);
@@ -1331,6 +1341,8 @@ void Sign::redrawDisplay()
 
 void Sign::setDisplayPosition(int xOffset, int yOffset)
 {
+    this->currentX = xOffset;
+    this->currentY = yOffset;
     for (int i =0; i < SIGN_WIDTH; i++)
     {
         for (int j = 0; j < SIGN_HEIGHT; j++)
@@ -1705,79 +1717,62 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
         }
 
     }
-    else if (type==SIGN_SNOWMEN)
+    else if (type==SIGN_SNOWMEN || type ==SIGN_SNOWMEN_REVERSE)
     {
-        int width = 10;
-        int mid = 5;
+        int width = 15;
+        int x=0;
         int y=0;
 
-        char d[width][SIGN_HEIGHT];
-
-        //head
-        y=1;   // One down...
-        d[mid][y]=1;
-        ++y;
-        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
-        ++y;
-        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
-        ++y;
-        d[mid][y]=1;
-
-        //d[mid+1][4] = 0;
-
-        //Middle
-
-        ++y;
-        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
-
-        ++y;
-        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
-        d[mid+2][y]=d[mid-2][y]=1;
-
-        ++y;
-        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
-        d[mid+2][y]=d[mid-2][y]=1;
-
-        ++y;
-        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
-
-        // Base
-        ++y;
-        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
-
-        ++y;
-        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
-        d[mid+2][y]=d[mid-2][y]=1;
-
-        ++y;
-        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
-        d[mid+2][y]=d[mid-2][y]=1;
-
-
-        for (int i = 1; i < width; i++)
+        RGBColor *d[width][SIGN_HEIGHT];
+        for (x=0; x<width; x++)
         {
-            for (int j=y; j<y+5; j++)
+            for (y=0; y< SIGN_HEIGHT; y++)
             {
-                d[i][j]=1;
+                d[x][y]=0;
             }
         }
-        y+=5;
-        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
-        d[mid+2][y]=d[mid-2][y]=1;
-
-        ++y;
-        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
-        d[mid+2][y]=d[mid-2][y]=1;
-
-        ++y;
-        d[mid+1][y]=d[mid-1][y]=d[mid][y]=1;
-
-        for (int i = 0; i < width; i++)
+        y=0;
+        while (y <4)
         {
-            for (int j=0; j<SIGN_HEIGHT; j++)
+            for (x=4-y; x<9+y; x++)
             {
-                if (d[i][j]==1)
-                    getBoard(i+startX,j+startY)->set(RGBColor::WHITE);
+                d[x][y]=RGBColor::WHITE;
+                d[x][8-y]=RGBColor::WHITE;
+            }
+            ++y;
+        }
+
+        y=9;
+        while(y<13)
+        {
+            for (x=12-y; x<= y; x++)
+            {
+                d[x][y]=RGBColor::WHITE;
+                d[x][27-y]=RGBColor::WHITE;
+            }
+            ++y;
+        }
+
+        for (x=0; x<13; x++)
+        {
+            if (x >0 && x< 12)
+                d[x][4]=RGBColor::WHITE;
+            d[x][13]=d[x][14]=d[x][15]=RGBColor::WHITE;
+        }
+
+        // eye
+        d[8][3]=0;
+        d[13][4]=d[12][4]=RGBColor::ORANGE;
+
+        //Write it out
+        for (x =0; x<width; x++)
+        {
+            for (y=0; y<SIGN_HEIGHT; y++)
+            {
+                // Handle reverse
+                int realX = (type == SIGN_SNOWMEN ? x : width-x-1);
+                if (d[x][y] != 0)
+                    getBoard(realX+startX,y+startY)->set(d[x][y]);
             }
         }
     }
@@ -1906,21 +1901,76 @@ void Sign::fewTrees()
 
 }
 
+void Sign::snowballFight()
+{
+    int y=SIGN_HEIGHT;
+
+    RGBColor *bgColor = new RGBColor(0,0,10);
+    setDummyBackground(bgColor);
+    drawSpecial(0,y,SIGN_SNOWMEN);
+    drawSpecial(33,y,SIGN_SNOWMEN_REVERSE);
+    setDisplayPosition(0,0);
+    sleep(1);
+
+    y=0;
+    for (int x=15; x<33; x++)
+    {
+        getBoard(x,5+SIGN_HEIGHT)->set(RGBColor::WHITE);
+        setDisplayPosition(0,y++);
+        gjhSleep(0.1);
+        getBoard(x,5+SIGN_HEIGHT)->set(bgColor);
+    }
+    while (y < SIGN_HEIGHT)
+    {
+        setDisplayPosition(0,y++);
+        gjhSleep(0.1);
+    }
+    redrawDisplay();
+    for (int i = 0; i < 3; i++)
+    {
+        for (int x=15; x<33; x++)
+        {
+            getBoard(x,5+SIGN_HEIGHT)->set(RGBColor::WHITE);
+            redrawDisplay();
+            gjhSleep(0.1);
+            getBoard(x,5+SIGN_HEIGHT)->set(bgColor);
+        }
+        redrawDisplay();
+        sleep(1);
+
+        for (int x=32; x>14; x--)
+        {
+            getBoard(x,5+SIGN_HEIGHT)->set(RGBColor::WHITE);
+            redrawDisplay();
+            gjhSleep(0.1);
+            getBoard(x,5+SIGN_HEIGHT)->set(bgColor);
+        }
+
+        redrawDisplay();
+        sleep(1);
+    }
+
+
+    delete bgColor;
+}
+
 void Sign::test()
 {
     while (1)
     {
         timeInfo->setSkipTimeCheck(true);
-/*
+
+        snowballFight();
+
         RGBColor *bgColor = new RGBColor(15,0,15);
         setDummyBackground(bgColor);
-        drawSpecial(0,0,SIGN_TREE_2);
+        drawSpecial(0,0,SIGN_SNOWMEN);
         setDisplayPosition(0,0);
-        sleep(60);
-        */
+        sleep(1);
+        delete bgColor;
 
         //scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
-        //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "\\56\\789", 0.1);
+        //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "$\\5$6\\78$9", 0.1);
         run();
     }
 

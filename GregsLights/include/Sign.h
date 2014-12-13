@@ -23,6 +23,7 @@ enum SIGN_SPECIAL {
     SIGN_TREE = 0,
     SIGN_TREE_2,
     SIGN_SNOWMEN,
+    SIGN_SNOWMEN_REVERSE,
     SIGN_CANDY,
     SIGN_DEER
 };
@@ -53,6 +54,7 @@ class Sign
         void wipeDown(RGBColor *color, double delay);
         void rotateSecondsToGo();
         void fewTrees();
+        void snowballFight();
     private:
         int currentX;
         int currentY;
