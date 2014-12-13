@@ -31,6 +31,11 @@ TimeInfo::~TimeInfo()
     //dtor
 }
 
+int TimeInfo::getNextYear()
+{
+    return tm_christmas.tm_year+1901;
+}
+
 void TimeInfo::tick()
 {
     time(&t_now);

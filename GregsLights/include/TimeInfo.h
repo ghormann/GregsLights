@@ -12,6 +12,7 @@ public:
     int getHourOfDay();
     int getSecondsUntil();
     int getHoursUntil();
+    int getNextYear();
     bool isDayLight();
     bool isDisplayHours();
     void setSkipTimeCheck(bool skipIt);

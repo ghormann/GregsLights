@@ -13,6 +13,7 @@ Sign::Sign(bool skipTime, E131Network *n1, E131Network *n2, E131Network *n3, E13
     currentX = 0;
     currentY = 0;
     int cnt = 0;
+    this->clear();
     this->generator = new MessageGenerator();
     for (int i = 0; i < 170; i++)
     {
@@ -1093,8 +1094,8 @@ int Sign::drawLetterSmall(char letter, RGBColor* color, int startX, int startY)
     int x=0;
     int y=0;
     int offset = 0;
-    char d[10][10];
-    for (x = 0; x < 10; x++)
+    char d[12][10];
+    for (x = 0; x < 12; x++)
     {
         for (y=0; y<10; y++)
         {
@@ -1113,6 +1114,20 @@ int Sign::drawLetterSmall(char letter, RGBColor* color, int startX, int startY)
         }
         d[0][7]=d[0][8]=d[6][7]=d[6][8]='1';
         offset = 7;
+    }
+    else if (letter == 'B')
+    {
+        for (x=0; x<5; x++)
+        {
+            d[x][0]=d[x][4]=d[x][8]='1';
+        }
+        for (y=1; y<8; y++)
+        {
+            d[0][y]=d[4][y]='1';
+        }
+        d[4][0]=d[4][4]=d[4][8]='0';
+
+        offset=5;
     }
     else if (letter == 'C')
     {
@@ -1153,6 +1168,19 @@ int Sign::drawLetterSmall(char letter, RGBColor* color, int startX, int startY)
             d[x][0] = d[x][4]= d[x][8]='1';
         }
         for (y = 0; y < 8; y++)
+        {
+            d[0][y]='1';
+        }
+        d[4][4]='0';
+        offset = 5;
+    }
+    else if (letter == 'F')
+    {
+        for (x=0; x<5; x++)
+        {
+            d[x][0]=d[x][4]='1';
+        }
+        for (y=0; y<9; y++)
         {
             d[0][y]='1';
         }
@@ -1288,6 +1316,17 @@ int Sign::drawLetterSmall(char letter, RGBColor* color, int startX, int startY)
         d[1][8]=d[2][8]=d[3][8]=d[4][8]='1';
         offset=6;
     }
+    else if (letter == 'W')
+    {
+        d[0][0]=d[10][0]=d[0][1]=d[10][1]='1';
+        d[1][2]=d[5][2]=d[9][2]='1';
+        d[1][3]=d[5][3]=d[9][3]='1';
+        d[1][4]=d[5][4]=d[9][4]='1';
+        d[2][5]=d[4][5]=d[6][5]=d[8][5]='1';
+        d[2][6]=d[4][6]=d[6][6]=d[8][6]='1';
+        d[3][7]=d[7][7]=d[3][8]=d[7][8]='1';
+        offset=11;
+    }
     else if (letter == 'X')
     {
         for (y=1; y<8; y++)
@@ -1322,7 +1361,7 @@ int Sign::drawLetterSmall(char letter, RGBColor* color, int startX, int startY)
         offset=5;
     }
 
-    for (x = 0; x < 10; x++)
+    for (x = 0; x < 12; x++)
     {
         for (y=0; y<10; y++)
         {
@@ -1835,7 +1874,6 @@ void Sign::rotateSecondsToGo()
 
 void Sign::run()
 {
-    int lastOne = -1;
     double textSpeed = 0.04;
 
 
@@ -1856,13 +1894,15 @@ void Sign::run()
 
     setDummyBackground(RGBColor::BLACK);
     setDisplayPosition(0,0);
+    checkClear();
 
-    int i = lastOne;
-    while (i == lastOne) // Don't have them back to back
+    int i = 6;
+    while (useMap[i] == 1)
     {
-        i= rand() %5;
+        i = rand() % SIGN_OPTIONS;  // Don't show same message twice in a row.
     }
-    lastOne = i;
+    useMap[i] = 1;
+
     switch(i)
     {
     case 0:
@@ -1870,14 +1910,39 @@ void Sign::run()
     case 2:
         scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), textSpeed);
         break;
-    case 3:
+    case 4:
         rotateSecondsToGo();
         break;
-    case 4:
+    case 5:
         fewTrees();
+        break;
+    case 6:
+        snowballFight();
         break;
     }
 }
+
+void Sign::checkClear()
+{
+    for (int i = 0; i < SIGN_OPTIONS; i++)
+    {
+        if (useMap[i] == 0) return;
+    }
+    // If we got this far, everything is used up.  Clear it.
+    this->clear();
+}
+
+
+void Sign::clear()
+{
+    for (int i = 0; i < SIGN_OPTIONS; i++)
+    {
+        useMap[i] = 0;
+    }
+
+}
+
+
 
 void Sign::fewTrees()
 {
@@ -1901,56 +1966,114 @@ void Sign::fewTrees()
 
 }
 
+void Sign::moveBall(int x, RGBColor *bgColor, int startY)
+{
+    int ballY = startY + (abs(24-x)/2)-1;
+    if (ballY < startY)
+        ballY = startY-1;
+
+    getBoard(x,ballY)->set(RGBColor::WHITE);
+    getBoard(x+1,ballY)->set(RGBColor::WHITE);
+    getBoard(x,ballY+1)->set(RGBColor::WHITE);
+    getBoard(x+1,ballY+1)->set(RGBColor::WHITE);
+    redrawDisplay();
+    gjhSleep(0.1);
+    getBoard(x,ballY)->set(bgColor);
+    getBoard(x,ballY+1)->set(bgColor);
+    getBoard(x+1,ballY)->set(bgColor);
+    getBoard(x+1,ballY+1)->set(bgColor);
+
+}
+
 void Sign::snowballFight()
 {
-    int y=SIGN_HEIGHT;
-
     RGBColor *bgColor = new RGBColor(0,0,10);
+    RGBColor *fgColor = RGBColor::PURPLE;
     setDummyBackground(bgColor);
-    drawSpecial(0,y,SIGN_SNOWMEN);
-    drawSpecial(33,y,SIGN_SNOWMEN_REVERSE);
+    int y=0;
+    int x=8;
+
+    x +=drawLetterSmall('S', fgColor, x,y) +1;
+    x +=drawLetterSmall('N', fgColor, x,y) +1;
+    x +=drawLetterSmall('O', fgColor, x,y) +1;
+    x +=drawLetterSmall('W', fgColor, x,y) +1;
+
+    x=11;
+    y=11;
+    x +=drawLetterSmall('B', fgColor, x,y) +1;
+    x +=drawLetterSmall('A', fgColor, x,y) +1;
+    x +=drawLetterSmall('L', fgColor, x,y) +1;
+    x +=drawLetterSmall('L', fgColor, x,y) +1;
+
+    y=SIGN_HEIGHT+2;
+    x=10;
+    //fight
+    x +=drawLetterSmall('F', fgColor, x,y) +1;
+    x +=drawLetterSmall('I', fgColor, x,y) +1;
+    x +=drawLetterSmall('G', fgColor, x,y) +1;
+    x +=drawLetterSmall('H', fgColor, x,y) +1;
+    x +=drawLetterSmall('T', fgColor, x,y) +1;
     setDisplayPosition(0,0);
-    sleep(1);
+    sleep(2);
 
     y=0;
-    for (int x=15; x<33; x++)
+    while (y < 13)
     {
-        getBoard(x,5+SIGN_HEIGHT)->set(RGBColor::WHITE);
         setDisplayPosition(0,y++);
         gjhSleep(0.1);
-        getBoard(x,5+SIGN_HEIGHT)->set(bgColor);
     }
-    while (y < SIGN_HEIGHT)
+    /*
+     * No sleep. moveBall will sleep
+     */
+    setDisplayPosition(0,y++);
+
+
+    /*
+     * Now draw snowmen and scroll down!
+     */
+    int snowmanY = SIGN_HEIGHT+15;
+    drawSpecial(0,snowmanY,SIGN_SNOWMEN);
+    drawSpecial(33,snowmanY,SIGN_SNOWMEN_REVERSE);
+
+    for (int x=15; x<33; x++)
+    {
+        moveBall(x, bgColor, snowmanY);
+        setDisplayPosition(0,y++);
+    }
+    while (y <= snowmanY)
     {
         setDisplayPosition(0,y++);
         gjhSleep(0.1);
     }
     redrawDisplay();
-    for (int i = 0; i < 3; i++)
+
+    for (int i = 0; i < 2; i++)
     {
         for (int x=15; x<33; x++)
         {
-            getBoard(x,5+SIGN_HEIGHT)->set(RGBColor::WHITE);
-            redrawDisplay();
-            gjhSleep(0.1);
-            getBoard(x,5+SIGN_HEIGHT)->set(bgColor);
+            moveBall(x, bgColor,snowmanY);
         }
         redrawDisplay();
         sleep(1);
 
         for (int x=32; x>14; x--)
         {
-            getBoard(x,5+SIGN_HEIGHT)->set(RGBColor::WHITE);
-            redrawDisplay();
-            gjhSleep(0.1);
-            getBoard(x,5+SIGN_HEIGHT)->set(bgColor);
+            moveBall(x, bgColor, snowmanY);
         }
 
         redrawDisplay();
         sleep(1);
     }
 
-
+    /*
+     * Fade to black;
+     */
+    int duration = 2;
+    for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
+    {
+        getPixal(i)->fadeTo(0,0,0,duration);
+    }
+    sleep(duration);
     delete bgColor;
 }
 
@@ -1959,18 +2082,17 @@ void Sign::test()
     while (1)
     {
         timeInfo->setSkipTimeCheck(true);
-
-        snowballFight();
-
+        /*
         RGBColor *bgColor = new RGBColor(15,0,15);
         setDummyBackground(bgColor);
         drawSpecial(0,0,SIGN_SNOWMEN);
         setDisplayPosition(0,0);
         sleep(1);
         delete bgColor;
+        */
 
         //scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
-        //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "$\\5$6\\78$9", 0.1);
+        //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "$ SECONDS LEFT #", 0.04);
         run();
     }
 

@@ -39,51 +39,52 @@ void MessageGenerator::checkClear()
         if (bitmap[i] == 0) return;
     }
     // If we got this far, everything is used up.  Clear it.
-    clear();
+    this->clear();
 }
 
 char * MessageGenerator::getMessage()
 {
     checkClear();
 
-    if (isChristmas)
+    int i = 0;
+    while (bitmap[i] == 1)
     {
-        int i = 8;
-        while (bitmap[i] == 1)
-        {
-            i = rand() % MESSAGE_GENERATOR_SIZE;  // Don't show same message twice in a row.
-        }
-        bitmap[i] = 1;
-        switch (i)
-        {
-        case 0:
-            return "HOW MANY TIMES PER DAY DO YOU CHECK THIS CLOCK?";
-        case 1:
-            return "HE IS COMING.... ARE YOU READY?";
-        case 2:
-            return "ARE YOU READY FOR CHRISTMAS?      I BET THE KIDS ARE....";
-        case 3:
-            return "SECONDS UNTIL CHRISTMAS";
-        case 4:
-            return "^ MERRY CHRISTMAS FROM THE HORMANN FAMILY ^";
-        case 5:
-            return "+ HAVE YOU BEEN NAUGHTY OR NICE? +";
-        case 6:
-            return "JOIN US AT MIDNIGHT TO SEE THE CLOCK HIT ZERO";
-        case 7:
-            sprintf(message, "\\ ONLY %d HOURS LEFT \\", timeInfo->getHoursUntil());
-            return message;
-        case 8:
-            return "$ THOSE SNOWMEN ARE ALWAYS HAVING A SNOWBALL FIGHT #";
-
-
-        }
-
+        i = rand() % MESSAGE_GENERATOR_SIZE;  // Don't show same message twice in a row.
     }
-    else
+    bitmap[i] = 1;
+    switch (i)
     {
-
-        return "Need to add some...";
+    case 0:
+        return "HOW MANY TIMES PER DAY DO YOU CHECK THIS CLOCK?";
+    case 1:
+        if (isChristmas)
+            return "HE IS COMING.... ARE YOU READY?";
+        else
+            return "WISHING YOU A GREAT NEW YEAR";
+    case 2:
+        if (isChristmas)
+            return "ARE YOU READY FOR CHRISTMAS?      I BET THE KIDS ARE...." ;
+        else
+            return "HAPPY NEW YEAR";
+    case 3:
+        return "^ MERRY CHRISTMAS FROM THE HORMANN FAMILY ^";
+    case 4:
+        if (isChristmas)
+            return "SECONDS UNTIL CHRISTMAS";
+        else
+        {
+            sprintf(message, "SECONDS UNTIL %d", timeInfo->getNextYear());
+            return message;
+        }
+    case 5:
+        return "+ HAVE YOU BEEN NAUGHTY OR NICE? +";
+    case 6:
+        return "JOIN US TO SEE THE CLOCK HIT ZERO";
+    case 7:
+        return "$ SECONDS LEFT #";
+    case 8:
+        sprintf(message, "\\ ONLY %d HOURS LEFT \\", timeInfo->getHoursUntil());
+        return message;
     }
 
     return "SHOULD NOT GET HERE";

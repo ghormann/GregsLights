@@ -5,12 +5,14 @@
 #include "MessageGenerator.h"
 #include "TimeInfo.h"
 
+#define SIGN_OPTIONS 7
+
 #define SIGN_WIDTH 48
 #define SIGN_HEIGHT 20
 #define TOTAL_SIGN_PIXALS SIGN_WIDTH * SIGN_HEIGHT
 
-#define SIGN_DUMMY_HEIGHT 50
-#define SIGN_DUMMY_WIDTH 1000
+#define SIGN_DUMMY_HEIGHT SIGN_HEIGHT * 30
+#define SIGN_DUMMY_WIDTH SIGN_WIDTH * 30
 
 #undef TRUE
 #define TRUE    1
@@ -55,7 +57,11 @@ class Sign
         void rotateSecondsToGo();
         void fewTrees();
         void snowballFight();
+        void clear();
+        void checkClear();
     private:
+        void moveBall(int x, RGBColor *bgColor, int snowballY);
+        char useMap[SIGN_OPTIONS];
         int currentX;
         int currentY;
         TimeInfo *timeInfo;
