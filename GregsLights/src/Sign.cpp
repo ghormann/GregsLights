@@ -1799,8 +1799,8 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
             d[x][13]=d[x][14]=d[x][15]=RGBColor::WHITE;
         }
 
-        // eye
-        d[8][3]=0;
+        // eye + Nose
+        d[8][3]=RGBColor::BLACK;
         d[13][4]=d[12][4]=RGBColor::ORANGE;
 
         //Write it out
