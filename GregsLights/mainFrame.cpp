@@ -184,10 +184,10 @@ void BasicGLPane::render( wxPaintEvent& evt )
             float blue = ((float)pix->getBlue()) / 100;
             glColor4f(red, green, blue, 1);
             glBegin(GL_QUADS);
-            glVertex3f(i*12+4, 4 + j*8, 0);
-            glVertex3f(i*12+4, 10 + j*8, 0);
-            glVertex3f(i*12+10, 10 + j*8, 0);
-            glVertex3f(i*12+10, 4 + j*8, 0);
+            glVertex3f(i*8+4, 4 + j*8, 0);
+            glVertex3f(i*8+4, 10 + j*8, 0);
+            glVertex3f(i*8+10, 10 + j*8, 0);
+            glVertex3f(i*8+10, 4 + j*8, 0);
             glEnd();
         }
     }
