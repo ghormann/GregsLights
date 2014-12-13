@@ -245,6 +245,41 @@ int Sign::drawLetter(char letter, RGBColor *color, int startX, int startY)
 
         offset=9;
     }
+    else if (letter == '3')
+    {
+        d[2][0]=d[3][0]=d[4][0]=d[5][0]='1';
+        d[1][1]=d[4][1]=d[5][1]=d[6][1]='1';
+        d[0][2]=d[5][2]=d[6][2]='1';
+        d[5][3]=d[6][3]='1';
+        d[5][4]='1';
+        d[3][5]=d[4][5]='1';
+        d[2][6]=d[3][6]=d[4][6]=d[5][6]='1';
+        d[4][7]=d[5][7]=d[6][7]='1';
+        d[5][8]=d[6][8]=d[7][8]='1';
+        d[6][9]=d[7][9]='1';
+        d[6][10]=d[7][10]='1';
+        d[6][11]='1';
+        d[0][12]=d[1][12]=d[5][12]=d[6][12]='1';
+        for (x=0; x<5; x++)
+        {
+            d[x][13]='1';
+        }
+
+        offset=8;
+    }
+    else if (letter == '4')
+    {
+        for(y=0; y<13; y++)
+        {
+            d[6][y]=d[7][y]='1';
+            if (y<10)
+                d[y][9]='1';
+        }
+        d[5][2]=d[4][3]=d[3][4]=d[3][5]='1';
+        d[2][6]=d[1][7]=d[1][8]='1';
+
+        offset=10;
+    }
     else if (letter == 'A')
     {
         d[7][0]=d[6][1]=d[7][1]=d[6][2]=d[7][2]=d[8][2] = '1'; //0, 1, 2
@@ -1691,7 +1726,7 @@ void Sign::test()
         */
 
         //scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
-        scrollText(RGBColor::PURPLE, RGBColor::BLACK, "0123456789", 0.1);
+        scrollText(RGBColor::PURPLE, RGBColor::BLACK, "56789", 0.1);
         //run();
     }
 
