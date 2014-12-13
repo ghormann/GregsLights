@@ -65,13 +65,13 @@ char * MessageGenerator::getMessage()
         case 3:
             return "SECONDS UNTIL CHRISTMAS";
         case 4:
-            return "^MERRY CHRISTMAS FROM THE HORMANN FAMILY ^";
+            return "^ MERRY CHRISTMAS FROM THE HORMANN FAMILY ^";
         case 5:
             return "+ HAVE YOU BEEN NAUGHTY OR NICE? +";
         case 6:
             return "JOIN US AT MIDNIGHT TO SEE THE CLOCK HIT ZERO";
         case 7:
-            sprintf(message, "ONLY %d HOURS TO GO", timeInfo->getHoursUntil());
+            sprintf(message, "\\ ONLY %d HOURS LEFT \\", timeInfo->getHoursUntil());
             return message;
 
 

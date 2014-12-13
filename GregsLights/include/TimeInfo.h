@@ -14,6 +14,7 @@ public:
     int getHoursUntil();
     bool isDayLight();
     bool isDisplayHours();
+    void setSkipTimeCheck(bool skipIt);
 protected:
     void tick();
 private:

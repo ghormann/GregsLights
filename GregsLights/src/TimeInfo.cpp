@@ -63,6 +63,11 @@ bool TimeInfo::isDayLight()
     return (hour >=9 && hour < 17) ? true: false;
 }
 
+void TimeInfo::setSkipTimeCheck(bool skipIt)
+{
+    this->skipTimeCheck = skipIt;
+}
+
 bool TimeInfo::isDisplayHours()
 {
     if (skipTimeCheck) return true;

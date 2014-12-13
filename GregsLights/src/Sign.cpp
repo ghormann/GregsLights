@@ -1863,9 +1863,9 @@ void Sign::run()
     setDisplayPosition(0,0);
 
     int i = lastOne;
-    while (i == lastOne)
+    while (i == lastOne) // Don't have them back to back
     {
-        i= rand() %7;   // Don't have them back to back
+        i= rand() %5;
     }
     lastOne = i;
     switch(i)
@@ -1873,14 +1873,12 @@ void Sign::run()
     case 0:
     case 1:
     case 2:
-    case 3:
-    case 4:
         scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), textSpeed);
         break;
-    case 5:
+    case 3:
         rotateSecondsToGo();
         break;
-    case 6:
+    case 4:
         fewTrees();
         break;
     }
@@ -1912,16 +1910,18 @@ void Sign::test()
 {
     while (1)
     {
-
+        timeInfo->setSkipTimeCheck(true);
+/*
         RGBColor *bgColor = new RGBColor(15,0,15);
         setDummyBackground(bgColor);
         drawSpecial(0,0,SIGN_TREE_2);
         setDisplayPosition(0,0);
         sleep(60);
+        */
 
         //scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
         //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "\\56\\789", 0.1);
-        //run();
+        run();
     }
 
     int betweenPixals = 300;
