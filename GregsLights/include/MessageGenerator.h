@@ -1,7 +1,9 @@
 #ifndef MESSAGEGENERATOR_H
 #define MESSAGEGENERATOR_H
 
-#define MESSAGE_GENERATOR_SIZE 7
+#define MESSAGE_GENERATOR_SIZE 8
+
+#include "TimeInfo.h"
 
 class MessageGenerator
 {
@@ -15,6 +17,8 @@ class MessageGenerator
         void clear();
         void checkClear();
         char bitmap[MESSAGE_GENERATOR_SIZE];
+        TimeInfo *timeInfo;
+        char message[80];
 };
 
 #endif // MESSAGEGENERATOR_H

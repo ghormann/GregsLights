@@ -194,6 +194,23 @@ int Sign::drawLetter(char letter, RGBColor *color, int startX, int startY)
         return 15;
 
     }
+    else if (letter == '0')
+    {
+        for (y=3; y<10; y++)
+        {
+            d[0][y]=d[1][y]=d[7][y]=d[8][y]='1';
+        }
+        d[3][0]=d[4][0]=d[5][0]='1';
+        d[2][1]=d[6][1]='1';
+        d[1][2]=d[2][2]=d[6][2]=d[7][2]='1';
+        d[1][3]=d[7][3]='1';
+        d[1][10]=d[7][10]='1';
+        d[1][11]=d[2][11]=d[6][11]=d[7][11]='1';
+        d[2][12]=d[6][12]='1';
+        d[3][13]=d[4][13]=d[5][13]='1';
+
+        offset=9;
+    }
     else if (letter == 'A')
     {
         d[7][0]=d[6][1]=d[7][1]=d[6][2]=d[7][2]=d[8][2] = '1'; //0, 1, 2
@@ -1639,8 +1656,8 @@ void Sign::test()
                 sleep(60);
         */
 
-        scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
-        //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "ARE YOU READY FOR CHRISTMAS?      I BET THE KIDS ARE....", 0.04);
+        //scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
+        scrollText(RGBColor::PURPLE, RGBColor::BLACK, "0123456789", 0.1);
         //run();
     }
 

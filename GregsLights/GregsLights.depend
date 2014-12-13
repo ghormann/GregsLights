@@ -342,7 +342,7 @@
 1416956685 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/controller/DMXBulb.cpp
 	"../../include/controller/DMXBulb.h"
 
-1418349110 source:/home/ghormann/Documents/src/gregslights/GregsLights/mainFrame.cpp
+1418433074 source:/home/ghormann/Documents/src/gregslights/GregsLights/mainFrame.cpp
 	"wx/wx.h"
 	"wx/sizer.h"
 	"wx/glcanvas.h"
@@ -2082,12 +2082,14 @@
 1417970213 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/RGBColor.cpp
 	"../../include/controller/RGBColor.h"
 
-1418350135 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/MessageGenerator.cpp
+1418433758 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/MessageGenerator.cpp
 	"../include/MessageGenerator.h"
 	<stdlib.h>
 	<time.h>
+	<stdio.h>
 
-1418349381 /home/ghormann/Documents/src/gregslights/GregsLights/include/MessageGenerator.h
+1418433762 /home/ghormann/Documents/src/gregslights/GregsLights/include/MessageGenerator.h
+	"TimeInfo.h"
 
 1418431074 /home/ghormann/Documents/src/gregslights/GregsLights/include/TimeInfo.h
 	<time.h>

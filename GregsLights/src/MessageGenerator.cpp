@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include <stdio.h>
 
 MessageGenerator::MessageGenerator()
 {
@@ -14,6 +15,7 @@ MessageGenerator::MessageGenerator()
 
     isChristmas = (tm_now->tm_mday <= 25 ? true : false);
     clear();
+    timeInfo = new TimeInfo(true,true);
 }
 
 MessageGenerator::~MessageGenerator()
@@ -21,7 +23,8 @@ MessageGenerator::~MessageGenerator()
     //dtor
 }
 
-void MessageGenerator::clear(){
+void MessageGenerator::clear()
+{
     for (int i = 0; i < MESSAGE_GENERATOR_SIZE; i++)
     {
         bitmap[i] = 0;
@@ -29,8 +32,10 @@ void MessageGenerator::clear(){
 
 }
 
-void MessageGenerator::checkClear() {
-    for (int i = 0; i < MESSAGE_GENERATOR_SIZE; i++) {
+void MessageGenerator::checkClear()
+{
+    for (int i = 0; i < MESSAGE_GENERATOR_SIZE; i++)
+    {
         if (bitmap[i] == 0) return;
     }
     // If we got this far, everything is used up.  Clear it.
@@ -43,7 +48,7 @@ char * MessageGenerator::getMessage()
 
     if (isChristmas)
     {
-        int i = 3;
+        int i = 7;
         while (bitmap[i] == 1)
         {
             i = rand() % MESSAGE_GENERATOR_SIZE;  // Don't show same message twice in a row.
@@ -65,6 +70,9 @@ char * MessageGenerator::getMessage()
             return "+ HAVE YOU BEEN NAUGHTY OR NICE? +";
         case 6:
             return "JOIN US AT MIDNIGHT TO SEE THE CLOCK HIT ZERO";
+        case 7:
+            sprintf(message, "ONLY %d HOURS UNTIL CHRISTMAS", timeInfo->getHoursUntil());
+            return message;
 
 
         }
