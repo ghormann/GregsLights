@@ -28,10 +28,10 @@ void GregsDisplay::do_it_bushes()
         sleep(1);
 
         while (! timeinfo->isDisplayHours()) {
-            sprintf(model->getMessage(1), "Sleeping 1 minutes during day (%02d)",
+            sprintf(model->getMessage(1), "Sleeping during day (%02d)",
                     timeinfo->getHourOfDay());
             setAllOff();
-            sleep(60);
+            sleep(5);
         }
 
         // Step 1 - Rotate_some

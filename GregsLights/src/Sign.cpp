@@ -1884,7 +1884,7 @@ void Sign::run()
                 timeInfo->getHourOfDay());
         setDummyBackground(RGBColor::BLACK);
         setDisplayPosition(0,0);
-        sleep(60);
+        sleep(5);
         return;
     }
 
