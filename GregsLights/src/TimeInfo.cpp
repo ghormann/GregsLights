@@ -41,6 +41,7 @@ void TimeInfo::tick()
     time(&t_now);
     tm_now = localtime(&t_now);
     num_seconds = difftime(t_christmas, t_now);
+    num_seconds = (num_seconds < 0 ? 0 : num_seconds); // Don't go below zero
 }
 
 int TimeInfo::getHourOfDay()
@@ -77,7 +78,7 @@ bool TimeInfo::isDisplayHours()
 {
     if (skipTimeCheck) return true;
     if (isDayLight()) return false;
-    if (getSecondsUntil() < 6000) return true; // all night long christmas!
+    if (getSecondsUntil() < 60*60*4) return true; // all night long christmas, but not during the day.
     int hour = getHourOfDay();
     if (hour <6 || hour == 23) return false;
 
