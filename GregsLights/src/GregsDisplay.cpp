@@ -27,7 +27,7 @@ void GregsDisplay::do_it_bushes()
         setAllOff();
         sleep(1);
 
-        while (timeinfo->isDayLight()) {
+        while (! timeinfo->isDisplayHours()) {
             sprintf(model->getMessage(1), "Sleeping 1 minutes during day (%02d)",
                     timeinfo->getHourOfDay());
             setAllOff();
