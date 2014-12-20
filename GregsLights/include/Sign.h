@@ -27,7 +27,8 @@ enum SIGN_SPECIAL {
     SIGN_SNOWMEN,
     SIGN_SNOWMEN_REVERSE,
     SIGN_CANDY,
-    SIGN_DEER
+    SIGN_DEER,
+    SIGN_PRESENT
 };
 
 class Sign

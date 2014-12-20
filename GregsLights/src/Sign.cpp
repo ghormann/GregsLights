@@ -1481,6 +1481,57 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
 
         getBoard(startX,startY)->set(RGBColor::YELLOW); // start at top
     }
+    else if (type==SIGN_PRESENT)
+    {
+
+        int x;
+        int y;
+        RGBColor *baseColor = RGBColor::RED;
+        RGBColor *bowColor = RGBColor::WHITE;
+        RGBColor * d[15][SIGN_HEIGHT];
+        for (int x = 0 ; x<15; x++)
+        {
+            for (y=0; y<SIGN_HEIGHT; y++)
+            {
+                d[x][y]=0;
+            }
+        }
+
+        // Draw Present
+
+        for (x=1; x<11; x++)
+        {
+            for (y=4; y<15; y++)
+            {
+                d[x][y]=baseColor;
+            }
+        }
+        for (x=1; x<11; x++)
+        {
+            d[x][8]=d[x][9]=bowColor;
+        }
+        for (y=2; y<15; y++)
+        {
+            d[5][y]=d[6][y]=bowColor;
+        }
+        d[3][1]=d[4][1]=d[7][1]=d[8][1]=bowColor;
+        d[3][2]=d[8][2]=bowColor;
+        d[4][3]=d[7][3]=bowColor;
+
+        // Write it out
+
+        for (x =0; x<15; x++)
+        {
+            for (y=0; y<SIGN_HEIGHT; y++)
+            {
+                if (d[x][y] != 0)
+                    getBoard(x+startX,y+startY)->set(d[x][y]);
+            }
+        }
+
+    }
+
+
     else if (type==SIGN_TREE_2)
     {
         int x;
@@ -2086,14 +2137,14 @@ void Sign::test()
     while (1)
     {
         timeInfo->setSkipTimeCheck(true);
-        /*
+
         RGBColor *bgColor = new RGBColor(15,0,15);
         setDummyBackground(bgColor);
-        drawSpecial(0,0,SIGN_SNOWMEN);
+        drawSpecial(0,0,SIGN_PRESENT);
         setDisplayPosition(0,0);
-        sleep(1);
+        sleep(60);
         delete bgColor;
-        */
+
 
         //scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
         scrollText(RGBColor::PURPLE, RGBColor::BLACK, "MADE YOUR RESOLUTIONS FOR THE NEW YEAR?", 0.04);
