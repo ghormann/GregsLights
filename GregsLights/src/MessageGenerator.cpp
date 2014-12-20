@@ -77,7 +77,10 @@ char * MessageGenerator::getMessage()
             return message;
         }
     case 5:
-        return "+ HAVE YOU BEEN NAUGHTY OR NICE? +";
+        if (isChristmas)
+            return "+ HAVE YOU BEEN NAUGHTY OR NICE? +";
+        else
+            return "MADE YOUR RESOLUTIONS FOR THE NEW YEAR?";
     case 6:
         return "JOIN US TO SEE THE CLOCK HIT ZERO";
     case 7:

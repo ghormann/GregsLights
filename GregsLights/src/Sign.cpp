@@ -2096,7 +2096,7 @@ void Sign::test()
         */
 
         //scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
-        //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "$ SECONDS LEFT #", 0.04);
+        scrollText(RGBColor::PURPLE, RGBColor::BLACK, "MADE YOUR RESOLUTIONS FOR THE NEW YEAR?", 0.04);
         run();
     }
 
