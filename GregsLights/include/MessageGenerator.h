@@ -8,7 +8,7 @@
 class MessageGenerator
 {
     public:
-        MessageGenerator();
+        MessageGenerator(TimeInfo *ti);
         virtual ~MessageGenerator();
         char * getMessage();
     protected:

@@ -22,7 +22,7 @@ TimeInfo::TimeInfo(bool skip_time_check, bool show_new_year )
     tm_christmas.tm_zone   = tm_now->tm_zone;
     tm_christmas.tm_gmtoff = tm_now->tm_gmtoff;
 
-    if (show_new_year)
+    if (show_new_year == true)
     {
         tm_christmas.tm_sec    = 59;
         tm_christmas.tm_min    = 59;

@@ -4,7 +4,7 @@
 #include <time.h>
 #include <stdio.h>
 
-MessageGenerator::MessageGenerator()
+MessageGenerator::MessageGenerator(TimeInfo *ti)
 {
     //ctor
     srand (time(NULL));
@@ -15,7 +15,7 @@ MessageGenerator::MessageGenerator()
 
     isChristmas = (tm_now->tm_mday <= 25 ? true : false);
     clear();
-    timeInfo = new TimeInfo(true,true);
+    timeInfo = ti;
 }
 
 MessageGenerator::~MessageGenerator()

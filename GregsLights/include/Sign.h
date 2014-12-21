@@ -6,7 +6,7 @@
 #include "TimeInfo.h"
 #include <cmath>
 
-#define SIGN_OPTIONS 8
+#define SIGN_OPTIONS 10
 
 #define SIGN_WIDTH 48
 #define SIGN_HEIGHT 20
@@ -57,6 +57,7 @@ class Sign
         char *getMessage();
         void scrollSanta();
         void countdown();
+        void colors();
     protected:
         RGBLight * getBoard(int x, int y);
         void setDisplayPosition(int x, int y);

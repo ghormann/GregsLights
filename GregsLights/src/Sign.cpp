@@ -14,7 +14,7 @@ Sign::Sign(bool skipTime, E131Network *n1, E131Network *n2, E131Network *n3, E13
     currentY = 0;
     int cnt = 0;
     this->clear();
-    this->generator = new MessageGenerator();
+    this->generator = new MessageGenerator(this->timeInfo);
     for (int i = 0; i < 170; i++)
     {
         this->pixals[cnt++] = n1->getRGB(i*3);
@@ -2047,7 +2047,7 @@ void Sign::run()
         setDisplayPosition(0,0);
         checkClear();
 
-        int i = 7;
+        int i = 9;
         while (useMap[i] == 1)
         {
             i = rand() % SIGN_OPTIONS;  // Don't show same message twice in a row.
@@ -2059,20 +2059,25 @@ void Sign::run()
         case 0:
         case 1:
         case 2:
+        case 3:
+        case 4:
             scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), textSpeed);
             break;
-        case 4:
+        case 5:
             if (numSeconds > 0)
                 rotateSecondsToGo();
             break;
-        case 5:
+        case 6:
             fewTrees();
             break;
-        case 6:
+        case 7:
             snowballFight();
             break;
-        case 7:
+        case 8:
             scrollSanta();
+            break;
+        case 9:
+            colors();
             break;
         }
     }
@@ -2279,6 +2284,40 @@ void Sign::scrollSanta()
 
 }
 
+void Sign::colors()
+{
+    RGBColor *d[25];
+    d[0]=d[1]=d[2]=d[3]=RGBColor::RED;
+    d[4]=d[5]=d[6]=d[7]=RGBColor::GREEN;
+    d[8]=d[9]=d[10]=d[11]=RGBColor::BLUE;
+    d[12]=d[13]=d[14]=d[15]=RGBColor::PURPLE;
+    d[16]=d[17]=d[18]=d[19]=RGBColor::ORANGE;
+
+    int i = 150;
+
+    while(--i > 0)
+    {
+        for (int x = 0; x < SIGN_WIDTH; x++)
+        {
+            for (int y = 0; y < SIGN_HEIGHT; y++)
+            {
+                int distance = gjhDistance(SIGN_WIDTH/2, SIGN_HEIGHT/2, x, y);
+                RGBColor *color = d[(distance+i)%20];
+                getBoard(x,y)->set(color);
+            }
+        }
+        drawSpecial(15,0,SIGN_CANDY);
+        setDisplayPosition(0,0);
+        gjhSleep(0.05);
+    }
+    for (int x=0; x<SIGN_WIDTH; x++) {
+        for (int y=0; y<SIGN_HEIGHT; y++) {
+            this->getPixal(x,y)->fadeTo(0,0,0,1);
+        }
+    }
+    sleep(1);
+}
+
 void Sign::countdown()
 {
     RGBColor *d[25];
@@ -2337,13 +2376,17 @@ void Sign::countdown()
     }
 
     char text[80];
-    if ( timeInfo->isNewYears()) {
+    if ( timeInfo->isNewYears())
+    {
         sprintf(text, "HAPPY NEW YEAR");
-    } else {
+    }
+    else
+    {
         sprintf(text, "MERRY CHRISTMAS");
     }
 
-    for (int i = 0; i< 5; i++) {
+    for (int i = 0; i< 5; i++)
+    {
         scrollText(RGBColor::getRandom(), RGBColor::BLACK, text, 0.04);
     }
 }
@@ -2354,7 +2397,6 @@ void Sign::test()
     {
         timeInfo->setSkipTimeCheck(true);
 
-        //countdown();
 
         /*
                 RGBColor *bgColor = new RGBColor(0,0,15);
