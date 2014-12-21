@@ -4,6 +4,7 @@
 #include "controller/E131Network.h"
 #include "MessageGenerator.h"
 #include "TimeInfo.h"
+#include <cmath>
 
 #define SIGN_OPTIONS 8
 
@@ -19,6 +20,10 @@
 
 #undef FALSE
 #define FALSE   0
+
+#define gjhDistance(dX0, dY0, dX1, dY1)  (sqrt((dX1 - dX0)*(dX1 - dX0) + (dY1 - dY0)*(dY1 - dY0)))
+
+
 
 
 enum SIGN_SPECIAL {
@@ -51,6 +56,7 @@ class Sign
         void run();
         char *getMessage();
         void scrollSanta();
+        void countdown();
     protected:
         RGBLight * getBoard(int x, int y);
         void setDisplayPosition(int x, int y);

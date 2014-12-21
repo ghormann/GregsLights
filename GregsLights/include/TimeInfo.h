@@ -16,6 +16,7 @@ public:
     bool isDayLight();
     bool isDisplayHours();
     void setSkipTimeCheck(bool skipIt);
+    bool isNewYears();
 protected:
     void tick();
 private:

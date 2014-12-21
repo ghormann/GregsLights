@@ -63,30 +63,47 @@ char * MessageGenerator::getMessage()
             return "WISHING YOU A GREAT NEW YEAR";
     case 2:
         if (isChristmas)
-            return "ARE YOU READY FOR CHRISTMAS?      I BET THE KIDS ARE...." ;
+            if (timeInfo->getSecondsUntil() <= 0)
+                return "MERRY CHRISTMAS";
+            else
+                return "ARE YOU READY FOR CHRISTMAS?      I BET THE KIDS ARE...." ;
         else
             return "HAPPY NEW YEAR";
     case 3:
         return "^ MERRY CHRISTMAS FROM THE HORMANN FAMILY ^";
     case 4:
-        if (isChristmas)
-            return "SECONDS UNTIL CHRISTMAS";
-        else
+        if (timeInfo->getSecondsUntil() > 0)
         {
-            sprintf(message, "SECONDS UNTIL %d", timeInfo->getNextYear());
-            return message;
+            if (isChristmas)
+                return "SECONDS UNTIL CHRISTMAS";
+            else
+            {
+                sprintf(message, "SECONDS UNTIL %d", timeInfo->getNextYear());
+                return message;
+            }
         }
+
+        return "THANKS FOR VISITING US";
     case 5:
         if (isChristmas)
             return "+ HAVE YOU BEEN NAUGHTY OR NICE? +";
         else
             return "MADE YOUR RESOLUTIONS FOR THE NEW YEAR?";
     case 6:
-        return "JOIN US TO SEE THE CLOCK HIT ZERO";
+        if (timeInfo->getSecondsUntil() > 0)
+            return "JOIN US TO SEE THE CLOCK HIT ZERO";
+        else
+            return "JOIN US NEXT YEAR TO SEE THE CLOCK HIT ZERO";
     case 7:
+        if (timeInfo->getSecondsUntil() > 0)
         return "$ SECONDS LEFT #";
+        else
+        return "$ HAPPY HOLIDAYS #";
     case 8:
-        sprintf(message, "\\ ONLY %d HOURS LEFT \\", timeInfo->getHoursUntil());
+        if (timeInfo->getHoursUntil() > 1)
+            sprintf(message, "\\ ONLY %d HOURS LEFT \\", timeInfo->getHoursUntil());
+            else
+            sprintf(message, "\\ ONLY %d MINUTES LEFT \\", timeInfo->getSecondsUntil()/60);
         return message;
     }
 

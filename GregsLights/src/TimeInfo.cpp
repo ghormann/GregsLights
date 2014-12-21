@@ -22,6 +22,15 @@ TimeInfo::TimeInfo(bool skip_time_check, bool show_new_year )
     tm_christmas.tm_zone   = tm_now->tm_zone;
     tm_christmas.tm_gmtoff = tm_now->tm_gmtoff;
 
+    if (show_new_year)
+    {
+        tm_christmas.tm_sec    = 59;
+        tm_christmas.tm_min    = 59;
+        tm_christmas.tm_hour   = 23;
+        tm_christmas.tm_mday   = 31;
+        tm_christmas.tm_mon    = 11;
+    }
+
     t_christmas = mktime(&tm_christmas);
 
 }
@@ -34,6 +43,11 @@ TimeInfo::~TimeInfo()
 int TimeInfo::getNextYear()
 {
     return tm_christmas.tm_year+1901;
+}
+
+bool TimeInfo::isNewYears()
+{
+    return newYears;
 }
 
 void TimeInfo::tick()

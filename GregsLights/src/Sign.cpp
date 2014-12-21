@@ -2030,37 +2030,51 @@ void Sign::run()
     //
     // Do what a sign should do
     //
+    int numSeconds = timeInfo->getSecondsUntil();
 
-    setDummyBackground(RGBColor::BLACK);
-    setDisplayPosition(0,0);
-    checkClear();
-
-    int i = 7;
-    while (useMap[i] == 1)
+    if (numSeconds < 33 && numSeconds > 0)
     {
-        i = rand() % SIGN_OPTIONS;  // Don't show same message twice in a row.
+        countdown();
     }
-    useMap[i] = 1;
-
-    switch(i)
+    else if (numSeconds > 32 && numSeconds  <80)
     {
-    case 0:
-    case 1:
-    case 2:
-        scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), textSpeed);
-        break;
-    case 4:
-        rotateSecondsToGo();
-        break;
-    case 5:
-        fewTrees();
-        break;
-    case 6:
-        snowballFight();
-        break;
-    case 7:
-        scrollSanta();
-        break;
+        scrollText(RGBColor::WHITE, RGBColor::BLACK, "READY TO YELL?", textSpeed);
+    }
+    else
+    {
+
+        setDummyBackground(RGBColor::BLACK);
+        setDisplayPosition(0,0);
+        checkClear();
+
+        int i = 7;
+        while (useMap[i] == 1)
+        {
+            i = rand() % SIGN_OPTIONS;  // Don't show same message twice in a row.
+        }
+        useMap[i] = 1;
+
+        switch(i)
+        {
+        case 0:
+        case 1:
+        case 2:
+            scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), textSpeed);
+            break;
+        case 4:
+            if (numSeconds > 0)
+                rotateSecondsToGo();
+            break;
+        case 5:
+            fewTrees();
+            break;
+        case 6:
+            snowballFight();
+            break;
+        case 7:
+            scrollSanta();
+            break;
+        }
     }
 }
 
@@ -2265,11 +2279,82 @@ void Sign::scrollSanta()
 
 }
 
+void Sign::countdown()
+{
+    RGBColor *d[25];
+    d[0]=d[1]=d[2]=d[3]=RGBColor::RED;
+    d[4]=d[5]=d[6]=d[7]=RGBColor::GREEN;
+    d[8]=d[9]=d[10]=d[11]=RGBColor::BLUE;
+    d[12]=d[13]=d[14]=d[15]=RGBColor::PURPLE;
+    d[16]=d[17]=d[18]=d[19]=RGBColor::ORANGE;
+
+    bool counting = true;
+    int i = 0;
+    char seconds_c[11];
+
+    while(counting)
+    {
+        int numseconds = timeInfo->getSecondsUntil();
+        if (++i > 100000)
+            i = 0;
+
+        for (int x = 0; x < SIGN_WIDTH; x++)
+        {
+            for (int y = 0; y < SIGN_HEIGHT; y++)
+            {
+                int distance = gjhDistance(SIGN_WIDTH/2, SIGN_HEIGHT/2, x, y);
+                RGBColor *color = d[(distance+i)%20];
+                getBoard(x,y)->set(color);
+            }
+        }
+        if (numseconds > 12)
+        {
+            int pos = 4;
+            pos += (drawLetterSmall('C',RGBColor::BLACK,pos,0) +2);
+            pos += (drawLetterSmall('O',RGBColor::BLACK,pos,0) +2);
+            pos += (drawLetterSmall('U',RGBColor::BLACK,pos,0) +2);
+            pos += (drawLetterSmall('N',RGBColor::BLACK,pos,0) +2);
+            pos += (drawLetterSmall('T',RGBColor::BLACK,pos,0) +2);
+            pos = 8;
+            pos += (drawLetterSmall('L',RGBColor::BLACK,pos,11) +2);
+            pos += (drawLetterSmall('O',RGBColor::BLACK,pos,11) +2);
+            pos += (drawLetterSmall('U',RGBColor::BLACK,pos,11) +2);
+            pos += (drawLetterSmall('D',RGBColor::BLACK,pos,11) +2);
+
+        }
+        else
+        {
+            int pos = 15;
+            sprintf(seconds_c, "%7d", numseconds);
+            pos += (drawLetter(seconds_c[5],RGBColor::WHITE,15,1) + 2);
+            drawLetter(seconds_c[6],RGBColor::WHITE,pos,1);
+        }
+        setDisplayPosition(0,0);
+        gjhSleep(0.05);
+        if (numseconds <= 0 )
+            counting = false;
+
+    }
+
+    char text[80];
+    if ( timeInfo->isNewYears()) {
+        sprintf(text, "HAPPY NEW YEAR");
+    } else {
+        sprintf(text, "MERRY CHRISTMAS");
+    }
+
+    for (int i = 0; i< 5; i++) {
+        scrollText(RGBColor::getRandom(), RGBColor::BLACK, text, 0.04);
+    }
+}
+
 void Sign::test()
 {
     while (1)
     {
         timeInfo->setSkipTimeCheck(true);
+
+        //countdown();
 
         /*
                 RGBColor *bgColor = new RGBColor(0,0,15);
