@@ -5,7 +5,7 @@
 #include "MessageGenerator.h"
 #include "TimeInfo.h"
 
-#define SIGN_OPTIONS 7
+#define SIGN_OPTIONS 8
 
 #define SIGN_WIDTH 48
 #define SIGN_HEIGHT 20
@@ -28,7 +28,12 @@ enum SIGN_SPECIAL {
     SIGN_SNOWMEN_REVERSE,
     SIGN_CANDY,
     SIGN_DEER,
-    SIGN_PRESENT
+    SIGN_DEER_2,
+    SIGN_DEER_2_RED,
+    SIGN_PRESENT_RED,
+    SIGN_PRESENT_GREEN,
+    SIGN_PRESENT_BLUE,
+    SIGN_SLEIGH
 };
 
 class Sign
@@ -45,6 +50,7 @@ class Sign
         RGBLight * getPixal(int x, int y);
         void run();
         char *getMessage();
+        void scrollSanta();
     protected:
         RGBLight * getBoard(int x, int y);
         void setDisplayPosition(int x, int y);
@@ -52,6 +58,7 @@ class Sign
         int drawLetter(char letter, RGBColor *color, int x, int y);
         int drawLetterSmall(char letter, RGBColor *color, int x, int y);
         void setDummyBackground(RGBColor *bgColor);
+        void setDummyBackground(RGBColor *bgColor, int xStart, int yStart, int xEnd, int yEnd);
         void drawSpecial(int x, int y, SIGN_SPECIAL type);
         void wipeToRight(RGBColor *color, double delay);
         void wipeDown(RGBColor *color, double delay);

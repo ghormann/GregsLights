@@ -1439,15 +1439,22 @@ void Sign::flashSecondsToGo(int times, double delay)
 
 }
 
-void Sign::setDummyBackground(RGBColor *bgColor)
+void Sign::setDummyBackground(RGBColor *bgColor, int xStart, int yStart, int xEnd, int yEnd)
 {
-    for (int i = 0; i < SIGN_DUMMY_WIDTH; i++)
+    for (int i = xStart; i < xEnd; i++)
     {
-        for (int j = 0; j < SIGN_DUMMY_HEIGHT; j++)
+        for (int j = yStart; j < yEnd; j++)
         {
             getBoard(i,j)->set(bgColor);
         }
     }
+
+}
+
+
+void Sign::setDummyBackground(RGBColor *bgColor)
+{
+    setDummyBackground(bgColor, 0, 0, SIGN_DUMMY_WIDTH, SIGN_DUMMY_HEIGHT);
 }
 
 void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
@@ -1481,13 +1488,87 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
 
         getBoard(startX,startY)->set(RGBColor::YELLOW); // start at top
     }
-    else if (type==SIGN_PRESENT)
+    else if (type == SIGN_SLEIGH)
+    {
+        int x = 0;
+        int y = 0;
+
+        RGBColor * d[15][SIGN_HEIGHT];
+        for (int x = 0 ; x<15; x++)
+        {
+            for (y=0; y<SIGN_HEIGHT; y++)
+            {
+                d[x][y]=0;
+            }
+        }
+
+        d[0][0]=d[1][0]=d[2][0]=d[3][0]=RGBColor::WHITE;
+        d[0][1]=d[4][1]=RGBColor::WHITE;
+        d[1][1]=d[2][1]=d[3][1]=RGBColor::RED;
+//2
+        d[0][2]=d[5][2]=RGBColor::WHITE;
+        d[11][2]=d[12][2]=RGBColor::WHITE;
+        d[1][2]=d[2][2]=d[3][2]=d[4][2]=RGBColor::RED;
+//3
+        d[0][3]=d[5][3]=RGBColor::WHITE;
+        d[10][3]=d[13][3]=RGBColor::WHITE;
+        d[1][3]=d[2][3]=d[3][3]=d[4][3]=RGBColor::RED;
+        d[11][3]=d[12][3]=RGBColor::RED;
+//4
+        for (x=1; x<6; x++)
+        {
+            d[x][4]=RGBColor::RED;
+        }
+        d[6][4]=d[9][4]=d[12][4]=d[13][4]=RGBColor::WHITE;
+        d[10][4]=d[11][4]=RGBColor::RED;
+//5 + 6 + 7+8
+        for (x=2; x< 12; x++)
+        {
+            d[x][5]=RGBColor::RED;
+            d[x][6]=RGBColor::RED;
+            d[x][7]=RGBColor::GREEN;
+            d[x][8]=RGBColor::RED;
+        }
+        d[6][5]=d[7][5]=RGBColor::WHITE;
+        d[2][8]=d[11][8]=0; // Blank
+        d[12][8]=d[13][8]=RGBColor::BLACK;
+
+//9
+        d[4][9]=d[9][9]=d[13][9]=RGBColor::BLACK;
+//10
+        d[3][10]=d[4][10]=d[9][10]=d[10][10]=d[12][10]=d[13][10]=RGBColor::BLACK;
+
+//11
+        for (x=0; x<13; x++)
+        {
+            d[x][11]=RGBColor::BLACK;
+        }
+
+        // Write it out
+
+        for (x =0; x<15; x++)
+        {
+            for (y=0; y<SIGN_HEIGHT; y++)
+            {
+                if (d[x][y] != 0)
+                    getBoard(x+startX,y+startY)->set(d[x][y]);
+            }
+        }
+
+    }
+    else if (type==SIGN_PRESENT_RED || type == SIGN_PRESENT_BLUE || type == SIGN_PRESENT_GREEN)
     {
 
         int x;
         int y;
         RGBColor *baseColor = RGBColor::RED;
         RGBColor *bowColor = RGBColor::WHITE;
+
+        if (type == SIGN_PRESENT_GREEN)
+            baseColor = RGBColor::GREEN;
+        else if (type == SIGN_PRESENT_BLUE)
+            baseColor = RGBColor::BLUE;
+
         RGBColor * d[15][SIGN_HEIGHT];
         for (int x = 0 ; x<15; x++)
         {
@@ -1731,11 +1812,15 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
         }
 
     }
-    else if (type == SIGN_DEER)
+    else if (type == SIGN_DEER || type == SIGN_DEER_2 ||type == SIGN_DEER_2_RED)
     {
         int x=0;
         int y=0;
         RGBColor *d[15][14] ;
+        RGBColor *noseColor = RGBColor::BROWN;
+        if (type == SIGN_DEER_2_RED || type == SIGN_DEER)
+            noseColor = RGBColor::RED;
+
         for (x=0; x<15; x++)
         {
             for (y=0; y<14; y++)
@@ -1777,7 +1862,7 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
         d[6][9]=RGBColor::BLACK;
         d[7][9]=d[10][9]=d[11][9]=RGBColor::WHITE;
 //10
-        d[1][10]=RGBColor::RED;
+        d[1][10]=noseColor;
         for(x=2; x<12; x++)
         {
             d[x][10]=RGBColor::LIGHTBROWN;
@@ -1785,7 +1870,7 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
         d[5][10]=d[6][10]=RGBColor::BLACK;
         d[7][10]=RGBColor::WHITE;
 //11
-        d[0][11]=d[1][11]=RGBColor::RED;
+        d[0][11]=d[1][11]=noseColor;
         for(x=4; x<11; x++)
         {
             d[x][11]=RGBColor::LIGHTBROWN;
@@ -1799,10 +1884,13 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
 
         for (x =0; x<15; x++)
         {
+            // reverse image if needed
+            int realX = ((type == SIGN_DEER_2 || type == SIGN_DEER_2_RED) ? 15-x-1 : x);
+
             for (y=0; y<14; y++)
             {
                 if (d[x][y] != 0)
-                    getBoard(x+startX,y+startY)->set(d[x][y]);
+                    getBoard(realX+startX,y+startY)->set(d[x][y]);
             }
         }
 
@@ -1947,7 +2035,7 @@ void Sign::run()
     setDisplayPosition(0,0);
     checkClear();
 
-    int i = 6;
+    int i = 7;
     while (useMap[i] == 1)
     {
         i = rand() % SIGN_OPTIONS;  // Don't show same message twice in a row.
@@ -1969,6 +2057,9 @@ void Sign::run()
         break;
     case 6:
         snowballFight();
+        break;
+    case 7:
+        scrollSanta();
         break;
     }
 }
@@ -2132,22 +2223,69 @@ void Sign::snowballFight()
     delete bgColor;
 }
 
+void Sign::scrollSanta()
+{
+    RGBColor *bgColor = new RGBColor(0,0,15);
+    setDummyBackground(bgColor);
+    int xPos = SIGN_WIDTH+18;
+    drawSpecial(xPos,8,SIGN_SLEIGH);
+    xPos += 15;
+    for (int i = 0; i < 3; i++)
+    {
+        drawSpecial(xPos,5,SIGN_DEER_2);
+        xPos+= 15;
+    }
+    drawSpecial(xPos,5,SIGN_DEER_2_RED);
+
+    xPos += SIGN_WIDTH;
+    setDisplayPosition(xPos,0);
+
+    // Start Scrolling
+    while (xPos > 0)
+    {
+        xPos--;
+        if (xPos < SIGN_WIDTH+7)
+        {
+            setDummyBackground(bgColor, 0,0,SIGN_WIDTH+17, SIGN_HEIGHT);
+            drawSpecial(xPos,4, SIGN_PRESENT_RED);  // Present #1
+        }
+        if (xPos < SIGN_WIDTH-7)
+        {
+            drawSpecial(xPos+14,4, SIGN_PRESENT_BLUE);  // Present #2
+        }
+        if (xPos < SIGN_WIDTH-21)
+        {
+            drawSpecial(xPos+28,4, SIGN_PRESENT_GREEN);  // PResent #3
+        }
+        setDisplayPosition(xPos, 0);
+        gjhSleep(0.05);
+    }
+    sleep(3);
+    delete bgColor;
+
+}
+
 void Sign::test()
 {
     while (1)
     {
         timeInfo->setSkipTimeCheck(true);
 
-        RGBColor *bgColor = new RGBColor(15,0,15);
-        setDummyBackground(bgColor);
-        drawSpecial(0,0,SIGN_PRESENT);
-        setDisplayPosition(0,0);
-        sleep(60);
-        delete bgColor;
+        /*
+                RGBColor *bgColor = new RGBColor(0,0,15);
+                setDummyBackground(bgColor);
+                drawSpecial(0,5,SIGN_SLEIGH);
+                drawSpecial(15,0,SIGN_DEER_2);
+                drawSpecial(30,0,SIGN_DEER_2_RED);
+                setDisplayPosition(0,0);
+                sleep(60);
+                delete bgColor;
+        */
 
+        //scrollSanta();
 
         //scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
-        scrollText(RGBColor::PURPLE, RGBColor::BLACK, "MADE YOUR RESOLUTIONS FOR THE NEW YEAR?", 0.04);
+        //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "MADE YOUR RESOLUTIONS FOR THE NEW YEAR?", 0.04);
         run();
     }
 
