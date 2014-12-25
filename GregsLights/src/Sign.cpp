@@ -2244,6 +2244,7 @@ void Sign::snowballFight()
 
 void Sign::scrollSanta()
 {
+    sprintf(message, "Scroll Santa");
     RGBColor *bgColor = new RGBColor(0,0,15);
     setDummyBackground(bgColor);
     int xPos = SIGN_WIDTH+18;
@@ -2286,6 +2287,8 @@ void Sign::scrollSanta()
 
 void Sign::colors()
 {
+    sprintf(message, "Colors (Aka Candy Cane)");
+
     RGBColor *d[25];
     d[0]=d[1]=d[2]=d[3]=RGBColor::RED;
     d[4]=d[5]=d[6]=d[7]=RGBColor::GREEN;
@@ -2320,6 +2323,8 @@ void Sign::colors()
 
 void Sign::countdown()
 {
+    sprintf(message, "Countdown");
+
     RGBColor *d[25];
     d[0]=d[1]=d[2]=d[3]=RGBColor::RED;
     d[4]=d[5]=d[6]=d[7]=RGBColor::GREEN;
