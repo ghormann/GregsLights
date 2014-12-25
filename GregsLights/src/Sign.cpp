@@ -6,10 +6,10 @@
 #include <stdlib.h>
 
 
-Sign::Sign(bool skipTime, E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6)
+Sign::Sign(bool skipTime, bool newYears, E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6)
 {
-    sprintf(message, "Waiting....");
-    this->timeInfo = new TimeInfo(skipTime, false);
+    sprintf(message, "Booting up: %s", (newYears ? "for new Years" : "for Christmas"));
+    this->timeInfo = new TimeInfo(skipTime, newYears);
     currentX = 0;
     currentY = 0;
     int cnt = 0;
@@ -2015,7 +2015,6 @@ void Sign::run()
 {
     double textSpeed = 0.04;
 
-
     // Not on douring the day
     if (timeInfo->isDayLight())
     {
@@ -2287,7 +2286,7 @@ void Sign::scrollSanta()
 
 void Sign::colors()
 {
-    sprintf(message, "Colors (Aka Candy Cane)");
+    sprintf(message, "Psychedelic Candy Cane");
 
     RGBColor *d[25];
     d[0]=d[1]=d[2]=d[3]=RGBColor::RED;

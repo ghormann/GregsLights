@@ -44,7 +44,7 @@ enum SIGN_SPECIAL {
 class Sign
 {
     public:
-        Sign(bool skipTime, E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6);
+        Sign(bool skipTime, bool newYears, E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6);
         virtual ~Sign();
         void test();
         void testGridLayout();

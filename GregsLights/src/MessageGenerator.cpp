@@ -1,21 +1,14 @@
 #include "../include/MessageGenerator.h"
 
 #include <stdlib.h>
-#include <time.h>
 #include <stdio.h>
 
 MessageGenerator::MessageGenerator(TimeInfo *ti)
 {
     //ctor
-    srand (time(NULL));
-
-    time_t t_now;
-    time(&t_now);
-    struct tm *tm_now = localtime(&t_now);
-
-    isChristmas = (tm_now->tm_mday <= 25 ? true : false);
-    clear();
     timeInfo = ti;
+    isChristmas = ! ti->isNewYears();
+    clear();
 }
 
 MessageGenerator::~MessageGenerator()
@@ -46,7 +39,7 @@ char * MessageGenerator::getMessage()
 {
     checkClear();
 
-    int i = 0;
+    int i = 8;
     while (bitmap[i] == 1)
     {
         i = rand() % MESSAGE_GENERATOR_SIZE;  // Don't show same message twice in a row.
@@ -68,7 +61,7 @@ char * MessageGenerator::getMessage()
             else
                 return "ARE YOU READY FOR CHRISTMAS?      I BET THE KIDS ARE...." ;
         else
-            return "HAPPY NEW YEAR";
+            return "HARD TO BELIEVE ANOTHER YEAR HAS PASSED";
     case 3:
         return "^ MERRY CHRISTMAS FROM THE HORMANN FAMILY ^";
     case 4:
@@ -96,14 +89,15 @@ char * MessageGenerator::getMessage()
             return "JOIN US NEXT YEAR TO SEE THE CLOCK HIT ZERO";
     case 7:
         if (timeInfo->getSecondsUntil() > 0)
-        return "$ SECONDS LEFT #";
+            return "$ SECONDS LEFT #";
         else
-        return "$ HAPPY HOLIDAYS #";
+            return "$ HAPPY HOLIDAYS #";
     case 8:
+        const char * when = timeInfo->isNewYears() ? "THE NEW YEAR" : "CHRISTMAS";
         if (timeInfo->getHoursUntil() > 1)
-            sprintf(message, "\\ ONLY %d HOURS LEFT \\", timeInfo->getHoursUntil());
-            else
-            sprintf(message, "\\ ONLY %d MINUTES LEFT \\", timeInfo->getSecondsUntil()/60);
+            sprintf(message, "\\ ONLY %d HOURS UNTIL %s \\", timeInfo->getHoursUntil(), when);
+        else
+            sprintf(message, "\\ ONLY %d MINUTES UNTIL %s \\", timeInfo->getSecondsUntil()/60, when);
         return message;
     }
 

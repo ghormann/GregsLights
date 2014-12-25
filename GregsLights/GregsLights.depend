@@ -312,7 +312,7 @@
 	"RGBLight.h"
 	<netinet/in.h>
 
-1418432410 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/DisplayModel.cpp
+1419516147 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/DisplayModel.cpp
 	"../include/DisplayModel.h"
 	"../include/controller/RGBLight.h"
 	"../include/controller/OpenDMXNetwork.h"
@@ -323,13 +323,13 @@
 	"../include/Sign.h"
 	<string.h>
 
-1419200862 /home/ghormann/Documents/src/gregslights/GregsLights/include/Sign.h
+1419516081 /home/ghormann/Documents/src/gregslights/GregsLights/include/Sign.h
 	"controller/E131Network.h"
 	"MessageGenerator.h"
 	"TimeInfo.h"
 	<cmath>
 
-1419201697 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/Sign.cpp
+1419516600 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/Sign.cpp
 	"../include/Sign.h"
 	<unistd.h>
 	"../include/controller/DummyBulb.h"
@@ -343,7 +343,7 @@
 1418509412 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/controller/DMXBulb.cpp
 	"../../include/controller/DMXBulb.h"
 
-1418485427 source:/home/ghormann/Documents/src/gregslights/GregsLights/mainFrame.cpp
+1419517027 source:/home/ghormann/Documents/src/gregslights/GregsLights/mainFrame.cpp
 	"wx/wx.h"
 	"wx/sizer.h"
 	"wx/glcanvas.h"
@@ -2083,10 +2083,9 @@
 1417970213 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/RGBColor.cpp
 	"../../include/controller/RGBColor.h"
 
-1419201559 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/MessageGenerator.cpp
+1419517558 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/MessageGenerator.cpp
 	"../include/MessageGenerator.h"
 	<stdlib.h>
-	<time.h>
 	<stdio.h>
 
 1419201662 /home/ghormann/Documents/src/gregslights/GregsLights/include/MessageGenerator.h
@@ -2095,7 +2094,7 @@
 1419201649 /home/ghormann/Documents/src/gregslights/GregsLights/include/TimeInfo.h
 	<time.h>
 
-1419201409 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/TimeInfo.cpp
+1419201757 source:/home/ghormann/Documents/src/gregslights/GregsLights/src/TimeInfo.cpp
 	"TimeInfo.h"
 	<stdio.h>
 	<ctype.h>

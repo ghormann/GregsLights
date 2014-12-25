@@ -13,6 +13,7 @@
 DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
 {
     this->skipTimeCheck = (skip_time_check == TRUE? true : false);
+    this->newYears = (show_new_year == TRUE ? true: false);
     //Initialize Memory Buffers
     for (int i = 0; i < NUM_MESSAGE_BUFFERS; i++)
     {
@@ -47,7 +48,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
         networks->addNetwork(sign6);
     }
 
-    this->sign = new Sign(skipTimeCheck, sign1, sign2, sign3, sign4, sign5, sign6);
+    this->sign = new Sign(skipTimeCheck, newYears, sign1, sign2, sign3, sign4, sign5, sign6);
 
     //set up houses
     house[1] = dmx->getRGB(13);
