@@ -29,7 +29,7 @@ private:
     void fadeTick(double duration);
     float percentage;
     float fadeStep;  /* Per ms */
-    int fadeStop;
+    char fadeStop; // range 0-100
     Bulb *next;
     static Bulb *firstBulb;
 };
