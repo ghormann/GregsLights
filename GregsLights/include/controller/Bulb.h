@@ -27,8 +27,8 @@ protected:
 
 private:
     void fadeTick(double duration);
-    double percentage;
-    double fadeStep;  /* Per ms */
+    float percentage;
+    float fadeStep;  /* Per ms */
     int fadeStop;
     Bulb *next;
     static Bulb *firstBulb;

@@ -22,16 +22,22 @@ void LargeGrid::test()
         sleep(1);
         for (i = 0; i < TOTAL_GRID_PIXALS; i++)
         {
-            this->pixals[i]->fadeTo(100,0,0,10);
+            this->pixals[i]->fadeTo(100,0,0,20);
             //this->pixals[i]->set(RGBColor::RED);
         }
-        sleep(11);
+        sleep(21);
         for (i = 0; i < TOTAL_GRID_PIXALS; i++)
         {
-            this->pixals[i]->fadeTo(0,100,0,10);
+            this->pixals[i]->fadeTo(0,0,0,0.25);
             //this->pixals[i]->set(RGBColor::GREEN);
         }
-        sleep(11);
+        sleep(1);
+        for (i = 0; i < TOTAL_GRID_PIXALS; i++)
+        {
+            this->pixals[i]->fadeTo(0,100,0,0.25);
+            //this->pixals[i]->set(RGBColor::GREEN);
+        }
+        sleep(1);
         for (i = 0; i < TOTAL_GRID_PIXALS; i++)
         {
             this->pixals[i]->fadeTo(0,0,0,10);
