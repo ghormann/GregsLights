@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 
-Sign::Sign(bool skipTime, bool newYears, E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6)
+Sign::Sign(bool skipTime, bool newYears, E131Network *net[])
 {
     sprintf(message, "Booting up: %s", (newYears ? "for new Years" : "for Christmas"));
     this->timeInfo = new TimeInfo(skipTime, newYears);
@@ -17,28 +17,63 @@ Sign::Sign(bool skipTime, bool newYears, E131Network *n1, E131Network *n2, E131N
     this->generator = new MessageGenerator(this->timeInfo);
     for (int i = 0; i < 170; i++)
     {
-        this->pixals[cnt++] = n1->getRGB(i*3);
+        this->pixals[cnt++] = net[0]->getRGB(i*3); // port 1
     }
     for (int i = 0; i < 170; i++)
     {
-        this->pixals[cnt++] = n2->getRGB(i*3);
+        this->pixals[cnt++] = net[1]->getRGB(i*3); // port 1
     }
     for (int i = 0; i < 170; i++)
     {
-        this->pixals[cnt++] = n3->getRGB(i*3);
+        this->pixals[cnt++] = net[2]->getRGB(i*3); //port 1
     }
     for (int i = 0; i < 140; i++)
     {
-        this->pixals[cnt++] = n4->getRGB(i*3);
+        this->pixals[cnt++] = net[3]->getRGB(i*3); // port 1
     }
     for (int i = 0; i < 170; i++)
     {
-        this->pixals[cnt++] = n5->getRGB(i*3);
+        this->pixals[cnt++] = net[4]->getRGB(i*3); //port 2
     }
+
     for (int i = 0; i < 140; i++)
     {
-        this->pixals[cnt++] = n6->getRGB(i*3);
+        this->pixals[cnt++] = net[5]->getRGB(i*3); //port 2
     }
+
+    /* This should be 170 */
+    for (int j = 0; j < 170; j++)
+    {
+        this->pixals[cnt++] = net[6]->getRGB(j*3); // port 3
+    }
+
+    /* This should be 170 */
+    for (int j = 0; j < 170; j++)
+    {
+        this->pixals[cnt++] = net[7]->getRGB(j*3); // port 3
+    }
+    /* This should be 170 */
+    for (int j = 0; j < 170; j++)
+    {
+        this->pixals[cnt++] = net[8]->getRGB(j*3); // port 3
+    }
+    /* This should be 170 */
+    for (int j = 0; j < 170; j++)
+    {
+        this->pixals[cnt++] = net[9]->getRGB(j*3); // port 4
+    }
+    /* This should be 170 */
+    for (int j = 0; j < 170; j++)
+    {
+        this->pixals[cnt++] = net[10]->getRGB(j*3); // port 4
+    }
+    /* This should be 170 */
+    for (int j = 0; j < 170; j++)
+    {
+        this->pixals[cnt++] = net[11]->getRGB(j*3); // port 4
+    }
+
+
 
     // Setup Dummy Pials
     for (int i = 0 ; i < (SIGN_DUMMY_HEIGHT * SIGN_DUMMY_WIDTH); i++)
@@ -2397,7 +2432,7 @@ void Sign::countdown()
 
 void Sign::test()
 {
-    while (1)
+    while (0)
     {
         timeInfo->setSkipTimeCheck(true);
 
@@ -2420,8 +2455,8 @@ void Sign::test()
         run();
     }
 
-    int betweenPixals = 300;
-    int betweenColors = 2;
+    int betweenPixals = 2500;
+    int betweenColors = 3;
     this->pixals[0]->set(100,100,100);
     sleep(1);
     this->pixals[0]->set(RGBColor::BLACK);
@@ -2474,23 +2509,28 @@ void Sign::test()
         {
             pixals[i]->fade(100,100,0,100,0,0,betweenColors);
         }
-        sleep(betweenColors);
+        sleep(betweenColors*2);
 
         for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
         {
             pixals[i]->fade(100,0,0,0,100,0,betweenColors);
         }
-        sleep(betweenColors);
+        sleep(betweenColors*2);
 
         for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
         {
             pixals[i]->fade(0,100,0,0,0,100,betweenColors);
         }
-        sleep(betweenColors);
+        sleep(betweenColors*2);
 
         for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
         {
-            pixals[i]->fade(0,0,100,0,0,0,betweenColors);
+            pixals[i]->fade(0,0,100,100,100,100,betweenColors);
+        }
+        sleep(betweenColors*3);
+        for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
+        {
+            pixals[i]->fade(100,100,100,0,0,0,betweenColors);
         }
         sleep(betweenColors);
         sleep(2);

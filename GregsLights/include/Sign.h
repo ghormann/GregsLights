@@ -7,8 +7,8 @@
 #include <cmath>
 
 #define SIGN_OPTIONS 10
-
-#define SIGN_WIDTH 48
+#define SIGN_E11_COUNT 12
+#define SIGN_WIDTH 99  /* Was 48 */
 #define SIGN_HEIGHT 20
 #define TOTAL_SIGN_PIXALS SIGN_WIDTH * SIGN_HEIGHT
 
@@ -44,7 +44,7 @@ enum SIGN_SPECIAL {
 class Sign
 {
     public:
-        Sign(bool skipTime, bool newYears, E131Network *n1, E131Network *n2, E131Network *n3, E131Network *n4, E131Network *n5, E131Network *n6);
+        Sign(bool skipTime, bool newYears, E131Network *net[]);
         virtual ~Sign();
         void test();
         void testGridLayout();

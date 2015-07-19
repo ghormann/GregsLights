@@ -26,29 +26,36 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", ACTIDONGLE, sendDMX);
     //OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", OPENDMX);
 
-    char *signIP = "192.168.0.39";
 
     LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB1", sendDMX);
-    E131Network *sign1 = new E131Network(signIP, 10, 512);
-    E131Network *sign2 = new E131Network(signIP, 11, 512);
-    E131Network *sign3 = new E131Network(signIP, 12, 512);
-    E131Network *sign4 = new E131Network(signIP, 13, 512);
-    E131Network *sign5 = new E131Network(signIP, 20, 512);
-    E131Network *sign6 = new E131Network(signIP, 21, 512);
+
+
+    /* Debug ONly */
+    sendDMX = true;
+    char *signIP = "192.168.0.232";
+    E131Network *sign[SIGN_E11_COUNT];
+    sign[0] = new E131Network(signIP, 10, 512);  // port 1 170
+    sign[1] = new E131Network(signIP, 11, 512);  // port 1 170
+    sign[2] = new E131Network(signIP, 12, 512);  // port 1 170
+    sign[3] = new E131Network(signIP, 13, 512);  // port 1 140
+    sign[4] = new E131Network(signIP, 20, 512);  // port 2 170
+    sign[5] = new E131Network(signIP, 21, 512);  // port 2 140
+    sign[6] = new E131Network(signIP, 30, 512);  // port 3 170
+    sign[7] = new E131Network(signIP, 31, 512);  // port 3 170
+    sign[8] = new E131Network(signIP, 32, 512);  // port 3 170
+    sign[9] = new E131Network(signIP, 40, 512);  // port 4 170
+    sign[10] = new E131Network(signIP, 41, 512); // port 4 170
+    sign[11] = new E131Network(signIP, 42, 512); // port 4 170
 
     if (sendDMX)
     {
-        networks->addNetwork(dmx);
-        networks->addNetwork(lor);
-        networks->addNetwork(sign1);
-        networks->addNetwork(sign2);
-        networks->addNetwork(sign3);
-        networks->addNetwork(sign4);
-        networks->addNetwork(sign5);
-        networks->addNetwork(sign6);
+        //networks->addNetwork(dmx);
+        //networks->addNetwork(lor);
+        for (int j = 0; j< SIGN_E11_COUNT; j++)
+            networks->addNetwork(sign[j]);
     }
 
-    this->sign = new Sign(skipTimeCheck, newYears, sign1, sign2, sign3, sign4, sign5, sign6);
+    this->sign = new Sign(skipTimeCheck, newYears, sign);
 
     //set up houses
     house[1] = dmx->getRGB(13);
