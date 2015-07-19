@@ -66,9 +66,11 @@ void GregsDisplay::run()
     pthread_t sign_t;
     pthread_t bush_t;
     pthread_t snowmen_t;
+    pthread_t grid_t;
     pthread_create(&(sign_t), NULL, GregsDisplay::signThread, (void*) this);
     pthread_create(&(bush_t), NULL, GregsDisplay::bushThread, (void*) this);
     pthread_create(&(snowmen_t), NULL, GregsDisplay::snowmenThread, (void*) this);
+    pthread_create(&(grid_t), NULL, GregsDisplay::gridThread, (void*) this);
 
     getModel()->getClock()->setActive(true);
 }
@@ -951,6 +953,17 @@ void GregsDisplay::set_bush(int bushId, int color, int intensity)
 DisplayModel *GregsDisplay::getModel()
 {
     return model;
+}
+
+void * GregsDisplay::gridThread(void *args)
+{
+    GregsDisplay *ptr = (GregsDisplay *) args;
+    while(1)
+    {
+        ptr->getModel()->getGrid()->run();
+    }
+    return NULL;
+
 }
 
 void * GregsDisplay::snowmenThread(void * args)

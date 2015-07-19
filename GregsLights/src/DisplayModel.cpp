@@ -47,15 +47,23 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     sign[10] = new E131Network(signIP, 41, 512); // port 4 170
     sign[11] = new E131Network(signIP, 42, 512); // port 4 170
 
+    char *gridIP = "192.168.0.231";
+    E131Network *grid[GRID_E11_COUNT];
+    grid[0] = new E131Network(gridIP,1,512);
+
     if (sendDMX)
     {
         //networks->addNetwork(dmx);
         //networks->addNetwork(lor);
         for (int j = 0; j< SIGN_E11_COUNT; j++)
             networks->addNetwork(sign[j]);
+
+        for (int j=0; j<GRID_E11_COUNT; j++)
+            networks->addNetwork(grid[j]);
     }
 
     this->sign = new Sign(skipTimeCheck, newYears, sign);
+    this->grid = new LargeGrid(grid);
 
     //set up houses
     house[1] = dmx->getRGB(13);
@@ -210,6 +218,11 @@ Snowmen * DisplayModel::getSnowmen() {
 Sign * DisplayModel::getSign()
 {
     return sign;
+}
+
+LargeGrid *DisplayModel::getGrid()
+{
+    return grid;
 }
 
 DisplayModel::~DisplayModel()

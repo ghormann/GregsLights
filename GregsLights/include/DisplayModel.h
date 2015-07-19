@@ -7,6 +7,7 @@
 #include "CountdownClock.h"
 #include "Sign.h"
 #include "Snowmen.h"
+#include "LargeGrid.h"
 
 
 #define HOUSE_LIGHT_START 1
@@ -27,6 +28,7 @@ class DisplayModel
         CountdownClock *getClock();
         Sign * getSign();
         Snowmen * getSnowmen();
+        LargeGrid *getGrid();
         void setMessage(int id, char*);
         char *getMessage(int id);
         bool isSkipTimeCheck();
@@ -40,6 +42,7 @@ class DisplayModel
         char *messages[NUM_MESSAGE_BUFFERS];
         Sign *sign;
         Snowmen *snowmen;
+        LargeGrid *grid;
         bool skipTimeCheck;
         bool newYears;
 

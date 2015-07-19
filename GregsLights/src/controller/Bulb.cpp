@@ -18,6 +18,7 @@ Bulb::Bulb(bool fadeAble)
     fadeStep = 0;
     fadeStop = 0;
     percentage = 0;
+    this->next = 0;
     if (fadeAble)
     {
         this->next = firstBulb;
@@ -28,7 +29,7 @@ Bulb::Bulb(bool fadeAble)
 Bulb *Bulb::firstBulb = 0;
 
 /**
-* duration is in milliseconds
+* duration is in seconds
 */
 void Bulb::fade(int start, int stop, double duration)
 {
