@@ -75,6 +75,7 @@
 		<Unit filename="include/controller/DMXBulb.h" />
 		<Unit filename="include/controller/DummyBulb.h" />
 		<Unit filename="include/controller/E131Network.h" />
+		<Unit filename="include/controller/FadeableBulb.h" />
 		<Unit filename="include/controller/LORNetwork.h" />
 		<Unit filename="include/controller/LightNetwork.h" />
 		<Unit filename="include/controller/NetworkCollection.h" />
@@ -107,6 +108,7 @@
 		<Unit filename="src/controller/DMXBulb.cpp" />
 		<Unit filename="src/controller/DummyBulb.cpp" />
 		<Unit filename="src/controller/E131Network.cpp" />
+		<Unit filename="src/controller/FadeableBulb.cpp" />
 		<Unit filename="src/controller/LORNetwork.cpp" />
 		<Unit filename="src/controller/NetworkCollection.cpp" />
 		<Unit filename="src/controller/OpenDMXNetwork.cpp" />

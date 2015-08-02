@@ -13,12 +13,12 @@ public:
     virtual void fade(int start, int stop, double duration);
 protected:
 private:
+    static FadeableBulb *firstBulb;
+    void fadeTick(double duration);
+    FadeableBulb *next;
     float fadeStep;  /* Per ms */
     float percentage;
     char fadeStop; // range 0-100
-    FadeableBulb *next;
-    static FadeableBulb *firstBulb;
-    void fadeTick(double duration);
 
 
 };

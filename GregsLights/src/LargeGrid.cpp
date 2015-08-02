@@ -26,7 +26,7 @@ void LargeGrid::test()
             this->pixals[i]->set(RGBColor::BLACK);
         }
         sleep(1);
-        sprintf(message, "Set fade Red 20");
+        sprintf(message, "Set fade Red 20, %d, %d", sizeof(Bulb), sizeof(FadeableBulb));
         for (i = 0; i < TOTAL_GRID_PIXALS; i++)
         {
             this->pixals[i]->fadeTo(100,0,0,20);
