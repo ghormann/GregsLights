@@ -1,6 +1,6 @@
 #include "DummyBulb.h"
 
-DummyBulb::DummyBulb() : Bulb(false)
+DummyBulb::DummyBulb() : Bulb()
 {
     //ctor
 }

@@ -34,10 +34,10 @@ void LargeGrid::test()
         sleep(1);
         for (i = 0; i < TOTAL_GRID_PIXALS; i++)
         {
-            this->pixals[i]->fadeTo(0,100,0,0.25);
+            this->pixals[i]->fadeTo(0,100,0,1.25);
             //this->pixals[i]->set(RGBColor::GREEN);
         }
-        sleep(1);
+        sleep(2);
         for (i = 0; i < TOTAL_GRID_PIXALS; i++)
         {
             this->pixals[i]->fadeTo(0,0,0,10);

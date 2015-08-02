@@ -276,7 +276,7 @@ Bulb* E131Network::getBulb(int channel)
 }
 
 
-E131Bulb::E131Bulb(unsigned char *data, bool *flagPtr) : Bulb(true)
+E131Bulb::E131Bulb(unsigned char *data, bool *flagPtr) : FadeableBulb()
 {
     this->pos = data;
     this->flag = flagPtr;

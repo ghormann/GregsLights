@@ -1,7 +1,7 @@
 #ifndef LORNETWORK_H
 #define LORNETWORK_H
 
-#include "Bulb.h"
+#include "FadeableBulb.h"
 #include "time.h"
 #include "LightNetwork.h"
 #include "serial.h"
@@ -24,7 +24,7 @@ private:
 };
 
 
-class LORBulb : public Bulb
+class LORBulb : public FadeableBulb
 {
 public:
     LORBulb(unsigned char device, unsigned char channel, LORNetwork *network);
