@@ -33,7 +33,7 @@ class E131Network : public LightNetwork
         int num_channels;
 };
 
-class E131Bulb : public Bulb
+class E131Bulb : public FadeableBulb
 {
 public:
     E131Bulb(unsigned char *data, bool *flag);

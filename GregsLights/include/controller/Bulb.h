@@ -14,24 +14,18 @@
 class Bulb
 {
 public:
-    Bulb(bool fadeAble);
+    Bulb();
     void setIntensity(int pct);
     int  getIntensity();
-    void fade(int start, int stop, double duration);
+    virtual void fade(int start, int stop, double duration);
     void fadeTo(int stop, double duration);
-    static void * tickThread(void *);
 protected:
     virtual void setIntensity_ipml(int pct) = 0;
     virtual int getMin() = 0;
     virtual int getMax() = 0;
 
 private:
-    void fadeTick(double duration);
-    float percentage;
-    float fadeStep;  /* Per ms */
-    char fadeStop; // range 0-100
-    Bulb *next;
-    static Bulb *firstBulb;
+    char pct;
 };
 
 #endif // IPIXAL_H

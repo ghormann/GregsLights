@@ -56,6 +56,7 @@ void TextDisplay::update()
     mvprintw(2, 0, "Snowmen: %-60s", model->getSnowmen()->getMessage());
     mvprintw(3, 0, "Clock: %-60s", model->getClock()->getMessage());
     mvprintw(4, 0, "Sign: %-60s", model->getSign()->getMessage());
+    mvprintw(5, 0, "Grid: %-60s", model->getGrid()->getMessage());
 
     mvprintw(0, 64, "Clock: %7d", clock->getSecondsRemaining());
 

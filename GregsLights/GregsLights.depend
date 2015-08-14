@@ -19,7 +19,7 @@
 	"Bulb.h"
 	"RGBColor.h"
 
-1437347242 /home/ghormann/Documents/src/GregsLights/GregsLights/include/controller/Bulb.h
+1438545215 /home/ghormann/Documents/src/GregsLights/GregsLights/include/controller/Bulb.h
 	<chrono>
 	<unistd.h>
 
@@ -53,7 +53,7 @@
 	"DisplayModel.h"
 	"TimeInfo.h"
 
-1437346259 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/Bulb.cpp
+1438545436 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/Bulb.cpp
 	"../../include/controller/Bulb.h"
 	<stdio.h>
 	<chrono>
@@ -68,7 +68,7 @@
 1416104148 /home/ghormann/Documents/src/GregsLights/GregsLights/include/controller/DummyPixal.h
 	"Bulb.h"
 
-1436059785 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/E131Network.cpp
+1438545765 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/E131Network.cpp
 	<stdlib.h>
 	<ctype.h>
 	<stdio.h>
@@ -80,21 +80,21 @@
 	<arpa/inet.h>
 	<unistd.h>
 
-1417101173 /home/ghormann/Documents/src/GregsLights/GregsLights/include/controller/E131Network.h
+1438545810 /home/ghormann/Documents/src/GregsLights/GregsLights/include/controller/E131Network.h
 	"LightNetwork.h"
 	"DMXBulb.h"
 	"RGBLight.h"
 	<netinet/in.h>
 
-1436059785 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/LORNetwork.cpp
+1438545942 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/LORNetwork.cpp
 	"../../include/controller/LORNetwork.h"
 	"../../include/controller/Bulb.h"
 	"time.h"
 	<iostream>
 	<stdio.h>
 
-1416104148 /home/ghormann/Documents/src/GregsLights/GregsLights/include/controller/LORNetwork.h
-	"Bulb.h"
+1438545986 /home/ghormann/Documents/src/GregsLights/GregsLights/include/controller/LORNetwork.h
+	"FadeableBulb.h"
 	"time.h"
 	"LightNetwork.h"
 	"serial.h"
@@ -103,9 +103,9 @@
 	<termios.h>
 	<cstddef>
 
-1417101173 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/NetworkCollection.cpp
+1438546019 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/NetworkCollection.cpp
 	"../../include/controller/NetworkCollection.h"
-	"../../include/controller/Bulb.h"
+	"../../include/controller/FadeableBulb.h"
 
 1417101173 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/OpenDMXNetwork.cpp
 	"../../include/controller/OpenDMXNetwork.h"
@@ -152,7 +152,7 @@
 	"../include/controller/Bush.h"
 	<string.h>
 
-1417970213 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/TextDisplay.cpp
+1438547239 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/TextDisplay.cpp
 	"../include/TextDisplay.h"
 	<pthread.h>
 	<curses.h>
@@ -2029,10 +2029,10 @@
 	"TimeInfo.h"
 	<cmath>
 
-1417101173 /home/ghormann/Documents/src/GregsLights/GregsLights/include/controller/DMXBulb.h
-	"Bulb.h"
+1438545733 /home/ghormann/Documents/src/GregsLights/GregsLights/include/controller/DMXBulb.h
+	"FadeableBulb.h"
 
-1436059785 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/DMXBulb.cpp
+1438545715 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/DMXBulb.cpp
 	"../../include/controller/DMXBulb.h"
 
 1436628911 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/Sign.cpp
@@ -2049,7 +2049,7 @@
 1417137434 /home/ghormann/Documents/src/gregslights/GregsLights/include/controller/DummyBulb.h
 	"Bulb.h"
 
-1436059785 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/DummyBulb.cpp
+1438545749 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/DummyBulb.cpp
 	"DummyBulb.h"
 
 1417183920 /home/ghormann/Documents/src/GregsLights/GregsLights/include/controller/DummyBulb.h
@@ -2123,9 +2123,17 @@
 	<stdio.h>
 	<ctype.h>
 
-1437341641 /home/ghormann/Documents/src/GregsLights/GregsLights/include/LargeGrid.h
+1438547339 /home/ghormann/Documents/src/GregsLights/GregsLights/include/LargeGrid.h
 	"controller/E131Network.h"
 
-1437346833 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/LargeGrid.cpp
+1438549172 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/LargeGrid.cpp
 	"../include/LargeGrid.h"
+	<stdio.h>
+	<string.h>
+
+1438549103 /home/ghormann/Documents/src/GregsLights/GregsLights/include/controller/FadeableBulb.h
+	<Bulb.h>
+
+1438545671 source:/home/ghormann/Documents/src/GregsLights/GregsLights/src/controller/FadeableBulb.cpp
+	"FadeableBulb.h"
 

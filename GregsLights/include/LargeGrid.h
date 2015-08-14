@@ -14,10 +14,11 @@ public:
     virtual ~LargeGrid();
     void test();
     void run();
-
+    char *getMessage();
 protected:
 private:
     RGBLight *pixals[TOTAL_GRID_PIXALS];
+    char message[80];
 
 };
 

@@ -1,9 +1,9 @@
 #ifndef DMXBULB_H
 #define DMXBULB_H
 
-#include "Bulb.h"
+#include "FadeableBulb.h"
 
-class DMXBulb : public Bulb
+class DMXBulb : public FadeableBulb
 {
 public:
     DMXBulb(unsigned char * pos);
