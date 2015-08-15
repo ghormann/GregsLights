@@ -203,7 +203,7 @@ void Sign::scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, double 
     setDummyBackground(bgColor);
 
     int textLen = strlen(text);
-    int pos = 50;
+    int pos = SIGN_WIDTH + 2;
     for (int i = 0; i < textLen; i++)
     {
         pos += drawLetter(text[i],fgColor,pos,0) + 2;
@@ -2484,6 +2484,10 @@ void Sign::countdown()
 void Sign::test()
 {
 
+    while(0) {
+        run();
+    }
+
     while(0)
     {
         getPixal(10,10)->fadeTo(100,0,0,10.0);
@@ -2515,10 +2519,8 @@ void Sign::test()
                 delete bgColor;
         */
 
-        scrollSanta();
-        colors();
-
-        scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
+        snowballFight();
+        //scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
         //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "MADE YOUR RESOLUTIONS FOR THE NEW YEAR?", 0.04);
         //run();
     }
