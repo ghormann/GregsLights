@@ -2196,16 +2196,16 @@ void Sign::moveBall(int x, RGBColor *bgColor, int startY)
     if (ballY < startY)
         ballY = startY-1;
 
-    getBoard(x,ballY)->set(RGBColor::WHITE);
-    getBoard(x+1,ballY)->set(RGBColor::WHITE);
-    getBoard(x,ballY+1)->set(RGBColor::WHITE);
-    getBoard(x+1,ballY+1)->set(RGBColor::WHITE);
+    getBoard(x+SNOWBALL_OFFSET,ballY)->set(RGBColor::WHITE);
+    getBoard(x+1+SNOWBALL_OFFSET,ballY)->set(RGBColor::WHITE);
+    getBoard(x+SNOWBALL_OFFSET,ballY+1)->set(RGBColor::WHITE);
+    getBoard(x+1+SNOWBALL_OFFSET,ballY+1)->set(RGBColor::WHITE);
     redrawDisplay();
     gjhSleep(0.1);
-    getBoard(x,ballY)->set(bgColor);
-    getBoard(x,ballY+1)->set(bgColor);
-    getBoard(x+1,ballY)->set(bgColor);
-    getBoard(x+1,ballY+1)->set(bgColor);
+    getBoard(x+SNOWBALL_OFFSET,ballY)->set(bgColor);
+    getBoard(x+SNOWBALL_OFFSET,ballY+1)->set(bgColor);
+    getBoard(x+1+SNOWBALL_OFFSET,ballY)->set(bgColor);
+    getBoard(x+1+SNOWBALL_OFFSET,ballY+1)->set(bgColor);
 
 }
 
@@ -2217,14 +2217,14 @@ void Sign::snowballFight()
     RGBColor *fgColor = RGBColor::PURPLE;
     setDummyBackground(bgColor);
     int y=0;
-    int x=8;
+    int x=8+SNOWBALL_OFFSET;
 
     x +=drawLetterSmall('S', fgColor, x,y) +1;
     x +=drawLetterSmall('N', fgColor, x,y) +1;
     x +=drawLetterSmall('O', fgColor, x,y) +1;
     x +=drawLetterSmall('W', fgColor, x,y) +1;
 
-    x=11;
+    x=11+SNOWBALL_OFFSET;
     y=11;
     x +=drawLetterSmall('B', fgColor, x,y) +1;
     x +=drawLetterSmall('A', fgColor, x,y) +1;
@@ -2232,7 +2232,7 @@ void Sign::snowballFight()
     x +=drawLetterSmall('L', fgColor, x,y) +1;
 
     y=SIGN_HEIGHT+2;
-    x=10;
+    x=10+SNOWBALL_OFFSET;
     //fight
     x +=drawLetterSmall('F', fgColor, x,y) +1;
     x +=drawLetterSmall('I', fgColor, x,y) +1;
@@ -2258,8 +2258,8 @@ void Sign::snowballFight()
      * Now draw snowmen and scroll down!
      */
     int snowmanY = SIGN_HEIGHT+15;
-    drawSpecial(0,snowmanY,SIGN_SNOWMEN);
-    drawSpecial(33,snowmanY,SIGN_SNOWMEN_REVERSE);
+    drawSpecial(0+SNOWBALL_OFFSET,snowmanY,SIGN_SNOWMEN);
+    drawSpecial(33+SNOWBALL_OFFSET,snowmanY,SIGN_SNOWMEN_REVERSE);
 
     for (int x=15; x<33; x++)
     {
