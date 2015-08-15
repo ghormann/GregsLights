@@ -1616,7 +1616,7 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
         }
 
     }
-    else if (type==SIGN_PRESENT_RED || type == SIGN_PRESENT_BLUE || type == SIGN_PRESENT_GREEN)
+    else if (type==SIGN_PRESENT_RED || type == SIGN_PRESENT_BLUE || type == SIGN_PRESENT_GREEN || type == SIGN_PRESENT_PURPLE)
     {
 
         int x;
@@ -1628,6 +1628,8 @@ void Sign::drawSpecial(int startX, int startY, SIGN_SPECIAL type)
             baseColor = RGBColor::GREEN;
         else if (type == SIGN_PRESENT_BLUE)
             baseColor = RGBColor::BLUE;
+        else if (type == SIGN_PRESENT_PURPLE)
+            baseColor = RGBColor::PURPLE;
 
         RGBColor * d[15][SIGN_HEIGHT];
         for (int x = 0 ; x<15; x++)
@@ -2332,10 +2334,32 @@ void Sign::scrollSanta()
         {
             drawSpecial(xPos+14,4, SIGN_PRESENT_BLUE);  // Present #2
         }
-        if (xPos < SIGN_WIDTH-21)
+        if (xPos < SIGN_WIDTH-14*2+7)
         {
-            drawSpecial(xPos+28,4, SIGN_PRESENT_GREEN);  // PResent #3
+            drawSpecial(xPos+14*2,4, SIGN_PRESENT_GREEN);  // PResent #3
         }
+
+        if (xPos < SIGN_WIDTH-14*3+7)
+        {
+            drawSpecial(xPos+14*3,4, SIGN_PRESENT_PURPLE);  // PResent #3
+        }
+
+        if (xPos < SIGN_WIDTH-14*4+7)
+        {
+            drawSpecial(xPos+14*4,4, SIGN_PRESENT_GREEN);  // PResent #3
+        }
+
+        if (xPos < SIGN_WIDTH-14*5+7)
+        {
+            drawSpecial(xPos+14*5,4, SIGN_PRESENT_BLUE);  // PResent #3
+        }
+
+        if (xPos < SIGN_WIDTH-14*6+7)
+        {
+            drawSpecial(xPos+14*6,4, SIGN_PRESENT_RED);  // PResent #3
+        }
+
+
         setDisplayPosition(xPos, 0);
         gjhSleep(0.05);
     }
@@ -2368,7 +2392,7 @@ void Sign::colors()
                 getBoard(x,y)->set(color);
             }
         }
-        drawSpecial(15,0,SIGN_CANDY);
+        drawSpecial(SIGN_WIDTH/2-7,0,SIGN_CANDY);
         setDisplayPosition(0,0);
         gjhSleep(0.05);
     }
