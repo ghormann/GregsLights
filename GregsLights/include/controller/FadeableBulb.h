@@ -17,8 +17,8 @@ private:
     static FadeableBulb *firstBulb;
     void fadeTick(double duration);
     FadeableBulb *next = 0;
-    double fadeStep = 0;  /* Per ms */
-    double percentage = 0;
+    float fadeStep = 0;  /* Per ms */
+    float percentage = 0;
     char fadeStop = 0; // range 0-100
 
 
