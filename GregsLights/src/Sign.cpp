@@ -2438,7 +2438,7 @@ void Sign::countdown()
                 getBoard(x,y)->set(color);
             }
         }
-        numseconds = numseconds %22;
+
         if (numseconds > 15)
         {
             int pos = 0;
