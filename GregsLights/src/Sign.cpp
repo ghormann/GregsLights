@@ -100,6 +100,17 @@ RGBLight *Sign::getPixal(int x, int y)
 {
     int xmod = x%2;
     int pos = 0;
+
+    if (x < 0 || x >= SIGN_WIDTH)
+    {
+        throw "Illegal Value of X in getPixal";
+    }
+
+    if (y < 0 || y >= SIGN_HEIGHT)
+    {
+        throw "Illegal Value of Y in getPixal";
+    }
+
     if (xmod == 0)
     {
         pos = x * SIGN_HEIGHT + y;
@@ -135,6 +146,17 @@ RGBLight *Sign::getPixal(int x, int y)
 RGBLight *Sign::getBoard(int x, int y)
 {
     int pos = y*SIGN_DUMMY_WIDTH + x;
+
+    if (x <0 || x >= SIGN_DUMMY_WIDTH)
+    {
+        throw "Illegal Value for X in getBoard";
+    }
+
+    if (y <0 || y >= SIGN_DUMMY_HEIGHT)
+    {
+        throw "Illegal Value for Y in getBoard";
+    }
+
     if (pos > (SIGN_DUMMY_HEIGHT * SIGN_DUMMY_WIDTH))
     {
         throw "Sign:getBoard: Invalid x and y positions";
@@ -1424,6 +1446,9 @@ void Sign::setDisplayPosition(int xOffset, int yOffset)
             this->getPixal(i,j)->copyFrom(this->getBoard(i+xOffset,j+yOffset));
         }
     }
+    // Debug
+    //printf("%d    %d\n", xOffset, yOffset);
+    //sleep(1);
 }
 
 void Sign::testGridLayout()
@@ -2291,7 +2316,7 @@ void Sign::scrollSanta()
     }
     drawSpecial(xPos,5,SIGN_DEER_2_RED);
 
-    xPos += SIGN_WIDTH;
+    xPos += 40;
     setDisplayPosition(xPos,0);
 
     // Start Scrolling
@@ -2347,8 +2372,10 @@ void Sign::colors()
         setDisplayPosition(0,0);
         gjhSleep(0.05);
     }
-    for (int x=0; x<SIGN_WIDTH; x++) {
-        for (int y=0; y<SIGN_HEIGHT; y++) {
+    for (int x=0; x<SIGN_WIDTH; x++)
+    {
+        for (int y=0; y<SIGN_HEIGHT; y++)
+        {
             this->getPixal(x,y)->fadeTo(0,0,0,1);
         }
     }
@@ -2432,9 +2459,25 @@ void Sign::countdown()
 
 void Sign::test()
 {
-    while (0)
+
+    while(0)
     {
-        timeInfo->setSkipTimeCheck(true);
+        getPixal(10,10)->fadeTo(100,0,0,10.0);
+        sleep(12);
+
+        getPixal(10,10)->set(RGBColor::GREEN);
+        sleep(2);
+
+        getPixal(10,10)->fadeTo(100,100,100,10.0);
+        sleep(5);
+        getPixal(10,10)->set(0,0,100);
+        sleep(1);
+
+    }
+
+    while (1)
+    {
+        //timeInfo->setSkipTimeCheck(true);
 
 
         /*
@@ -2448,11 +2491,12 @@ void Sign::test()
                 delete bgColor;
         */
 
-        //scrollSanta();
+        scrollSanta();
+        colors();
 
-        //scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
+        scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
         //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "MADE YOUR RESOLUTIONS FOR THE NEW YEAR?", 0.04);
-        run();
+        //run();
     }
 
     int betweenPixals = 2500;
