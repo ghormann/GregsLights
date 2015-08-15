@@ -2485,7 +2485,7 @@ void Sign::countdown()
 void Sign::test()
 {
 
-    while(0) {
+    while(1) {
         run();
     }
 
@@ -2520,9 +2520,10 @@ void Sign::test()
                 delete bgColor;
         */
 
+        colors();
         //flashSecondsToGo(4,1);
         //rotateSecondsToGo();
-        this->countdown();
+        //this->countdown();
         //this->fewTrees();
         //snowballFight();
         //scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
