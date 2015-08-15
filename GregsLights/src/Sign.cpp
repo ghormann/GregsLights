@@ -2175,7 +2175,10 @@ void Sign::fewTrees()
     int y=SIGN_HEIGHT+5;
     drawSpecial(0,2,SIGN_TREE);
     drawSpecial(16,0, SIGN_CANDY);
-    drawSpecial(31,2,SIGN_TREE);
+    drawSpecial(32,2,SIGN_TREE);
+    drawSpecial(0+SIGN_WIDTH/2,0, SIGN_CANDY);
+    drawSpecial(16+SIGN_WIDTH/2,2,SIGN_TREE);
+    drawSpecial(32+SIGN_WIDTH/2,0, SIGN_CANDY);
     setDisplayPosition(0,y);
     while(y>=0)
     {
@@ -2435,27 +2438,26 @@ void Sign::countdown()
                 getBoard(x,y)->set(color);
             }
         }
-        if (numseconds > 12)
+        numseconds = numseconds %22;
+        if (numseconds > 15)
         {
-            int pos = 4;
-            pos += (drawLetterSmall('C',RGBColor::BLACK,pos,0) +2);
-            pos += (drawLetterSmall('O',RGBColor::BLACK,pos,0) +2);
-            pos += (drawLetterSmall('U',RGBColor::BLACK,pos,0) +2);
-            pos += (drawLetterSmall('N',RGBColor::BLACK,pos,0) +2);
-            pos += (drawLetterSmall('T',RGBColor::BLACK,pos,0) +2);
-            pos = 8;
-            pos += (drawLetterSmall('L',RGBColor::BLACK,pos,11) +2);
-            pos += (drawLetterSmall('O',RGBColor::BLACK,pos,11) +2);
-            pos += (drawLetterSmall('U',RGBColor::BLACK,pos,11) +2);
-            pos += (drawLetterSmall('D',RGBColor::BLACK,pos,11) +2);
+            int pos = 0;
+            pos += (drawLetter('B',RGBColor::BLACK,pos,0) +2);
+            pos += (drawLetter('E',RGBColor::BLACK,pos,0) +2);
+            pos += (drawLetter(' ',RGBColor::BLACK,pos,0) +2);
+            pos += (drawLetter('L',RGBColor::BLACK,pos,0) +2);
+            pos += (drawLetter('O',RGBColor::BLACK,pos,0) +2);
+            pos += (drawLetter('U',RGBColor::BLACK,pos,0) +2);
+            pos += (drawLetter('D',RGBColor::BLACK,pos,0) +2);
 
         }
         else
         {
-            int pos = 15;
+            //setDummyBackground(RGBColor::BLACK,SIGN_WIDTH/2-10,3,SIGN_WIDTH/2+10,SIGN_HEIGHT-2);
+            int pos = SIGN_WIDTH/2 - (numseconds > 9 ? 7 : 13);
             sprintf(seconds_c, "%7d", numseconds);
-            pos += (drawLetter(seconds_c[5],RGBColor::WHITE,15,1) + 2);
-            drawLetter(seconds_c[6],RGBColor::WHITE,pos,1);
+            pos += (drawLetter(seconds_c[5],RGBColor::BLACK,pos,1) + 2);
+            drawLetter(seconds_c[6],RGBColor::BLACK,pos,1);
         }
         setDisplayPosition(0,0);
         gjhSleep(0.05);
@@ -2519,9 +2521,9 @@ void Sign::test()
         */
 
         //flashSecondsToGo(4,1);
-        rotateSecondsToGo();
-        //this->countdown();
-        this->fewTrees();
+        //rotateSecondsToGo();
+        this->countdown();
+        //this->fewTrees();
         //snowballFight();
         //scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
         //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "MADE YOUR RESOLUTIONS FOR THE NEW YEAR?", 0.04);
