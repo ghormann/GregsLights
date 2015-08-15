@@ -175,8 +175,8 @@ void Sign::staticSecondsToGo(RGBColor *fgColor, RGBColor *bgColor)
             getBoard(i,j)->set(bgColor);
         }
     }
-    int x=1;
-    int y=0;
+    int x=7;
+    int y=6;
     x +=drawLetterSmall('S', fgColor, x,y) +1;
     x +=drawLetterSmall('E', fgColor, x,y) +1;
     x +=drawLetterSmall('C', fgColor, x,y) +1;
@@ -185,8 +185,7 @@ void Sign::staticSecondsToGo(RGBColor *fgColor, RGBColor *bgColor)
     x +=drawLetterSmall('D', fgColor, x,y) +1;
     x +=drawLetterSmall('S', fgColor, x,y) +1;
 
-    x=8;
-    y=11;
+    x+= 4;
     x +=drawLetterSmall('T', fgColor, x,y) +1;
     x +=drawLetterSmall('O', fgColor, x,y) +1;
     x+=4;
@@ -2519,7 +2518,11 @@ void Sign::test()
                 delete bgColor;
         */
 
-        snowballFight();
+        //flashSecondsToGo(4,1);
+        rotateSecondsToGo();
+        //this->countdown();
+        this->fewTrees();
+        //snowballFight();
         //scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), 0.04);
         //scrollText(RGBColor::PURPLE, RGBColor::BLACK, "MADE YOUR RESOLUTIONS FOR THE NEW YEAR?", 0.04);
         //run();
