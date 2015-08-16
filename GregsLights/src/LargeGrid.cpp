@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "../include/controller/DummyBulb.h"
+#include "RGBPicture.h"
 
 
 LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[]) : GenericGrid(LGRID_PIXAL_WIDTH,LGRID_PIXAL_HEIGHT,LGRID_DUMMY_WIDTH,LGRID_DUMMY_HEIGHT, skipTime, newYears)
@@ -20,7 +21,8 @@ LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[]) : GenericG
             ++network;
             //printf("i: %d, CNT: %d, network: %d\n", i,cnt,network);
         }
-        if (i == 2700) { // Force network swtich
+        if (i == 2700)   // Force network swtich
+        {
             cnt = 0;
             ++network;
             //printf("i: %d, CNT: %d, network: %d\n", i,cnt,network);
@@ -29,7 +31,7 @@ LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[]) : GenericG
         ++cnt;
     }
 
-        // Setup Dummy Pials
+    // Setup Dummy Pials
     for (int i = 0 ; i < (LGRID_DUMMY_HEIGHT * LGRID_DUMMY_WIDTH); i++)
     {
         this->board[i] = new RGBLight(new DummyBulb(), new DummyBulb(), new DummyBulb());
@@ -94,6 +96,37 @@ RGBLight *LargeGrid::getBoard(int x, int y)
 void LargeGrid::test()
 {
     int i;
+
+    /*
+    * Test RGB Picture
+    */
+    while (1)
+    {
+        int x, y, picWidth, picHeight;
+
+        RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/olaf64.png");
+        //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/sleigh32.png");
+        picture->getSize(picWidth,picHeight);
+        this->setDummyBackground(RGBColor::BLACK);
+        for (x = 0; x < picWidth; x++)
+        {
+            for (y=0; y < picHeight; y++)
+            {
+                int r,g,b;
+                picture->getRGB(x,y,r,g,b);
+                this->getBoard(x,y+this->height)->set(r,g,b);
+            }
+        }
+
+        this->setDisplayPosition(0,0);
+        for (y = 0; y  < picHeight + this->height + 1; y++)
+        {
+            this->setDisplayPosition(0,y);
+            gjhSleep(0.1);
+        }
+    }
+
+
     while(1)
     {
         sprintf(message, "Set Black");

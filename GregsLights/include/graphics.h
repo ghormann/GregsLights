@@ -1,6 +1,8 @@
 #ifndef GRAPHICS_H_INCLUDED
 #define GRAPHICS_H_INCLUDED
 
+#define BUSH_LINE 500
+#define LGRID_LINE 200
 
 #ifndef WX_PRECOMP
 #include <wx/wx.h>

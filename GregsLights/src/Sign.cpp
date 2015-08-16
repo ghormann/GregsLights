@@ -583,7 +583,7 @@ void Sign::test()
      */
     while (1)
     {
-            int x, y, width, height;
+        int x, y, width, height;
 
         RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/olaf64.png");
         //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/sleigh32.png");

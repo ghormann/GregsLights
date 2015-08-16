@@ -173,7 +173,7 @@ void BasicGLPane::render( wxPaintEvent& evt )
     glVertex3f(0,getHeight(),0);
     glEnd();
 
-    // The Grid
+    // The Sign
     for (int j = 0; j < SIGN_HEIGHT; j++ )
     {
         for (int i = 0; i< SIGN_WIDTH; i++)
@@ -192,6 +192,26 @@ void BasicGLPane::render( wxPaintEvent& evt )
         }
     }
 
+    // Large Grid
+    for (int j = 0; j < LGRID_PIXAL_HEIGHT; j++ )
+    {
+        for (int i = 0; i< LGRID_PIXAL_WIDTH; i++)
+        {
+            RGBLight *pix = model->getGrid()->getPixal(i,j);
+            float red = ((float)pix->getRed())  / 100;
+            float green = ((float)pix->getGreen()) / 100;
+            float blue = ((float)pix->getBlue()) / 100;
+            glColor4f(red, green, blue, 1);
+            glBegin(GL_QUADS);
+            glVertex3f(i*6+3, 3 + j*6 + LGRID_LINE, 0); // upper lefft
+            glVertex3f(i*6+3, 6 + j*6 + LGRID_LINE, 0);  // Lower Left
+            glVertex3f(i*6+6, 6 + j*6 + LGRID_LINE, 0); // Bottom Right
+            glVertex3f(i*6+6, 3 + j*6 + LGRID_LINE, 0); // Uper Right
+            glEnd();
+        }
+    }
+
+
     // Bushes
     for (int i = BUSH_LIGHT_START; i <= BUSH_LIGHT_END; i++)
     {
@@ -207,19 +227,19 @@ void BasicGLPane::render( wxPaintEvent& evt )
         }
         glColor4f(red, green, blue, 1);
         glBegin(GL_QUADS);
-        glVertex3f(i*30+4+offset, 4 +300, 0);
-        glVertex3f(i*30+4+offset, 20 + 300, 0);
-        glVertex3f(i*30+20+offset, 20 + 300, 0);
-        glVertex3f(i*30+20+offset, 4 + 300, 0);
+        glVertex3f(i*30+4+offset, 4 +BUSH_LINE, 0);
+        glVertex3f(i*30+4+offset, 20 + BUSH_LINE, 0);
+        glVertex3f(i*30+20+offset, 20 + BUSH_LINE, 0);
+        glVertex3f(i*30+20+offset, 4 + BUSH_LINE, 0);
         glEnd();
 
         // white
         glColor4f(white, white, white, 1);
         glBegin(GL_QUADS);
-        glVertex3f(i*30+4+offset, 4 +330, 0);
-        glVertex3f(i*30+4+offset, 20 + 330, 0);
-        glVertex3f(i*30+20+offset, 20 + 330, 0);
-        glVertex3f(i*30+20+offset, 4 + 330, 0);
+        glVertex3f(i*30+4+offset, 4 +BUSH_LINE+30, 0);
+        glVertex3f(i*30+4+offset, 20 + BUSH_LINE+30, 0);
+        glVertex3f(i*30+20+offset, 20 + BUSH_LINE+30, 0);
+        glVertex3f(i*30+20+offset, 4 + BUSH_LINE+30, 0);
         glEnd();
     }
 
@@ -236,10 +256,10 @@ void BasicGLPane::render( wxPaintEvent& evt )
 
         glColor4f(red, green, blue, 1);
         glBegin(GL_QUADS);
-        glVertex3f(i*50+4+offset, 4 + 370, 0);
-        glVertex3f(i*50+4+offset, 40 + 370, 0);
-        glVertex3f(i*50+40+offset, 40 + 370, 0);
-        glVertex3f(i*50+40+offset, 4 + 370, 0);
+        glVertex3f(i*50+4+offset, 4 + BUSH_LINE+70, 0);
+        glVertex3f(i*50+4+offset, 40 + BUSH_LINE+70, 0);
+        glVertex3f(i*50+40+offset, 40 + BUSH_LINE+70, 0);
+        glVertex3f(i*50+40+offset, 4 + BUSH_LINE+70, 0);
         glEnd();
 
     }
