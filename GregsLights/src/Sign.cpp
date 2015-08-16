@@ -1,4 +1,5 @@
 #include "../include/Sign.h"
+#include "../include/RGBPicture.h"
 #include <unistd.h>
 #include "../include/controller/DummyBulb.h"
 #include <stdio.h>
@@ -2485,8 +2486,38 @@ void Sign::countdown()
 void Sign::test()
 {
 
-    while(1) {
+    while(0)
+    {
         run();
+    }
+
+    /*
+     * Test RGB Picture
+     */
+    while (1)
+    {
+            int x, y, width, height;
+
+        RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/olaf64.png");
+        //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/sleigh32.png");
+        picture->getSize(width,height);
+        this->setDummyBackground(RGBColor::BLACK);
+        for (x = 0; x < width; x++)
+        {
+            for (y=0; y < height; y++)
+            {
+                int r,g,b;
+                picture->getRGB(x,y,r,g,b);
+                this->getBoard(x,y+SIGN_HEIGHT)->set(r,g,b);
+            }
+        }
+
+        this->setDisplayPosition(0,0);
+        for (y = 0; y  < height + SIGN_HEIGHT + 1; y++)
+        {
+            this->setDisplayPosition(0,y);
+            gjhSleep(0.1);
+        }
     }
 
     while(0)
