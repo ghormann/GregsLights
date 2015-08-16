@@ -47,9 +47,15 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     sign[10] = new E131Network(signIP, 41, 512); // port 4 170
     sign[11] = new E131Network(signIP, 42, 512); // port 4 170
 
-    char *gridIP = "192.168.0.231";
+    char *gridIP1 = "192.168.0.231";  //16 * 170 or 2720 Pixals(2700 used)
+    char *gridIP2 = "192.168.0.235";  // 13 *170 or 2210 Pixals (2196 Used for Grid )
     E131Network *grid[GRID_E11_COUNT];
-    grid[0] = new E131Network(gridIP,1,512);
+    int universe = 100;
+    for (int i = 0; i < GRID_E11_COUNT; i++)
+    {
+        grid[i] = new E131Network( (i < 16? gridIP1 : gridIP2 ),universe++,512);
+    }
+
 
     if (sendDMX)
     {

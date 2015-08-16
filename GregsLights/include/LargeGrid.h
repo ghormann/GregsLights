@@ -3,8 +3,10 @@
 
 #include "controller/E131Network.h"
 
-#define GRID_E11_COUNT 1
-#define TOTAL_GRID_PIXALS 100
+#define GRID_E11_COUNT 29
+#define GRID_PIXAL_HEIGHT 48
+#define GRID_PIXAL_WIDTH 102
+#define TOTAL_GRID_PIXALS GRID_PIXAL_HEIGHT*GRID_PIXAL_WIDTH
 
 
 class LargeGrid

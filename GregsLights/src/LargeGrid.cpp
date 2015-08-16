@@ -8,10 +8,24 @@ LargeGrid::LargeGrid(E131Network *net[])
     //ctor
     sprintf(message, "Booting up: Grid");
 
-    int cnt = 0;
+    int network = 0;
+    int cnt=0;
+    // TODO: his really needs changed, but for testing it is good enough
     for (int i = 0; i < TOTAL_GRID_PIXALS; i++)
     {
-        this->pixals[cnt++] = net[0]->getRGB(i*3); // port 1
+        if (cnt==170)
+        {
+            cnt = 0;
+            ++network;
+            //printf("i: %d, CNT: %d, network: %d\n", i,cnt,network);
+        }
+        if (i == 2700) { // Force network swtich
+            cnt = 0;
+            ++network;
+            //printf("i: %d, CNT: %d, network: %d\n", i,cnt,network);
+        }
+        this->pixals[i] = net[network]->getRGB(cnt*3);
+        ++cnt;
     }
 }
 
