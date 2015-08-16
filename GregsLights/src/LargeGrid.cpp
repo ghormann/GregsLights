@@ -105,8 +105,8 @@ void LargeGrid::test()
         int x, y, picWidth, picHeight;
 
         //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/olaf64.png");
-        RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/test64.png");
-        //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/sleigh32.png");
+        //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/test64.png");
+        RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/gift51.png");
         picture->getSize(picWidth,picHeight);
         this->setDummyBackground(RGBColor::BLACK);
         for (x = 0; x < picWidth; x++)
