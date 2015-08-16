@@ -51,11 +51,11 @@ OBJDIR_GRAPHICS = .objs
 DEP_GRAPHICS = 
 OUT_GRAPHICS = /GregsLights
 
-OBJ_DEBUG = $(OBJDIR_DEBUG)/src/controller/Bulb.o $(OBJDIR_DEBUG)/src/CountdownClock.o $(OBJDIR_DEBUG)/src/DisplayModel.o $(OBJDIR_DEBUG)/src/DisplayTester.o $(OBJDIR_DEBUG)/src/GregsDisplay.o $(OBJDIR_DEBUG)/src/LargeGrid.o $(OBJDIR_DEBUG)/src/MessageGenerator.o $(OBJDIR_DEBUG)/src/RGBPicture.o $(OBJDIR_DEBUG)/src/Sign.o $(OBJDIR_DEBUG)/src/Snowmen.o $(OBJDIR_DEBUG)/src/TextDisplay.o $(OBJDIR_DEBUG)/src/TimeInfo.o $(OBJDIR_DEBUG)/main.o $(OBJDIR_DEBUG)/src/controller/Bush.o $(OBJDIR_DEBUG)/src/controller/DMXBulb.o $(OBJDIR_DEBUG)/src/controller/DummyBulb.o $(OBJDIR_DEBUG)/src/controller/E131Network.o $(OBJDIR_DEBUG)/src/controller/FadeableBulb.o $(OBJDIR_DEBUG)/src/controller/LORNetwork.o $(OBJDIR_DEBUG)/src/controller/NetworkCollection.o $(OBJDIR_DEBUG)/src/controller/OpenDMXNetwork.o $(OBJDIR_DEBUG)/src/controller/RGBColor.o $(OBJDIR_DEBUG)/src/controller/RGBLight.o $(OBJDIR_DEBUG)/src/controller/serial_posix.o
+OBJ_DEBUG = $(OBJDIR_DEBUG)/src/TimeInfo.o $(OBJDIR_DEBUG)/src/CountdownClock.o $(OBJDIR_DEBUG)/src/DisplayModel.o $(OBJDIR_DEBUG)/src/DisplayTester.o $(OBJDIR_DEBUG)/src/GenericGrid.o $(OBJDIR_DEBUG)/src/GregsDisplay.o $(OBJDIR_DEBUG)/src/LargeGrid.o $(OBJDIR_DEBUG)/src/MessageGenerator.o $(OBJDIR_DEBUG)/src/RGBPicture.o $(OBJDIR_DEBUG)/src/Sign.o $(OBJDIR_DEBUG)/src/Snowmen.o $(OBJDIR_DEBUG)/src/TextDisplay.o $(OBJDIR_DEBUG)/main.o $(OBJDIR_DEBUG)/src/controller/Bulb.o $(OBJDIR_DEBUG)/src/controller/Bush.o $(OBJDIR_DEBUG)/src/controller/DMXBulb.o $(OBJDIR_DEBUG)/src/controller/DummyBulb.o $(OBJDIR_DEBUG)/src/controller/E131Network.o $(OBJDIR_DEBUG)/src/controller/FadeableBulb.o $(OBJDIR_DEBUG)/src/controller/LORNetwork.o $(OBJDIR_DEBUG)/src/controller/NetworkCollection.o $(OBJDIR_DEBUG)/src/controller/OpenDMXNetwork.o $(OBJDIR_DEBUG)/src/controller/RGBColor.o $(OBJDIR_DEBUG)/src/controller/RGBLight.o $(OBJDIR_DEBUG)/src/controller/serial_posix.o
 
-OBJ_RELEASE = $(OBJDIR_RELEASE)/src/controller/Bulb.o $(OBJDIR_RELEASE)/src/CountdownClock.o $(OBJDIR_RELEASE)/src/DisplayModel.o $(OBJDIR_RELEASE)/src/DisplayTester.o $(OBJDIR_RELEASE)/src/GregsDisplay.o $(OBJDIR_RELEASE)/src/LargeGrid.o $(OBJDIR_RELEASE)/src/MessageGenerator.o $(OBJDIR_RELEASE)/src/RGBPicture.o $(OBJDIR_RELEASE)/src/Sign.o $(OBJDIR_RELEASE)/src/Snowmen.o $(OBJDIR_RELEASE)/src/TextDisplay.o $(OBJDIR_RELEASE)/src/TimeInfo.o $(OBJDIR_RELEASE)/main.o $(OBJDIR_RELEASE)/src/controller/Bush.o $(OBJDIR_RELEASE)/src/controller/DMXBulb.o $(OBJDIR_RELEASE)/src/controller/DummyBulb.o $(OBJDIR_RELEASE)/src/controller/E131Network.o $(OBJDIR_RELEASE)/src/controller/FadeableBulb.o $(OBJDIR_RELEASE)/src/controller/LORNetwork.o $(OBJDIR_RELEASE)/src/controller/NetworkCollection.o $(OBJDIR_RELEASE)/src/controller/OpenDMXNetwork.o $(OBJDIR_RELEASE)/src/controller/RGBColor.o $(OBJDIR_RELEASE)/src/controller/RGBLight.o $(OBJDIR_RELEASE)/src/controller/serial_posix.o
+OBJ_RELEASE = $(OBJDIR_RELEASE)/src/TimeInfo.o $(OBJDIR_RELEASE)/src/CountdownClock.o $(OBJDIR_RELEASE)/src/DisplayModel.o $(OBJDIR_RELEASE)/src/DisplayTester.o $(OBJDIR_RELEASE)/src/GenericGrid.o $(OBJDIR_RELEASE)/src/GregsDisplay.o $(OBJDIR_RELEASE)/src/LargeGrid.o $(OBJDIR_RELEASE)/src/MessageGenerator.o $(OBJDIR_RELEASE)/src/RGBPicture.o $(OBJDIR_RELEASE)/src/Sign.o $(OBJDIR_RELEASE)/src/Snowmen.o $(OBJDIR_RELEASE)/src/TextDisplay.o $(OBJDIR_RELEASE)/main.o $(OBJDIR_RELEASE)/src/controller/Bulb.o $(OBJDIR_RELEASE)/src/controller/Bush.o $(OBJDIR_RELEASE)/src/controller/DMXBulb.o $(OBJDIR_RELEASE)/src/controller/DummyBulb.o $(OBJDIR_RELEASE)/src/controller/E131Network.o $(OBJDIR_RELEASE)/src/controller/FadeableBulb.o $(OBJDIR_RELEASE)/src/controller/LORNetwork.o $(OBJDIR_RELEASE)/src/controller/NetworkCollection.o $(OBJDIR_RELEASE)/src/controller/OpenDMXNetwork.o $(OBJDIR_RELEASE)/src/controller/RGBColor.o $(OBJDIR_RELEASE)/src/controller/RGBLight.o $(OBJDIR_RELEASE)/src/controller/serial_posix.o
 
-OBJ_GRAPHICS = $(OBJDIR_GRAPHICS)/src/controller/Bulb.o $(OBJDIR_GRAPHICS)/mainFrame.o $(OBJDIR_GRAPHICS)/src/CountdownClock.o $(OBJDIR_GRAPHICS)/src/DisplayModel.o $(OBJDIR_GRAPHICS)/src/DisplayTester.o $(OBJDIR_GRAPHICS)/src/GregsDisplay.o $(OBJDIR_GRAPHICS)/src/LargeGrid.o $(OBJDIR_GRAPHICS)/src/MessageGenerator.o $(OBJDIR_GRAPHICS)/src/RGBPicture.o $(OBJDIR_GRAPHICS)/src/Sign.o $(OBJDIR_GRAPHICS)/src/Snowmen.o $(OBJDIR_GRAPHICS)/src/TextDisplay.o $(OBJDIR_GRAPHICS)/src/TimeInfo.o $(OBJDIR_GRAPHICS)/src/controller/Bush.o $(OBJDIR_GRAPHICS)/src/controller/DMXBulb.o $(OBJDIR_GRAPHICS)/src/controller/DummyBulb.o $(OBJDIR_GRAPHICS)/src/controller/E131Network.o $(OBJDIR_GRAPHICS)/src/controller/FadeableBulb.o $(OBJDIR_GRAPHICS)/src/controller/LORNetwork.o $(OBJDIR_GRAPHICS)/src/controller/NetworkCollection.o $(OBJDIR_GRAPHICS)/src/controller/OpenDMXNetwork.o $(OBJDIR_GRAPHICS)/src/controller/RGBColor.o $(OBJDIR_GRAPHICS)/src/controller/RGBLight.o $(OBJDIR_GRAPHICS)/src/controller/serial_posix.o
+OBJ_GRAPHICS = $(OBJDIR_GRAPHICS)/src/TimeInfo.o $(OBJDIR_GRAPHICS)/mainFrame.o $(OBJDIR_GRAPHICS)/src/CountdownClock.o $(OBJDIR_GRAPHICS)/src/DisplayModel.o $(OBJDIR_GRAPHICS)/src/DisplayTester.o $(OBJDIR_GRAPHICS)/src/GenericGrid.o $(OBJDIR_GRAPHICS)/src/GregsDisplay.o $(OBJDIR_GRAPHICS)/src/LargeGrid.o $(OBJDIR_GRAPHICS)/src/MessageGenerator.o $(OBJDIR_GRAPHICS)/src/RGBPicture.o $(OBJDIR_GRAPHICS)/src/Sign.o $(OBJDIR_GRAPHICS)/src/Snowmen.o $(OBJDIR_GRAPHICS)/src/TextDisplay.o $(OBJDIR_GRAPHICS)/src/controller/Bulb.o $(OBJDIR_GRAPHICS)/src/controller/Bush.o $(OBJDIR_GRAPHICS)/src/controller/DMXBulb.o $(OBJDIR_GRAPHICS)/src/controller/DummyBulb.o $(OBJDIR_GRAPHICS)/src/controller/E131Network.o $(OBJDIR_GRAPHICS)/src/controller/FadeableBulb.o $(OBJDIR_GRAPHICS)/src/controller/LORNetwork.o $(OBJDIR_GRAPHICS)/src/controller/NetworkCollection.o $(OBJDIR_GRAPHICS)/src/controller/OpenDMXNetwork.o $(OBJDIR_GRAPHICS)/src/controller/RGBColor.o $(OBJDIR_GRAPHICS)/src/controller/RGBLight.o $(OBJDIR_GRAPHICS)/src/controller/serial_posix.o
 
 all: debug release graphics
 
@@ -63,9 +63,9 @@ clean: clean_debug clean_release clean_graphics
 
 before_debug: 
 	test -d bin/Debug || mkdir -p bin/Debug
-	test -d $(OBJDIR_DEBUG)/src/controller || mkdir -p $(OBJDIR_DEBUG)/src/controller
 	test -d $(OBJDIR_DEBUG)/src || mkdir -p $(OBJDIR_DEBUG)/src
 	test -d $(OBJDIR_DEBUG) || mkdir -p $(OBJDIR_DEBUG)
+	test -d $(OBJDIR_DEBUG)/src/controller || mkdir -p $(OBJDIR_DEBUG)/src/controller
 
 after_debug: 
 
@@ -74,8 +74,8 @@ debug: before_debug out_debug after_debug
 out_debug: before_debug $(OBJ_DEBUG) $(DEP_DEBUG)
 	$(LD) $(LIBDIR_DEBUG) -o $(OUT_DEBUG) $(OBJ_DEBUG)  $(LDFLAGS_DEBUG) $(LIB_DEBUG)
 
-$(OBJDIR_DEBUG)/src/controller/Bulb.o: src/controller/Bulb.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/controller/Bulb.cpp -o $(OBJDIR_DEBUG)/src/controller/Bulb.o
+$(OBJDIR_DEBUG)/src/TimeInfo.o: src/TimeInfo.cpp
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/TimeInfo.cpp -o $(OBJDIR_DEBUG)/src/TimeInfo.o
 
 $(OBJDIR_DEBUG)/src/CountdownClock.o: src/CountdownClock.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/CountdownClock.cpp -o $(OBJDIR_DEBUG)/src/CountdownClock.o
@@ -85,6 +85,9 @@ $(OBJDIR_DEBUG)/src/DisplayModel.o: src/DisplayModel.cpp
 
 $(OBJDIR_DEBUG)/src/DisplayTester.o: src/DisplayTester.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/DisplayTester.cpp -o $(OBJDIR_DEBUG)/src/DisplayTester.o
+
+$(OBJDIR_DEBUG)/src/GenericGrid.o: src/GenericGrid.cpp
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/GenericGrid.cpp -o $(OBJDIR_DEBUG)/src/GenericGrid.o
 
 $(OBJDIR_DEBUG)/src/GregsDisplay.o: src/GregsDisplay.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/GregsDisplay.cpp -o $(OBJDIR_DEBUG)/src/GregsDisplay.o
@@ -107,11 +110,11 @@ $(OBJDIR_DEBUG)/src/Snowmen.o: src/Snowmen.cpp
 $(OBJDIR_DEBUG)/src/TextDisplay.o: src/TextDisplay.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/TextDisplay.cpp -o $(OBJDIR_DEBUG)/src/TextDisplay.o
 
-$(OBJDIR_DEBUG)/src/TimeInfo.o: src/TimeInfo.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/TimeInfo.cpp -o $(OBJDIR_DEBUG)/src/TimeInfo.o
-
 $(OBJDIR_DEBUG)/main.o: main.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c main.cpp -o $(OBJDIR_DEBUG)/main.o
+
+$(OBJDIR_DEBUG)/src/controller/Bulb.o: src/controller/Bulb.cpp
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/controller/Bulb.cpp -o $(OBJDIR_DEBUG)/src/controller/Bulb.o
 
 $(OBJDIR_DEBUG)/src/controller/Bush.o: src/controller/Bush.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/controller/Bush.cpp -o $(OBJDIR_DEBUG)/src/controller/Bush.o
@@ -149,15 +152,15 @@ $(OBJDIR_DEBUG)/src/controller/serial_posix.o: src/controller/serial_posix.cpp
 clean_debug: 
 	rm -f $(OBJ_DEBUG) $(OUT_DEBUG)
 	rm -rf bin/Debug
-	rm -rf $(OBJDIR_DEBUG)/src/controller
 	rm -rf $(OBJDIR_DEBUG)/src
 	rm -rf $(OBJDIR_DEBUG)
+	rm -rf $(OBJDIR_DEBUG)/src/controller
 
 before_release: 
 	test -d bin/Release || mkdir -p bin/Release
-	test -d $(OBJDIR_RELEASE)/src/controller || mkdir -p $(OBJDIR_RELEASE)/src/controller
 	test -d $(OBJDIR_RELEASE)/src || mkdir -p $(OBJDIR_RELEASE)/src
 	test -d $(OBJDIR_RELEASE) || mkdir -p $(OBJDIR_RELEASE)
+	test -d $(OBJDIR_RELEASE)/src/controller || mkdir -p $(OBJDIR_RELEASE)/src/controller
 
 after_release: 
 
@@ -166,8 +169,8 @@ release: before_release out_release after_release
 out_release: before_release $(OBJ_RELEASE) $(DEP_RELEASE)
 	$(LD) $(LIBDIR_RELEASE) -o $(OUT_RELEASE) $(OBJ_RELEASE)  $(LDFLAGS_RELEASE) $(LIB_RELEASE)
 
-$(OBJDIR_RELEASE)/src/controller/Bulb.o: src/controller/Bulb.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/controller/Bulb.cpp -o $(OBJDIR_RELEASE)/src/controller/Bulb.o
+$(OBJDIR_RELEASE)/src/TimeInfo.o: src/TimeInfo.cpp
+	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/TimeInfo.cpp -o $(OBJDIR_RELEASE)/src/TimeInfo.o
 
 $(OBJDIR_RELEASE)/src/CountdownClock.o: src/CountdownClock.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/CountdownClock.cpp -o $(OBJDIR_RELEASE)/src/CountdownClock.o
@@ -177,6 +180,9 @@ $(OBJDIR_RELEASE)/src/DisplayModel.o: src/DisplayModel.cpp
 
 $(OBJDIR_RELEASE)/src/DisplayTester.o: src/DisplayTester.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/DisplayTester.cpp -o $(OBJDIR_RELEASE)/src/DisplayTester.o
+
+$(OBJDIR_RELEASE)/src/GenericGrid.o: src/GenericGrid.cpp
+	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/GenericGrid.cpp -o $(OBJDIR_RELEASE)/src/GenericGrid.o
 
 $(OBJDIR_RELEASE)/src/GregsDisplay.o: src/GregsDisplay.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/GregsDisplay.cpp -o $(OBJDIR_RELEASE)/src/GregsDisplay.o
@@ -199,11 +205,11 @@ $(OBJDIR_RELEASE)/src/Snowmen.o: src/Snowmen.cpp
 $(OBJDIR_RELEASE)/src/TextDisplay.o: src/TextDisplay.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/TextDisplay.cpp -o $(OBJDIR_RELEASE)/src/TextDisplay.o
 
-$(OBJDIR_RELEASE)/src/TimeInfo.o: src/TimeInfo.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/TimeInfo.cpp -o $(OBJDIR_RELEASE)/src/TimeInfo.o
-
 $(OBJDIR_RELEASE)/main.o: main.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c main.cpp -o $(OBJDIR_RELEASE)/main.o
+
+$(OBJDIR_RELEASE)/src/controller/Bulb.o: src/controller/Bulb.cpp
+	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/controller/Bulb.cpp -o $(OBJDIR_RELEASE)/src/controller/Bulb.o
 
 $(OBJDIR_RELEASE)/src/controller/Bush.o: src/controller/Bush.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/controller/Bush.cpp -o $(OBJDIR_RELEASE)/src/controller/Bush.o
@@ -241,14 +247,14 @@ $(OBJDIR_RELEASE)/src/controller/serial_posix.o: src/controller/serial_posix.cpp
 clean_release: 
 	rm -f $(OBJ_RELEASE) $(OUT_RELEASE)
 	rm -rf bin/Release
-	rm -rf $(OBJDIR_RELEASE)/src/controller
 	rm -rf $(OBJDIR_RELEASE)/src
 	rm -rf $(OBJDIR_RELEASE)
+	rm -rf $(OBJDIR_RELEASE)/src/controller
 
 before_graphics: 
-	test -d $(OBJDIR_GRAPHICS)/src/controller || mkdir -p $(OBJDIR_GRAPHICS)/src/controller
-	test -d $(OBJDIR_GRAPHICS) || mkdir -p $(OBJDIR_GRAPHICS)
 	test -d $(OBJDIR_GRAPHICS)/src || mkdir -p $(OBJDIR_GRAPHICS)/src
+	test -d $(OBJDIR_GRAPHICS) || mkdir -p $(OBJDIR_GRAPHICS)
+	test -d $(OBJDIR_GRAPHICS)/src/controller || mkdir -p $(OBJDIR_GRAPHICS)/src/controller
 
 after_graphics: 
 
@@ -257,8 +263,8 @@ graphics: before_graphics out_graphics after_graphics
 out_graphics: before_graphics $(OBJ_GRAPHICS) $(DEP_GRAPHICS)
 	$(LD) $(LIBDIR_GRAPHICS) -o $(OUT_GRAPHICS) $(OBJ_GRAPHICS)  $(LDFLAGS_GRAPHICS) $(LIB_GRAPHICS)
 
-$(OBJDIR_GRAPHICS)/src/controller/Bulb.o: src/controller/Bulb.cpp
-	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/controller/Bulb.cpp -o $(OBJDIR_GRAPHICS)/src/controller/Bulb.o
+$(OBJDIR_GRAPHICS)/src/TimeInfo.o: src/TimeInfo.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/TimeInfo.cpp -o $(OBJDIR_GRAPHICS)/src/TimeInfo.o
 
 $(OBJDIR_GRAPHICS)/mainFrame.o: mainFrame.cpp
 	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c mainFrame.cpp -o $(OBJDIR_GRAPHICS)/mainFrame.o
@@ -271,6 +277,9 @@ $(OBJDIR_GRAPHICS)/src/DisplayModel.o: src/DisplayModel.cpp
 
 $(OBJDIR_GRAPHICS)/src/DisplayTester.o: src/DisplayTester.cpp
 	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/DisplayTester.cpp -o $(OBJDIR_GRAPHICS)/src/DisplayTester.o
+
+$(OBJDIR_GRAPHICS)/src/GenericGrid.o: src/GenericGrid.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/GenericGrid.cpp -o $(OBJDIR_GRAPHICS)/src/GenericGrid.o
 
 $(OBJDIR_GRAPHICS)/src/GregsDisplay.o: src/GregsDisplay.cpp
 	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/GregsDisplay.cpp -o $(OBJDIR_GRAPHICS)/src/GregsDisplay.o
@@ -293,8 +302,8 @@ $(OBJDIR_GRAPHICS)/src/Snowmen.o: src/Snowmen.cpp
 $(OBJDIR_GRAPHICS)/src/TextDisplay.o: src/TextDisplay.cpp
 	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/TextDisplay.cpp -o $(OBJDIR_GRAPHICS)/src/TextDisplay.o
 
-$(OBJDIR_GRAPHICS)/src/TimeInfo.o: src/TimeInfo.cpp
-	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/TimeInfo.cpp -o $(OBJDIR_GRAPHICS)/src/TimeInfo.o
+$(OBJDIR_GRAPHICS)/src/controller/Bulb.o: src/controller/Bulb.cpp
+	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/controller/Bulb.cpp -o $(OBJDIR_GRAPHICS)/src/controller/Bulb.o
 
 $(OBJDIR_GRAPHICS)/src/controller/Bush.o: src/controller/Bush.cpp
 	$(CXX) $(CFLAGS_GRAPHICS) $(INC_GRAPHICS) -c src/controller/Bush.cpp -o $(OBJDIR_GRAPHICS)/src/controller/Bush.o
@@ -331,9 +340,9 @@ $(OBJDIR_GRAPHICS)/src/controller/serial_posix.o: src/controller/serial_posix.cp
 
 clean_graphics: 
 	rm -f $(OBJ_GRAPHICS) $(OUT_GRAPHICS)
-	rm -rf $(OBJDIR_GRAPHICS)/src/controller
-	rm -rf $(OBJDIR_GRAPHICS)
 	rm -rf $(OBJDIR_GRAPHICS)/src
+	rm -rf $(OBJDIR_GRAPHICS)
+	rm -rf $(OBJDIR_GRAPHICS)/src/controller
 
 .PHONY: before_debug after_debug clean_debug before_release after_release clean_release before_graphics after_graphics clean_graphics
 

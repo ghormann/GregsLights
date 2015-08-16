@@ -578,35 +578,6 @@ void Sign::test()
         run();
     }
 
-    /*
-     * Test RGB Picture
-     */
-    while (1)
-    {
-        int x, y, gridWidth, gridHeight;
-
-        RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/olaf64.png");
-        //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/sleigh32.png");
-        picture->getSize(gridWidth,gridHeight);
-        this->setDummyBackground(RGBColor::BLACK);
-        for (x = 0; x < gridWidth; x++)
-        {
-            for (y=0; y < gridHeight; y++)
-            {
-                int r,g,b;
-                picture->getRGB(x,y,r,g,b);
-                this->getBoard(x,y+SIGN_HEIGHT)->set(r,g,b);
-            }
-        }
-
-        this->setDisplayPosition(0,0);
-        for (y = 0; y  < gridHeight + SIGN_HEIGHT + 1; y++)
-        {
-            this->setDisplayPosition(0,y);
-            gjhSleep(0.1);
-        }
-    }
-
     while(0)
     {
         getPixal(10,10)->fadeTo(100,0,0,10.0);

@@ -69,6 +69,7 @@
 		<Unit filename="include/CountdownClock.h" />
 		<Unit filename="include/DisplayModel.h" />
 		<Unit filename="include/DisplayTester.h" />
+		<Unit filename="include/GenericGrid.h" />
 		<Unit filename="include/GregsDisplay.h" />
 		<Unit filename="include/LargeGrid.h" />
 		<Unit filename="include/MessageGenerator.h" />
@@ -103,6 +104,7 @@
 		<Unit filename="src/CountdownClock.cpp" />
 		<Unit filename="src/DisplayModel.cpp" />
 		<Unit filename="src/DisplayTester.cpp" />
+		<Unit filename="src/GenericGrid.cpp" />
 		<Unit filename="src/GregsDisplay.cpp" />
 		<Unit filename="src/LargeGrid.cpp" />
 		<Unit filename="src/MessageGenerator.cpp" />
