@@ -2,24 +2,32 @@
 #define LARGEGRID_H
 
 #include "controller/E131Network.h"
-
+#include "GenericGrid.h"
 #define GRID_E11_COUNT 29
-#define GRID_PIXAL_HEIGHT 48
-#define GRID_PIXAL_WIDTH 102
-#define TOTAL_GRID_PIXALS GRID_PIXAL_HEIGHT*GRID_PIXAL_WIDTH
+#define LGRID_PIXAL_HEIGHT 48
+#define LGRID_PIXAL_WIDTH 102
+#define LGRID_TOTAL_PIXALS LGRID_PIXAL_HEIGHT*LGRID_PIXAL_WIDTH
+
+#define LGRID_DUMMY_HEIGHT LGRID_PIXAL_HEIGHT * 30
+#define LGRID_DUMMY_WIDTH LGRID_PIXAL_WIDTH * 30
 
 
-class LargeGrid
+class LargeGrid : public GenericGrid
 {
 public:
-    LargeGrid(E131Network *net[]);
+    LargeGrid(bool skipTime, bool newYears, E131Network *net[]);
     virtual ~LargeGrid();
+    virtual RGBLight * getBoard(int x, int y);
+    virtual RGBLight * getPixal(int x, int y);
+
     void test();
     void run();
     char *getMessage();
 protected:
 private:
-    RGBLight *pixals[TOTAL_GRID_PIXALS];
+    RGBLight *pixals[LGRID_TOTAL_PIXALS];
+    RGBLight *board[ LGRID_DUMMY_HEIGHT * LGRID_DUMMY_WIDTH];
+
     char message[80];
 
 };

@@ -69,7 +69,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     }
 
     this->sign = new Sign(skipTimeCheck, newYears, sign);
-    this->grid = new LargeGrid(grid);
+    this->grid = new LargeGrid(skipTimeCheck, newYears,grid);
 
     //set up houses
     house[1] = dmx->getRGB(13);

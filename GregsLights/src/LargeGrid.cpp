@@ -1,9 +1,10 @@
 #include "../include/LargeGrid.h"
 #include <stdio.h>
 #include <string.h>
+#include "../include/controller/DummyBulb.h"
 
 
-LargeGrid::LargeGrid(E131Network *net[])
+LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[]) : GenericGrid(LGRID_PIXAL_WIDTH,LGRID_PIXAL_HEIGHT,LGRID_DUMMY_WIDTH,LGRID_DUMMY_HEIGHT, skipTime, newYears)
 {
     //ctor
     sprintf(message, "Booting up: Grid");
@@ -11,7 +12,7 @@ LargeGrid::LargeGrid(E131Network *net[])
     int network = 0;
     int cnt=0;
     // TODO: his really needs changed, but for testing it is good enough
-    for (int i = 0; i < TOTAL_GRID_PIXALS; i++)
+    for (int i = 0; i < LGRID_TOTAL_PIXALS; i++)
     {
         if (cnt==170)
         {
@@ -27,7 +28,68 @@ LargeGrid::LargeGrid(E131Network *net[])
         this->pixals[i] = net[network]->getRGB(cnt*3);
         ++cnt;
     }
+
+        // Setup Dummy Pials
+    for (int i = 0 ; i < (LGRID_DUMMY_HEIGHT * LGRID_DUMMY_WIDTH); i++)
+    {
+        this->board[i] = new RGBLight(new DummyBulb(), new DummyBulb(), new DummyBulb());
+    }
+
 }
+
+RGBLight *LargeGrid::getPixal(int x, int y)
+{
+    int xmod = x%2;
+    int pos = 0;
+
+    if (x < 0 || x >= LGRID_PIXAL_WIDTH)
+    {
+        throw "Illegal Value of X in getPixal";
+    }
+
+    if (y < 0 || y >= LGRID_PIXAL_HEIGHT)
+    {
+        throw "Illegal Value of Y in getPixal";
+    }
+
+    if (xmod == 0)
+    {
+        pos = x * LGRID_PIXAL_HEIGHT + y;
+    }
+    else
+    {
+        pos = x*LGRID_PIXAL_HEIGHT + (LGRID_PIXAL_HEIGHT-1) - y;
+    }
+
+    return this->pixals[pos];
+}
+
+
+
+RGBLight *LargeGrid::getBoard(int x, int y)
+{
+    int pos = y*LGRID_DUMMY_WIDTH + x;
+
+    if (x <0 || x >= LGRID_DUMMY_WIDTH)
+    {
+        throw "Illegal Value for X in getBoard";
+    }
+
+    if (y <0 || y >= LGRID_DUMMY_HEIGHT)
+    {
+        throw "Illegal Value for Y in getBoard";
+    }
+
+// TODO (ghormann#1#): THis should be removed for production.  It isn't necessary.
+
+    if (pos > (LGRID_DUMMY_HEIGHT * LGRID_DUMMY_WIDTH))
+    {
+        throw "Sign:getBoard: Invalid x and y positions";
+    }
+
+    return board[pos];
+}
+
 
 void LargeGrid::test()
 {
@@ -35,48 +97,48 @@ void LargeGrid::test()
     while(1)
     {
         sprintf(message, "Set Black");
-        for (i = 0; i < TOTAL_GRID_PIXALS; i++)
+        for (i = 0; i < LGRID_TOTAL_PIXALS; i++)
         {
             this->pixals[i]->set(RGBColor::BLACK);
         }
         sleep(1);
         //sprintf(message, "Set fade Red 20, %d, %d", sizeof(Bulb), sizeof(FadeableBulb));
-        for (i = 0; i < TOTAL_GRID_PIXALS; i++)
+        for (i = 0; i < LGRID_TOTAL_PIXALS; i++)
         {
             this->pixals[i]->fadeTo(100,0,0,20);
             //this->pixals[i]->set(RGBColor::RED);
         }
         sleep(21);
         sprintf(message, "Set fade Black 0.25");
-        for (i = 0; i < TOTAL_GRID_PIXALS; i++)
+        for (i = 0; i < LGRID_TOTAL_PIXALS; i++)
         {
             this->pixals[i]->fadeTo(0,0,0,0.25);
             //this->pixals[i]->set(RGBColor::GREEN);
         }
         sleep(1);
         sprintf(message, "Set fade Green 1.25");
-        for (i = 0; i < TOTAL_GRID_PIXALS; i++)
+        for (i = 0; i < LGRID_TOTAL_PIXALS; i++)
         {
             this->pixals[i]->fadeTo(0,100,0,1.25);
             //this->pixals[i]->set(RGBColor::GREEN);
         }
         sleep(2);
         sprintf(message, "Set fade Black 10");
-        for (i = 0; i < TOTAL_GRID_PIXALS; i++)
+        for (i = 0; i < LGRID_TOTAL_PIXALS; i++)
         {
             this->pixals[i]->fadeTo(0,0,0,10);
             //this->pixals[i]->set(RGBColor::BLUE);
         }
         sleep(11);
         sprintf(message, "Set fade BLUE 2.0");
-        for (i = 0; i < TOTAL_GRID_PIXALS; i++)
+        for (i = 0; i < LGRID_TOTAL_PIXALS; i++)
         {
             this->pixals[i]->fadeTo(0,0,100,2.0);
             //this->pixals[i]->set(RGBColor::BLUE);
         }
         sleep(2);
         sprintf(message, "Set fade BLACK 4");
-        for (i = 0; i < TOTAL_GRID_PIXALS; i++)
+        for (i = 0; i < LGRID_TOTAL_PIXALS; i++)
         {
             this->pixals[i]->fadeTo(0,0,0,4);
             //this->pixals[i]->set(RGBColor::BLUE);
