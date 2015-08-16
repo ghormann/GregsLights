@@ -114,12 +114,12 @@ void LargeGrid::test()
             {
                 int r,g,b;
                 picture->getRGB(x,y,r,g,b);
-                this->getBoard(x,y+this->height)->set(r,g,b);
+                this->getBoard(x,y+this->gridHeight)->set(r,g,b);
             }
         }
 
         this->setDisplayPosition(0,0);
-        for (y = 0; y  < picHeight + this->height + 1; y++)
+        for (y = 0; y  < picHeight + this->gridHeight + 1; y++)
         {
             this->setDisplayPosition(0,y);
             gjhSleep(0.1);

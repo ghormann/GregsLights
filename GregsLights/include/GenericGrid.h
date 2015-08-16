@@ -52,13 +52,13 @@ public:
     void drawSpecial(int x, int y, GRID_SPECIAL type);
     void scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, double speed);
 protected:
-    int height;
-    int width ;
+    int gridHeight;
+    int gridWidth ;
     int dummy_height;
+    int dummy_width;
     int currentX;
     int currentY;
     TimeInfo *timeInfo;
-    int dummy_width;
     char message[80];
     MessageGenerator *generator;
 

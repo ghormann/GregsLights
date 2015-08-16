@@ -5,8 +5,8 @@ GenericGrid::GenericGrid(int width_, int height_, int dummy_width_, int dummy_he
 {
     //ctor
         sprintf(message, "Booting up: %s", (newYears ? "for new Years" : "for Christmas"));
-    this->width = width_;
-    this->height = height_;
+    this->gridWidth = width_;
+    this->gridHeight = height_;
     this->dummy_height = dummy_height_;
     this->dummy_width = dummy_width_;
     this->timeInfo = new TimeInfo(skipTime, newYears);
@@ -24,9 +24,9 @@ void GenericGrid::setDisplayPosition(int xOffset, int yOffset)
 {
     this->currentX = xOffset;
     this->currentY = yOffset;
-    for (int i =0; i < this->width; i++)
+    for (int i =0; i < this->gridWidth; i++)
     {
-        for (int j = 0; j < this->height; j++)
+        for (int j = 0; j < this->gridHeight; j++)
         {
             this->getPixal(i,j)->copyFrom(this->getBoard(i+xOffset,j+yOffset));
         }
@@ -37,28 +37,28 @@ void GenericGrid::setDisplayPosition(int xOffset, int yOffset)
 }
 void GenericGrid::testGridLayout()
 {
-    for (int y =0; y < this->height; y++)
+    for (int y =0; y < this->gridHeight; y++)
     {
-        for (int x = 0; x< this->width; x++)
+        for (int x = 0; x< this->gridWidth; x++)
         {
             getPixal(x,y)->set(RGBColor::RED);
         }
         sleep(1);
-        for (int x = 0; x< this->width; x++)
+        for (int x = 0; x< this->gridWidth; x++)
         {
             getPixal(x,y)->set(RGBColor::BLACK);
         }
     }
 
 
-    for (int x = 0; x< this->width; x++)
+    for (int x = 0; x< this->gridWidth; x++)
     {
-        for (int y =0; y < this->height; y++)
+        for (int y =0; y < this->gridHeight; y++)
         {
             getPixal(x,y)->set(RGBColor::RED);
         }
         sleep(1);
-        for (int y = 0; y< this->height; y++)
+        for (int y = 0; y< this->gridHeight; y++)
         {
             getPixal(x,y)->set(RGBColor::BLACK);
         }
@@ -85,9 +85,9 @@ void GenericGrid::setDummyBackground(RGBColor *bgColor, int xStart, int yStart, 
 
 void GenericGrid::wipeToRight(RGBColor *color, double delay)
 {
-    for (int x=0; x< width; x++)
+    for (int x=0; x< gridWidth; x++)
     {
-        for (int y=0; y< height; y++)
+        for (int y=0; y< gridHeight; y++)
         {
             this->getPixal(x,y)->set(color);
         }
@@ -97,9 +97,9 @@ void GenericGrid::wipeToRight(RGBColor *color, double delay)
 
 void GenericGrid::wipeDown(RGBColor *color, double delay)
 {
-    for (int y=0; y<height; y++)
+    for (int y=0; y<gridHeight; y++)
     {
-        for (int x=0; x< width; x++)
+        for (int x=0; x< gridWidth; x++)
         {
             this->getPixal(x,y)->set(color);
         }
@@ -128,11 +128,11 @@ void GenericGrid::countdown()
         if (++i > 100000)
             i = 0;
 
-        for (int x = 0; x < this->width; x++)
+        for (int x = 0; x < this->gridWidth; x++)
         {
-            for (int y = 0; y < this->height; y++)
+            for (int y = 0; y < this->gridHeight; y++)
             {
-                int distance = gjhDistance(this->width/2, this->height/2, x, y);
+                int distance = gjhDistance(this->gridWidth/2, this->gridHeight/2, x, y);
                 RGBColor *color = d[(distance+i)%20];
                 getBoard(x,y)->set(color);
             }
@@ -153,7 +153,7 @@ void GenericGrid::countdown()
         else
         {
             //setDummyBackground(RGBColor::BLACK,width/2-10,3,width/2+10,h-2);
-            int pos = this->width/2 - (numseconds > 9 ? 7 : 13);
+            int pos = this->gridWidth/2 - (numseconds > 9 ? 7 : 13);
             sprintf(seconds_c, "%7d", numseconds);
             pos += (drawLetter(seconds_c[5],RGBColor::BLACK,pos,1) + 2);
             drawLetter(seconds_c[6],RGBColor::BLACK,pos,1);
@@ -1399,7 +1399,7 @@ void GenericGrid::scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, 
     setDummyBackground(bgColor);
 
     int textLen = strlen(text);
-    int pos = width + 2;
+    int pos = gridWidth + 2;
     for (int i = 0; i < textLen; i++)
     {
         pos += drawLetter(text[i],fgColor,pos,0) + 2;
@@ -1420,8 +1420,8 @@ void GenericGrid::drawSpecial(int startX, int startY, GRID_SPECIAL type)
 
     if (type == GRID_TREE)
     {
-        startX+=(height-3)/2;
-        for (int i = 0; i < height-3; i++)
+        startX+=(gridHeight-3)/2;
+        for (int i = 0; i < gridHeight-3; i++)
         {
             int start = startX-i/2;
             int stop = startX+i/2+1;
@@ -1451,10 +1451,10 @@ void GenericGrid::drawSpecial(int startX, int startY, GRID_SPECIAL type)
         int x = 0;
         int y = 0;
 
-        RGBColor * d[15][height];
+        RGBColor * d[15][gridHeight];
         for (int x = 0 ; x<15; x++)
         {
-            for (y=0; y<height; y++)
+            for (y=0; y<gridHeight; y++)
             {
                 d[x][y]=0;
             }
@@ -1506,7 +1506,7 @@ void GenericGrid::drawSpecial(int startX, int startY, GRID_SPECIAL type)
 
         for (x =0; x<15; x++)
         {
-            for (y=0; y<height; y++)
+            for (y=0; y<gridHeight; y++)
             {
                 if (d[x][y] != 0)
                     getBoard(x+startX,y+startY)->set(d[x][y]);
@@ -1529,10 +1529,10 @@ void GenericGrid::drawSpecial(int startX, int startY, GRID_SPECIAL type)
         else if (type == GRID_PRESENT_PURPLE)
             baseColor = RGBColor::PURPLE;
 
-        RGBColor * d[15][height];
+        RGBColor * d[15][gridHeight];
         for (int x = 0 ; x<15; x++)
         {
-            for (y=0; y<height; y++)
+            for (y=0; y<gridHeight; y++)
             {
                 d[x][y]=0;
             }
@@ -1563,7 +1563,7 @@ void GenericGrid::drawSpecial(int startX, int startY, GRID_SPECIAL type)
 
         for (x =0; x<15; x++)
         {
-            for (y=0; y<height; y++)
+            for (y=0; y<gridHeight; y++)
             {
                 if (d[x][y] != 0)
                     getBoard(x+startX,y+startY)->set(d[x][y]);
@@ -1577,10 +1577,10 @@ void GenericGrid::drawSpecial(int startX, int startY, GRID_SPECIAL type)
     {
         int x;
         int y;
-        RGBColor * d[15][height];
+        RGBColor * d[15][gridHeight];
         for (int x = 0 ; x<15; x++)
         {
-            for (y=0; y<height; y++)
+            for (y=0; y<gridHeight; y++)
             {
                 d[x][y]=0;
             }
@@ -1659,7 +1659,7 @@ void GenericGrid::drawSpecial(int startX, int startY, GRID_SPECIAL type)
 
         for (x =0; x<15; x++)
         {
-            for (y=0; y<height; y++)
+            for (y=0; y<gridHeight; y++)
             {
                 if (d[x][y] != 0)
                     getBoard(x+startX,y+startY)->set(d[x][y]);
@@ -1671,10 +1671,10 @@ void GenericGrid::drawSpecial(int startX, int startY, GRID_SPECIAL type)
     {
         int x;
         int y;
-        RGBColor * d[15][height];
+        RGBColor * d[15][gridHeight];
         for (int x = 0 ; x<15; x++)
         {
-            for (y=0; y<height; y++)
+            for (y=0; y<gridHeight; y++)
             {
                 d[x][y]=0;
             }
@@ -1764,7 +1764,7 @@ void GenericGrid::drawSpecial(int startX, int startY, GRID_SPECIAL type)
 
         for (x =0; x<15; x++)
         {
-            for (y=0; y<height; y++)
+            for (y=0; y<gridHeight; y++)
             {
                 if (d[x][y] != 0)
                     getBoard(x+startX,y+startY)->set(d[x][y]);
@@ -1857,14 +1857,14 @@ void GenericGrid::drawSpecial(int startX, int startY, GRID_SPECIAL type)
     }
     else if (type==GRID_SNOWMEN || type ==GRID_SNOWMEN_REVERSE)
     {
-        int width = 15;
+        int gridWidth = 15;
         int x=0;
         int y=0;
 
-        RGBColor *d[width][height];
-        for (x=0; x<width; x++)
+        RGBColor *d[gridWidth][gridHeight];
+        for (x=0; x<gridWidth; x++)
         {
-            for (y=0; y< height; y++)
+            for (y=0; y< gridHeight; y++)
             {
                 d[x][y]=0;
             }
@@ -1903,12 +1903,12 @@ void GenericGrid::drawSpecial(int startX, int startY, GRID_SPECIAL type)
         d[13][4]=d[12][4]=RGBColor::ORANGE;
 
         //Write it out
-        for (x =0; x<width; x++)
+        for (x =0; x<gridWidth; x++)
         {
-            for (y=0; y<height; y++)
+            for (y=0; y<gridHeight; y++)
             {
                 // Handle reverse
-                int realX = (type == GRID_SNOWMEN ? x : width-x-1);
+                int realX = (type == GRID_SNOWMEN ? x : gridWidth-x-1);
                 if (d[x][y] != 0)
                     getBoard(realX+startX,y+startY)->set(d[x][y]);
             }
