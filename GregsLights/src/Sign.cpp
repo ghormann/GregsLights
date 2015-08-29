@@ -573,7 +573,7 @@ void Sign::colors()
 
 void Sign::test()
 {
-    while(1)
+    while(0)
     {
         run();
     }
@@ -593,7 +593,7 @@ void Sign::test()
 
     }
 
-    while (1)
+    while (0)
     {
         //timeInfo->setSkipTimeCheck(true);
 
@@ -621,7 +621,7 @@ void Sign::test()
     }
 
     int betweenPixals = 2500;
-    int betweenColors = 3;
+    int betweenColors = 1;
     this->pixals[0]->set(100,100,100);
     sleep(1);
     this->pixals[0]->set(RGBColor::BLACK);
