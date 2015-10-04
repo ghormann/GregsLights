@@ -12,6 +12,7 @@
 
 DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
 {
+    int signId = 0;
     this->skipTimeCheck = (skip_time_check == TRUE? true : false);
     this->newYears = (show_new_year == TRUE ? true: false);
     //Initialize Memory Buffers
@@ -34,18 +35,18 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     sendDMX = true;
     char *signIP = "192.168.0.232";
     E131Network *sign[SIGN_E11_COUNT];
-    sign[0] = new E131Network(signIP, 10, 512);  // port 1 170
-    sign[1] = new E131Network(signIP, 11, 512);  // port 1 170
-    sign[2] = new E131Network(signIP, 12, 512);  // port 1 170
-    sign[3] = new E131Network(signIP, 13, 512);  // port 1 140
-    sign[4] = new E131Network(signIP, 20, 512);  // port 2 170
-    sign[5] = new E131Network(signIP, 21, 512);  // port 2 140
-    sign[6] = new E131Network(signIP, 30, 512);  // port 3 170
-    sign[7] = new E131Network(signIP, 31, 512);  // port 3 170
-    sign[8] = new E131Network(signIP, 32, 512);  // port 3 170
-    sign[9] = new E131Network(signIP, 40, 512);  // port 4 170
-    sign[10] = new E131Network(signIP, 41, 512); // port 4 170
-    sign[11] = new E131Network(signIP, 42, 512); // port 4 170
+    sign[signId++] = new E131Network(signIP, 40, 512);  // port 4 170
+    sign[signId++] = new E131Network(signIP, 41, 512); // port 4 170
+    sign[signId++] = new E131Network(signIP, 42, 512); // port 4 170
+    sign[signId++] = new E131Network(signIP, 10, 512);  // port 1 170
+    sign[signId++] = new E131Network(signIP, 11, 512);  // port 1 170
+    sign[signId++] = new E131Network(signIP, 12, 512);  // port 1 170
+    sign[signId++] = new E131Network(signIP, 13, 512);  // port 1 140
+    sign[signId++] = new E131Network(signIP, 20, 512);  // port 2 170
+    sign[signId++] = new E131Network(signIP, 21, 512);  // port 2 140
+    sign[signId++] = new E131Network(signIP, 30, 512);  // port 3 170
+    sign[signId++] = new E131Network(signIP, 31, 512);  // port 3 170
+    sign[signId++] = new E131Network(signIP, 32, 512);  // port 3 170
 
     char *gridIP1 = "192.168.0.231";  //16 * 170 or 2720 Pixals(2700 used)
     char *gridIP2 = "192.168.0.235";  // 13 *170 or 2210 Pixals (2196 Used for Grid )

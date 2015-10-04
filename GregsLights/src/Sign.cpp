@@ -5,9 +5,42 @@
 
 Sign::Sign(bool skipTime, bool newYears, E131Network *net[]) : GenericGrid(SIGN_WIDTH,SIGN_HEIGHT,SIGN_DUMMY_WIDTH,SIGN_DUMMY_HEIGHT, skipTime, newYears)
 {
-    int cnt = 0;
     this->clear();
     this->generator = new MessageGenerator(this->timeInfo);
+    int netId = 0;
+    int cnt = 0;
+    for (int i = 0; i < TOTAL_SIGN_PIXALS; )
+    {
+        this->pixals[i] = net[netId]->getRGB(cnt*3);
+        ++cnt;
+        ++i;
+
+        if (i == 20*24)   // End of first section (Port 4)
+        {
+            ++netId;
+            cnt = 0;
+        }
+
+        if (i== (20*32)+10 + (20*24))   // End of Second Section (Port 1)
+        {
+            ++netId;
+            cnt = 0;
+        }
+
+        if (i==20*15+10 + (20*32)+10 + (20*24))   // End of Second Section (Port 2)
+        {
+            ++netId;
+            cnt = 0;
+        }
+
+        if (cnt==170)
+        {
+            cnt = 0;
+            ++netId;
+        }
+    }
+
+    /**
     for (int i = 0; i < 170; i++)
     {
         this->pixals[cnt++] = net[0]->getRGB(i*3); // port 1
@@ -34,38 +67,32 @@ Sign::Sign(bool skipTime, bool newYears, E131Network *net[]) : GenericGrid(SIGN_
         this->pixals[cnt++] = net[5]->getRGB(i*3); //port 2
     }
 
-    /* This should be 170 */
     for (int j = 0; j < 170; j++)
     {
         this->pixals[cnt++] = net[6]->getRGB(j*3); // port 3
     }
 
-    /* This should be 170 */
     for (int j = 0; j < 170; j++)
     {
         this->pixals[cnt++] = net[7]->getRGB(j*3); // port 3
     }
-    /* This should be 170 */
     for (int j = 0; j < 170; j++)
     {
         this->pixals[cnt++] = net[8]->getRGB(j*3); // port 3
     }
-    /* This should be 170 */
     for (int j = 0; j < 170; j++)
     {
         this->pixals[cnt++] = net[9]->getRGB(j*3); // port 4
     }
-    /* This should be 170 */
     for (int j = 0; j < 170; j++)
     {
         this->pixals[cnt++] = net[10]->getRGB(j*3); // port 4
     }
-    /* This should be 170 */
     for (int j = 0; j < 170; j++)
     {
         this->pixals[cnt++] = net[11]->getRGB(j*3); // port 4
     }
-
+    */
 
 
     // Setup Dummy Pials
@@ -116,12 +143,13 @@ RGBLight *Sign::getPixal(int x, int y)
     /*
     || FIx the mistakes that occured during wiring
     */
-    if (x == 2 && y > 13)
+
+    if (x == 26 && y > 13) // was 2
     {
         pos +=1;
     }
 
-    else if (x == 3)
+    else if (x == 27) // was 3
     {
         if (y == 13)
         {
@@ -133,6 +161,7 @@ RGBLight *Sign::getPixal(int x, int y)
         }
 
     }
+
     return getPixal(pos);
 }
 
@@ -571,9 +600,46 @@ void Sign::colors()
     sleep(1);
 }
 
+void Sign::testLines()
+{
+    double duration = 0.1;
+    for (int i =0; i < SIGN_WIDTH; i++) // Should be SIGN_WIDTH
+    {
+        for (int j =0; j < SIGN_HEIGHT; j++)
+        {
+            getPixal(i,j)->set(RGBColor::RED);
+        }
+        gjhSleep(duration);
+        for (int j =0; j < SIGN_HEIGHT; j++)
+        {
+            getPixal(i,j)->set(RGBColor::BLACK);
+        }
+    }
+
+    for (int i =0; i < SIGN_HEIGHT; i++)
+    {
+        for (int j = 0; j < SIGN_WIDTH; j++) {
+            getPixal(j,i)->set(RGBColor::GREEN);
+        }
+        gjhSleep(duration);
+        for (int j = 0; j < SIGN_WIDTH; j++) {
+            getPixal(j,i)->set(RGBColor::BLACK);
+        }
+    }
+
+
+}
+
 void Sign::test()
 {
-    while(0)
+
+    while(0) {
+        getPixal(0,0)->set(RGBColor::WHITE);
+        sleep(1);
+        testLines();
+    }
+
+    while(1)
     {
         run();
     }
@@ -688,6 +754,7 @@ void Sign::test()
         }
         sleep(betweenColors*2);
 
+        /*
         for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
         {
             pixals[i]->fade(0,0,100,100,100,100,betweenColors);
@@ -697,7 +764,13 @@ void Sign::test()
         {
             pixals[i]->fade(100,100,100,0,0,0,betweenColors);
         }
+        */
+        for (int i = 0; i < TOTAL_SIGN_PIXALS; i++)
+        {
+            pixals[i]->fadeTo(0,0,0,betweenColors);
+        }
+
         sleep(betweenColors);
-        sleep(2);
+        sleep(1);
     }
 }

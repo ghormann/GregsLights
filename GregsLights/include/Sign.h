@@ -31,6 +31,7 @@ class Sign: public GenericGrid
         Sign(bool skipTime, bool newYears, E131Network *net[]);
         virtual ~Sign();
         void test();
+        void testLines();
         void staticSecondsToGo(RGBColor *fgColor, RGBColor *bgColor);
         void flashSecondsToGo(int times, double delay);
         virtual RGBLight * getPixal(int x, int y);  /* Overriden */
