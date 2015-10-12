@@ -639,6 +639,7 @@ void Sign::test()
         testLines();
     }
 
+
     while(1)
     {
         run();

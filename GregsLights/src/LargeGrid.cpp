@@ -97,6 +97,32 @@ void LargeGrid::test()
 {
     int i;
 
+    while(1)
+    {
+        for (int i = 0; i < LGRID_PIXAL_WIDTH; i++)
+        {
+            int row = i%LGRID_PIXAL_HEIGHT;
+            for (int j =0; j < LGRID_PIXAL_WIDTH; j++)
+            {
+                getPixal(j,row)->set(RGBColor::RED);
+            }
+
+            for (int j=0; j< LGRID_PIXAL_HEIGHT; j++) {
+                getPixal(i,j)->set(RGBColor::GREEN);
+            }
+
+            gjhSleep(0.25);
+            for (int j =0; j < LGRID_PIXAL_WIDTH; j++)
+            {
+                getPixal(j,row)->set(RGBColor::BLACK);
+            }
+            for (int j=0; j< LGRID_PIXAL_HEIGHT; j++) {
+                getPixal(i,j)->set(RGBColor::BLACK);
+            }
+        }
+    }
+
+
     /*
     * Test RGB Picture
     */
