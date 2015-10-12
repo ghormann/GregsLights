@@ -1,6 +1,8 @@
 #include "../include/Sign.h"
 #include "../include/RGBPicture.h"
 #include "../include/controller/DummyBulb.h"
+#include "RGBPicture.h"
+
 
 
 Sign::Sign(bool skipTime, bool newYears, E131Network *net[]) : GenericGrid(SIGN_WIDTH,SIGN_HEIGHT,SIGN_DUMMY_WIDTH,SIGN_DUMMY_HEIGHT, skipTime, newYears)
@@ -618,11 +620,13 @@ void Sign::testLines()
 
     for (int i =0; i < SIGN_HEIGHT; i++)
     {
-        for (int j = 0; j < SIGN_WIDTH; j++) {
+        for (int j = 0; j < SIGN_WIDTH; j++)
+        {
             getPixal(j,i)->set(RGBColor::GREEN);
         }
         gjhSleep(duration);
-        for (int j = 0; j < SIGN_WIDTH; j++) {
+        for (int j = 0; j < SIGN_WIDTH; j++)
+        {
             getPixal(j,i)->set(RGBColor::BLACK);
         }
     }
@@ -633,10 +637,33 @@ void Sign::testLines()
 void Sign::test()
 {
 
-    while(0) {
+    while(0)
+    {
         getPixal(0,0)->set(RGBColor::WHITE);
         sleep(1);
         testLines();
+    }
+
+    while(1)
+    {
+        int x, y, picWidth, picHeight;
+        RGBPicture * picture = new RGBPicture("/home/ghormann/Documents/src/gregslights/GregsLights/resources/orig/test.png");
+        picture->getSize(picWidth,picHeight);
+        this->setDummyBackground(RGBColor::BLACK);
+        for (x = 0; x < picWidth; x++)
+        {
+            for (y=0; y < picHeight; y++)
+            {
+                int r,g,b;
+                picture->getRGB(x,y,r,g,b);
+                this->getBoard(x,y)->set(r,g,b);
+            }
+        }
+
+        this->setDisplayPosition(0,0);
+
+        sleep(10);
+
     }
 
 

@@ -97,7 +97,7 @@ void LargeGrid::test()
 {
     int i;
 
-    while(1)
+    while(0)
     {
         for (int i = 0; i < LGRID_PIXAL_WIDTH; i++)
         {
@@ -107,7 +107,8 @@ void LargeGrid::test()
                 getPixal(j,row)->set(RGBColor::RED);
             }
 
-            for (int j=0; j< LGRID_PIXAL_HEIGHT; j++) {
+            for (int j=0; j< LGRID_PIXAL_HEIGHT; j++)
+            {
                 getPixal(i,j)->set(RGBColor::GREEN);
             }
 
@@ -116,23 +117,92 @@ void LargeGrid::test()
             {
                 getPixal(j,row)->set(RGBColor::BLACK);
             }
-            for (int j=0; j< LGRID_PIXAL_HEIGHT; j++) {
+            for (int j=0; j< LGRID_PIXAL_HEIGHT; j++)
+            {
                 getPixal(i,j)->set(RGBColor::BLACK);
             }
         }
     }
 
+    /*
+     * Test Animated Gif
+     */
+    while (1)
+    {
+        RGBPicture *pictures[4];
+        int x, y, picWidth, picHeight;
+        char filename[200];
+        for (int i =0; i < 4; i++)
+        {
+            sprintf(filename,"/home/ghormann/Documents/src/gregslights/GregsLights/resources/toder_%d.png", i);
+            pictures[i] = new RGBPicture(filename);
+        }
+        this->setDummyBackground(RGBColor::BLACK);
+        while(1)    // because images don't destory correctly
+        {
+            for (int i =0; i < 4; i++)
+            {
+                pictures[i]->getSize(picWidth,picHeight);
+                for (x = 0; x < picWidth; x++)
+                {
+                    for (y=0; y < picHeight; y++)
+                    {
+                        int r,g,b;
+                        pictures[i]->getRGB(x,y,r,g,b);
+                        this->getBoard(x,y)->set(r,g,b);
+                    }
+                }
+
+                this->setDisplayPosition(0,0);
+                gjhSleep(0.2);
+            }
+        }
+    }
 
     /*
     * Test RGB Picture
     */
     while (1)
     {
+        //
+        // Scroll Left
+        //
         int x, y, picWidth, picHeight;
 
         //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/olaf64.png");
         //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/test64.png");
-        RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/gift51.png");
+        RGBPicture * picture = new RGBPicture("/home/ghormann/Documents/src/gregslights/GregsLights/resources/orig/test.png");
+        picture->getSize(picWidth,picHeight);
+        this->setDummyBackground(RGBColor::BLACK);
+        for (x = 0; x < picWidth; x++)
+        {
+            for (y=0; y < picHeight; y++)
+            {
+                int r,g,b;
+                picture->getRGB(x,y,r,g,b);
+                this->getBoard(x+this->gridWidth,y)->set(r,g,b);
+            }
+        }
+
+        this->setDisplayPosition(0,0);
+        for (x = 0; x  < picWidth + this->gridWidth + 1; x++)
+        {
+            this->setDisplayPosition(x,0);
+            gjhSleep(0.02);
+        }
+    }
+
+
+    while (1)
+    {
+        //
+        // Scroll up
+        //
+        int x, y, picWidth, picHeight;
+
+        //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/olaf64.png");
+        //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/test64.png");
+        RGBPicture * picture = new RGBPicture("/home/ghormann/Documents/src/gregslights/GregsLights/resources/orig/test.png");
         picture->getSize(picWidth,picHeight);
         this->setDummyBackground(RGBColor::BLACK);
         for (x = 0; x < picWidth; x++)
