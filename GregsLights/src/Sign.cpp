@@ -637,6 +637,12 @@ void Sign::testLines()
 void Sign::test()
 {
 
+    while(0) {
+        this->setDummyBackground(RGBColor::WHITE);
+        this->setDisplayPosition(0,0);
+        sleep(5);
+    }
+
     while(0)
     {
         getPixal(0,0)->set(RGBColor::WHITE);
@@ -644,7 +650,7 @@ void Sign::test()
         testLines();
     }
 
-    while(1)
+    while(0)
     {
         int x, y, picWidth, picHeight;
         RGBPicture * picture = new RGBPicture("/home/ghormann/Documents/src/gregslights/GregsLights/resources/orig/test.png");
