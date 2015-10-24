@@ -142,13 +142,13 @@ int RGBPicture::read_png(char *file_name)  /* We need to open the file */
         alpha = 255;
         hasAlpha = 1;
     }
-    else if (color_type == PNG_COLOR_TYPE_RGB)
+    else if (color_type == PNG_COLOR_TYPE_RGB )
     {
         hasAlpha = 0;
     }
     else
     {
-        printf("ERROR: Unsported color type\n");
+        printf("ERROR: RGBPicture: Unsupported color type: %d\n", color_type);
         png_destroy_read_struct(&png_ptr, &info_ptr, png_infopp_NULL);
         fclose(fp);
         /* If we get here, we had a problem reading the file */
