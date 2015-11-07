@@ -11,8 +11,39 @@ LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[]) : GenericG
     sprintf(message, "Booting up: Grid");
 
     int network = 0;
-    int cnt=0;
+    int x = 0;
+    int y = 0;
+    int xmod = 0;
+    int networkPixal = 0;
+    int pos;
     // TODO: his really needs changed, but for testing it is good enough
+    for (x =0; x < LGRID_PIXAL_WIDTH; x++)
+    {
+        for (y = 0; y < LGRID_PIXAL_HEIGHT; y++)
+        {
+            xmod = x%2;
+            if (xmod == 1)
+            {
+                pos = x * LGRID_PIXAL_HEIGHT + y;
+            }
+            else
+            {
+                pos = x*LGRID_PIXAL_HEIGHT + (LGRID_PIXAL_HEIGHT-1) - y;
+            }
+
+            if (pos < LGRID_TOTAL_PIXALS - (640*4)) {
+                // In first half
+                network = pos/170;
+                networkPixal = pos%170;
+            } else {
+                network = 12;
+                networkPixal = 12;
+            }
+            printf("x: %d, y: %d, network: %d, networkPixal: %d, pos: %d\n", x,y,network,networkPixal, pos);
+            this->pixals[x * LGRID_PIXAL_HEIGHT + y] = net[network]->getRGB(networkPixal*3);
+        }
+    }
+    /*
     for (int i = 0; i < LGRID_TOTAL_PIXALS; i++)
     {
         if (cnt==170)
@@ -30,6 +61,7 @@ LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[]) : GenericG
         this->pixals[i] = net[network]->getRGB(cnt*3);
         ++cnt;
     }
+    */
 
     // Setup Dummy Pials
     for (int i = 0 ; i < (LGRID_DUMMY_HEIGHT * LGRID_DUMMY_WIDTH); i++)
@@ -41,7 +73,6 @@ LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[]) : GenericG
 
 RGBLight *LargeGrid::getPixal(int x, int y)
 {
-    int xmod = x%2;
     int pos = 0;
 
     if (x < 0 || x >= LGRID_PIXAL_WIDTH)
@@ -54,14 +85,7 @@ RGBLight *LargeGrid::getPixal(int x, int y)
         throw "Illegal Value of Y in getPixal";
     }
 
-    if (xmod == 0)
-    {
-        pos = x * LGRID_PIXAL_HEIGHT + y;
-    }
-    else
-    {
-        pos = x*LGRID_PIXAL_HEIGHT + (LGRID_PIXAL_HEIGHT-1) - y;
-    }
+    pos = x * LGRID_PIXAL_HEIGHT + y;
 
     return this->pixals[pos];
 }
