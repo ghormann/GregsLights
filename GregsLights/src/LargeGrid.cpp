@@ -97,7 +97,8 @@ void LargeGrid::test()
 {
     int i;
 
-    while(0)
+    // show lines
+    while(1)
     {
         for (int i = 0; i < LGRID_PIXAL_WIDTH; i++)
         {

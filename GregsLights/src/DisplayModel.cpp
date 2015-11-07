@@ -48,13 +48,16 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     sign[signId++] = new E131Network(signIP, 31, 512);  // port 3 170
     sign[signId++] = new E131Network(signIP, 32, 512);  // port 3 170
 
-    char *gridIP1 = "192.168.0.231";  //16 * 170 or 2720 Pixals(2700 used)
-    char *gridIP2 = "192.168.0.235";  // 13 *170 or 2210 Pixals (2196 Used for Grid )
+    char *gridIP1 = "192.168.0.230";  //13 * 170 or 2720 Pixals(2196 used)
+    char *gridIP2 = "192.168.0.231";  // 16 *170 or 2210 Pixals (2700 Used for Grid )
     E131Network *grid[GRID_E11_COUNT];
-    int universe = 100;
+    int universe = 1;
     for (int i = 0; i < GRID_E11_COUNT; i++)
     {
-        grid[i] = new E131Network( (i < 16? gridIP1 : gridIP2 ),universe++,512);
+        if (i == 13) {
+            universe = 1;
+        }
+        grid[i] = new E131Network( (i < 13? gridIP1 : gridIP2 ),universe++,512);
     }
 
     E131Network *clockE131 = new E131Network(signIP, 100, 512); // Universe 100 of Sign Controller
