@@ -13,6 +13,7 @@ Sign::Sign(bool skipTime, bool newYears, E131Network *net[]) : GenericGrid(SIGN_
     int cnt = 0;
     for (int i = 0; i < TOTAL_SIGN_PIXALS; )
     {
+        //printf("i: %d, cnt: %d, netId: %d\n" , i, cnt, netId);
         this->pixals[i] = net[netId]->getRGB(cnt*3);
         ++cnt;
         ++i;
@@ -638,7 +639,7 @@ void Sign::test()
 {
 
     while(0) {
-        this->setDummyBackground(RGBColor::WHITE);
+        this->setDummyBackground(RGBColor::GREEN);
         this->setDisplayPosition(0,0);
         sleep(5);
     }
