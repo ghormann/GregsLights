@@ -37,6 +37,8 @@ class DisplayModel
     protected:
     private:
         NetworkCollection *networks;
+        NetworkCollection *networkAlpha1;
+        NetworkCollection *networkAlpha2;
         RGBLight *house[HOUSE_LIGHT_END + 1];
         Bush *bushes[BUSH_LIGHT_END+1];
         CountdownClock *clock;

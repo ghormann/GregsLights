@@ -64,7 +64,7 @@ Bulb* OpenDMXNetwork::getBulb(int channel)
 /*
  * THis function must be called on a timer to preform updates
  */
-void OpenDMXNetwork::doUpdate()
+bool OpenDMXNetwork::doUpdate()
 {
 #ifdef GJH_DEBUG
     char greg[600];
@@ -82,6 +82,7 @@ void OpenDMXNetwork::doUpdate()
         usleep(1000);      // mark after break (MAB) - 1 millisecond is overkill (8 microseconds is the minimum dmx requirement)
         serptr->Write((char *)data,513+offset);
     }
+    return true;
 
 }
 

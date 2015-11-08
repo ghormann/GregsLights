@@ -15,15 +15,19 @@
 class NetworkCollection
 {
     public:
-        NetworkCollection();
+        NetworkCollection(char *name);
         virtual ~NetworkCollection();
         void addNetwork( LightNetwork *net);
         void removeNetwork ( LightNetwork *net);
         void doUpdate();
         void doShutdown();
+        void setControllerLimits(int maxUpdates, int sleepMS);
     protected:
     private:
-        LightNetwork* networks[50];
+        LightNetwork* networks[MAX_LIGHT_NETWORKS];
+        int maxBeforeSleep;
+        int sleepDuration;
+        char name[80];
         pthread_t serial_t;  /* Thread for writing to serial interface */
         pthread_t bulb_t;     /* Thread for refershing bulbs */
 

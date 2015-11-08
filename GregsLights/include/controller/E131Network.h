@@ -19,7 +19,7 @@ class E131Network : public LightNetwork
         E131Network(char *ipAddr, int universeNumber, int numChannels);
         virtual ~E131Network();
         void setIntensity(int id, unsigned char pct);
-        void doUpdate();
+        bool doUpdate();
         void setShutdown(bool val);
         void setDebug(bool val);
         RGBLight* getRGB(int start);
@@ -27,7 +27,7 @@ class E131Network : public LightNetwork
     protected:
     private:
         struct sockaddr_in myaddr, remoteaddr;
-        static int fd;
+        int fd;
         unsigned char data[E131_PACKET_LEN];
         unsigned char sequenceNum;
         int skipCount;

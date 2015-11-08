@@ -23,7 +23,11 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     }
 
     //
-    networks = new NetworkCollection();
+    networks = new NetworkCollection("Normal");
+    networkAlpha1 = new NetworkCollection("Alpha1");
+    networkAlpha2 = new NetworkCollection("Alpha2");
+    networkAlpha1->setControllerLimits(6,25);
+    networkAlpha2->setControllerLimits(6,25);
     OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", ACTIDONGLE, sendDMX);
     //OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", OPENDMX);
 
@@ -71,10 +75,10 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
             networks->addNetwork(sign[j]);
         }
 
-        for (int j=0; j<6; j++) // GRID_E11_COUNT
+        for (int j=0; j<GRID_E11_COUNT; j++) // GRID_E11_COUNT
         {
-            networks->addNetwork(grid2[j]);
-            networks->addNetwork(grid1[j]);
+            networkAlpha1->addNetwork(grid1[j]);
+            networkAlpha2->addNetwork(grid2[j]);
         }
         grid1[0]->setDebug(true);
     }
@@ -175,6 +179,8 @@ void DisplayModel::shutdown()
 {
     printf("Shutting Down model\n");
     networks->doShutdown();
+    networkAlpha1->doShutdown();
+    networkAlpha2->doShutdown();
 }
 
 bool DisplayModel::isSkipTimeCheck()

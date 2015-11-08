@@ -9,8 +9,6 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-int E131Network::fd = 0;
-
 
 E131Network::E131Network(char *ipAddr, int universeNumber, int numChannels)
 {
@@ -18,6 +16,7 @@ E131Network::E131Network(char *ipAddr, int universeNumber, int numChannels)
     this->universe = universeNumber;
     this->debug = false;
     this->isShutdown = false;
+    this->fd = 0;
 
     if (universeNumber == 0 || universeNumber >= 64000)
     {
@@ -254,10 +253,11 @@ void E131Network::setShutdown(bool val) {
     xNetwork_E131_changed = true;
 }
 
-void E131Network::doUpdate()
+bool E131Network::doUpdate()
 {
+    bool change = false;
     //dtor
-    if (xNetwork_E131_changed || skipCount > 500)  // SKip Level is very dependant on Time bewteen updates.  Currently 50ms
+    if (xNetwork_E131_changed || skipCount > 500 || isShutdown)  // SKip Level is very dependant on Time bewteen updates.  Currently 50ms
     {
         if (this->debug) {
             printf("Sending Packet: IP: %s, Universe: %d, Skip: %d, seq: %d\n", this->ipAsChar, universe, skipCount, sequenceNum);
@@ -265,7 +265,6 @@ void E131Network::doUpdate()
         data[111]=sequenceNum;
         if (this->isShutdown) {
             // set all outputs to zero
-            printf("IS SHUTDOWN\n");
             for (int i = 126; i < 512+126; i++){
                 data[i] = 0;
             }
@@ -275,6 +274,7 @@ void E131Network::doUpdate()
          if (sendto(fd, data, E131_PACKET_LEN - (512 - num_channels), 0, (struct sockaddr *)&remoteaddr, slen)==-1) {
             throw "Error during sentdto in E1.31";
 		}
+		change = true;
         sequenceNum= sequenceNum==255 ? 0 : sequenceNum+1;
         skipCount=0;
         xNetwork_E131_changed = false;
@@ -283,6 +283,8 @@ void E131Network::doUpdate()
     {
         skipCount++;
     }
+
+    return change;
 }
 
 RGBLight* E131Network::getRGB(int start)

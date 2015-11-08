@@ -35,16 +35,17 @@ void LORNetwork::setShutdown(bool val)
     //do Nothing.  LOR will shutdown Auotmatically
 }
 
-void LORNetwork::doUpdate()
+bool LORNetwork::doUpdate()
 {
     using namespace std;
     struct timespec ts;
     long diff = 0;
     clock_gettime(CLOCK_MONOTONIC_RAW, &ts);
     diff = (ts.tv_sec - last_ts.tv_sec) * 1000LL + ((ts.tv_nsec - last_ts.tv_nsec) /1000000LL);
+    bool change = false;
     if ((diff < 0) || diff > 400) //400 ms
     {
-
+        change = true;
         unsigned char msg[10];
         msg[0] = 0;
         msg[1] = 0xFF;
@@ -60,6 +61,7 @@ void LORNetwork::doUpdate()
         last_ts.tv_nsec = ts.tv_nsec;
         last_ts.tv_sec = ts.tv_sec;
     }
+    return change;
 }
 
 Bulb* LORNetwork::getBulb(int device, int channel)

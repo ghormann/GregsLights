@@ -15,7 +15,7 @@ class LORNetwork : public LightNetwork
 public:
     LORNetwork(char * deviceName, bool sendData);
     Bulb* getBulb(int device, int channel);
-    void doUpdate();
+    bool doUpdate();
     void setShutdown(bool val);
     virtual ~LORNetwork();
     SerialPort* serptr;
