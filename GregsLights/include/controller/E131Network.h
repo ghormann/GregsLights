@@ -19,7 +19,7 @@ class E131Network : public LightNetwork
         E131Network(char *ipAddr, int universeNumber, int numChannels);
         virtual ~E131Network();
         void setIntensity(int id, unsigned char pct);
-        bool doUpdate();
+        bool doUpdate(bool force);
         void setShutdown(bool val);
         void setDebug(bool val);
         RGBLight* getRGB(int start);
@@ -30,7 +30,6 @@ class E131Network : public LightNetwork
         int fd;
         unsigned char data[E131_PACKET_LEN];
         unsigned char sequenceNum;
-        int skipCount;
         bool xNetwork_E131_changed;
         bool debug;
         bool isShutdown;
@@ -38,6 +37,7 @@ class E131Network : public LightNetwork
         int universe;
         char *ipAsChar;
 };
+
 
 class E131Bulb : public FadeableBulb
 {

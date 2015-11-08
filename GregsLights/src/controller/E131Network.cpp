@@ -31,7 +31,6 @@ E131Network::E131Network(char *ipAddr, int universeNumber, int numChannels)
 
     memset(data,0,sizeof(data));
     sequenceNum=0;
-    skipCount=0;
     num_channels=numChannels;
     xNetwork_E131_changed = false;
     unsigned char univHi = universeNumber >> 8;   // Universe Number (high)
@@ -253,14 +252,14 @@ void E131Network::setShutdown(bool val) {
     xNetwork_E131_changed = true;
 }
 
-bool E131Network::doUpdate()
+bool E131Network::doUpdate(bool force)
 {
-    bool change = false;
+    bool change = force;
     //dtor
-    if (xNetwork_E131_changed || skipCount > 500 || isShutdown)  // SKip Level is very dependant on Time bewteen updates.  Currently 50ms
+    if (xNetwork_E131_changed || force|| isShutdown)  // SKip Level is very dependant on Time bewteen updates.  Currently 50ms
     {
         if (this->debug) {
-            printf("Sending Packet: IP: %s, Universe: %d, Skip: %d, seq: %d\n", this->ipAsChar, universe, skipCount, sequenceNum);
+            printf("Sending Packet: IP: %s, Universe: %d, force: %d, seq: %d\n", this->ipAsChar, universe, force, sequenceNum);
         }
         data[111]=sequenceNum;
         if (this->isShutdown) {
@@ -276,12 +275,7 @@ bool E131Network::doUpdate()
 		}
 		change = true;
         sequenceNum= sequenceNum==255 ? 0 : sequenceNum+1;
-        skipCount=0;
         xNetwork_E131_changed = false;
-    }
-    else
-    {
-        skipCount++;
     }
 
     return change;

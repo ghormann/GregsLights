@@ -35,14 +35,14 @@ void LORNetwork::setShutdown(bool val)
     //do Nothing.  LOR will shutdown Auotmatically
 }
 
-bool LORNetwork::doUpdate()
+bool LORNetwork::doUpdate(bool force)
 {
     using namespace std;
     struct timespec ts;
     long diff = 0;
     clock_gettime(CLOCK_MONOTONIC_RAW, &ts);
     diff = (ts.tv_sec - last_ts.tv_sec) * 1000LL + ((ts.tv_nsec - last_ts.tv_nsec) /1000000LL);
-    bool change = false;
+    bool change = force;
     if ((diff < 0) || diff > 400) //400 ms
     {
         change = true;

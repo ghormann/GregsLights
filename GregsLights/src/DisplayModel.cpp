@@ -22,12 +22,19 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
         messages[i][0] = 0;
     }
 
-    //
-    networks = new NetworkCollection("Normal");
-    networkAlpha1 = new NetworkCollection("Alpha1");
-    networkAlpha2 = new NetworkCollection("Alpha2");
-    networkAlpha1->setControllerLimits(6,25);
-    networkAlpha2->setControllerLimits(6,25);
+/*
+ * msBetween: Millisonds between checking for updates (Tick)
+ * maxTicks: Max number of updates skipped before force
+ * maxBeforeSleep: Max Universes updated before taking an extra sleep
+ * extraSleepMs: Duration (MS) of sleep when MaxBeforeSleep hit.
+ */
+    networks = new NetworkCollection("Normal", 10,100,MAX_LIGHT_NETWORKS,1);
+    // name, 5, 2, 6, 15 is "OK" for Alpha Pix.
+    // name: 5,2,6,5 I Fairly good.
+    networkAlpha1 = new NetworkCollection("Alpha1",5,2,6,5);
+    networkAlpha2 = new NetworkCollection("Alpha2",5,2,6,5);
+    networkAlpha1->setControllerLimits(6,1);
+    networkAlpha2->setControllerLimits(6,1);
     OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", ACTIDONGLE, sendDMX);
     //OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", OPENDMX);
 
@@ -80,7 +87,8 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
             networkAlpha1->addNetwork(grid1[j]);
             networkAlpha2->addNetwork(grid2[j]);
         }
-        grid1[0]->setDebug(true);
+        //grid1[0]->setDebug(true);
+        //sign[0]->setDebug(true);
     }
 
     this->sign = new Sign(skipTimeCheck, newYears, sign);
@@ -181,6 +189,7 @@ void DisplayModel::shutdown()
     networks->doShutdown();
     networkAlpha1->doShutdown();
     networkAlpha2->doShutdown();
+    sleep(2); // Give system time to clean up
 }
 
 bool DisplayModel::isSkipTimeCheck()

@@ -62,9 +62,9 @@ Bulb* OpenDMXNetwork::getBulb(int channel)
 }
 
 /*
- * THis function must be called on a timer to preform updates
+ * THis function must be called on a timer to preform update
  */
-bool OpenDMXNetwork::doUpdate()
+bool OpenDMXNetwork::doUpdate(bool force) // force is ignored
 {
 #ifdef GJH_DEBUG
     char greg[600];

@@ -23,7 +23,7 @@ public:
     OpenDMXNetwork(char * deviceName, RGB_TYPE type, bool sendData);
     RGBLight* getRGB(int start);
     Bulb* getBulb(int channel);
-    bool doUpdate();
+    bool doUpdate(bool force);
     void setShutdown(bool val);
     virtual ~OpenDMXNetwork();
 protected:
