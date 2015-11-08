@@ -5,63 +5,126 @@
 #include "RGBPicture.h"
 
 
-LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[]) : GenericGrid(LGRID_PIXAL_WIDTH,LGRID_PIXAL_HEIGHT,LGRID_DUMMY_WIDTH,LGRID_DUMMY_HEIGHT, skipTime, newYears)
+LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[], E131Network *net2[]) : GenericGrid(LGRID_PIXAL_WIDTH,LGRID_PIXAL_HEIGHT,LGRID_DUMMY_WIDTH,LGRID_DUMMY_HEIGHT, skipTime, newYears)
 {
     //ctor
     sprintf(message, "Booting up: Grid");
 
     int network = 0;
     int x = 0;
-    int y = 0;
-    int xmod = 0;
+    int y = LGRID_PIXAL_HEIGHT -1;
     int networkPixal = 0;
-    int pos;
-    // TODO: his really needs changed, but for testing it is good enough
-    for (x =0; x < LGRID_PIXAL_WIDTH; x++)
-    {
-        for (y = 0; y < LGRID_PIXAL_HEIGHT; y++)
-        {
-            xmod = x%2;
-            if (xmod == 1)
-            {
-                pos = x * LGRID_PIXAL_HEIGHT + y;
-            }
-            else
-            {
-                pos = x*LGRID_PIXAL_HEIGHT + (LGRID_PIXAL_HEIGHT-1) - y;
-            }
+    int dir = -1;  /* 1 = Down, -1 = up */
+    int stop1 = 0;
+    int stop2 = 0;
 
-            if (pos < LGRID_TOTAL_PIXALS - (640*4)) {
-                // In first half
-                network = pos/170;
-                networkPixal = pos%170;
-            } else {
-                network = 12;
-                networkPixal = 12;
-            }
-            printf("x: %d, y: %d, network: %d, networkPixal: %d, pos: %d\n", x,y,network,networkPixal, pos);
-            this->pixals[x * LGRID_PIXAL_HEIGHT + y] = net[network]->getRGB(networkPixal*3);
-        }
-    }
     /*
+     * Remove this when done
+     */
+     for (int i = 0; i < LGRID_TOTAL_PIXALS; i++)
+     {
+        this->pixals[i] = NULL;
+     }
+
+    /*
+     * Do the first Controller forward
+     */
+    for (int i = 0; i < (LGRID_TOTAL_PIXALS - (650*4)); i++)
+    {
+        if (y == LGRID_PIXAL_HEIGHT)
+        {
+            x++;
+            dir = -1;
+            --y;
+        }
+        else if (y == -1)
+        {
+            x++;
+            dir = 1;
+            y = 0;
+        }
+        if (i == 650 || i == 650*2 || i == 650*3 )
+        {
+            //printf("CHANGE 1\n");
+            ++network;
+            networkPixal = 0;
+        }
+        else if (networkPixal == 170)
+        {
+            //printf("CHANGE 2\n");
+            networkPixal = 0;
+            ++network;
+        }
+
+        //printf("x: %d, y: %d, network: %d, networkPixal: %d, i: %d\n", x,y,network,networkPixal, i);
+        this->pixals[x * LGRID_PIXAL_HEIGHT + y] = net[network]->getRGB(networkPixal*3);
+        stop1 = x * LGRID_PIXAL_HEIGHT + y;
+        y += dir;
+        ++networkPixal;
+    }
+
+    /*
+     * Do the last Controller backwards
+     */
+    x= LGRID_PIXAL_WIDTH -1;
+    y= LGRID_PIXAL_HEIGHT-1;
+    dir = -1;
+    network = 0;
+    networkPixal = 0;
+    int counter = 0;
+    for (int i = LGRID_TOTAL_PIXALS-1; i >= (LGRID_TOTAL_PIXALS - (650*4)); i--)
+    {
+        if (y == LGRID_PIXAL_HEIGHT)
+        {
+            x--;
+            dir = -1;
+            --y;
+        }
+        else if (y == -1)
+        {
+            x--;
+            dir = 1;
+            y = 0;
+        }
+        ++counter;
+        if (counter == 651 || counter == 650*2+1 || counter == 650*3+1 )       {
+            //printf("CHANGE A, %d\n", counter);
+            ++network;
+            networkPixal = 0;
+        }
+        else if (networkPixal == 170)
+        {
+            //printf("CHANGE B\n");
+            networkPixal = 0;
+            ++network;
+        }
+        //printf("x: %d, y: %d, network: %d, networkPixal: %d - BACKWARDS\n", x,y,network,networkPixal);
+        this->pixals[x * LGRID_PIXAL_HEIGHT + y] = net2[network]->getRGB(networkPixal*3);
+        stop2 = x * LGRID_PIXAL_HEIGHT + y;
+        y += dir;
+        ++networkPixal;
+
+    }
+
+
+    // Check and make sure everything is set
     for (int i = 0; i < LGRID_TOTAL_PIXALS; i++)
     {
-        if (cnt==170)
-        {
-            cnt = 0;
-            ++network;
-            //printf("i: %d, CNT: %d, network: %d\n", i,cnt,network);
+        if (pixals[i] == NULL) {
+            printf("WARNING: %d is NULL\n", i);
         }
-        if (i == 2700)   // Force network swtich
-        {
-            cnt = 0;
-            ++network;
-            //printf("i: %d, CNT: %d, network: %d\n", i,cnt,network);
-        }
-        this->pixals[i] = net[network]->getRGB(cnt*3);
-        ++cnt;
     }
-    */
+    //printf("All Good\n");
+
+    // Check it
+    for (int i =0; i < LGRID_TOTAL_PIXALS; i++)
+    {
+        //printf("Testing: %d\n", i);
+        this->pixals[i]->set(0,0,0);
+    }
+    printf("STop1: %d, stop2: %d\n", stop1, stop2);
+    this->pixals[stop1]->set(255,0,0);
+    this->pixals[stop2]->set(0,255,0);
 
     // Setup Dummy Pials
     for (int i = 0 ; i < (LGRID_DUMMY_HEIGHT * LGRID_DUMMY_WIDTH); i++)
@@ -121,8 +184,25 @@ void LargeGrid::test()
 {
     int i;
 
+   // Make onne line white
+    while(0)
+    {
+        int x = 80;
+        for (int y = 0; y < LGRID_PIXAL_HEIGHT; y++)
+        {
+            this->getPixal(x,y)->set(RGBColor::WHITE);
+            //gjhSleep(1.0);
+
+        }
+        gjhSleep(2.0);
+        for(int y = 0; y< LGRID_PIXAL_HEIGHT; y++)
+        {
+            this->getPixal(x,y)->set(RGBColor::BLACK);
+        }
+    }
+
     // show lines
-    while(1)
+    while(0)
     {
         for (int i = 0; i < LGRID_PIXAL_WIDTH; i++)
         {

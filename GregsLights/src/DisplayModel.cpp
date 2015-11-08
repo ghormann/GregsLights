@@ -50,14 +50,14 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
 
     char *gridIP1 = "192.168.0.230";  //13 * 170 or 2720 Pixals(2196 used)
     char *gridIP2 = "192.168.0.231";  // 16 *170 or 2210 Pixals (2700 Used for Grid )
-    E131Network *grid[GRID_E11_COUNT];
+    E131Network *grid1[GRID_E11_COUNT];
+    E131Network *grid2[GRID_E11_COUNT];
     int universe = 1;
     for (int i = 0; i < GRID_E11_COUNT; i++)
     {
-        if (i == 13) {
-            universe = 1;
-        }
-        grid[i] = new E131Network( (i < 13? gridIP1 : gridIP2 ),universe++,512);
+        grid1[i] = new E131Network( (gridIP1 ),universe,512);
+        grid2[i] = new E131Network( (gridIP2 ),universe,512);
+        ++universe;
     }
 
     E131Network *clockE131 = new E131Network(signIP, 100, 512); // Universe 100 of Sign Controller
@@ -71,11 +71,14 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
             networks->addNetwork(sign[j]);
 
         for (int j=0; j<GRID_E11_COUNT; j++)
-            networks->addNetwork(grid[j]);
+        {
+            networks->addNetwork(grid1[j]);
+            networks->addNetwork(grid2[j]);
+        }
     }
 
     this->sign = new Sign(skipTimeCheck, newYears, sign);
-    this->grid = new LargeGrid(skipTimeCheck, newYears,grid);
+    this->grid = new LargeGrid(skipTimeCheck, newYears,grid1, grid2);
 
     //set up houses
     house[1] = dmx->getRGB(13);
@@ -166,7 +169,8 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
 
 }
 
-bool DisplayModel::isSkipTimeCheck() {
+bool DisplayModel::isSkipTimeCheck()
+{
     return this->skipTimeCheck;
 }
 
@@ -223,7 +227,8 @@ RGBLight* DisplayModel::getHouse(int id)
     return house[id];
 }
 
-Snowmen * DisplayModel::getSnowmen() {
+Snowmen * DisplayModel::getSnowmen()
+{
     return snowmen;
 }
 
