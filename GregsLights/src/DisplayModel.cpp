@@ -67,13 +67,17 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
         networks->addNetwork(clockE131);
         //networks->addNetwork(dmx);
         //networks->addNetwork(lor);
-        for (int j = 0; j< SIGN_E11_COUNT; j++)
+        for (int j = 0; j< SIGN_E11_COUNT; j++) {
             networks->addNetwork(sign[j]);
+        }
 
         for (int j=0; j<GRID_E11_COUNT; j++)
         {
-            networks->addNetwork(grid1[j]);
             networks->addNetwork(grid2[j]);
+        }
+        for (int j=0; j<14; j++)  // Doesn't use them all
+        {
+            networks->addNetwork(grid1[j]);
         }
     }
 

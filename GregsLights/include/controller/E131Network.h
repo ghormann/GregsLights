@@ -31,6 +31,8 @@ class E131Network : public LightNetwork
         int skipCount;
         bool xNetwork_E131_changed;
         int num_channels;
+        int universe;
+        char *ipAsChar;
 };
 
 class E131Bulb : public FadeableBulb

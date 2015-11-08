@@ -12,6 +12,8 @@
 
 E131Network::E131Network(char *ipAddr, int universeNumber, int numChannels)
 {
+    this->ipAsChar = ipAddr;
+    this->universe = universeNumber;
 
     if (universeNumber == 0 || universeNumber >= 64000)
     {
@@ -110,16 +112,16 @@ E131Network::E131Network(char *ipAddr, int universeNumber, int numChannels)
     data[41]=0x00;
     data[42]=0x00;
     data[43]=0x02;
-    data[44]='x';   // Source Name (64 bytes)
-    data[45]='L';
-    data[46]='i';
+    data[44]='G';   // Source Name (64 bytes)
+    data[45]='r';
+    data[46]='e';
     data[47]='g';
-    data[48]='h';
-    data[49]='t';
-    data[50]='s';
-    data[51]=0x00;
-    data[52]=0x00;
-    data[53]=0x00;
+    data[48]='L';
+    data[49]='i';
+    data[50]='g';
+    data[51]='h';
+    data[52]='t';
+    data[53]='s';
     data[54]=0x00;
     data[55]=0x00;
     data[56]=0x00;
@@ -240,8 +242,9 @@ void E131Network::setIntensity(int id, unsigned char pct) {
 void E131Network::doUpdate()
 {
     //dtor
-    if (xNetwork_E131_changed || skipCount > 50)  // SKip Level is very dependant on Time bewteen updates.  Currently 50ms
+    if (xNetwork_E131_changed || skipCount > 0)  // SKip Level is very dependant on Time bewteen updates.  Currently 50ms
     {
+        printf("Sending Packet: IP: %s, Universe: %d, Skip: %d, seq: %d\n", this->ipAsChar, universe, skipCount, sequenceNum);
         data[111]=sequenceNum;
         int slen=sizeof(remoteaddr);
         //datagram->SendTo(remoteAddr, data, E131_PACKET_LEN - (512 - num_channels));

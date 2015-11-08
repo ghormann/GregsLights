@@ -22,7 +22,7 @@ void * update_thread(void *args)
     while (1)
     {
         ptr->doUpdate();
-        usleep(50 * 1000); // 50ms
+        //usleep(5 * 1000); // 50ms
     }
 
     return NULL;
@@ -34,6 +34,8 @@ void NetworkCollection::doUpdate() {
     for (i = 0; i < MAX_LIGHT_NETWORKS; i++) {
         if (networks[i] != 0) {
             networks[i]->doUpdate();
+            //usleep(1*1000); // Testing for slow controller
+            usleep(1000); // 1 MS between Univesers
         }
     }
 

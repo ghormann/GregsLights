@@ -15,8 +15,6 @@ LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[], E131Networ
     int y = LGRID_PIXAL_HEIGHT -1;
     int networkPixal = 0;
     int dir = -1;  /* 1 = Down, -1 = up */
-    int stop1 = 0;
-    int stop2 = 0;
 
     /*
      * Remove this when done
@@ -58,7 +56,6 @@ LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[], E131Networ
 
         //printf("x: %d, y: %d, network: %d, networkPixal: %d, i: %d\n", x,y,network,networkPixal, i);
         this->pixals[x * LGRID_PIXAL_HEIGHT + y] = net[network]->getRGB(networkPixal*3);
-        stop1 = x * LGRID_PIXAL_HEIGHT + y;
         y += dir;
         ++networkPixal;
     }
@@ -100,7 +97,6 @@ LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[], E131Networ
         }
         //printf("x: %d, y: %d, network: %d, networkPixal: %d - BACKWARDS\n", x,y,network,networkPixal);
         this->pixals[x * LGRID_PIXAL_HEIGHT + y] = net2[network]->getRGB(networkPixal*3);
-        stop2 = x * LGRID_PIXAL_HEIGHT + y;
         y += dir;
         ++networkPixal;
 
@@ -122,9 +118,6 @@ LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[], E131Networ
         //printf("Testing: %d\n", i);
         this->pixals[i]->set(0,0,0);
     }
-    printf("STop1: %d, stop2: %d\n", stop1, stop2);
-    this->pixals[stop1]->set(255,0,0);
-    this->pixals[stop2]->set(0,255,0);
 
     // Setup Dummy Pials
     for (int i = 0 ; i < (LGRID_DUMMY_HEIGHT * LGRID_DUMMY_WIDTH); i++)
@@ -184,6 +177,25 @@ void LargeGrid::test()
 {
     int i;
 
+    //Roate Colors
+    while(1){
+        for (int x = 0; x < LGRID_PIXAL_WIDTH; x++) {
+            for (int y = 0; y < LGRID_PIXAL_HEIGHT; y++) {
+                this->getPixal(x,y)->set(25,0,0);
+            }
+        }
+
+        sleep(2);
+
+        for (int x = 0; x < LGRID_PIXAL_WIDTH; x++) {
+            for (int y = 0; y < LGRID_PIXAL_HEIGHT; y++) {
+                this->getPixal(x,y)->set(0,25,0);
+            }
+        }
+
+        sleep(2);
+    }
+
    // Make onne line white
     while(0)
     {
@@ -202,7 +214,7 @@ void LargeGrid::test()
     }
 
     // show lines
-    while(0)
+    while(1)
     {
         for (int i = 0; i < LGRID_PIXAL_WIDTH; i++)
         {
