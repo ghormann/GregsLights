@@ -5,6 +5,8 @@ class LightNetwork
 {
     public:
         virtual void doUpdate() = 0;
+        virtual void setShutdown(bool val) = 0;
+
     protected:
     private:
 };

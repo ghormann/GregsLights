@@ -16,6 +16,7 @@ public:
     LORNetwork(char * deviceName, bool sendData);
     Bulb* getBulb(int device, int channel);
     void doUpdate();
+    void setShutdown(bool val);
     virtual ~LORNetwork();
     SerialPort* serptr;
 protected:

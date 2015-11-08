@@ -71,14 +71,12 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
             networks->addNetwork(sign[j]);
         }
 
-        for (int j=0; j<GRID_E11_COUNT; j++)
+        for (int j=0; j<6; j++) // GRID_E11_COUNT
         {
             networks->addNetwork(grid2[j]);
-        }
-        for (int j=0; j<14; j++)  // Doesn't use them all
-        {
             networks->addNetwork(grid1[j]);
         }
+        grid1[0]->setDebug(true);
     }
 
     this->sign = new Sign(skipTimeCheck, newYears, sign);
@@ -171,6 +169,12 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     this->clock->setSpecial(5, clockE131->getBulb(i+26));
     this->clock->setSpecial(6, clockE131->getBulb(i+27));
 
+}
+
+void DisplayModel::shutdown()
+{
+    printf("Shutting Down model\n");
+    networks->doShutdown();
 }
 
 bool DisplayModel::isSkipTimeCheck()

@@ -24,6 +24,8 @@ public:
     BasicGLPane(wxFrame* parent, int* args);
     virtual ~BasicGLPane();
 
+    void shutdownShow();
+
     void resized(wxSizeEvent& evt);
 
     int getWidth();

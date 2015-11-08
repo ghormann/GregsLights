@@ -20,16 +20,20 @@ class E131Network : public LightNetwork
         virtual ~E131Network();
         void setIntensity(int id, unsigned char pct);
         void doUpdate();
+        void setShutdown(bool val);
+        void setDebug(bool val);
         RGBLight* getRGB(int start);
         Bulb* getBulb(int channel);
     protected:
     private:
         struct sockaddr_in myaddr, remoteaddr;
-        int fd;
+        static int fd;
         unsigned char data[E131_PACKET_LEN];
         unsigned char sequenceNum;
         int skipCount;
         bool xNetwork_E131_changed;
+        bool debug;
+        bool isShutdown;
         int num_channels;
         int universe;
         char *ipAsChar;

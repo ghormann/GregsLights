@@ -185,7 +185,7 @@ void LargeGrid::test()
             }
         }
 
-        sleep(2);
+        gjhSleep(1.5);
 
         for (int x = 0; x < LGRID_PIXAL_WIDTH; x++) {
             for (int y = 0; y < LGRID_PIXAL_HEIGHT; y++) {
@@ -193,7 +193,7 @@ void LargeGrid::test()
             }
         }
 
-        sleep(2);
+        gjhSleep(1.5);
     }
 
    // Make onne line white

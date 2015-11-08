@@ -641,10 +641,10 @@ void Sign::test()
     while(1) {
         this->setDummyBackground(RGBColor::GREEN);
         this->setDisplayPosition(0,0);
-        sleep(2);
+        sleep(10);
         this->setDummyBackground(RGBColor::RED);
         this->setDisplayPosition(0,0);
-        sleep(2);
+        sleep(10);
     }
 
     while(0)

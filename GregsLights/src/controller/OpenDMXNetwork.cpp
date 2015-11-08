@@ -48,6 +48,11 @@ OpenDMXNetwork::OpenDMXNetwork(char * deviceName,RGB_TYPE type, bool sendData)
 //printf("Opened: %s\n", deviceName);
 }
 
+void OpenDMXNetwork::setShutdown(bool val)
+{
+    // for now, do Nothing.
+}
+
 Bulb* OpenDMXNetwork::getBulb(int channel)
 {
     if (channel < 0 || channel > 512)

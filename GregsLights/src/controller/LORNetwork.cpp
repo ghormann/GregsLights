@@ -30,6 +30,11 @@ LORNetwork::~LORNetwork()
     //dtor
 }
 
+void LORNetwork::setShutdown(bool val)
+{
+    //do Nothing.  LOR will shutdown Auotmatically
+}
+
 void LORNetwork::doUpdate()
 {
     using namespace std;

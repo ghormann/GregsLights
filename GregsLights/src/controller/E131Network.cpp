@@ -9,11 +9,15 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
+int E131Network::fd = 0;
+
 
 E131Network::E131Network(char *ipAddr, int universeNumber, int numChannels)
 {
     this->ipAsChar = ipAddr;
     this->universe = universeNumber;
+    this->debug = false;
+    this->isShutdown = false;
 
     if (universeNumber == 0 || universeNumber >= 64000)
     {
@@ -50,6 +54,7 @@ E131Network::E131Network(char *ipAddr, int universeNumber, int numChannels)
         throw  "inet_aton() failed for remote addr\n";
     }
 
+    if (fd == 0) {
 
     // Setup Socket
     if ((fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
@@ -60,6 +65,7 @@ E131Network::E131Network(char *ipAddr, int universeNumber, int numChannels)
     if(bind(fd,( struct sockaddr *) &myaddr, sizeof(myaddr))<0)
     {
         throw "Bind to Socked failed";
+    }
     }
 
 //        char *buf = "This is junk";
@@ -239,13 +245,31 @@ void E131Network::setIntensity(int id, unsigned char pct) {
     xNetwork_E131_changed = true;
 }
 
+void E131Network::setDebug(bool val) {
+    this->debug = val;
+}
+
+void E131Network::setShutdown(bool val) {
+    this->isShutdown = val;
+    xNetwork_E131_changed = true;
+}
+
 void E131Network::doUpdate()
 {
     //dtor
-    if (xNetwork_E131_changed || skipCount > 0)  // SKip Level is very dependant on Time bewteen updates.  Currently 50ms
+    if (xNetwork_E131_changed || skipCount > 500)  // SKip Level is very dependant on Time bewteen updates.  Currently 50ms
     {
-        printf("Sending Packet: IP: %s, Universe: %d, Skip: %d, seq: %d\n", this->ipAsChar, universe, skipCount, sequenceNum);
+        if (this->debug) {
+            printf("Sending Packet: IP: %s, Universe: %d, Skip: %d, seq: %d\n", this->ipAsChar, universe, skipCount, sequenceNum);
+        }
         data[111]=sequenceNum;
+        if (this->isShutdown) {
+            // set all outputs to zero
+            printf("IS SHUTDOWN\n");
+            for (int i = 126; i < 512+126; i++){
+                data[i] = 0;
+            }
+        }
         int slen=sizeof(remoteaddr);
         //datagram->SendTo(remoteAddr, data, E131_PACKET_LEN - (512 - num_channels));
          if (sendto(fd, data, E131_PACKET_LEN - (512 - num_channels), 0, (struct sockaddr *)&remoteaddr, slen)==-1) {

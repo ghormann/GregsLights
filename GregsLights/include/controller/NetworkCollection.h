@@ -20,6 +20,7 @@ class NetworkCollection
         void addNetwork( LightNetwork *net);
         void removeNetwork ( LightNetwork *net);
         void doUpdate();
+        void doShutdown();
     protected:
     private:
         LightNetwork* networks[50];

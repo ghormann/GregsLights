@@ -24,6 +24,7 @@ public:
     RGBLight* getRGB(int start);
     Bulb* getBulb(int channel);
     void doUpdate();
+    void setShutdown(bool val);
     virtual ~OpenDMXNetwork();
 protected:
 private:

@@ -18,6 +18,7 @@
 class MyApp: public wxApp
 {
     virtual bool OnInit();
+    virtual int OnExit();
 
     wxFrame *frame;
     BasicGLPane * glPane;
@@ -26,6 +27,13 @@ public:
 };
 
 IMPLEMENT_APP(MyApp)
+
+int MyApp::OnExit()
+{
+    printf("On Exit in myApp\n");
+    glPane->shutdownShow();
+    return 0;
+}
 
 
 bool MyApp::OnInit()
@@ -72,6 +80,10 @@ void BasicGLPane::mouseLeftWindow(wxMouseEvent& event) {}
 void BasicGLPane::keyPressed(wxKeyEvent& event) {}
 void BasicGLPane::keyReleased(wxKeyEvent& event) {}
 
+void BasicGLPane::shutdownShow() {
+    printf("Shutting down show\n");
+    model->shutdown();
+}
 
 BasicGLPane::BasicGLPane(wxFrame* parent, int* args) :
     wxGLCanvas(parent, wxID_ANY, args, wxDefaultPosition, wxDefaultSize, wxFULL_REPAINT_ON_RESIZE)
