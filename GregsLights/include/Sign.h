@@ -8,7 +8,7 @@
 
 #define SIGN_OPTIONS 10
 #define SIGN_E11_COUNT 12
-#define SIGN_WIDTH 99  /* Was 48 */
+#define SIGN_WIDTH 96  /* Was 48 */
 #define SIGN_HEIGHT 20
 #define TOTAL_SIGN_PIXALS SIGN_WIDTH * SIGN_HEIGHT
 #define SNOWBALL_OFFSET SIGN_WIDTH/4
