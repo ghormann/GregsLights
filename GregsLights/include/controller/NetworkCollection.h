@@ -36,6 +36,7 @@ class NetworkCollection
         int maxTicks;
         int maxBeforeSleep;
         int extraSleepMs;
+        int startAt;
         char name[80];
         pthread_t serial_t;  /* Thread for writing to serial interface */
         pthread_t bulb_t;     /* Thread for refershing bulbs */

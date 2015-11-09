@@ -22,6 +22,7 @@ NetworkCollection::NetworkCollection(char *name, int msBetween, int maxTicks,int
         networks[i] = 0;
         counts[i] = 0;
     }
+    this->startAt = 0;
     this->msBetween = msBetween;
     this->maxTicks = maxTicks;
     this->extraSleepMs = extraSleepMs;   // Duration of sleep if too may updates (in ms)
@@ -68,15 +69,17 @@ void NetworkCollection::doUpdate()
     int i = 0;
     int change = 0;
     bool force = false;
+    //printf("Name: %s is starting at %d\n", name, startAt);
     for (i = 0; i < MAX_LIGHT_NETWORKS; i++)
     {
-        if (networks[i] != 0)
+        int netId = (i+startAt)%MAX_LIGHT_NETWORKS;
+        if (networks[netId] != 0)
         {
-            force = (counts[i] > maxTicks);
-            if (networks[i]->doUpdate(force))
+            force = (counts[netId] > maxTicks);
+            if (networks[netId]->doUpdate(force))
             {
                 ++change;
-                counts[i] = 0;
+                counts[netId] = 0;
                 if (++change > maxBeforeSleep)
                 {
                     //printf("Sleeping longer for %s: %dms\n", this->name, extraSleepMs);
@@ -84,10 +87,14 @@ void NetworkCollection::doUpdate()
                     usleep(extraSleepMs*1000);
                 }
             } else {
-                ++(counts[i]);
+                ++(counts[netId]);
+            }
+            if (counts[netId] > 9999999) {
+                counts[netId] = 0; // Prevent overflow
             }
         }
     }
+    startAt = (startAt+maxBeforeSleep-1)%16;
 }
 
 void NetworkCollection::doShutdown()

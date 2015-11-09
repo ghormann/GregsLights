@@ -638,7 +638,8 @@ void Sign::testLines()
 void Sign::test()
 {
 
-    while(1) {
+    //ALternate Green and Red
+    while(0) {
         this->setDummyBackground(RGBColor::GREEN);
         this->setDisplayPosition(0,0);
         sleep(10);

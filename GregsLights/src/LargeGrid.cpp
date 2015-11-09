@@ -19,10 +19,10 @@ LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[], E131Networ
     /*
      * Remove this when done
      */
-     for (int i = 0; i < LGRID_TOTAL_PIXALS; i++)
-     {
+    for (int i = 0; i < LGRID_TOTAL_PIXALS; i++)
+    {
         this->pixals[i] = NULL;
-     }
+    }
 
     /*
      * Do the first Controller forward
@@ -84,7 +84,8 @@ LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[], E131Networ
             y = 0;
         }
         ++counter;
-        if (counter == 651 || counter == 650*2+1 || counter == 650*3+1 )       {
+        if (counter == 651 || counter == 650*2+1 || counter == 650*3+1 )
+        {
             //printf("CHANGE A, %d\n", counter);
             ++network;
             networkPixal = 0;
@@ -106,7 +107,8 @@ LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[], E131Networ
     // Check and make sure everything is set
     for (int i = 0; i < LGRID_TOTAL_PIXALS; i++)
     {
-        if (pixals[i] == NULL) {
+        if (pixals[i] == NULL)
+        {
             printf("WARNING: %d is NULL\n", i);
         }
     }
@@ -172,23 +174,67 @@ RGBLight *LargeGrid::getBoard(int x, int y)
     return board[pos];
 }
 
+void LargeGrid::candyCane()
+{
+    sprintf(message, "Psychedelic Candy Cane");
+
+    RGBColor *d[25];
+    d[0]=d[1]=d[2]=d[3]=RGBColor::RED;
+    d[4]=d[5]=d[6]=d[7]=RGBColor::GREEN;
+    d[8]=d[9]=d[10]=d[11]=RGBColor::BLUE;
+    d[12]=d[13]=d[14]=d[15]=RGBColor::PURPLE;
+    d[16]=d[17]=d[18]=d[19]=RGBColor::ORANGE;
+
+    int i = 150;
+
+    while(--i > 0)
+    {
+        for (int x = 0; x < LGRID_PIXAL_WIDTH; x++)
+        {
+            for (int y = 0; y < LGRID_PIXAL_HEIGHT; y++)
+            {
+                int distance = gjhDistance(LGRID_PIXAL_WIDTH/2, LGRID_PIXAL_HEIGHT/2, x, y);
+                RGBColor *color = d[(distance+i)%20];
+                getBoard(x,y)->set(color);
+            }
+        }
+        //drawSpecial(SIGN_WIDTH/2-7,0,GRID_CANDY);
+        setDisplayPosition(0,0);
+        gjhSleep(0.05);
+    }
+    for (int x=0; x<LGRID_PIXAL_WIDTH; x++)
+    {
+        for (int y=0; y<LGRID_PIXAL_HEIGHT; y++)
+        {
+            this->getPixal(x,y)->fadeTo(0,0,0,2);
+        }
+    }
+    sleep(2);
+}
+
+
 
 void LargeGrid::test()
 {
     int i;
 
     //Roate Colors
-    while(1){
-        for (int x = 0; x < LGRID_PIXAL_WIDTH; x++) {
-            for (int y = 0; y < LGRID_PIXAL_HEIGHT; y++) {
+    while(0)
+    {
+        for (int x = 0; x < LGRID_PIXAL_WIDTH; x++)
+        {
+            for (int y = 0; y < LGRID_PIXAL_HEIGHT; y++)
+            {
                 this->getPixal(x,y)->set(25,0,0);
             }
         }
 
         gjhSleep(1.5);
 
-        for (int x = 0; x < LGRID_PIXAL_WIDTH; x++) {
-            for (int y = 0; y < LGRID_PIXAL_HEIGHT; y++) {
+        for (int x = 0; x < LGRID_PIXAL_WIDTH; x++)
+        {
+            for (int y = 0; y < LGRID_PIXAL_HEIGHT; y++)
+            {
                 this->getPixal(x,y)->set(0,25,0);
             }
         }
@@ -196,7 +242,7 @@ void LargeGrid::test()
         gjhSleep(1.5);
     }
 
-   // Make onne line white
+    // Make onne line white
     while(0)
     {
         int x = 80;
@@ -214,7 +260,7 @@ void LargeGrid::test()
     }
 
     // show lines
-    while(1)
+    while(0)
     {
         for (int i = 0; i < LGRID_PIXAL_WIDTH; i++)
         {
@@ -241,6 +287,11 @@ void LargeGrid::test()
         }
     }
 
+    while(0)
+    {
+        candyCane();
+    }
+
     /*
      * Test Animated Gif
      */
@@ -254,30 +305,34 @@ void LargeGrid::test()
             sprintf(filename,"/home/ghormann/Documents/src/gregslights/GregsLights/resources/toder_%d.png", i);
             pictures[i] = new RGBPicture(filename);
         }
-        this->setDummyBackground(RGBColor::BLACK);
         while(1)    // because images don't destory correctly
         {
-            for (int i =0; i < 4; i++)
+            candyCane();
+            this->setDummyBackground(RGBColor::BLACK);
+            for (int z = 0; z< 10; z++)     // DONT CHANGE: this is number of times to display.
             {
-                pictures[i]->getSize(picWidth,picHeight);
-                for (x = 0; x < picWidth; x++)
+                for (int i =0; i < 4; i++)
                 {
-                    for (y=0; y < picHeight; y++)
+                    pictures[i]->getSize(picWidth,picHeight);
+                    for (x = 0; x < picWidth; x++)
                     {
-                        int r,g,b;
-                        pictures[i]->getRGB(x,y,r,g,b);
-                        this->getBoard(x,y)->set(r,g,b);
+                        for (y=0; y < picHeight; y++)
+                        {
+                            int r,g,b;
+                            pictures[i]->getRGB(x,y,r,g,b);
+                            this->getBoard(x+20,y)->set(r,g,b);
+                        }
                     }
-                }
 
-                this->setDisplayPosition(0,0);
-                gjhSleep(0.2);
+                    this->setDisplayPosition(0,0);
+                    gjhSleep(0.2);
+                }
             }
         }
     }
 
     /*
-    * Test RGB Picture
+    * Test RGB Picture (Static)
     */
     while (1)
     {
@@ -288,7 +343,7 @@ void LargeGrid::test()
 
         //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/olaf64.png");
         //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/test64.png");
-        RGBPicture * picture = new RGBPicture("/home/ghormann/Documents/src/gregslights/GregsLights/resources/orig/test.png");
+        RGBPicture * picture = new RGBPicture("/home/ghormann/Documents/src/gregslights/GregsLights/resources/nativity64.png");
         picture->getSize(picWidth,picHeight);
         this->setDummyBackground(RGBColor::BLACK);
         for (x = 0; x < picWidth; x++)
@@ -310,6 +365,7 @@ void LargeGrid::test()
     }
 
 
+    // Scroll up RGB Picture
     while (1)
     {
         //
@@ -319,7 +375,7 @@ void LargeGrid::test()
 
         //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/olaf64.png");
         //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/test64.png");
-        RGBPicture * picture = new RGBPicture("/home/ghormann/Documents/src/gregslights/GregsLights/resources/orig/test.png");
+        RGBPicture * picture = new RGBPicture("/home/ghormann/Documents/src/gregslights/GregsLights/resources/olaf64.png");
         picture->getSize(picWidth,picHeight);
         this->setDummyBackground(RGBColor::BLACK);
         for (x = 0; x < picWidth; x++)
