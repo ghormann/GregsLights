@@ -24,7 +24,6 @@ public:
     void test();
     void run();
     char *getMessage();
-    void candyCane();
 protected:
 private:
     RGBLight *pixals[LGRID_TOTAL_PIXALS];

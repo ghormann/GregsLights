@@ -51,6 +51,7 @@ public:
     void countdown();
     void drawSpecial(int x, int y, GRID_SPECIAL type);
     void scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, double speed);
+    void candyCane();
 protected:
     int gridHeight;
     int gridWidth ;

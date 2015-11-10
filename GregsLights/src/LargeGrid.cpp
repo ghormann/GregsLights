@@ -174,45 +174,6 @@ RGBLight *LargeGrid::getBoard(int x, int y)
     return board[pos];
 }
 
-void LargeGrid::candyCane()
-{
-    sprintf(message, "Psychedelic Candy Cane");
-
-    RGBColor *d[25];
-    d[0]=d[1]=d[2]=d[3]=RGBColor::RED;
-    d[4]=d[5]=d[6]=d[7]=RGBColor::GREEN;
-    d[8]=d[9]=d[10]=d[11]=RGBColor::BLUE;
-    d[12]=d[13]=d[14]=d[15]=RGBColor::PURPLE;
-    d[16]=d[17]=d[18]=d[19]=RGBColor::ORANGE;
-
-    int i = 150;
-
-    while(--i > 0)
-    {
-        for (int x = 0; x < LGRID_PIXAL_WIDTH; x++)
-        {
-            for (int y = 0; y < LGRID_PIXAL_HEIGHT; y++)
-            {
-                int distance = gjhDistance(LGRID_PIXAL_WIDTH/2, LGRID_PIXAL_HEIGHT/2, x, y);
-                RGBColor *color = d[(distance+i)%20];
-                getBoard(x,y)->set(color);
-            }
-        }
-        //drawSpecial(SIGN_WIDTH/2-7,0,GRID_CANDY);
-        setDisplayPosition(0,0);
-        gjhSleep(0.05);
-    }
-    for (int x=0; x<LGRID_PIXAL_WIDTH; x++)
-    {
-        for (int y=0; y<LGRID_PIXAL_HEIGHT; y++)
-        {
-            this->getPixal(x,y)->fadeTo(0,0,0,2);
-        }
-    }
-    sleep(2);
-}
-
-
 
 void LargeGrid::test()
 {

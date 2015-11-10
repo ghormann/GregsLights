@@ -332,7 +332,7 @@ void Sign::run()
             scrollSanta();
             break;
         case 9:
-            colors();
+            candyCane();
             break;
         }
     }
@@ -565,43 +565,6 @@ void Sign::scrollSanta()
 
 }
 
-void Sign::colors()
-{
-    sprintf(message, "Psychedelic Candy Cane");
-
-    RGBColor *d[25];
-    d[0]=d[1]=d[2]=d[3]=RGBColor::RED;
-    d[4]=d[5]=d[6]=d[7]=RGBColor::GREEN;
-    d[8]=d[9]=d[10]=d[11]=RGBColor::BLUE;
-    d[12]=d[13]=d[14]=d[15]=RGBColor::PURPLE;
-    d[16]=d[17]=d[18]=d[19]=RGBColor::ORANGE;
-
-    int i = 150;
-
-    while(--i > 0)
-    {
-        for (int x = 0; x < SIGN_WIDTH; x++)
-        {
-            for (int y = 0; y < SIGN_HEIGHT; y++)
-            {
-                int distance = gjhDistance(SIGN_WIDTH/2, SIGN_HEIGHT/2, x, y);
-                RGBColor *color = d[(distance+i)%20];
-                getBoard(x,y)->set(color);
-            }
-        }
-        drawSpecial(SIGN_WIDTH/2-7,0,GRID_CANDY);
-        setDisplayPosition(0,0);
-        gjhSleep(0.05);
-    }
-    for (int x=0; x<SIGN_WIDTH; x++)
-    {
-        for (int y=0; y<SIGN_HEIGHT; y++)
-        {
-            this->getPixal(x,y)->fadeTo(0,0,0,1);
-        }
-    }
-    sleep(1);
-}
 
 void Sign::testLines()
 {
@@ -714,7 +677,7 @@ void Sign::test()
                 delete bgColor;
         */
 
-        colors();
+        candyCane();
         //flashSecondsToGo(4,1);
         //rotateSecondsToGo();
         //this->countdown();

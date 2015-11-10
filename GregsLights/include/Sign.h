@@ -38,7 +38,6 @@ class Sign: public GenericGrid
         RGBLight * getPixal(int i);
         void run();
         void scrollSanta();
-        void colors();
     protected:
         virtual RGBLight * getBoard(int x, int y);
         void rotateSecondsToGo();
