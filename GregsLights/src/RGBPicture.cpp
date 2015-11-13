@@ -1,5 +1,9 @@
-
 #include <stdlib.h>
+#include <iostream>
+#include <dirent.h>
+#include <sys/stat.h>
+
+using namespace std;
 
 #ifndef ERROR
 #define ERROR 1
@@ -9,8 +13,11 @@
 
 // Tool for Converting Images
 //convert test128.png -colorspace RGB -depth 8 -resize "64x64" test64.txt
+// make filename _%d.gif to extract
 
 #include "../include/RGBPicture.h"
+
+vector<RGBPicture> RGBPicture::allPictures;
 
 RGBPicture::RGBPicture(char *file_name)
 {
@@ -24,33 +31,71 @@ RGBPicture::RGBPicture(char *file_name)
     }
     else
     {
-        printf("Invalid image %s\n", file_name);
+        printf("Invalid image: %s\n", file_name);
         throw "Invalid file";
     }
+}
+
+vector<RGBPicture> RGBPicture::getAllPictures()
+{
+    cout << "Testing" << endl;
+    if (allPictures.size() == 0 )
+    {
+        std::string dir = std::string("/home/ghormann/Documents/src/gregslights/GregsLights/resources");
+        DIR *dp;
+        struct dirent *dirp;
+        if((dp  = opendir(dir.c_str())) == NULL)
+        {
+            cout << "Error(" << errno << ") opening " << dir << endl;
+            throw "Unable to read directory";
+        }
+
+        while ((dirp = readdir(dp)) != NULL)
+        {
+            string fullName = dir + string("/") + string(dirp->d_name);
+            struct stat s;
+            const char * dirPtr = fullName.c_str();
+            if( stat( dirPtr,&s) == 0 )
+            {
+                if( s.st_mode & S_IFREG )
+                {
+                    allPictures.push_back(RGBPicture( (char *)dirPtr));
+                }
+            }
+        }
+        closedir(dp);
+    }
+    return allPictures;
 }
 
 /*
  * Returns Width and height
  */
-void RGBPicture::getSize(int &w, int &h) {
+void RGBPicture::getSize(int &w, int &h)
+{
     w = this->width;
     h = this->height;
 }
 
 RGBPicture::~RGBPicture()
 {
-    if (allData != NULL) {
-        free(allData);
+    if (allData != NULL)
+    {
+        //TODO: Fix why this throws an error
+        //delete allData;
     }
 }
 
 
-void RGBPicture::getRGB(int x, int y, int &r, int &g, int &b) {
-    if (x >= width) {
+void RGBPicture::getRGB(int x, int y, int &r, int &g, int &b)
+{
+    if (x >= width)
+    {
         throw "X is too big";
     }
 
-    if (y >= height) {
+    if (y >= height)
+    {
         throw "Y is too big";
     }
 

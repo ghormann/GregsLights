@@ -3,6 +3,10 @@
 #include <string.h>
 #include "../include/controller/DummyBulb.h"
 #include "RGBPicture.h"
+#include <vector>
+#include <iostream>
+
+using namespace std;
 
 
 LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[], E131Network *net2[]) : GenericGrid(LGRID_PIXAL_WIDTH,LGRID_PIXAL_HEIGHT,LGRID_DUMMY_WIDTH,LGRID_DUMMY_HEIGHT, skipTime, newYears)
@@ -253,26 +257,56 @@ void LargeGrid::test()
         candyCane();
     }
 
+    // Show all Pictures
+    while(1)
+    {
+        int x, y, picWidth, picHeight;
+        std::vector<RGBPicture> allPictures = RGBPicture::getAllPictures();
+        cout << "All Pictures: "  << allPictures.size() << endl;
+        sleep(1);
+
+        for (int i=0; i < allPictures.size() ; ++i)
+        {
+            RGBPicture pict = allPictures.at(i);
+            pict.getSize(picWidth, picHeight);
+            cout << picWidth << " x " << picHeight << endl;
+            this->setDummyBackground(RGBColor::BLACK,0,0,this->gridWidth, this->gridHeight);
+            for (x = 0; x < picWidth; x++)
+            {
+                for (y=0; y < picHeight; y++)
+                {
+                    int r,g,b;
+                    pict.getRGB(x,y,r,g,b);
+                    this->getBoard(x,y)->set(r,g,b);
+                }
+            }
+
+            this->setDisplayPosition(0,0);
+
+            sleep(3);
+        }
+    }
+
     /*
      * Test Animated Gif
      */
-    while (1)
+    while (0)
     {
-        RGBPicture *pictures[4];
+        RGBPicture *pictures[6];
         int x, y, picWidth, picHeight;
         char filename[200];
-        for (int i =0; i < 4; i++)
+        for (int i =0; i < 6; i++)
         {
-            sprintf(filename,"/home/ghormann/Documents/src/gregslights/GregsLights/resources/toder_%d.png", i);
+            sprintf(filename,"/home/ghormann/Documents/src/gregslights/GregsLights/resources/orig/test_%d.png", i);
             pictures[i] = new RGBPicture(filename);
         }
         while(1)    // because images don't destory correctly
         {
-            candyCane();
+            //candyCane();
             this->setDummyBackground(RGBColor::BLACK);
             for (int z = 0; z< 10; z++)     // DONT CHANGE: this is number of times to display.
             {
-                for (int i =0; i < 4; i++)
+                for (int i =0; i < 6; i++)
                 {
                     pictures[i]->getSize(picWidth,picHeight);
                     for (x = 0; x < picWidth; x++)
@@ -292,8 +326,29 @@ void LargeGrid::test()
         }
     }
 
+    // static picture
+    while(1)
+    {
+        int x, y, picWidth, picHeight;
+        RGBPicture * picture = new RGBPicture("/home/ghormann/Documents/src/gregslights/GregsLights/resources/homer46.png");
+        picture->getSize(picWidth,picHeight);
+        this->setDummyBackground(RGBColor::BLACK);
+        for (x = 0; x < picWidth; x++)
+        {
+            for (y=0; y < picHeight; y++)
+            {
+                int r,g,b;
+                picture->getRGB(x,y,r,g,b);
+                this->getBoard(x,y)->set(r,g,b);
+            }
+        }
+
+        this->setDisplayPosition(0,0);
+        sleep(5);
+    }
+
     /*
-    * Test RGB Picture (Static)
+    * Test RGB Picture (Scroll Left)
     */
     while (1)
     {
@@ -304,7 +359,7 @@ void LargeGrid::test()
 
         //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/olaf64.png");
         //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/test64.png");
-        RGBPicture * picture = new RGBPicture("/home/ghormann/Documents/src/gregslights/GregsLights/resources/nativity64.png");
+        RGBPicture * picture = new RGBPicture("/home/ghormann/Documents/src/gregslights/GregsLights/resources/train_blue_46.png");
         picture->getSize(picWidth,picHeight);
         this->setDummyBackground(RGBColor::BLACK);
         for (x = 0; x < picWidth; x++)
@@ -321,7 +376,7 @@ void LargeGrid::test()
         for (x = 0; x  < picWidth + this->gridWidth + 1; x++)
         {
             this->setDisplayPosition(x,0);
-            gjhSleep(0.02);
+            gjhSleep(0.03);
         }
     }
 
