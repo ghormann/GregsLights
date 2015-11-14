@@ -260,7 +260,6 @@ void LargeGrid::test()
     // Show all Pictures
     while(1)
     {
-        int x, y, picWidth, picHeight;
         std::vector<RGBPicture> allPictures = RGBPicture::getAllPictures();
         cout << "All Pictures: "  << allPictures.size() << endl;
         sleep(1);
@@ -268,36 +267,24 @@ void LargeGrid::test()
         for (int i=0; i < allPictures.size() ; ++i)
         {
             RGBPicture pict = allPictures.at(i);
-            pict.getSize(picWidth, picHeight);
-            cout << picWidth << " x " << picHeight << endl;
-            this->setDummyBackground(RGBColor::BLACK,0,0,this->gridWidth, this->gridHeight);
-            for (x = 0; x < picWidth; x++)
-            {
-                for (y=0; y < picHeight; y++)
-                {
-                    int r,g,b;
-                    pict.getRGB(x,y,r,g,b);
-                    this->getBoard(x,y)->set(r,g,b);
-                }
-            }
-
-            this->setDisplayPosition(0,0);
-
-            sleep(3);
+            cout << pict.getName() << endl;
+            this->setBackground(RGBColor::BLACK);
+            this->showPictureNow(pict,0,0);
+            gjhSleep(1.5);
         }
     }
 
     /*
      * Test Animated Gif
      */
-    while (0)
+    while (1)
     {
-        RGBPicture *pictures[6];
+        RGBPicture *pictures[9];
         int x, y, picWidth, picHeight;
         char filename[200];
-        for (int i =0; i < 6; i++)
+        for (int i =0; i < 9; i++)
         {
-            sprintf(filename,"/home/ghormann/Documents/src/gregslights/GregsLights/resources/orig/test_%d.png", i);
+            sprintf(filename,"/home/ghormann/Documents/src/gregslights/GregsLights/resources/test/puss_boots_64_%d.png", i);
             pictures[i] = new RGBPicture(filename);
         }
         while(1)    // because images don't destory correctly
@@ -306,7 +293,7 @@ void LargeGrid::test()
             this->setDummyBackground(RGBColor::BLACK);
             for (int z = 0; z< 10; z++)     // DONT CHANGE: this is number of times to display.
             {
-                for (int i =0; i < 6; i++)
+                for (int i =0; i < 9; i++)
                 {
                     pictures[i]->getSize(picWidth,picHeight);
                     for (x = 0; x < picWidth; x++)

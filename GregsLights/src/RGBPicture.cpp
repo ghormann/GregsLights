@@ -2,6 +2,7 @@
 #include <iostream>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <algorithm>    // std::sort
 
 using namespace std;
 
@@ -25,6 +26,14 @@ RGBPicture::RGBPicture(char *file_name)
     height = 0;
     width = 0;
 
+    string fullname = string(file_name);
+    int i = fullname.length() -1;
+    while (fullname[i] != '/')
+    {
+        --i;
+    }
+    this->shortName = fullname.substr(i+1);
+
     if (check_if_png(file_name))
     {
         read_png(file_name);
@@ -35,6 +44,11 @@ RGBPicture::RGBPicture(char *file_name)
         throw "Invalid file";
     }
 }
+
+  bool RGBPicture::operator< ( const RGBPicture &str) const
+    {
+        return (shortName < str.shortName);
+    }
 
 vector<RGBPicture> RGBPicture::getAllPictures()
 {
@@ -64,6 +78,9 @@ vector<RGBPicture> RGBPicture::getAllPictures()
             }
         }
         closedir(dp);
+
+        //sort the vector afer it has been created
+        std::sort(allPictures.begin(), allPictures.end());
     }
     return allPictures;
 }
@@ -84,6 +101,10 @@ RGBPicture::~RGBPicture()
         //TODO: Fix why this throws an error
         //delete allData;
     }
+}
+
+string RGBPicture::getName() {
+    return this->shortName;
 }
 
 

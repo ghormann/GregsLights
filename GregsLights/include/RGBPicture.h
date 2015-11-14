@@ -13,7 +13,9 @@ class RGBPicture
         virtual ~RGBPicture();
         void getRGB(int x, int y, int &r, int &g, int &b);
         void getSize(int &width, int &height);
+        std::string getName();
         static std::vector<RGBPicture> getAllPictures();
+        bool operator< ( const RGBPicture &str) const;
     protected:
     private:
         int check_if_png(char *file_name );

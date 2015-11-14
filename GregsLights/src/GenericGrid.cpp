@@ -4,7 +4,7 @@
 GenericGrid::GenericGrid(int width_, int height_, int dummy_width_, int dummy_height_, bool skipTime, bool newYears)
 {
     //ctor
-        sprintf(message, "Booting up: %s", (newYears ? "for new Years" : "for Christmas"));
+    sprintf(message, "Booting up: %s", (newYears ? "for new Years" : "for Christmas"));
     this->gridWidth = width_;
     this->gridHeight = height_;
     this->dummy_height = dummy_height_;
@@ -13,6 +13,35 @@ GenericGrid::GenericGrid(int width_, int height_, int dummy_width_, int dummy_he
     currentX = 0;
     currentY = 0;
 
+}
+
+void GenericGrid::setBackground(RGBColor *bgColor)
+{
+    for (int x = 0; x < gridWidth; x++) {
+        for (int y = 0; y < gridHeight; y++) {
+            this->getPixal(x,y)->set(bgColor);
+        }
+    }
+}
+
+void GenericGrid::showPictureNow(RGBPicture &pict, int posX, int posY)
+{
+    int picWidth, picHeight;
+    pict.getSize(picWidth, picHeight);
+    int x, y;
+
+    int stopX = (posX + picWidth) > gridWidth? gridWidth - posX : picWidth;
+    int stopY = (posY + picHeight) > gridHeight ? gridHeight -posY : picHeight;
+
+    for (x = 0; x < stopX; x++)
+    {
+        for (y=0; y < stopY; y++)
+        {
+            int r,g,b;
+            pict.getRGB(x,y,r,g,b);
+            this->getPixal(x+posX, y+posY)->set(r,g,b);
+        }
+    }
 }
 
 void GenericGrid::redrawDisplay()

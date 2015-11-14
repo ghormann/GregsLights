@@ -8,6 +8,7 @@
 #include "MessageGenerator.h"
 #include "TimeInfo.h"
 #include "controller/RGBLight.h"
+#include "RGBPicture.h"
 
 #include <cmath>
 
@@ -40,6 +41,7 @@ public:
     virtual RGBLight * getPixal(int x, int y) = 0;
     void setDummyBackground(RGBColor *bgColor);
     void setDummyBackground(RGBColor *bgColor, int xStart, int yStart, int xEnd, int yEnd);
+    void setBackground(RGBColor *bgColor);
     void wipeToRight(RGBColor *color, double delay);
     void wipeDown(RGBColor *color, double delay);
     void setDisplayPosition(int x, int y);
@@ -52,6 +54,7 @@ public:
     void drawSpecial(int x, int y, GRID_SPECIAL type);
     void scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, double speed);
     void candyCane();
+    void showPictureNow(RGBPicture &pic, int posX, int posY);
 protected:
     int gridHeight;
     int gridWidth ;
