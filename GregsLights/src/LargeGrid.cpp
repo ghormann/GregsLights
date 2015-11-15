@@ -315,10 +315,10 @@ void LargeGrid::test()
     /*
     * Test RGB Picture (Scroll Left)
     */
-    while (1)
+    while (0)
     {
         //
-        // Scroll Left
+        // Scroll Left / right
         //
         RGBPicture *left = RGBPicture::getPicture(("train_blue_46.png"));
         RGBPicture *right = RGBPicture::getPicture(("train_right_46.png"));
@@ -329,32 +329,8 @@ void LargeGrid::test()
     // Scroll up RGB Picture
     while (1)
     {
-        //
-        // Scroll up
-        //
-        int x, y, picWidth, picHeight;
-
-        //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/olaf64.png");
-        //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/test64.png");
-        RGBPicture * picture = new RGBPicture("/home/ghormann/Documents/src/gregslights/GregsLights/resources/olaf64.png");
-        picture->getSize(picWidth,picHeight);
-        this->setDummyBackground(RGBColor::BLACK);
-        for (x = 0; x < picWidth; x++)
-        {
-            for (y=0; y < picHeight; y++)
-            {
-                int r,g,b;
-                picture->getRGB(x,y,r,g,b);
-                this->getBoard(x,y+this->gridHeight)->set(r,g,b);
-            }
-        }
-
-        this->setDisplayPosition(0,0);
-        for (y = 0; y  < picHeight + this->gridHeight + 1; y++)
-        {
-            this->setDisplayPosition(0,y);
-            gjhSleep(0.1);
-        }
+        RGBPicture *pic = RGBPicture::getPicture(("olaf64.png"));
+        scrollPictureUp(*pic,0.1,false);
     }
 
 

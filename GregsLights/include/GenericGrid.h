@@ -57,6 +57,7 @@ public:
     void colorAroundPicture(RGBPicture *pict, int duration);
     void scrollPictureLeft(RGBPicture &pic, double speed, bool hideBlack);
     void scrollPictureRight(RGBPicture &pic, double speed, bool hideBlack);
+    void scrollPictureUp(RGBPicture &pic, double speed, bool hideBlack);
     void showPictureNow(RGBPicture &pic, int posX, int posY,bool hideBlack);
     void showPictureDummy(RGBPicture &pic, int posX, int posY,bool hideBlack);
     void spiral(RGBColor *color);

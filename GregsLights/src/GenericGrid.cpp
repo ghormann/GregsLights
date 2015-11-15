@@ -2146,7 +2146,7 @@ void GenericGrid::scrollPictureLeft(RGBPicture &pic, double delay, bool hideBlac
         int x, picWidth, picHeight;
 
         pic.getSize(picWidth,picHeight);
-        this->setDummyBackground(RGBColor::BLACK,0,0,picWidth*3,gridHeight);
+        this->setDummyBackground(RGBColor::BLACK,0,0,picWidth*2 + gridWidth,gridHeight);
         showPictureDummy(pic,gridWidth,0,hideBlack);
 
         this->setDisplayPosition(0,0);
@@ -2162,13 +2162,30 @@ void GenericGrid::scrollPictureRight(RGBPicture &pic, double delay, bool hideBla
         int x, picWidth, picHeight;
 
         pic.getSize(picWidth,picHeight);
-        this->setDummyBackground(RGBColor::BLACK,0,0,picWidth*3,gridHeight);
+        this->setDummyBackground(RGBColor::BLACK,0,0,picWidth*2 + gridWidth,gridHeight);
         showPictureDummy(pic,gridWidth,0,hideBlack);
 
         this->setDisplayPosition(0,0);
         for (x = picWidth+gridWidth + 1; x >= 0; --x)
         {
             this->setDisplayPosition(x,0);
+            gridSleep(delay);
+        }
+}
+
+void GenericGrid::scrollPictureUp(RGBPicture &pic, double delay, bool hideBlack)
+{
+        int y, picWidth, picHeight;
+        pic.getSize(picWidth,picHeight);
+        int x = (gridWidth - picWidth)/2; // Center pic
+        x = x < 0 ? 0 : x;
+
+        this->setDummyBackground(RGBColor::BLACK,0,0,gridWidth,picHeight *2 + gridHeight);
+        showPictureDummy(pic,x,gridHeight,hideBlack);
+
+        for (y = 0; y < picHeight+gridHeight+1;  ++y)
+        {
+            this->setDisplayPosition(0,y);
             gridSleep(delay);
         }
 }
