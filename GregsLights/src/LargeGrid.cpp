@@ -283,16 +283,16 @@ void LargeGrid::test()
     /*
      * Test Animated Gif
      */
-    while (1)
+    while (0)
     {
-        string name = string("scarf");
+        string name = string("toder");
         showMovie(name,6,0.15,0,0);
         spiral(RGBColor::BLACK);
 
     }
 
     // static picture
-    while(1)
+    while(0)
     {
         int x, y, picWidth, picHeight;
         RGBPicture * picture = new RGBPicture("/home/ghormann/Documents/src/gregslights/GregsLights/resources/homer46.png");
@@ -320,31 +320,11 @@ void LargeGrid::test()
         //
         // Scroll Left
         //
-        int x, y, picWidth, picHeight;
-
-        //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/olaf64.png");
-        //RGBPicture * picture = new RGBPicture("/home/ghormann/Downloads/test64.png");
-        RGBPicture * picture = new RGBPicture("/home/ghormann/Documents/src/gregslights/GregsLights/resources/train_blue_46.png");
-        picture->getSize(picWidth,picHeight);
-        this->setDummyBackground(RGBColor::BLACK);
-        for (x = 0; x < picWidth; x++)
-        {
-            for (y=0; y < picHeight; y++)
-            {
-                int r,g,b;
-                picture->getRGB(x,y,r,g,b);
-                this->getBoard(x+this->gridWidth,y)->set(r,g,b);
-            }
-        }
-
-        this->setDisplayPosition(0,0);
-        for (x = 0; x  < picWidth + this->gridWidth + 1; x++)
-        {
-            this->setDisplayPosition(x,0);
-            gjhSleep(0.03);
-        }
+        RGBPicture *left = RGBPicture::getPicture(("train_blue_46.png"));
+        RGBPicture *right = RGBPicture::getPicture(("train_right_46.png"));
+        scrollPictureLeft(*left,0.01,false);
+        scrollPictureRight(*right,0.01,false);
     }
-
 
     // Scroll up RGB Picture
     while (1)

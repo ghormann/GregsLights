@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <iostream>
 
-#define gridSleep(pause)  if (_gridSleep((pause))) return;
+#define gridSleep(pause)  if (_gridSleep(( (double)pause))) return;
 
 using namespace std;
 
@@ -71,8 +71,8 @@ void GenericGrid::showPictureDummy(RGBPicture &pict, int posX, int posY, bool hi
     pict.getSize(picWidth, picHeight);
     int x, y;
 
-    int stopX = (posX + picWidth) > gridWidth? gridWidth - posX : picWidth;
-    int stopY = (posY + picHeight) > gridHeight ? gridHeight -posY : picHeight;
+    int stopX = (posX + picWidth) > dummy_width? dummy_width - posX : picWidth;
+    int stopY = (posY + picHeight) > dummy_height ? dummy_height -posY : picHeight;
 
     for (x = 0; x < stopX; x++)
     {
@@ -2140,6 +2140,39 @@ void GenericGrid::showMovie(string &startsWith, int cnt, double duration, int x,
         }
     }
 }
+
+void GenericGrid::scrollPictureLeft(RGBPicture &pic, double delay, bool hideBlack)
+{
+        int x, picWidth, picHeight;
+
+        pic.getSize(picWidth,picHeight);
+        this->setDummyBackground(RGBColor::BLACK,0,0,picWidth*3,gridHeight);
+        showPictureDummy(pic,gridWidth,0,hideBlack);
+
+        this->setDisplayPosition(0,0);
+        for (x = 0; x  < picWidth + this->gridWidth + 1; x++)
+        {
+            this->setDisplayPosition(x,0);
+            gridSleep(delay);
+        }
+}
+
+void GenericGrid::scrollPictureRight(RGBPicture &pic, double delay, bool hideBlack)
+{
+        int x, picWidth, picHeight;
+
+        pic.getSize(picWidth,picHeight);
+        this->setDummyBackground(RGBColor::BLACK,0,0,picWidth*3,gridHeight);
+        showPictureDummy(pic,gridWidth,0,hideBlack);
+
+        this->setDisplayPosition(0,0);
+        for (x = picWidth+gridWidth + 1; x >= 0; --x)
+        {
+            this->setDisplayPosition(x,0);
+            gridSleep(delay);
+        }
+}
+
 
 
 char *GenericGrid::getMessage()
