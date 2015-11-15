@@ -266,8 +266,28 @@ void LargeGrid::test()
     }
 
     // Show all Pictures
-    while(0)
+    while(1)
     {
+
+        spiral(RGBColor::RED);
+        spiral(RGBColor::BLUE);
+        spiral(RGBColor::PURPLE);
+        spiral(RGBColor::ORANGE);
+        spiral(RGBColor::BLACK);
+        RGBPicture *p = RGBPicture::getPicture( string("yellow_start_64.png"));
+        this->colorAroundPicture(p,150);
+
+
+        string name = string("toder");
+        showMovie(name,6,0.15,0,0);
+        spiral(RGBColor::BLACK);
+
+        RGBPicture *pic = RGBPicture::getPicture(("olaf64.png"));
+        scrollPictureUp(*pic,0.1,false);
+
+        candyCane();
+
+
         std::vector<RGBPicture> allPictures = RGBPicture::getAllPictures();
         vector<RGBPicture>::iterator it;
         cout << "All Pictures: "  << allPictures.size() << endl;
@@ -281,6 +301,19 @@ void LargeGrid::test()
             this->showPictureNow(pict,0,0,false);
             gjhSleep(1.5);
         }
+        RGBPicture *left = RGBPicture::getPicture(("train_blue_46.png"));
+        RGBPicture *right = RGBPicture::getPicture(("train_right_46.png"));
+        scrollPictureLeft(*left,0.01,false);
+        scrollPictureRight(*right,0.01,false);
+
+        spiral(RGBColor::RED);
+        setDummyBackground(RGBColor::RED,0,0,gridWidth,gridHeight);
+        writeTextSmall(RGBColor::WHITE,0,0, ("MERRY"));
+        writeTextSmall(RGBColor::WHITE,0,16, ("CHRISTMAS"));
+        writeTextSmall(RGBColor::WHITE,0,32, ("ALL"));
+
+        setDisplayPosition(0,0);
+        sleep(5);
     }
 
     /*
@@ -298,7 +331,7 @@ void LargeGrid::test()
     while(0)
     {
         int x, y, picWidth, picHeight;
-        RGBPicture * picture = new RGBPicture("/home/ghormann/Documents/src/gregslights/GregsLights/resources/homer46.png");
+        RGBPicture * picture = new RGBPicture("/home/ghormann/Documents/src/gregslights/GregsLights/resources/test/xmas_tree_64_0.png");
         picture->getSize(picWidth,picHeight);
         this->setDummyBackground(RGBColor::BLACK);
         for (x = 0; x < picWidth; x++)
