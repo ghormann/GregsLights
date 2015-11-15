@@ -52,6 +52,8 @@ public:
     void testGridLayout();
     void countdown();
     void drawSpecial(int x, int y, GRID_SPECIAL type);
+    void writeText(RGBColor *fgColor, int x, int y, std::string text);
+    void writeTextSmall(RGBColor *fgColor, int x, int y, std::string text);
     void scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, double speed);
     void candyCane();
     void colorAroundPicture(RGBPicture *pict, int duration);

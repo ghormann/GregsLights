@@ -1471,6 +1471,18 @@ int GenericGrid::drawLetterSmall(char letter, RGBColor* color, int startX, int s
     return offset;
 }
 
+void GenericGrid::writeTextSmall(RGBColor *fgColor, int x, int y , string str) {
+    for ( std::string::iterator it=str.begin(); it!=str.end(); ++it) {
+        x += drawLetterSmall(*it,fgColor,x,y) + 2;
+    }
+}
+
+void GenericGrid::writeText(RGBColor *fgColor, int x, int y , string str) {
+    for ( std::string::iterator it=str.begin(); it!=str.end(); ++it) {
+        x += drawLetter(*it,fgColor,x,y) + 2;
+    }
+}
+
 void GenericGrid::scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, double speed)
 {
     sprintf(message, "Scroll: %s", text);

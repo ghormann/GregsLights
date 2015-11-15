@@ -254,7 +254,7 @@ void LargeGrid::test()
         }
     }
 
-    while(1)
+    while(0)
     {
         spiral(RGBColor::RED);
         spiral(RGBColor::BLUE);
@@ -312,6 +312,17 @@ void LargeGrid::test()
         }
 
         this->setDisplayPosition(0,0);
+        sleep(5);
+    }
+
+    while(1) {
+        spiral(RGBColor::RED);
+        setDummyBackground(RGBColor::RED,0,0,gridWidth,gridHeight);
+        writeTextSmall(RGBColor::WHITE,0,0, ("MERRY"));
+        writeTextSmall(RGBColor::WHITE,0,16, ("CHRISTMAS"));
+        writeTextSmall(RGBColor::WHITE,0,32, ("ALL"));
+
+        setDisplayPosition(0,0);
         sleep(5);
     }
 
