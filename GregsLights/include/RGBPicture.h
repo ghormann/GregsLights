@@ -16,6 +16,7 @@ class RGBPicture
         std::string getName();
         static std::vector<RGBPicture> getAllPictures();
         bool operator< ( const RGBPicture &str) const;
+        static RGBPicture * getPicture(const std::string &name);
     protected:
     private:
         int check_if_png(char *file_name );

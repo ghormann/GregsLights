@@ -139,11 +139,13 @@ RGBLight *LargeGrid::getPixal(int x, int y)
 
     if (x < 0 || x >= LGRID_PIXAL_WIDTH)
     {
+        cout << "Illegal value of X in Large Grid: " << x << endl;
         throw "Illegal Value of X in getPixal";
     }
 
     if (y < 0 || y >= LGRID_PIXAL_HEIGHT)
     {
+        cout << "Illegal value of Y in Large Grid: " << y << endl;
         throw "Illegal Value of Y in getPixal";
     }
 
@@ -252,24 +254,28 @@ void LargeGrid::test()
         }
     }
 
-    while(0)
+    while(1)
     {
-        candyCane();
+        spiral(RGBColor::RED);
+        spiral(RGBColor::BLUE);
+        RGBPicture *p = RGBPicture::getPicture( string("yellow_start_64.png"));
+        this->colorAroundPicture(p,150);
     }
 
     // Show all Pictures
     while(1)
     {
         std::vector<RGBPicture> allPictures = RGBPicture::getAllPictures();
+        vector<RGBPicture>::iterator it;
         cout << "All Pictures: "  << allPictures.size() << endl;
-        sleep(1);
 
-        for (int i=0; i < allPictures.size() ; ++i)
+
+        for(it = allPictures.begin(); it != allPictures.end(); it++)
         {
-            RGBPicture pict = allPictures.at(i);
+            RGBPicture pict = (*it);
             cout << pict.getName() << endl;
             this->setBackground(RGBColor::BLACK);
-            this->showPictureNow(pict,0,0);
+            this->showPictureNow(pict,0,0,false);
             gjhSleep(1.5);
         }
     }

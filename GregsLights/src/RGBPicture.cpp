@@ -45,14 +45,30 @@ RGBPicture::RGBPicture(char *file_name)
     }
 }
 
-  bool RGBPicture::operator< ( const RGBPicture &str) const
+bool RGBPicture::operator< ( const RGBPicture &str) const
+{
+    return (shortName < str.shortName);
+}
+
+RGBPicture * RGBPicture::getPicture(const string &name) {
+    vector<RGBPicture> all = getAllPictures(); // make sure it is loaded
+    vector<RGBPicture>::iterator it;
+    RGBPicture *p;
+
+    for(it = all.begin(); it != all.end(); it++)
     {
-        return (shortName < str.shortName);
+        p = &(*it);
+        if (name == p->getName()) {
+            return p;
+        }
     }
+    cout << "Warning: Invalid Picutre name: " << name << endl;
+    throw "Invalid Picture Name";
+    return NULL;
+}
 
 vector<RGBPicture> RGBPicture::getAllPictures()
 {
-    cout << "Testing" << endl;
     if (allPictures.size() == 0 )
     {
         std::string dir = std::string("/home/ghormann/Documents/src/gregslights/GregsLights/resources");
@@ -103,7 +119,8 @@ RGBPicture::~RGBPicture()
     }
 }
 
-string RGBPicture::getName() {
+string RGBPicture::getName()
+{
     return this->shortName;
 }
 

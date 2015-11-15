@@ -54,7 +54,10 @@ public:
     void drawSpecial(int x, int y, GRID_SPECIAL type);
     void scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, double speed);
     void candyCane();
-    void showPictureNow(RGBPicture &pic, int posX, int posY);
+    void colorAroundPicture(RGBPicture *pict, int duration);
+    void showPictureNow(RGBPicture &pic, int posX, int posY,bool hideBlack);
+    void showPictureDummy(RGBPicture &pic, int posX, int posY,bool hideBlack);
+    void spiral(RGBColor *color);
 protected:
     int gridHeight;
     int gridWidth ;

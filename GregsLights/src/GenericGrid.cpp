@@ -1,5 +1,10 @@
 #include "GenericGrid.h"
 #include "stdio.h"
+#include <stdio.h>
+#include <iostream>
+
+using namespace std;
+
 
 GenericGrid::GenericGrid(int width_, int height_, int dummy_width_, int dummy_height_, bool skipTime, bool newYears)
 {
@@ -17,14 +22,16 @@ GenericGrid::GenericGrid(int width_, int height_, int dummy_width_, int dummy_he
 
 void GenericGrid::setBackground(RGBColor *bgColor)
 {
-    for (int x = 0; x < gridWidth; x++) {
-        for (int y = 0; y < gridHeight; y++) {
+    for (int x = 0; x < gridWidth; x++)
+    {
+        for (int y = 0; y < gridHeight; y++)
+        {
             this->getPixal(x,y)->set(bgColor);
         }
     }
 }
 
-void GenericGrid::showPictureNow(RGBPicture &pict, int posX, int posY)
+void GenericGrid::showPictureNow(RGBPicture &pict, int posX, int posY, bool hideBlack)
 {
     int picWidth, picHeight;
     pict.getSize(picWidth, picHeight);
@@ -39,10 +46,45 @@ void GenericGrid::showPictureNow(RGBPicture &pict, int posX, int posY)
         {
             int r,g,b;
             pict.getRGB(x,y,r,g,b);
-            this->getPixal(x+posX, y+posY)->set(r,g,b);
+            if (hideBlack && r==0 && g==0 &&b==0)
+            {
+                // do nothing
+            }
+            else
+            {
+                this->getPixal(x+posX, y+posY)->set(r,g,b);
+            }
         }
     }
 }
+
+void GenericGrid::showPictureDummy(RGBPicture &pict, int posX, int posY, bool hideBlack)
+{
+    int picWidth, picHeight;
+    pict.getSize(picWidth, picHeight);
+    int x, y;
+
+    int stopX = (posX + picWidth) > gridWidth? gridWidth - posX : picWidth;
+    int stopY = (posY + picHeight) > gridHeight ? gridHeight -posY : picHeight;
+
+    for (x = 0; x < stopX; x++)
+    {
+        for (y=0; y < stopY; y++)
+        {
+            int r,g,b;
+            pict.getRGB(x,y,r,g,b);
+            if (hideBlack && r==0 && g==0 &&b==0)
+            {
+                // do nothing
+            }
+            else
+            {
+                this->getBoard(x+posX, y+posY)->set(r,g,b);
+            }
+        }
+    }
+}
+
 
 void GenericGrid::redrawDisplay()
 {
@@ -1945,6 +1987,72 @@ void GenericGrid::drawSpecial(int startX, int startY, GRID_SPECIAL type)
     }
 }
 
+void GenericGrid::spiral(RGBColor *color)
+{
+    int N = this->gridHeight * this->gridWidth * 2;
+    int x = 0;
+    int y = 0;
+    for(int i = 0; i < N; ++i)
+    {
+        int posX = gridWidth/2 + x;
+        int posY = gridHeight/2 + y;
+        if (posX >= 0 && posX < gridWidth && posY >= 0 && posY < gridHeight)
+        {
+            gjhSleep(N > (gridHeight*gridWidth) ? 0.0001 : 0.001);
+            getPixal(posX, posY)->fadeTo(color->getRed(), color->getGreen(), color->getBlue(), 5.0);
+
+        }
+        if(abs(x) <= abs(y) && (x != y || x >= 0))
+            x += ((y >= 0) ? 1 : -1);
+        else
+            y += ((x >= 0) ? -1 : 1);
+    }
+    gjhSleep(5.0);
+}
+
+void GenericGrid::colorAroundPicture(RGBPicture *pict, int duration)
+{
+    sprintf(message, "ColorARoundPicture");
+    int picW, picH;
+    pict->getSize(picW, picH);
+    int posW = (gridWidth - picW) / 2;
+    int posH = (gridHeight - picH) /2;
+
+    RGBColor *d[25];
+    d[0]=d[1]=d[2]=d[3]=RGBColor::RED;
+    d[4]=d[5]=d[6]=d[7]=RGBColor::GREEN;
+    d[8]=d[9]=d[10]=d[11]=RGBColor::BLUE;
+    d[12]=d[13]=d[14]=d[15]=RGBColor::PURPLE;
+    d[16]=d[17]=d[18]=d[19]=RGBColor::ORANGE;
+
+    int i = duration;
+
+    while(--i > 0)
+    {
+        for (int x = 0; x < gridWidth; x++)
+        {
+            for (int y = 0; y < gridHeight; y++)
+            {
+                int distance = gjhDistance(gridWidth/2, gridHeight/2, x, y);
+                RGBColor *color = d[(distance+i)%20];
+                getBoard(x,y)->set(color);
+            }
+        }
+        showPictureDummy(*pict,posW,posH,true);
+        setDisplayPosition(0,0);
+        gjhSleep(0.05);
+    }
+    for (int x=0; x<gridWidth; x++)
+    {
+        for (int y=0; y<gridHeight; y++)
+        {
+            this->getPixal(x,y)->fadeTo(0,0,0,1);
+        }
+    }
+    sleep(1);
+}
+
+
 void GenericGrid::candyCane()
 {
     sprintf(message, "Psychedelic Candy Cane");
@@ -1969,7 +2077,7 @@ void GenericGrid::candyCane()
                 getBoard(x,y)->set(color);
             }
         }
-        drawSpecial(gridWidth/2-7,0,GRID_CANDY);
+        drawSpecial(gridWidth/2-7,gridHeight/2-10,GRID_CANDY);
         setDisplayPosition(0,0);
         gjhSleep(0.05);
     }
