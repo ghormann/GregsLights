@@ -50,7 +50,8 @@ bool RGBPicture::operator< ( const RGBPicture &str) const
     return (shortName < str.shortName);
 }
 
-RGBPicture * RGBPicture::getPicture(const string &name) {
+RGBPicture * RGBPicture::getPicture(const string &name)
+{
     vector<RGBPicture> all = getAllPictures(); // make sure it is loaded
     vector<RGBPicture>::iterator it;
     RGBPicture *p;
@@ -58,7 +59,8 @@ RGBPicture * RGBPicture::getPicture(const string &name) {
     for(it = all.begin(); it != all.end(); it++)
     {
         p = &(*it);
-        if (name == p->getName()) {
+        if (name == p->getName())
+        {
             return p;
         }
     }
@@ -67,7 +69,22 @@ RGBPicture * RGBPicture::getPicture(const string &name) {
     return NULL;
 }
 
-vector<RGBPicture> RGBPicture::getAllPictures()
+void RGBPicture::findStartsWith(const string &startsWith, vector<RGBPicture> &results)
+{
+    vector<RGBPicture> all = getAllPictures(); // make sure it is loaded
+    vector<RGBPicture>::iterator it;
+
+    for(it = all.begin(); it != all.end(); it++)
+    {
+        RGBPicture p = (*it);
+        if (p.getName().find(startsWith) == 0)
+        {
+            results.push_back(p);
+        }
+    }
+}
+
+vector<RGBPicture> &RGBPicture::getAllPictures()
 {
     if (allPictures.size() == 0 )
     {
@@ -119,7 +136,7 @@ RGBPicture::~RGBPicture()
     }
 }
 
-string RGBPicture::getName()
+string &RGBPicture::getName()
 {
     return this->shortName;
 }

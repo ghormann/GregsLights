@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <iostream>
 
+#define gridSleep(pause)  if (_gridSleep((pause))) return;
+
 using namespace std;
 
 
@@ -15,9 +17,14 @@ GenericGrid::GenericGrid(int width_, int height_, int dummy_width_, int dummy_he
     this->dummy_height = dummy_height_;
     this->dummy_width = dummy_width_;
     this->timeInfo = new TimeInfo(skipTime, newYears);
+    this->interrupt = false;
     currentX = 0;
     currentY = 0;
 
+}
+
+void GenericGrid::interruptThread() {
+    this->interrupt = true;
 }
 
 void GenericGrid::setBackground(RGBColor *bgColor)
@@ -114,7 +121,7 @@ void GenericGrid::testGridLayout()
         {
             getPixal(x,y)->set(RGBColor::RED);
         }
-        sleep(1);
+        gridSleep(1);
         for (int x = 0; x< this->gridWidth; x++)
         {
             getPixal(x,y)->set(RGBColor::BLACK);
@@ -128,7 +135,7 @@ void GenericGrid::testGridLayout()
         {
             getPixal(x,y)->set(RGBColor::RED);
         }
-        sleep(1);
+        gridSleep(1);
         for (int y = 0; y< this->gridHeight; y++)
         {
             getPixal(x,y)->set(RGBColor::BLACK);
@@ -162,7 +169,7 @@ void GenericGrid::wipeToRight(RGBColor *color, double delay)
         {
             this->getPixal(x,y)->set(color);
         }
-        gjhSleep(delay);
+        gridSleep(delay);
     }
 }
 
@@ -174,7 +181,7 @@ void GenericGrid::wipeDown(RGBColor *color, double delay)
         {
             this->getPixal(x,y)->set(color);
         }
-        gjhSleep(delay);
+        gridSleep(delay);
     }
 }
 
@@ -230,7 +237,7 @@ void GenericGrid::countdown()
             drawLetter(seconds_c[6],RGBColor::BLACK,pos,1);
         }
         setDisplayPosition(0,0);
-        gjhSleep(0.05);
+        gridSleep(0.05);
         if (numseconds <= 0 )
             counting = false;
 
@@ -1481,7 +1488,7 @@ void GenericGrid::scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, 
     for (int i = 0; i < pos; i++)
     {
         setDisplayPosition(i,0);
-        gjhSleep(speed);
+        gridSleep(speed);
     }
 }
 
@@ -1989,7 +1996,7 @@ void GenericGrid::drawSpecial(int startX, int startY, GRID_SPECIAL type)
 
 void GenericGrid::spiral(RGBColor *color)
 {
-    int N = this->gridHeight * this->gridWidth * 2;
+    int N = this->gridHeight * this->gridWidth * 2.5;
     int x = 0;
     int y = 0;
     for(int i = 0; i < N; ++i)
@@ -1998,7 +2005,7 @@ void GenericGrid::spiral(RGBColor *color)
         int posY = gridHeight/2 + y;
         if (posX >= 0 && posX < gridWidth && posY >= 0 && posY < gridHeight)
         {
-            gjhSleep(N > (gridHeight*gridWidth) ? 0.0001 : 0.001);
+            gridSleep(N > (gridHeight*gridWidth) ? 0.0001 : 0.001);
             getPixal(posX, posY)->fadeTo(color->getRed(), color->getGreen(), color->getBlue(), 5.0);
 
         }
@@ -2007,7 +2014,31 @@ void GenericGrid::spiral(RGBColor *color)
         else
             y += ((x >= 0) ? -1 : 1);
     }
-    gjhSleep(5.0);
+    gridSleep(3.0);
+}
+
+inline int GenericGrid::_gridSleep(double d)
+{
+    // Sleep in chunks to avoid long blocks
+    if (d < 0.5)
+    {
+        usleep((d) * 1000000);
+    }
+    else
+    {
+        double cur = 0;
+        while (cur < d)
+        {
+            usleep(0.05 * 1000000);
+            cur += 0.05;
+            if (this->interrupt) {
+                this->interrupt = false;
+                return 1;
+            }
+        }
+    }
+
+    return 0;
 }
 
 void GenericGrid::colorAroundPicture(RGBPicture *pict, int duration)
@@ -2040,7 +2071,7 @@ void GenericGrid::colorAroundPicture(RGBPicture *pict, int duration)
         }
         showPictureDummy(*pict,posW,posH,true);
         setDisplayPosition(0,0);
-        gjhSleep(0.05);
+        gridSleep(0.05);
     }
     for (int x=0; x<gridWidth; x++)
     {
@@ -2049,7 +2080,7 @@ void GenericGrid::colorAroundPicture(RGBPicture *pict, int duration)
             this->getPixal(x,y)->fadeTo(0,0,0,1);
         }
     }
-    sleep(1);
+    gridSleep(1);
 }
 
 
@@ -2079,7 +2110,7 @@ void GenericGrid::candyCane()
         }
         drawSpecial(gridWidth/2-7,gridHeight/2-10,GRID_CANDY);
         setDisplayPosition(0,0);
-        gjhSleep(0.05);
+        gridSleep(0.05);
     }
     for (int x=0; x<gridWidth; x++)
     {
@@ -2088,9 +2119,27 @@ void GenericGrid::candyCane()
             this->getPixal(x,y)->fadeTo(0,0,0,1);
         }
     }
-    sleep(1);
+    gridSleep(1);
 }
 
+void GenericGrid::showMovie(string &startsWith, int cnt, double duration, int x, int y)
+{
+    vector<RGBPicture> pics;
+    this->setBackground(RGBColor::BLACK);
+    RGBPicture::findStartsWith(startsWith, pics);
+
+    for (int i =0 ; i < cnt; i++)
+    {
+        vector<RGBPicture>::iterator it;
+
+        for(it = pics.begin(); it != pics.end(); it++)
+        {
+            RGBPicture p = (*it);
+            this->showPictureNow(p,x,y,false);
+            gridSleep(duration);
+        }
+    }
+}
 
 
 char *GenericGrid::getMessage()

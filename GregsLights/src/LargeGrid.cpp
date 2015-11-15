@@ -254,7 +254,7 @@ void LargeGrid::test()
         }
     }
 
-    while(1)
+    while(0)
     {
         spiral(RGBColor::RED);
         spiral(RGBColor::BLUE);
@@ -263,7 +263,7 @@ void LargeGrid::test()
     }
 
     // Show all Pictures
-    while(1)
+    while(0)
     {
         std::vector<RGBPicture> allPictures = RGBPicture::getAllPictures();
         vector<RGBPicture>::iterator it;
@@ -285,38 +285,10 @@ void LargeGrid::test()
      */
     while (1)
     {
-        RGBPicture *pictures[9];
-        int x, y, picWidth, picHeight;
-        char filename[200];
-        for (int i =0; i < 9; i++)
-        {
-            sprintf(filename,"/home/ghormann/Documents/src/gregslights/GregsLights/resources/test/puss_boots_64_%d.png", i);
-            pictures[i] = new RGBPicture(filename);
-        }
-        while(1)    // because images don't destory correctly
-        {
-            //candyCane();
-            this->setDummyBackground(RGBColor::BLACK);
-            for (int z = 0; z< 10; z++)     // DONT CHANGE: this is number of times to display.
-            {
-                for (int i =0; i < 9; i++)
-                {
-                    pictures[i]->getSize(picWidth,picHeight);
-                    for (x = 0; x < picWidth; x++)
-                    {
-                        for (y=0; y < picHeight; y++)
-                        {
-                            int r,g,b;
-                            pictures[i]->getRGB(x,y,r,g,b);
-                            this->getBoard(x+20,y)->set(r,g,b);
-                        }
-                    }
+        string name = string("scarf");
+        showMovie(name,6,0.15,0,0);
+        spiral(RGBColor::BLACK);
 
-                    this->setDisplayPosition(0,0);
-                    gjhSleep(0.2);
-                }
-            }
-        }
     }
 
     // static picture

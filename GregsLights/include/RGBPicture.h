@@ -13,10 +13,11 @@ class RGBPicture
         virtual ~RGBPicture();
         void getRGB(int x, int y, int &r, int &g, int &b);
         void getSize(int &width, int &height);
-        std::string getName();
-        static std::vector<RGBPicture> getAllPictures();
+        std::string &getName();
+        static std::vector<RGBPicture> &getAllPictures();
         bool operator< ( const RGBPicture &str) const;
         static RGBPicture * getPicture(const std::string &name);
+        static void findStartsWith(const std::string &startsWith, std::vector<RGBPicture> &results);
     protected:
     private:
         int check_if_png(char *file_name );

@@ -58,6 +58,8 @@ public:
     void showPictureNow(RGBPicture &pic, int posX, int posY,bool hideBlack);
     void showPictureDummy(RGBPicture &pic, int posX, int posY,bool hideBlack);
     void spiral(RGBColor *color);
+    void showMovie(std::string &startsWith, int cnt, double duration, int x, int y);
+    void interruptThread();
 protected:
     int gridHeight;
     int gridWidth ;
@@ -68,6 +70,8 @@ protected:
     TimeInfo *timeInfo;
     char message[80];
     MessageGenerator *generator;
+    int _gridSleep(double d);
+    bool interrupt;
 
 private:
 };
