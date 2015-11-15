@@ -254,10 +254,13 @@ void LargeGrid::test()
         }
     }
 
-    while(0)
+    while(1)
     {
         spiral(RGBColor::RED);
         spiral(RGBColor::BLUE);
+        spiral(RGBColor::PURPLE);
+        spiral(RGBColor::ORANGE);
+        spiral(RGBColor::BLACK);
         RGBPicture *p = RGBPicture::getPicture( string("yellow_start_64.png"));
         this->colorAroundPicture(p,150);
     }
