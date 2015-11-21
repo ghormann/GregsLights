@@ -10,7 +10,7 @@ sudo apt-get install build-essential libgtk2.0-dev libgstreamer0.10-dev libgstre
 
 
 Genereate a make file using: 
-  * ../../cbp2make/cbp2make-stl-rev147/bin/Release/cbp2make -in GregsLights.cbp 
+  * ../../cbp2make -in GregsLights.cbp 
 
 Build from Make file using
   * make -f GregsLights.cbp.mak release

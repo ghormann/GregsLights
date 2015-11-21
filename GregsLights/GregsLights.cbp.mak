@@ -15,7 +15,7 @@ INC =
 CFLAGS = -std=c++0x -Wall -fexceptions -Wno-write-strings -pthread
 RESINC = 
 LIBDIR = 
-LIB = -lrt
+LIB = -lrt -lpng
 LDFLAGS = -pthread -lncurses
 
 INC_DEBUG = $(INC) -Iinclude -Iinclude/controller
@@ -23,7 +23,7 @@ CFLAGS_DEBUG = $(CFLAGS) -g -DGJH_DEBUG
 RESINC_DEBUG = $(RESINC)
 RCFLAGS_DEBUG = $(RCFLAGS)
 LIBDIR_DEBUG = $(LIBDIR)
-LIB_DEBUG = $(LIB)-llibpng
+LIB_DEBUG = $(LIB)
 LDFLAGS_DEBUG = $(LDFLAGS)
 OBJDIR_DEBUG = obj/Debug
 DEP_DEBUG = 
@@ -34,7 +34,7 @@ CFLAGS_RELEASE = $(CFLAGS) -O2
 RESINC_RELEASE = $(RESINC)
 RCFLAGS_RELEASE = $(RCFLAGS)
 LIBDIR_RELEASE = $(LIBDIR)
-LIB_RELEASE = $(LIB)-llibpng
+LIB_RELEASE = $(LIB)
 LDFLAGS_RELEASE = $(LDFLAGS) -s
 OBJDIR_RELEASE = obj/Release
 DEP_RELEASE = 
@@ -45,11 +45,11 @@ CFLAGS_GRAPHICS = $(CFLAGS) -std=c++11 -g `wx-config --cflags`
 RESINC_GRAPHICS = $(RESINC)
 RCFLAGS_GRAPHICS = $(RCFLAGS)
 LIBDIR_GRAPHICS = $(LIBDIR)
-LIB_GRAPHICS = $(LIB)-llibpng
+LIB_GRAPHICS = $(LIB)
 LDFLAGS_GRAPHICS = $(LDFLAGS) -lGL -lGLU `wx-config  --libs std,media,gl`
 OBJDIR_GRAPHICS = .objs
 DEP_GRAPHICS = 
-OUT_GRAPHICS = /GregsLights
+OUT_GRAPHICS = GregsLights
 
 OBJ_DEBUG = $(OBJDIR_DEBUG)/src/TimeInfo.o $(OBJDIR_DEBUG)/src/CountdownClock.o $(OBJDIR_DEBUG)/src/DisplayModel.o $(OBJDIR_DEBUG)/src/DisplayTester.o $(OBJDIR_DEBUG)/src/GenericGrid.o $(OBJDIR_DEBUG)/src/GregsDisplay.o $(OBJDIR_DEBUG)/src/LargeGrid.o $(OBJDIR_DEBUG)/src/MessageGenerator.o $(OBJDIR_DEBUG)/src/RGBPicture.o $(OBJDIR_DEBUG)/src/Sign.o $(OBJDIR_DEBUG)/src/Snowmen.o $(OBJDIR_DEBUG)/src/TextDisplay.o $(OBJDIR_DEBUG)/main.o $(OBJDIR_DEBUG)/src/controller/Bulb.o $(OBJDIR_DEBUG)/src/controller/Bush.o $(OBJDIR_DEBUG)/src/controller/DMXBulb.o $(OBJDIR_DEBUG)/src/controller/DummyBulb.o $(OBJDIR_DEBUG)/src/controller/E131Network.o $(OBJDIR_DEBUG)/src/controller/FadeableBulb.o $(OBJDIR_DEBUG)/src/controller/LORNetwork.o $(OBJDIR_DEBUG)/src/controller/NetworkCollection.o $(OBJDIR_DEBUG)/src/controller/OpenDMXNetwork.o $(OBJDIR_DEBUG)/src/controller/RGBColor.o $(OBJDIR_DEBUG)/src/controller/RGBLight.o $(OBJDIR_DEBUG)/src/controller/serial_posix.o
 
