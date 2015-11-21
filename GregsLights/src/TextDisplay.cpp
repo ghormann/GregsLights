@@ -50,6 +50,7 @@ TextDisplay::~TextDisplay()
 
 void TextDisplay::update()
 {
+    clear(); // Clear Warning messages on Screen
     CountdownClock *clock = model->getClock();
     mvprintw(0, 0, "%-60s", model->getMessage(1));
     mvprintw(1, 0, "%-60s", model->getMessage(2));
