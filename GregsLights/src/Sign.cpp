@@ -611,6 +611,18 @@ void Sign::test()
         sleep(10);
     }
 
+    while (1) {
+        this->setBackground(RGBColor::YELLOW);
+        sleep(5);
+        this->setBackground(RGBColor::PURPLE);
+        sleep(5);
+        this->setBackground(RGBColor::UNKNOWN);
+        sleep(5);
+        this->setBackground(RGBColor::BLACK);
+        sleep(5);
+    }
+
+    // Test Lines
     while(0)
     {
         getPixal(0,0)->set(RGBColor::WHITE);

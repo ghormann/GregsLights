@@ -31,8 +31,8 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     networks = new NetworkCollection("Normal", 10,100,MAX_LIGHT_NETWORKS,1);
     // name, 5, 2, 6, 15 is "OK" for Alpha Pix.
     // name: 5,2,6,5 I Fairly good.
-    networkAlpha1 = new NetworkCollection("Alpha1",5,2,6,5);
-    networkAlpha2 = new NetworkCollection("Alpha2",5,2,6,5);
+    networkAlpha1 = new NetworkCollection("Alpha1",5,2,6,1);
+    networkAlpha2 = new NetworkCollection("Alpha2",5,2,6,1);
     networkAlpha1->setControllerLimits(6,1);
     networkAlpha2->setControllerLimits(6,1);
     OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", ACTIDONGLE, sendDMX);

@@ -196,7 +196,7 @@ void LargeGrid::test()
             }
         }
 
-        gjhSleep(1.5);
+        gjhSleep(1);
 
         for (int x = 0; x < LGRID_PIXAL_WIDTH; x++)
         {
@@ -206,7 +206,7 @@ void LargeGrid::test()
             }
         }
 
-        gjhSleep(1.5);
+        gjhSleep(1);
     }
 
     // Make onne line white
@@ -254,14 +254,23 @@ void LargeGrid::test()
         }
     }
 
-    while(0)
+    while(1)
     {
-        spiral(RGBColor::RED);
-        spiral(RGBColor::BLUE);
-        spiral(RGBColor::PURPLE);
-        spiral(RGBColor::ORANGE);
+        RGBPicture *left = RGBPicture::getPicture(("train_blue_46.png"));
+        RGBPicture *right = RGBPicture::getPicture(("train_right_46.png"));
+        scrollPictureLeft(*left,0.01,false);
+        scrollPictureRight(*right,0.01,false);
+        string name = string("toder");
+        showMovie(name,6,0.15,30,0);
+        spiral(RGBColor::YELLOW);
+        sleep(1);
         spiral(RGBColor::BLACK);
-        RGBPicture *p = RGBPicture::getPicture( string("yellow_start_64.png"));
+        spiral(RGBColor::PURPLE);
+        sleep(1);
+        spiral(RGBColor::BLACK);
+        spiral(RGBColor::UNKNOWN);
+        sleep(1);
+        RGBPicture *p = RGBPicture::getPicture( string("christmas-tree_64_0.png"));
         this->colorAroundPicture(p,150);
     }
 
@@ -348,7 +357,8 @@ void LargeGrid::test()
         sleep(5);
     }
 
-    while(1) {
+    while(1)
+    {
         spiral(RGBColor::RED);
         setDummyBackground(RGBColor::RED,0,0,gridWidth,gridHeight);
         writeTextSmall(RGBColor::WHITE,0,0, ("MERRY"));

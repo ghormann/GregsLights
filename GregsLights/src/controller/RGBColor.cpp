@@ -60,6 +60,7 @@ RGBColor* RGBColor::BLACK = new RGBColor(0,0,0);
 RGBColor* RGBColor::PURPLE = new RGBColor(100,0,100);
 RGBColor* RGBColor::YELLOW = new RGBColor(100,100,0);
 RGBColor* RGBColor::WHITE = new RGBColor(100,100,100);
+RGBColor* RGBColor::UNKNOWN = new RGBColor(0,100,100);
 RGBColor* RGBColor::ORANGE = new RGBColor(100,50,0);
 RGBColor* RGBColor::GREY = new RGBColor(25,25,25);
 RGBColor* RGBColor::BROWN = new RGBColor(50,20,0);
