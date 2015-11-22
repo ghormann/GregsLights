@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 
     try
     {
-        bool sendDMX = false;
+        bool sendDMX = true;
         model = new DisplayModel(sendDMX, skip_time_check, show_new_year );
         sleep(1); // Allow threads to start up
         new TextDisplay(model);

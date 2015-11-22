@@ -42,13 +42,17 @@ void CountdownClock::testALlOn()
         {
             special[i]->setIntensity(100);
         }
-        sleep(2);
+        //sleep(1);
+        usleep(200 * 1000); // 200m
     }
 }
 
 void CountdownClock::test()
 {
     sprintf(message, "Testing Clock");
+    while(0) {
+	testALlOn();
+	}
 
     while(1)
     {

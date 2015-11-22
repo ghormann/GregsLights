@@ -611,7 +611,7 @@ void Sign::test()
         sleep(10);
     }
 
-    while (1) {
+    while (0) {
         this->setBackground(RGBColor::YELLOW);
         sleep(5);
         this->setBackground(RGBColor::PURPLE);

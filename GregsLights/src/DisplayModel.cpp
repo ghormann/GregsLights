@@ -32,7 +32,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
      * maxBeforeSleep: Max Universes updated before taking an extra sleep
      * extraSleepMs: Duration (MS) of sleep when MaxBeforeSleep hit.
      */
-    networks = new NetworkCollection("Normal", 10,100,MAX_LIGHT_NETWORKS,1);
+    networks = new NetworkCollection("Normal", 5,25,MAX_LIGHT_NETWORKS,1);
     // name, 5, 2, 6, 15 is "OK" for Alpha Pix.
     // name: 5,2,6,5 I Fairly good.
     networkAlpha1 = new NetworkCollection("Alpha1",5,2,6,1);
@@ -45,11 +45,11 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
 
     networkAlpha1->addNetwork(dmx);
 
-    LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB0", sendDMX);
+    //LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB0", sendDMX);
+    LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB0", false);
 
 
     /* Debug ONly */
-    sendDMX = true;
     char *signIP = "192.168.0.232";
     E131Network *sign[SIGN_E11_COUNT];
     sign[signId++] = new E131Network(signIP, 40, 512);  // port 4 170
@@ -128,7 +128,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
 
     //setup Clock
     this->clock = new CountdownClock(this->skipTimeCheck, this->newYears);
-    int i = 100;   // Starting at the 100th spot
+    int i = 100-1;   // Starting at the 100th spot
     this->clock->setBulb(0,0,clockE131->getBulb(i + 19));
     this->clock->setBulb(0,1,clockE131->getBulb(i + 15));
     this->clock->setBulb(0,2,clockE131->getBulb(i + 14));
@@ -153,7 +153,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     this->clock->setBulb(2,5,clockE131->getBulb(i + 4));
     this->clock->setBulb(2,6,clockE131->getBulb(i + 2));
     // Next
-    i = 130;   // Next controller
+    i = 130-1;   // Next controller
     this->clock->setBulb(3,0,clockE131->getBulb(i + 2));
     this->clock->setBulb(3,1,clockE131->getBulb(i + 5));
     this->clock->setBulb(3,2,clockE131->getBulb(i + 0));
