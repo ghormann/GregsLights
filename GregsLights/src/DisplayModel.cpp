@@ -194,7 +194,7 @@ void DisplayModel::shutdown()
     networks->doShutdown();
     networkAlpha1->doShutdown();
     networkAlpha2->doShutdown();
-    sleep(2); // Give system time to clean up
+    sleep(1); // Give system time to clean up
 }
 
 bool DisplayModel::isSkipTimeCheck()

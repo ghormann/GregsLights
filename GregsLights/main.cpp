@@ -4,12 +4,26 @@
  */
 
 #include <iostream>
+#include <cstdlib>
+#include <signal.h>
 #include "include/DisplayModel.h"
 #include "include/DisplayTester.h"
 #include "include/TextDisplay.h"
 #include "include/GregsDisplay.h"
 
 using namespace std;
+DisplayModel *model = 0;
+
+void my_handler(int s)
+{
+    printf("Caught signal %d\n",s);
+    if (model != 0)
+    {
+        model->shutdown();
+    }
+    exit(1);
+
+}
 
 
 int main(int argc, char *argv[])
@@ -18,6 +32,15 @@ int main(int argc, char *argv[])
     int show_new_year = FALSE;
     int isDebug = FALSE;
     int ch;
+
+    //Setup SIgnal Handler
+    struct sigaction sigIntHandler;
+    sigIntHandler.sa_handler = my_handler;
+    sigemptyset(&sigIntHandler.sa_mask);
+    sigIntHandler.sa_flags = 0;
+    sigaction(SIGINT, &sigIntHandler, NULL);
+
+
     /*
     * Parse Arguments
     */
@@ -51,7 +74,7 @@ int main(int argc, char *argv[])
     try
     {
         bool sendDMX = false;
-        DisplayModel *model = new DisplayModel(sendDMX, skip_time_check, show_new_year );
+        model = new DisplayModel(sendDMX, skip_time_check, show_new_year );
         sleep(1); // Allow threads to start up
         new TextDisplay(model);
 
