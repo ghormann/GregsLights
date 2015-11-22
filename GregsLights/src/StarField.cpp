@@ -18,7 +18,7 @@ StarField::~StarField()
 
 void StarField::test()
 {
-    ((FadeableBulb *)stars[0]->getRedBulb())->setDebug(true);
+    //((FadeableBulb *)stars[9]->getRedBulb())->setDebug(true);
     double duration = 5.0;
     RGBColor *colors[3];
     colors[0] = RGBColor::RED;
@@ -27,6 +27,16 @@ void StarField::test()
 
     while(1)
     {
+        stars[9]->set(RGBColor::RED);
+        sleep(1);
+        stars[9]->set(RGBColor::GREEN);
+        sleep(1);
+        stars[9]->set(RGBColor::BLUE);
+        sleep(1);
+        stars[10]->set(RGBColor::GREEN);
+        sleep(1);
+        stars[9]->set(RGBColor::BLACK);
+        stars[10]->set(RGBColor::BLACK);
         for (int i =0; i<2; i++)
         {
             for (int j=0; j < STAR_COUNT; j++)
