@@ -8,6 +8,7 @@
 #include "Sign.h"
 #include "Snowmen.h"
 #include "LargeGrid.h"
+#include "StarField.h"
 
 
 #define HOUSE_LIGHT_START 1
@@ -29,6 +30,7 @@ class DisplayModel
         Sign * getSign();
         Snowmen * getSnowmen();
         LargeGrid *getGrid();
+        StarField *getStars();
         void setMessage(int id, char*);
         char *getMessage(int id);
         bool isSkipTimeCheck();
@@ -46,6 +48,7 @@ class DisplayModel
         Sign *sign;
         Snowmen *snowmen;
         LargeGrid *grid;
+        StarField *stars;
         bool skipTimeCheck;
         bool newYears;
 

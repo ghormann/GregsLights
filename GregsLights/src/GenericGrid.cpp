@@ -2018,7 +2018,7 @@ void GenericGrid::spiral(RGBColor *color)
         if (posX >= 0 && posX < gridWidth && posY >= 0 && posY < gridHeight)
         {
             gridSleep(N > (gridHeight*gridWidth) ? 0.0001 : 0.001);
-            getPixal(posX, posY)->fadeTo(color->getRed(), color->getGreen(), color->getBlue(), 5.0);
+            getPixal(posX, posY)->fadeTo(color->getRed(), color->getGreen(), color->getBlue(), 2.5);
 
         }
         if(abs(x) <= abs(y) && (x != y || x >= 0))

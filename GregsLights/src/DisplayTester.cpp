@@ -18,18 +18,31 @@ void DisplayTester::testAll()
     pthread_t bush_t;
     pthread_t snowmen_t;
     pthread_t grid_t;
+    pthread_t stars_t;
     pthread_create(&(clock_t), NULL, DisplayTester::clockThread, (void*) this);
     pthread_create(&(dmx_t), NULL, DisplayTester::dmxThread, (void*) this);
     pthread_create(&(sign_t), NULL, DisplayTester::signThread, (void*) this);
     pthread_create(&(bush_t), NULL, DisplayTester::bushThread, (void*) this);
     pthread_create(&(snowmen_t), NULL, DisplayTester::snowmenThread, (void*) this);
     pthread_create(&(grid_t), NULL, DisplayTester::gridThread, (void*) this);
+    pthread_create(&(stars_t), NULL, DisplayTester::starThread, (void*) this);
 
     // Join disabled becaue the graphics byild needs testAll to return....
     //pthread_join(clock_t, NULL);
     //pthread_join(dmx_t, NULL);
     //pthread_join(sign_t, NULL);
 }
+
+void * DisplayTester::starThread(void * args)
+{
+    DisplayTester *ptr = (DisplayTester *) args;
+    while(1)
+    {
+        ptr->model->getStars()->test();
+    }
+    return NULL;
+}
+
 
 void * DisplayTester::snowmenThread(void * args)
 {

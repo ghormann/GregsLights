@@ -20,6 +20,7 @@ class DisplayTester
         static void * signThread(void *);
         static void * snowmenThread(void *);
         static void * gridThread(void *);
+        static void * starThread(void *);
     protected:
     private:
         DisplayModel *model;
