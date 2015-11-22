@@ -12,14 +12,16 @@ public:
     static void * tickThread(void *);
     virtual void fade(int start, int stop, double duration);
     void setIntensity(int pct);
+    void setDebug(bool d);
 protected:
 private:
     static FadeableBulb *firstBulb;
     void fadeTick(double duration);
     FadeableBulb *next = 0;
-    float fadeStep = 0;  /* Per ms */
-    float percentage = 0;
+    double fadeStep = 0;  /* Per ms */
+    double percentage = 0;
     char fadeStop = 0; // range 0-100
+    bool debug = false;
 
 
 };

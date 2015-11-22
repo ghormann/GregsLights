@@ -21,6 +21,12 @@ FadeableBulb::~FadeableBulb()
     //dtor
 }
 
+void FadeableBulb::setDebug(bool d)
+{
+    this->debug = d;
+    printf("Setting Debug on Fadebulb %d\n", this->debug);
+}
+
 /**
 * duration is in seconds
 */
@@ -33,8 +39,15 @@ void FadeableBulb::fade(int start, int stop, double duration)
 
     setIntensity(start);
     this->percentage = start;
-    fadeStep = ((double)(stop-start)) / (duration*1000);
+    fadeStep = ((double)(stop-start)) / (duration*3000); // not sure by 3000 is needed, but it works
     fadeStop = stop;
+
+
+    if (this->debug)
+    {
+        printf("DEBUG Fade: Start: %d, Stop: %d, duration %f, fadeStep: %f\n",start,stop,duration,fadeStep);
+    }
+
 
     //printf("FadeStep: %f\n", fadeStep );
 }
@@ -54,11 +67,11 @@ void * FadeableBulb::tickThread(void *)
     auto begin = std::chrono::high_resolution_clock::now() ;
     while (1)
     {
-        usleep(50 * 1000); // 50ms)
+        usleep(10 * 1000); // 10ms)
         auto end = std::chrono::high_resolution_clock::now() ;
-        auto ticks = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin) ;
+        auto ticks = std::chrono::duration_cast<std::chrono::microseconds>(end-begin) ;
 
-        double duration = ticks.count();
+        double duration = ((double)ticks.count())/1000;
 
         FadeableBulb *current = 0;
         current = firstBulb;
@@ -103,6 +116,12 @@ void FadeableBulb::fadeTick(double duration)
         fadeStop = 0;
     }
 
+/*
+    if (this->debug)
+    {
+        printf("Tick: fadeStep: %f, pct: %f, Duration: %f\n", fadeStep,percentage, duration);
+    }
+*/
     Bulb::setIntensity(percentage);
 }
 
