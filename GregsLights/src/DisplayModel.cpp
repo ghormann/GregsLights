@@ -43,7 +43,6 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     //OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", ACTIDONGLE, sendDMX);
     //OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", OPENDMX);
 
-    networkAlpha1->addNetwork(dmx);
 
     //LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB0", sendDMX);
     LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB0", false);
@@ -79,6 +78,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
 
     if (sendDMX)
     {
+        networkAlpha1->addNetwork(dmx);
         networks->addNetwork(clockE131);
         //networks->addNetwork(lor);
         for (int j = 0; j< SIGN_E11_COUNT; j++)
