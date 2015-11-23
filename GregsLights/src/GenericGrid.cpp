@@ -23,7 +23,8 @@ GenericGrid::GenericGrid(int width_, int height_, int dummy_width_, int dummy_he
 
 }
 
-void GenericGrid::interruptThread() {
+void GenericGrid::interruptThread()
+{
     this->interrupt = true;
 }
 
@@ -1471,14 +1472,18 @@ int GenericGrid::drawLetterSmall(char letter, RGBColor* color, int startX, int s
     return offset;
 }
 
-void GenericGrid::writeTextSmall(RGBColor *fgColor, int x, int y , string str) {
-    for ( std::string::iterator it=str.begin(); it!=str.end(); ++it) {
+void GenericGrid::writeTextSmall(RGBColor *fgColor, int x, int y , string str)
+{
+    for ( std::string::iterator it=str.begin(); it!=str.end(); ++it)
+    {
         x += drawLetterSmall(*it,fgColor,x,y) + 2;
     }
 }
 
-void GenericGrid::writeText(RGBColor *fgColor, int x, int y , string str) {
-    for ( std::string::iterator it=str.begin(); it!=str.end(); ++it) {
+void GenericGrid::writeText(RGBColor *fgColor, int x, int y , string str)
+{
+    for ( std::string::iterator it=str.begin(); it!=str.end(); ++it)
+    {
         x += drawLetter(*it,fgColor,x,y) + 2;
     }
 }
@@ -2043,7 +2048,8 @@ inline int GenericGrid::_gridSleep(double d)
         {
             usleep(0.05 * 1000000);
             cur += 0.05;
-            if (this->interrupt) {
+            if (this->interrupt)
+            {
                 this->interrupt = false;
                 return 1;
             }
@@ -2134,6 +2140,20 @@ void GenericGrid::candyCane()
     gridSleep(1);
 }
 
+void GenericGrid::showMovieCenter(std::string &startsWith, int cnt, double duration)
+{
+    vector<RGBPicture> pics;
+    RGBPicture::findStartsWith(startsWith, pics);
+    RGBPicture p = pics.at(0);
+    int w,h;
+    p.getSize(w,h);
+
+    int y = (h > gridHeight ? 0 : (gridHeight-h)/2);
+    int x = (w > gridWidth ? 0: (gridWidth - w)/2);
+    this->showMovie(startsWith,cnt,duration,x,y);
+
+}
+
 void GenericGrid::showMovie(string &startsWith, int cnt, double duration, int x, int y)
 {
     vector<RGBPicture> pics;
@@ -2155,51 +2175,51 @@ void GenericGrid::showMovie(string &startsWith, int cnt, double duration, int x,
 
 void GenericGrid::scrollPictureLeft(RGBPicture &pic, double delay, bool hideBlack)
 {
-        int x, picWidth, picHeight;
+    int x, picWidth, picHeight;
 
-        pic.getSize(picWidth,picHeight);
-        this->setDummyBackground(RGBColor::BLACK,0,0,picWidth*2 + gridWidth,gridHeight);
-        showPictureDummy(pic,gridWidth,0,hideBlack);
+    pic.getSize(picWidth,picHeight);
+    this->setDummyBackground(RGBColor::BLACK,0,0,picWidth*2 + gridWidth,gridHeight);
+    showPictureDummy(pic,gridWidth,0,hideBlack);
 
-        this->setDisplayPosition(0,0);
-        for (x = 0; x  < picWidth + this->gridWidth + 1; x++)
-        {
-            this->setDisplayPosition(x,0);
-            gridSleep(delay);
-        }
+    this->setDisplayPosition(0,0);
+    for (x = 0; x  < picWidth + this->gridWidth + 1; x++)
+    {
+        this->setDisplayPosition(x,0);
+        gridSleep(delay);
+    }
 }
 
 void GenericGrid::scrollPictureRight(RGBPicture &pic, double delay, bool hideBlack)
 {
-        int x, picWidth, picHeight;
+    int x, picWidth, picHeight;
 
-        pic.getSize(picWidth,picHeight);
-        this->setDummyBackground(RGBColor::BLACK,0,0,picWidth*2 + gridWidth,gridHeight);
-        showPictureDummy(pic,gridWidth,0,hideBlack);
+    pic.getSize(picWidth,picHeight);
+    this->setDummyBackground(RGBColor::BLACK,0,0,picWidth*2 + gridWidth,gridHeight);
+    showPictureDummy(pic,gridWidth,0,hideBlack);
 
-        this->setDisplayPosition(0,0);
-        for (x = picWidth+gridWidth + 1; x >= 0; --x)
-        {
-            this->setDisplayPosition(x,0);
-            gridSleep(delay);
-        }
+    this->setDisplayPosition(0,0);
+    for (x = picWidth+gridWidth + 1; x >= 0; --x)
+    {
+        this->setDisplayPosition(x,0);
+        gridSleep(delay);
+    }
 }
 
 void GenericGrid::scrollPictureUp(RGBPicture &pic, double delay, bool hideBlack)
 {
-        int y, picWidth, picHeight;
-        pic.getSize(picWidth,picHeight);
-        int x = (gridWidth - picWidth)/2; // Center pic
-        x = x < 0 ? 0 : x;
+    int y, picWidth, picHeight;
+    pic.getSize(picWidth,picHeight);
+    int x = (gridWidth - picWidth)/2; // Center pic
+    x = x < 0 ? 0 : x;
 
-        this->setDummyBackground(RGBColor::BLACK,0,0,gridWidth,picHeight *2 + gridHeight);
-        showPictureDummy(pic,x,gridHeight,hideBlack);
+    this->setDummyBackground(RGBColor::BLACK,0,0,gridWidth,picHeight *2 + gridHeight);
+    showPictureDummy(pic,x,gridHeight,hideBlack);
 
-        for (y = 0; y < picHeight+gridHeight+1;  ++y)
-        {
-            this->setDisplayPosition(0,y);
-            gridSleep(delay);
-        }
+    for (y = 0; y < picHeight+gridHeight+1;  ++y)
+    {
+        this->setDisplayPosition(0,y);
+        gridSleep(delay);
+    }
 }
 
 

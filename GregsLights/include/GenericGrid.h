@@ -64,6 +64,7 @@ public:
     void showPictureDummy(RGBPicture &pic, int posX, int posY,bool hideBlack);
     void spiral(RGBColor *color);
     void showMovie(std::string &startsWith, int cnt, double duration, int x, int y);
+    void showMovieCenter(std::string &startsWith, int cnt, double duration);
     void interruptThread();
 protected:
     int gridHeight;

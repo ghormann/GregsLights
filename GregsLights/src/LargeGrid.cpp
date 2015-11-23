@@ -254,7 +254,7 @@ void LargeGrid::test()
         }
     }
 
-    while(1)
+    while(0)
     {
         RGBPicture *left = RGBPicture::getPicture(("train_blue_46.png"));
         RGBPicture *right = RGBPicture::getPicture(("train_right_46.png"));
@@ -275,7 +275,7 @@ void LargeGrid::test()
     }
 
     // Show all Pictures
-    while(1)
+    while(0)
     {
 
         spiral(RGBColor::RED);
@@ -328,10 +328,10 @@ void LargeGrid::test()
     /*
      * Test Animated Gif
      */
-    while (0)
+    while (1)
     {
         string name = string("toder");
-        showMovie(name,6,0.15,0,0);
+        showMovieCenter(name,6,0.15);
         spiral(RGBColor::BLACK);
 
     }
