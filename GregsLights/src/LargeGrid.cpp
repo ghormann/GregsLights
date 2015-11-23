@@ -180,6 +180,43 @@ RGBLight *LargeGrid::getBoard(int x, int y)
     return board[pos];
 }
 
+void LargeGrid::scrollGrinch()
+{
+    setDummyBackground(RGBColor::DARKGREEN);
+    RGBPicture* pic = RGBPicture::getPicture(("Grinch_only_92.png"));
+    showPictureDummy(*pic, 60, 0,true);
+    int y=0;
+    writeTextSmall(RGBColor::WHITE,0,y,("MAYBE"));
+    y+=12;
+    writeTextSmall(RGBColor::WHITE,0,y,("CHRISTMAS"));
+    y+=12;
+    writeTextSmall(RGBColor::WHITE,0,y,("HE THOUGHT"));
+    y+=12;
+    writeTextSmall(RGBColor::WHITE,0,y,("DOESN'T "));
+    y+=12;
+    writeTextSmall(RGBColor::WHITE,0,y,("COME FROM"));
+    y+=12;
+    writeTextSmall(RGBColor::WHITE,0,y,("A STORE."));
+    y+=12;
+    writeTextSmall(RGBColor::WHITE,0,y,("CHRISTMAS"));
+    y+=12;
+    writeTextSmall(RGBColor::WHITE,0,y,("PERHAPS..."));
+    y+=12;
+    writeTextSmall(RGBColor::WHITE,0,y,("IT MEANS A LITTLE"));
+    y+=12;
+    writeTextSmall(RGBColor::WHITE,0,y,("BIT MORE!"));
+
+    setDisplayPosition(0,0);
+    sleep(1);
+    int stop = y-gridHeight+12;
+    for (int y = 0; y < stop; y++) {
+        setDisplayPosition(0,y);
+        gridSleep(0.3);
+    }
+    gridSleep(2);
+
+}
+
 
 void LargeGrid::test()
 {
@@ -252,6 +289,11 @@ void LargeGrid::test()
                 getPixal(i,j)->set(RGBColor::BLACK);
             }
         }
+    }
+
+    while(1)
+    {
+        scrollGrinch();
     }
 
     while(0)
@@ -328,9 +370,9 @@ void LargeGrid::test()
     /*
      * Test Animated Gif
      */
-    while (1)
+    while (0)
     {
-        string name = string("toder");
+        string name = string("tongue");
         showMovieCenter(name,6,0.15);
         spiral(RGBColor::BLACK);
 

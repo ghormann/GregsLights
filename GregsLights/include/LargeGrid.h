@@ -20,7 +20,7 @@ public:
     virtual ~LargeGrid();
     virtual RGBLight * getBoard(int x, int y);
     virtual RGBLight * getPixal(int x, int y);
-
+    void scrollGrinch();
     void test();
     void run();
     char *getMessage();

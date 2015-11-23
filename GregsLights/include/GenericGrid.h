@@ -13,6 +13,8 @@
 #include <cmath>
 
 #define gjhDistance(dX0, dY0, dX1, dY1)  (sqrt((dX1 - dX0)*(dX1 - dX0) + (dY1 - dY0)*(dY1 - dY0)))
+#define gridSleep(pause)  if (_gridSleep(( (double)pause))) return;
+
 
 enum GRID_SPECIAL
 {

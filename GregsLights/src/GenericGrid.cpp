@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <iostream>
 
-#define gridSleep(pause)  if (_gridSleep(( (double)pause))) return;
-
 using namespace std;
 
 
@@ -1368,6 +1366,22 @@ int GenericGrid::drawLetterSmall(char letter, RGBColor* color, int startX, int s
         }
         offset = 6;
     }
+    else if (letter == 'P')
+    {
+        for (x=0; x<5; x++)
+        {
+            d[x][0] = d[x][4] = '1';
+        }
+        for (y=1; y< 4; y++)
+        {
+            d[0][y] = d[5][y] = '1';
+        }
+        for (y=5; y<9; y++)
+        {
+            d[0][y] = '1';
+        }
+        offset = 6;
+    }
     else if (letter == 'R')
     {
         for (y=0; y<9; y++)
@@ -1445,6 +1459,20 @@ int GenericGrid::drawLetterSmall(char letter, RGBColor* color, int startX, int s
 
         offset=7;
     }
+    else if (letter == ' ')
+    {
+        offset=4;
+    }
+    else if (letter == '-')
+    {
+        d[0][4]=d[1][4]=d[2][4] = '1';
+        offset=3;
+    }
+    else if (letter == '.')
+    {
+        d[0][8] = '1';
+        offset=2;
+    }
     else if (letter == 0x27)
     {
         d[1][0]=d[2][0]=d[1][1] = '1';
@@ -1476,7 +1504,7 @@ void GenericGrid::writeTextSmall(RGBColor *fgColor, int x, int y , string str)
 {
     for ( std::string::iterator it=str.begin(); it!=str.end(); ++it)
     {
-        x += drawLetterSmall(*it,fgColor,x,y) + 2;
+        x += drawLetterSmall(*it,fgColor,x,y) + 1;
     }
 }
 
