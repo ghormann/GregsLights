@@ -2062,7 +2062,7 @@ void GenericGrid::spiral(RGBColor *color)
     gridSleep(3.0);
 }
 
-inline int GenericGrid::_gridSleep(double d)
+int GenericGrid::_gridSleep(double d)
 {
     // Sleep in chunks to avoid long blocks
     if (d < 0.5)

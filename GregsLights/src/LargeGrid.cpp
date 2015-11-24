@@ -182,7 +182,7 @@ RGBLight *LargeGrid::getBoard(int x, int y)
 
 void LargeGrid::scrollGrinch()
 {
-    setDummyBackground(RGBColor::DARKGREEN);
+    setDummyBackground(RGBColor::BLACK);
     RGBPicture* pic = RGBPicture::getPicture(("Grinch_only_92.png"));
     showPictureDummy(*pic, 60, 0,true);
     int y=0;
@@ -291,19 +291,19 @@ void LargeGrid::test()
         }
     }
 
-    while(1)
+    while(0)
     {
         scrollGrinch();
     }
 
-    while(0)
+    while(1)
     {
         RGBPicture *left = RGBPicture::getPicture(("train_blue_46.png"));
         RGBPicture *right = RGBPicture::getPicture(("train_right_46.png"));
         scrollPictureLeft(*left,0.01,false);
         scrollPictureRight(*right,0.01,false);
         string name = string("toder");
-        showMovie(name,6,0.15,30,0);
+        showMovieCenter(name,6,0.15);
         spiral(RGBColor::YELLOW);
         sleep(1);
         spiral(RGBColor::BLACK);
@@ -314,6 +314,7 @@ void LargeGrid::test()
         sleep(1);
         RGBPicture *p = RGBPicture::getPicture( string("christmas-tree_64_0.png"));
         this->colorAroundPicture(p,150);
+        scrollGrinch();
     }
 
     // Show all Pictures
