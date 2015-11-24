@@ -1,5 +1,8 @@
 #include "../include/StarField.h"
 #include "../include/controller/FadeableBulb.h"
+#include <iostream>
+
+using namespace std;
 
 StarField::StarField(E131Network *net)
 {
@@ -16,6 +19,16 @@ StarField::~StarField()
     //dtor
 }
 
+RGBLight* StarField::getStar(int id)
+{
+    if (id < 0 || id >= STAR_COUNT)
+    {
+        cout << "Invalid Star ID" << endl;
+        throw "Invalid Star ID";
+    }
+    return stars[id];
+}
+
 void StarField::test()
 {
     //((FadeableBulb *)stars[9]->getRedBulb())->setDebug(true);
@@ -27,13 +40,13 @@ void StarField::test()
 
     while(1)
     {
-        stars[9]->set(RGBColor::RED);
+        stars[0]->set(RGBColor::RED);
         sleep(1);
-        stars[9]->set(RGBColor::GREEN);
+        stars[0]->set(RGBColor::GREEN);
         sleep(1);
-        stars[9]->set(RGBColor::BLUE);
+        stars[0]->set(RGBColor::BLUE);
         sleep(1);
-        stars[10]->set(RGBColor::GREEN);
+        stars[1]->set(RGBColor::GREEN);
         sleep(1);
         stars[9]->set(RGBColor::BLACK);
         stars[10]->set(RGBColor::BLACK);
@@ -48,7 +61,8 @@ void StarField::test()
             sleep(duration);
         }
 
-        for (int j = 0; j < STAR_COUNT; j++) {
+        for (int j = 0; j < STAR_COUNT; j++)
+        {
             stars[j]->fadeTo(RGBColor::BLACK, duration);
         }
         sleep(duration);

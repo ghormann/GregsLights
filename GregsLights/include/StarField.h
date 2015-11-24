@@ -3,8 +3,7 @@
 
 #include "controller/E131Network.h"
 
-
-#define STAR_COUNT 45
+#define STAR_COUNT 96
 
 class StarField
 {
@@ -12,6 +11,7 @@ class StarField
         StarField(E131Network *net);
         virtual ~StarField();
         void test();
+        RGBLight* getStar(int i);
     protected:
     private:
     RGBLight *stars[STAR_COUNT];
