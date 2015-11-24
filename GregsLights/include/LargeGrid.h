@@ -23,6 +23,7 @@ public:
     void scrollGrinch();
     void test();
     void run();
+    void peakSanta();
     char *getMessage();
 protected:
 private:

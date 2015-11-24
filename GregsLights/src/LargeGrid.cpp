@@ -209,7 +209,8 @@ void LargeGrid::scrollGrinch()
     setDisplayPosition(0,0);
     sleep(1);
     int stop = y-gridHeight+12;
-    for (int y = 0; y < stop; y++) {
+    for (int y = 0; y < stop; y++)
+    {
         setDisplayPosition(0,y);
         gridSleep(0.3);
     }
@@ -217,6 +218,36 @@ void LargeGrid::scrollGrinch()
 
 }
 
+void LargeGrid::peakSanta()
+{
+    RGBPicture *pic = RGBPicture::getPicture(("santa-hat_92.png"));
+    double delay = 0.1;
+
+    int y=0, picWidth, picHeight;
+    pic->getSize(picWidth,picHeight);
+    int x = (gridWidth - picWidth)/2; // Center pic
+    x = x < 0 ? 0 : x;
+
+    this->setDummyBackground(RGBColor::BLACK,0,0,gridWidth,picHeight *2 + gridHeight);
+    showPictureDummy(*pic,x,gridHeight,false);
+
+    y=10;
+    while (y < 58)
+    {
+        this->setDisplayPosition(0,++y);
+        gridSleep(delay);
+    }
+
+    gridSleep(1.5);
+
+        while (y >= 10)
+    {
+        this->setDisplayPosition(0,--y);
+        gridSleep(delay);
+    }
+
+
+}
 
 void LargeGrid::test()
 {
@@ -298,10 +329,11 @@ void LargeGrid::test()
 
     while(1)
     {
+        peakSanta();
         RGBPicture *left = RGBPicture::getPicture(("train_blue_46.png"));
         RGBPicture *right = RGBPicture::getPicture(("train_right_46.png"));
-        scrollPictureLeft(*left,0.01,false);
-        scrollPictureRight(*right,0.01,false);
+        scrollPictureLeft(*left,0.015,false);
+        scrollPictureRight(*right,0.015,false);
         string name = string("toder");
         showMovieCenter(name,6,0.15);
         spiral(RGBColor::YELLOW);
@@ -400,7 +432,7 @@ void LargeGrid::test()
         sleep(5);
     }
 
-    while(1)
+    while(0)
     {
         spiral(RGBColor::RED);
         setDummyBackground(RGBColor::RED,0,0,gridWidth,gridHeight);
@@ -429,7 +461,7 @@ void LargeGrid::test()
     // Scroll up RGB Picture
     while (1)
     {
-        RGBPicture *pic = RGBPicture::getPicture(("olaf64.png"));
+        RGBPicture *pic = RGBPicture::getPicture(("santa-hat_92.png"));
         scrollPictureUp(*pic,0.1,false);
     }
 
