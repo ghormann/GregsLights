@@ -240,7 +240,7 @@ void LargeGrid::peakSanta()
 
     gridSleep(1.5);
 
-        while (y >= 10)
+    while (y >= 10)
     {
         this->setDisplayPosition(0,--y);
         gridSleep(delay);
@@ -329,6 +329,12 @@ void LargeGrid::test()
 
     while(1)
     {
+        /*
+         * HAPPINES IS CATCHING SNOWFLAKES ON YOUR TONGUE
+         * YOU'LL SHOOT YOUR EYE OUT KID.
+         * https://darrellcreswell.files.wordpress.com/2012/12/joy-to-the-world-the-lord-has-come-luke-2-11.jpg?w=700
+        */
+
         scrollText(RGBColor::WHITE, RGBColor::DARKGREEN,"SOME PEOPLE ARE WORTH MELTING FOR", 0.02);
         gridSleep(0.5);
         string name = string("olaf_melt_64");
