@@ -3,7 +3,7 @@
 
 #include "controller/E131Network.h"
 
-#define STAR_COUNT 96
+#define STAR_COUNT 45
 
 class StarField
 {
