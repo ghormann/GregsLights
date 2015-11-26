@@ -44,8 +44,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     //OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", OPENDMX);
 
 
-    //LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB0", sendDMX);
-    LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB0", false);
+    LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB0", sendDMX);
 
 
     /* Debug ONly */
@@ -80,7 +79,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     {
         networkAlpha1->addNetwork(dmx);
         networks->addNetwork(clockE131);
-        //networks->addNetwork(lor);
+        networks->addNetwork(lor);
         for (int j = 0; j< SIGN_E11_COUNT; j++)
         {
             networks->addNetwork(sign[j]);
