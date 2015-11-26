@@ -327,7 +327,7 @@ void LargeGrid::test()
         scrollGrinch();
     }
 
-    while(1)
+    while(0)
     {
         /*
          * HAPPINES IS CATCHING SNOWFLAKES ON YOUR TONGUE
@@ -343,8 +343,8 @@ void LargeGrid::test()
         peakSanta();
         RGBPicture *left = RGBPicture::getPicture(("train_blue_46.png"));
         RGBPicture *right = RGBPicture::getPicture(("train_right_46.png"));
-        scrollPictureLeft(*left,0.015,false);
-        scrollPictureRight(*right,0.015,false);
+        scrollPictureLeft(*left,0.02,false);
+        scrollPictureRight(*right,0.02,false);
 
         string name1 = string("toder");
         showMovieCenter(name1,6,0.15);
@@ -362,7 +362,7 @@ void LargeGrid::test()
     }
 
     // Show all Pictures
-    while(0)
+    while(1)
     {
 
         spiral(RGBColor::RED);
@@ -376,6 +376,30 @@ void LargeGrid::test()
 
         string name = string("toder");
         showMovie(name,6,0.15,0,0);
+        spiral(RGBColor::BLACK);
+
+        string name1 = string("tongue");
+        showMovie(name1,3,0.15,0,0);
+        spiral(RGBColor::BLACK);
+
+        string name2 = string("scarf");
+        showMovie(name2,1,0.15,0,0);
+        spiral(RGBColor::BLACK);
+
+        string name3 = string("puss_boots");
+        showMovie(name3,6,0.15,0,0);
+        spiral(RGBColor::BLACK);
+
+        string name4 = string("olaf_melt");
+        showMovie(name4,3,0.15,0,0);
+        spiral(RGBColor::BLACK);
+
+        string name5 = string("candles");
+        showMovie(name5,6,0.15,0,0);
+        spiral(RGBColor::BLACK);
+
+        string name6 = string("19237_64");
+        showMovie(name6,1,0.25,0,0);
         spiral(RGBColor::BLACK);
 
         RGBPicture *pic = RGBPicture::getPicture(("olaf64.png"));
@@ -399,8 +423,8 @@ void LargeGrid::test()
         }
         RGBPicture *left = RGBPicture::getPicture(("train_blue_46.png"));
         RGBPicture *right = RGBPicture::getPicture(("train_right_46.png"));
-        scrollPictureLeft(*left,0.01,false);
-        scrollPictureRight(*right,0.01,false);
+        scrollPictureLeft(*left,0.02,false);
+        scrollPictureRight(*right,0.02,false);
 
         spiral(RGBColor::RED);
         setDummyBackground(RGBColor::RED,0,0,gridWidth,gridHeight);
