@@ -327,7 +327,8 @@ void LargeGrid::test()
         scrollGrinch();
     }
 
-    while(0)
+    // Start of Main.
+    while(1)
     {
         /*
          * HAPPINES IS CATCHING SNOWFLAKES ON YOUR TONGUE
@@ -335,30 +336,102 @@ void LargeGrid::test()
          * https://darrellcreswell.files.wordpress.com/2012/12/joy-to-the-world-the-lord-has-come-luke-2-11.jpg?w=700
         */
 
-        scrollText(RGBColor::WHITE, RGBColor::DARKGREEN,"SOME PEOPLE ARE WORTH MELTING FOR", 0.02);
-        gridSleep(0.5);
-        string name = string("olaf_melt_64");
-        this->showMovie(name,3,0.15,0,0);
+        RGBPicture *p = RGBPicture::getPicture( string("yellow_start_64.png"));
+        this->colorAroundPicture(p,150);
+
+
+        //scrollText(RGBColor::WHITE, RGBColor::DARKGREEN,"SOME PEOPLE ARE WORTH MELTING FOR", 0.02);
+        setDummyBackground(RGBColor::DARKGREEN, 0,0,gridWidth,gridHeight);
+        writeTextSmall(RGBColor::WHITE, 0,0, "SOME PEOPLE ARE");
+        writeTextSmall(RGBColor::WHITE, 0,14, "WORTH MELTING");
+        writeTextSmall(RGBColor::WHITE, 0,28, "FOR ...");
+
+        setDisplayPosition(0,0);
+        gridSleep(4.5);
+        wipeDown(RGBColor::BLACK,0.05);
+        string olafMelt = string("olaf_melt_64");
+        this->showMovie(olafMelt,3,0.15,0,0);
         //scrollText(RGBColor::RED, RGBColor::DARKGREEN,"IS YOUR HOUSE ON FIRE CLARK? .... NO AUNT BETHANY, THOSE ARE THE CHRISTMAS LIGHTS.....", 0.02);
         peakSanta();
+
         RGBPicture *left = RGBPicture::getPicture(("train_blue_46.png"));
         RGBPicture *right = RGBPicture::getPicture(("train_right_46.png"));
         scrollPictureLeft(*left,0.02,false);
         scrollPictureRight(*right,0.02,false);
 
-        string name1 = string("toder");
-        showMovieCenter(name1,6,0.15);
-        spiral(RGBColor::YELLOW);
+        string name = string("toder");
+        showMovieCenter(name,6,0.15);
+        spiral(RGBColor::BLACK);
+
+        string name1 = string("tongue");
+        showMovieCenter(name1,3,0.15);
+        spiral(RGBColor::BLACK);
+
+        string name2 = string("scarf");
+        showMovieCenter(name2,1,0.15);
+        spiral(RGBColor::BLACK);
+
+        string name3 = string("puss_boots");
+        showMovieCenter(name3,6,0.15);
+        spiral(RGBColor::BLACK);
+
+        // Done above
+        //string name4 = string("olaf_melt");
+        //showMovieCenter(name4,3,0.15);
+        //spiral(RGBColor::BLACK);
+
+        string name5 = string("candles");
+        showMovieCenter(name5,6,0.15);
+        spiral(RGBColor::BLACK);
+
+        string name6 = string("19237_64");
+        showMovieCenter(name6,1,0.50);
+        spiral(RGBColor::BLACK);
+
         sleep(1);
+        candyCane();
+
+        RGBPicture *pic = RGBPicture::getPicture(("olaf64.png"));
+        scrollPictureUp(*pic,0.1,false);
+
+
+
         spiral(RGBColor::BLACK);
         spiral(RGBColor::PURPLE);
         sleep(1);
         spiral(RGBColor::BLACK);
         spiral(RGBColor::UNKNOWN);
         sleep(1);
-        RGBPicture *p = RGBPicture::getPicture( string("christmas-tree_64_0.png"));
-        this->colorAroundPicture(p,150);
+        RGBPicture *p2 = RGBPicture::getPicture( string("christmas-tree_64_0.png"));
+        this->colorAroundPicture(p2,150);
         scrollGrinch();
+
+
+        std::vector<RGBPicture> allPictures = RGBPicture::getAllPictures();
+        vector<RGBPicture>::iterator it;
+        cout << "All Pictures: "  << allPictures.size() << endl;
+
+
+        for(it = allPictures.begin(); it != allPictures.end(); it++)
+        {
+            RGBPicture pict = (*it);
+            if (! pict.isMovie())
+            {
+                cout << pict.getName() << endl;
+                this->setBackground(RGBColor::BLACK);
+                this->showPictureNow(pict,0,0,false);
+                gjhSleep(1.5);
+            }
+        }
+
+
+        setDummyBackground(RGBColor::RED,0,0,gridWidth,gridHeight);
+        writeTextSmall(RGBColor::WHITE,0,0, ("MERRY"));
+        writeTextSmall(RGBColor::WHITE,0,16, ("CHRISTMAS"));
+        writeTextSmall(RGBColor::WHITE,0,32, ("ALL"));
+
+        setDisplayPosition(0,0);
+        sleep(5);
     }
 
     // Show all Pictures
@@ -370,42 +443,8 @@ void LargeGrid::test()
         spiral(RGBColor::PURPLE);
         spiral(RGBColor::ORANGE);
         spiral(RGBColor::BLACK);
-        RGBPicture *p = RGBPicture::getPicture( string("yellow_start_64.png"));
-        this->colorAroundPicture(p,150);
 
 
-        string name = string("toder");
-        showMovie(name,6,0.15,0,0);
-        spiral(RGBColor::BLACK);
-
-        string name1 = string("tongue");
-        showMovie(name1,3,0.15,0,0);
-        spiral(RGBColor::BLACK);
-
-        string name2 = string("scarf");
-        showMovie(name2,1,0.15,0,0);
-        spiral(RGBColor::BLACK);
-
-        string name3 = string("puss_boots");
-        showMovie(name3,6,0.15,0,0);
-        spiral(RGBColor::BLACK);
-
-        string name4 = string("olaf_melt");
-        showMovie(name4,3,0.15,0,0);
-        spiral(RGBColor::BLACK);
-
-        string name5 = string("candles");
-        showMovie(name5,6,0.15,0,0);
-        spiral(RGBColor::BLACK);
-
-        string name6 = string("19237_64");
-        showMovie(name6,1,0.25,0,0);
-        spiral(RGBColor::BLACK);
-
-        RGBPicture *pic = RGBPicture::getPicture(("olaf64.png"));
-        scrollPictureUp(*pic,0.1,false);
-
-        candyCane();
 
 
         std::vector<RGBPicture> allPictures = RGBPicture::getAllPictures();
@@ -416,24 +455,15 @@ void LargeGrid::test()
         for(it = allPictures.begin(); it != allPictures.end(); it++)
         {
             RGBPicture pict = (*it);
-            cout << pict.getName() << endl;
-            this->setBackground(RGBColor::BLACK);
-            this->showPictureNow(pict,0,0,false);
-            gjhSleep(1.5);
+            if (! pict.isMovie())
+            {
+                cout << pict.getName() << endl;
+                this->setBackground(RGBColor::BLACK);
+                this->showPictureNow(pict,0,0,false);
+                gjhSleep(1.5);
+            }
         }
-        RGBPicture *left = RGBPicture::getPicture(("train_blue_46.png"));
-        RGBPicture *right = RGBPicture::getPicture(("train_right_46.png"));
-        scrollPictureLeft(*left,0.02,false);
-        scrollPictureRight(*right,0.02,false);
 
-        spiral(RGBColor::RED);
-        setDummyBackground(RGBColor::RED,0,0,gridWidth,gridHeight);
-        writeTextSmall(RGBColor::WHITE,0,0, ("MERRY"));
-        writeTextSmall(RGBColor::WHITE,0,16, ("CHRISTMAS"));
-        writeTextSmall(RGBColor::WHITE,0,32, ("ALL"));
-
-        setDisplayPosition(0,0);
-        sleep(5);
     }
 
     /*

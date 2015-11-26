@@ -14,6 +14,7 @@ class RGBPicture
         void getRGB(int x, int y, int &r, int &g, int &b);
         void getSize(int &width, int &height);
         std::string &getName();
+        bool isMovie();
         static std::vector<RGBPicture> &getAllPictures();
         bool operator< ( const RGBPicture &str) const;
         static RGBPicture * getPicture(const std::string &name);

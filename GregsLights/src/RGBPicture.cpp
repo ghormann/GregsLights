@@ -69,6 +69,25 @@ RGBPicture * RGBPicture::getPicture(const string &name)
     return NULL;
 }
 
+bool RGBPicture::isMovie()
+{
+    if (this->shortName.find(("19237_64")) == 0
+            || shortName.find(("candles")) == 0
+            || shortName.find(("olaf_melt")) == 0
+            || shortName.find(("puss_boots")) == 0
+            || shortName.find(("scarf_00")) == 0
+            || shortName.find(("toder")) == 0
+            || shortName.find(("tongue")) == 0
+            || shortName.find(("")) == 0
+            || shortName.find(("")) == 0
+            || shortName.find(("")) == 0
+       )
+    {
+        return true;
+    }
+    return false;
+}
+
 void RGBPicture::findStartsWith(const string &startsWith, vector<RGBPicture> &results)
 {
     vector<RGBPicture> all = getAllPictures(); // make sure it is loaded
