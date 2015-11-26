@@ -231,12 +231,22 @@ void LargeGrid::peakSanta()
     this->setDummyBackground(RGBColor::BLACK,0,0,gridWidth,picHeight *2 + gridHeight);
     showPictureDummy(*pic,x,gridHeight,false);
 
+    writeTextSmall(RGBColor::WHITE, 0,0+10, "HE KNOWS IF YOU");
+    writeTextSmall(RGBColor::WHITE, 0,14+10, "  HAVE BEEN BAD");
+    writeTextSmall(RGBColor::WHITE, 0,28+10, "     OR GOOD. ");
+
+    this->setDisplayPosition(0,10);
+    gridSleep(2.5);
+
+
     y=10;
     while (y < 58)
     {
         this->setDisplayPosition(0,++y);
         gridSleep(delay);
     }
+
+    setDummyBackground(RGBColor::BLACK,0,0,gridWidth,y-2);
 
     gridSleep(1.5);
 
@@ -324,7 +334,11 @@ void LargeGrid::test()
 
     while(0)
     {
-        scrollGrinch();
+        //scrollGrinch();
+
+        peakSanta();
+        setBackground(RGBColor::BLACK);
+        gridSleep(3);
     }
 
     // Start of Main.
@@ -344,7 +358,7 @@ void LargeGrid::test()
         setDummyBackground(RGBColor::DARKGREEN, 0,0,gridWidth,gridHeight);
         writeTextSmall(RGBColor::WHITE, 0,0, "SOME PEOPLE ARE");
         writeTextSmall(RGBColor::WHITE, 0,14, "WORTH MELTING");
-        writeTextSmall(RGBColor::WHITE, 0,28, "FOR ...");
+        writeTextSmall(RGBColor::WHITE, 33,28, "FOR ...");
 
         setDisplayPosition(0,0);
         gridSleep(4.5);
@@ -381,14 +395,15 @@ void LargeGrid::test()
         //spiral(RGBColor::BLACK);
 
         string name5 = string("candles");
-        showMovieCenter(name5,6,0.15);
+        showMovieCenter(name5,12,0.15);
         spiral(RGBColor::BLACK);
 
         string name6 = string("19237_64");
         showMovieCenter(name6,1,0.50);
+        gridSleep(1);
+
         spiral(RGBColor::BLACK);
 
-        sleep(1);
         candyCane();
 
         RGBPicture *pic = RGBPicture::getPicture(("olaf64.png"));
