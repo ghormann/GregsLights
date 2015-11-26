@@ -2168,6 +2168,16 @@ void GenericGrid::candyCane()
     gridSleep(1);
 }
 
+void GenericGrid::showPictureNowCenter(RGBPicture &pic,bool hideBlack)
+{
+    int w,h;
+    pic.getSize(w,h);
+    int y = (h > gridHeight ? 0 : (gridHeight-h)/2);
+    int x = (w > gridWidth ? 0: (gridWidth - w)/2);
+    showPictureNow(pic,x,y,hideBlack);
+}
+
+
 void GenericGrid::showMovieCenter(std::string &startsWith, int cnt, double duration)
 {
     vector<RGBPicture> pics;

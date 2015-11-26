@@ -63,6 +63,7 @@ public:
     void scrollPictureRight(RGBPicture &pic, double speed, bool hideBlack);
     void scrollPictureUp(RGBPicture &pic, double speed, bool hideBlack);
     void showPictureNow(RGBPicture &pic, int posX, int posY,bool hideBlack);
+    void showPictureNowCenter(RGBPicture &pic,bool hideBlack);
     void showPictureDummy(RGBPicture &pic, int posX, int posY,bool hideBlack);
     void spiral(RGBColor *color);
     void showMovie(std::string &startsWith, int cnt, double duration, int x, int y);

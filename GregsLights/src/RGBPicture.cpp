@@ -75,12 +75,9 @@ bool RGBPicture::isMovie()
             || shortName.find(("candles")) == 0
             || shortName.find(("olaf_melt")) == 0
             || shortName.find(("puss_boots")) == 0
-            || shortName.find(("scarf_00")) == 0
+            || shortName.find(("scarf_")) == 0
             || shortName.find(("toder")) == 0
             || shortName.find(("tongue")) == 0
-            || shortName.find(("")) == 0
-            || shortName.find(("")) == 0
-            || shortName.find(("")) == 0
        )
     {
         return true;

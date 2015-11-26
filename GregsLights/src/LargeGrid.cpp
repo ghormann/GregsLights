@@ -432,9 +432,8 @@ void LargeGrid::test()
             RGBPicture pict = (*it);
             if (! pict.isMovie())
             {
-                cout << pict.getName() << endl;
                 this->setBackground(RGBColor::BLACK);
-                this->showPictureNow(pict,0,0,false);
+                this->showPictureNowCenter(pict,false);
                 gjhSleep(1.5);
             }
         }
@@ -443,7 +442,7 @@ void LargeGrid::test()
         setDummyBackground(RGBColor::RED,0,0,gridWidth,gridHeight);
         writeTextSmall(RGBColor::WHITE,0,0, ("MERRY"));
         writeTextSmall(RGBColor::WHITE,0,16, ("CHRISTMAS"));
-        writeTextSmall(RGBColor::WHITE,0,32, ("ALL"));
+        writeTextSmall(RGBColor::WHITE,0,32, ("TO EVERYONE"));
 
         setDisplayPosition(0,0);
         sleep(5);
@@ -474,7 +473,7 @@ void LargeGrid::test()
             {
                 cout << pict.getName() << endl;
                 this->setBackground(RGBColor::BLACK);
-                this->showPictureNow(pict,0,0,false);
+                this->showPictureNowCenter(pict,false);
                 gjhSleep(1.5);
             }
         }
