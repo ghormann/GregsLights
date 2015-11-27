@@ -332,7 +332,7 @@ void LargeGrid::test()
         }
     }
 
-    while(1)
+    while(0)
     {
         //scrollGrinch();
 
