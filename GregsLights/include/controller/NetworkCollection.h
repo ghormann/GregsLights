@@ -15,7 +15,7 @@
 class NetworkCollection
 {
     public:
-        NetworkCollection(char *name, int msBetween, int maxTicks,int maxBeforeSleep, int extraSleepMs);
+        NetworkCollection(char *name, int msBetween, int maxTicks,int maxBeforeSleep, int extraSleepMs, bool changeOrder);
         virtual ~NetworkCollection();
         void addNetwork( LightNetwork *net);
         void removeNetwork ( LightNetwork *net);
@@ -32,11 +32,13 @@ class NetworkCollection
  * maxTicks: Max number of updates skipped before force
  * maxBeforeSleep: Max Universes updated before taking an extra sleep
  * extraSleepMs: Duration (MS) of sleep when MaxBeforeSleep hit.
+ * if changeOrder, then send the universers in differ starting piont each time.
  */
         int maxTicks;
         int maxBeforeSleep;
         int extraSleepMs;
         int startAt;
+        bool changeOrder;
         char name[80];
         pthread_t serial_t;  /* Thread for writing to serial interface */
         pthread_t bulb_t;     /* Thread for refershing bulbs */

@@ -32,11 +32,11 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
      * maxBeforeSleep: Max Universes updated before taking an extra sleep
      * extraSleepMs: Duration (MS) of sleep when MaxBeforeSleep hit.
      */
-    networks = new NetworkCollection("Normal", 5,25,MAX_LIGHT_NETWORKS,1);
+    networks = new NetworkCollection("Normal", 5,100,60,1, false);
     // name, 5, 2, 6, 15 is "OK" for Alpha Pix.
     // name: 5,2,6,5 I Fairly good.
-    networkAlpha1 = new NetworkCollection("Alpha1",5,2,6,1);
-    networkAlpha2 = new NetworkCollection("Alpha2",5,2,6,1);
+    networkAlpha1 = new NetworkCollection("Alpha1",5,2,6,1,true);
+    networkAlpha2 = new NetworkCollection("Alpha2",5,2,6,1,true);
     networkAlpha1->setControllerLimits(6,1);
     networkAlpha2->setControllerLimits(6,1);
     E131Network *dmx = new E131Network("192.168.0.230", 20,512); // AlphaPix DMX

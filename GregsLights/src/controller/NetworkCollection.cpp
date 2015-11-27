@@ -14,7 +14,7 @@ void *update_thread(void *args);
  * maxBeforeSleep: Max Universes updated before taking an extra sleep
  * extraSleepMs: Duration (MS) of sleep when MaxBeforeSleep hit.
  */
-NetworkCollection::NetworkCollection(char *name, int msBetween, int maxTicks,int maxBeforeSleep, int extraSleepMs)
+NetworkCollection::NetworkCollection(char *name, int msBetween, int maxTicks,int maxBeforeSleep, int extraSleepMs, bool alwaysChangeOrder)
 {
     strcpy(this->name, name);
     for (int i = 0; i < MAX_LIGHT_NETWORKS; i++)
@@ -22,6 +22,7 @@ NetworkCollection::NetworkCollection(char *name, int msBetween, int maxTicks,int
         networks[i] = 0;
         counts[i] = 0;
     }
+    this->changeOrder = alwaysChangeOrder;
     this->startAt = 0;
     this->msBetween = msBetween;
     this->maxTicks = maxTicks;
@@ -58,12 +59,12 @@ void NetworkCollection::setControllerLimits(int maxUpdates, int sleepMS)
 void NetworkCollection::doUpdate()
 {
 
-/*
- * msBetween: Millisonds between checking for updates (Tick) (Used by Caller)
- * maxTicks: Max number of updates skipped before force
- * maxBeforeSleep: Max Universes updated before taking an extra sleep
- * extraSleepMs: Duration (MS) of sleep when MaxBeforeSleep hit.
- */
+    /*
+     * msBetween: Millisonds between checking for updates (Tick) (Used by Caller)
+     * maxTicks: Max number of updates skipped before force
+     * maxBeforeSleep: Max Universes updated before taking an extra sleep
+     * extraSleepMs: Duration (MS) of sleep when MaxBeforeSleep hit.
+     */
 
 
     int i = 0;
@@ -86,15 +87,18 @@ void NetworkCollection::doUpdate()
                     change = 0;
                     usleep(extraSleepMs*1000);
                 }
-            } else {
+            }
+            else
+            {
                 ++(counts[netId]);
             }
-            if (counts[netId] > 9999999) {
+            if (counts[netId] > 9999999)
+            {
                 counts[netId] = 0; // Prevent overflow
             }
         }
     }
-    startAt = (startAt+maxBeforeSleep-1)%16;
+    startAt = changeOrder ? (startAt+maxBeforeSleep-1)%16: 0;
 }
 
 void NetworkCollection::doShutdown()
