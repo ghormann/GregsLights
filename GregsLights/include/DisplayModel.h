@@ -41,6 +41,7 @@ class DisplayModel
         NetworkCollection *networks;
         NetworkCollection *networkAlpha1;
         NetworkCollection *networkAlpha2;
+        NetworkCollection *networkClock;
         RGBLight *house[HOUSE_LIGHT_END + 1];
         Bush *bushes[BUSH_LIGHT_END+1];
         CountdownClock *clock;

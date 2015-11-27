@@ -37,8 +37,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     // name: 5,2,6,5 I Fairly good.
     networkAlpha1 = new NetworkCollection("Alpha1",5,2,6,1,true);
     networkAlpha2 = new NetworkCollection("Alpha2",5,2,6,1,true);
-    networkAlpha1->setControllerLimits(6,1);
-    networkAlpha2->setControllerLimits(6,1);
+    networkClock = new NetworkCollection("Clock", 5,2,6,1, true);
     E131Network *dmx = new E131Network("192.168.0.230", 20,512); // AlphaPix DMX
     //OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", ACTIDONGLE, sendDMX);
     //OpenDMXNetwork *dmx = new OpenDMXNetwork((char *)"/dev/ttyUSB0", OPENDMX);
@@ -47,7 +46,6 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB0", sendDMX);
 
 
-    /* Debug ONly */
     char *signIP = "192.168.0.232";
     E131Network *sign[SIGN_E11_COUNT];
     sign[signId++] = new E131Network(signIP, 40, 512);  // port 4 170
@@ -77,12 +75,12 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
 
     if (sendDMX)
     {
-        networkAlpha1->addNetwork(dmx);
+        //networkAlpha1->addNetwork(dmx);
         networks->addNetwork(clockE131);
         networks->addNetwork(lor);
         for (int j = 0; j< SIGN_E11_COUNT; j++)
         {
-            networks->addNetwork(sign[j]);
+            networkClock->addNetwork(sign[j]);
         }
 
         for (int j=0; j<GRID_E11_COUNT; j++) // GRID_E11_COUNT
@@ -191,6 +189,7 @@ void DisplayModel::shutdown()
 {
     printf("Shutting Down model\n");
     networks->doShutdown();
+    networkClock->doShutdown();
     networkAlpha1->doShutdown();
     networkAlpha2->doShutdown();
     sleep(1); // Give system time to clean up

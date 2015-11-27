@@ -602,13 +602,13 @@ void Sign::test()
 {
 
     //ALternate Green and Red
-    while(0) {
+    while(1) {
         this->setDummyBackground(RGBColor::GREEN);
         this->setDisplayPosition(0,0);
-        sleep(10);
+        sleep(1);
         this->setDummyBackground(RGBColor::RED);
         this->setDisplayPosition(0,0);
-        sleep(10);
+        sleep(1);
     }
 
     while (0) {
