@@ -332,13 +332,13 @@ void LargeGrid::test()
         }
     }
 
-    while(0)
+    while(1)
     {
         //scrollGrinch();
 
-        peakSanta();
+        //peakSanta();
         setBackground(RGBColor::BLACK);
-        gridSleep(3);
+        gridSleep(30);
     }
 
     // Start of Main.

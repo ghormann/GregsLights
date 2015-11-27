@@ -14,6 +14,7 @@ class StarField
         RGBLight* getStar(int i);
     protected:
     private:
+        void swapStars(int i, int j);
     RGBLight *stars[STAR_COUNT];
 };
 
