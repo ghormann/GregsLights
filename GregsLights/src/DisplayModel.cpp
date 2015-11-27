@@ -75,7 +75,6 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
 
     if (sendDMX)
     {
-        //networkAlpha1->addNetwork(dmx);
         networks->addNetwork(clockE131);
         networks->addNetwork(lor);
         for (int j = 0; j< SIGN_E11_COUNT; j++)
@@ -88,6 +87,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
             networkAlpha1->addNetwork(grid1[j]);
             networkAlpha2->addNetwork(grid2[j]);
         }
+        networkAlpha1->addNetwork(dmx);
         //grid1[0]->setDebug(true);
         //sign[0]->setDebug(true);
     }

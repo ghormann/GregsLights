@@ -264,7 +264,7 @@ void LargeGrid::test()
     int i;
 
     //Roate Colors
-    while(1)
+    while(0)
     {
         for (int x = 0; x < LGRID_PIXAL_WIDTH; x++)
         {
