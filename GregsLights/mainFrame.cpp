@@ -40,7 +40,7 @@ int MyApp::OnExit()
 bool MyApp::OnInit()
 {
     wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
-    frame = new wxFrame((wxFrame *)NULL, -1,  wxT("Hello GL World"), wxPoint(50,50), wxSize(1000,800));
+    frame = new wxFrame((wxFrame *)NULL, -1,  wxT("Hello GL World"), wxPoint(50,50), wxSize(700,820));
 
     int args[] = {WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, 0};
 
@@ -281,21 +281,16 @@ void BasicGLPane::render( wxPaintEvent& evt )
 
     // Stars
     int cnt = 0;
-    int offset[6];
-    offset[0] = 0;
-    offset[1] = 32/2;
-    offset[2] = 0;
-    offset[3] = 13;
-    offset[4] = 32-8;
-    offset[5] = 16;
-    for (int j = 0; j < 6; j++)
+    for (int j = 0; j < 7; j++)
     {
-        int numCols = 8;
-        if (j == 1 || j == 4 || j==5) {
+        int offset = j%4 * 32/4;
+        int numCols = 6;
+        if (j == 0 || j == 4 ) {
             numCols = 7;
         }
         for (int i =0; i < numCols; i++)
         {
+            std::cout << "Start: " << cnt << std::endl;
             RGBLight *pix = model->getStars()->getStar(cnt++);
             float red = ((float)pix->getRed())  / 100;
             float green = ((float)pix->getGreen()) / 100;
@@ -304,10 +299,10 @@ void BasicGLPane::render( wxPaintEvent& evt )
             glColor4f(red, green, blue, 1);
             glBegin(GL_QUADS);
 
-            glVertex3f(i*32+3+offset[j], 3 + STAR_LINE + j*32, 0); // upper lefft
-            glVertex3f(i*32+3+offset[j], 9 + STAR_LINE + j*32, 0);  // Lower Left
-            glVertex3f(i*32+9+offset[j], 9 + STAR_LINE + j*32, 0); // Bottom Right
-            glVertex3f(i*32+9+offset[j], 3 + STAR_LINE + j*32, 0); // Uper Right
+            glVertex3f(i*32+3+offset, 3 + STAR_LINE + j*32, 0); // upper lefft
+            glVertex3f(i*32+3+offset, 9 + STAR_LINE + j*32, 0);  // Lower Left
+            glVertex3f(i*32+9+offset, 9 + STAR_LINE + j*32, 0); // Bottom Right
+            glVertex3f(i*32+9+offset, 3 + STAR_LINE + j*32, 0); // Uper Right
 
             glEnd();
 
