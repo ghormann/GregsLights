@@ -259,6 +259,34 @@ void LargeGrid::peakSanta()
 
 }
 
+void LargeGrid::trainText(string left)
+{
+    RGBPicture *tleft = RGBPicture::getPicture(("train_blue_46.png"));
+
+    double speed = 0.02;
+    int x = 0;
+    int y = 0;
+    int picHeight, picWidth;
+
+    setDummyBackground(RGBColor::BLACK);
+
+    tleft->getSize(picWidth,picHeight);
+    x = picWidth;
+    y = (picHeight > gridHeight ? 0  : (gridHeight-picHeight)/2);
+
+    this->showPictureDummy(*tleft,x,y,false);
+    x=picWidth * 2 + 3;
+    y=gridHeight/2;
+
+    x =writeText(RGBColor::BLUE,x,y,left);
+    x +=3;
+    for (int i =0; i < x; i++)
+    {
+        setDisplayPosition(i,0);
+        gridSleep(speed);
+    }
+}
+
 void LargeGrid::test()
 {
     int i;
@@ -285,23 +313,6 @@ void LargeGrid::test()
         }
 
         gjhSleep(1);
-    }
-
-    // Make onne line white
-    while(0)
-    {
-        int x = 80;
-        for (int y = 0; y < LGRID_PIXAL_HEIGHT; y++)
-        {
-            this->getPixal(x,y)->set(RGBColor::WHITE);
-            //gjhSleep(1.0);
-
-        }
-        gjhSleep(2.0);
-        for(int y = 0; y< LGRID_PIXAL_HEIGHT; y++)
-        {
-            this->getPixal(x,y)->set(RGBColor::BLACK);
-        }
     }
 
     // show lines
@@ -332,18 +343,15 @@ void LargeGrid::test()
         }
     }
 
-    while(0)
+    while(1)
     {
-        //scrollGrinch();
-
-        //peakSanta();
-        setBackground(RGBColor::BLACK);
-        gridSleep(30);
+        trainText("MERRY CHRISTMAS FROM THE HORMANN FAMILY");
     }
 
     // Start of Main.
     while(1)
     {
+
         /*
          * HAPPINES IS CATCHING SNOWFLAKES ON YOUR TONGUE
          * YOU'LL SHOOT YOUR EYE OUT KID.
@@ -368,10 +376,7 @@ void LargeGrid::test()
         //scrollText(RGBColor::RED, RGBColor::DARKGREEN,"IS YOUR HOUSE ON FIRE CLARK? .... NO AUNT BETHANY, THOSE ARE THE CHRISTMAS LIGHTS.....", 0.02);
         peakSanta();
 
-        RGBPicture *left = RGBPicture::getPicture(("train_blue_46.png"));
-        RGBPicture *right = RGBPicture::getPicture(("train_right_46.png"));
-        scrollPictureLeft(*left,0.02,false);
-        scrollPictureRight(*right,0.02,false);
+        trainText("MERRY CHRISTMAS FROM THE HORMANN FAMILY");
 
         string name = string("toder");
         showMovieCenter(name,6,0.15);

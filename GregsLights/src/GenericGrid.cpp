@@ -1526,20 +1526,23 @@ int GenericGrid::drawLetterSmall(char letter, RGBColor* color, int startX, int s
     return offset;
 }
 
-void GenericGrid::writeTextSmall(RGBColor *fgColor, int x, int y , string str)
+int GenericGrid::writeTextSmall(RGBColor *fgColor, int x, int y , string str)
 {
     for ( std::string::iterator it=str.begin(); it!=str.end(); ++it)
     {
         x += drawLetterSmall(*it,fgColor,x,y) + 1;
     }
+    return x;
 }
 
-void GenericGrid::writeText(RGBColor *fgColor, int x, int y , string str)
+int GenericGrid::writeText(RGBColor *fgColor, int x, int y , string str)
 {
     for ( std::string::iterator it=str.begin(); it!=str.end(); ++it)
     {
         x += drawLetter(*it,fgColor,x,y) + 2;
     }
+
+    return x;
 }
 
 void GenericGrid::scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, double speed)

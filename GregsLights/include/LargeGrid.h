@@ -11,6 +11,7 @@
 #define LGRID_DUMMY_HEIGHT LGRID_PIXAL_HEIGHT * 30
 #define LGRID_DUMMY_WIDTH LGRID_PIXAL_WIDTH * 30
 
+using namespace std;
 
 
 class LargeGrid : public GenericGrid
@@ -24,6 +25,7 @@ public:
     void test();
     void run();
     void peakSanta();
+    void trainText(string left);
     char *getMessage();
 protected:
 private:
