@@ -90,7 +90,8 @@ RGBLight* StarField::getStar(int id)
 
 void StarField::setAll(RGBColor *c)
 {
-    for (int i=0; i < STAR_COUNT; i++) {
+    for (int i=0; i < STAR_COUNT; i++)
+    {
         stars[i]->set(c);
     }
 }
@@ -105,14 +106,26 @@ void StarField::run()
         gjhSleep(5);
     }
 
-    RGBColor *colors[6];
+    RGBColor *colors[7];
     colors[0] = RGBColor::RED;
     colors[1] = RGBColor::GREEN;
     colors[2] = RGBColor::BLUE;
     colors[3] = RGBColor::WHITE;
     colors[4] = RGBColor::PURPLE;
+    colors[5] = RGBColor::YELLOW;
+    colors[6] = RGBColor::ORANGE;
 
-    for (int j =0; j < 5; j++)
+    //Individual
+    for (int j =0; j < 7; j++)
+    {
+        for (int i = 0; i < STAR_COUNT; i++)
+        {
+            getStar(i)->fadeTo(RGBColor::getRandom(),2.0);
+        }
+        gjhSleep(3);
+    }
+    // Together
+    for (int j =0; j < 7; j++)
     {
         for (int i = 0; i < STAR_COUNT; i++)
         {
@@ -120,6 +133,18 @@ void StarField::run()
         }
         gjhSleep(3);
     }
+
+    //Individual
+    for (int j =0; j < 7; j++)
+    {
+        for (int i = 0; i < STAR_COUNT; i++)
+        {
+            int c = (i+j)%6;
+            getStar(i)->fadeTo(colors[c],2.0);
+        }
+        gjhSleep(3);
+    }
+
 }
 
 void StarField::test()

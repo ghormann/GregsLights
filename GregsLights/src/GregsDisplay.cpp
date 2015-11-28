@@ -37,20 +37,18 @@ void GregsDisplay::do_it_bushes()
         }
 
         // Step 1 - Rotate_some
-        cout << "Step 1" << endl;
-        model->getGrid()->setNextAction(LG_GRINCH);
+        //model->getGrid()->setNextAction(LG_GRINCH);
         setAllOff();
         write_data(0.1);
         rotate_some();
 
         // STEP 2
-        cout << "Step 2" << endl;
-        model->getGrid()->setNextAction(LG_HAT);
+        //model->getGrid()->setNextAction(LG_HAT);
         fadeThroughAll(5, 2);
 
         // STEP 3
         cout << "Step 2" << endl;
-        model->getGrid()->setNextAction(LG_SLEEP);
+        //model->getGrid()->setNextAction(LG_SLEEP);
         fade_offset();
 
         // Step 4
