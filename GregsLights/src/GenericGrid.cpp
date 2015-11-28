@@ -1429,6 +1429,15 @@ int GenericGrid::drawLetterSmall(char letter, RGBColor* color, int startX, int s
         d[1][8]=d[2][8]=d[3][8]=d[4][8]='1';
         offset=6;
     }
+        else if (letter == 'V')
+    {
+        d[0][0]=d[0][1]=d[6][0]=d[6][1]='1';
+        d[1][2]=d[1][3]=d[1][4]=d[5][2]=d[5][3]=d[5][4]='1';
+        d[2][5]=d[2][6]=d[4][5]=d[4][6]='1';
+        d[3][7]=d[3][8] = '1';
+        offset=7;
+    }
+
     else if (letter == 'W')
     {
         d[0][0]=d[10][0]=d[0][1]=d[10][1]='1';
