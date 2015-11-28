@@ -1,12 +1,14 @@
 #include "../include/GregsDisplay.h"
 #include "../include/controller/Bush.h"
 #include <string.h>
+#include <iostream>
 
 #define RED 0
 #define GREEN 1
 #define BLUE 2
 #define WHITE 3
 
+using namespace std;
 
 GregsDisplay::GregsDisplay(DisplayModel *m)
 {
@@ -35,14 +37,20 @@ void GregsDisplay::do_it_bushes()
         }
 
         // Step 1 - Rotate_some
+        cout << "Step 1" << endl;
+        model->getGrid()->setNextAction(LG_GRINCH);
         setAllOff();
         write_data(0.1);
         rotate_some();
 
         // STEP 2
+        cout << "Step 2" << endl;
+        model->getGrid()->setNextAction(LG_HAT);
         fadeThroughAll(5, 2);
 
         // STEP 3
+        cout << "Step 2" << endl;
+        model->getGrid()->setNextAction(LG_SLEEP);
         fade_offset();
 
         // Step 4
@@ -67,10 +75,12 @@ void GregsDisplay::run()
     pthread_t bush_t;
     pthread_t snowmen_t;
     pthread_t grid_t;
+    pthread_t star_t;
     pthread_create(&(sign_t), NULL, GregsDisplay::signThread, (void*) this);
     pthread_create(&(bush_t), NULL, GregsDisplay::bushThread, (void*) this);
     pthread_create(&(snowmen_t), NULL, GregsDisplay::snowmenThread, (void*) this);
     pthread_create(&(grid_t), NULL, GregsDisplay::gridThread, (void*) this);
+    pthread_create(&(star_t), NULL, GregsDisplay::starThread, (void*) this);
 
     getModel()->getClock()->setActive(true);
 }
@@ -985,6 +995,17 @@ void * GregsDisplay::signThread(void *args)
         ptr->getModel()->getSign()->run();
     }
     return NULL;
+}
+
+void * GregsDisplay::starThread(void *args)
+{
+    GregsDisplay *ptr = (GregsDisplay *) args;
+    while (1)
+    {
+        ptr->getModel()->getStars()->run();
+    }
+    return NULL;
+
 }
 
 void *GregsDisplay::bushThread(void *args)

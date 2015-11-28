@@ -15,6 +15,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     int signId = 0;
     this->skipTimeCheck = (skip_time_check == TRUE? true : false);
     this->newYears = (show_new_year == TRUE ? true: false);
+
     char *gridIP1 = "192.168.0.230";  //AlphaPix for Grid:  13 * 170 or 2720 Pixals(2196 used)
     char *gridIP2 = "192.168.0.231";  // AlphaPix for Grid: 16 *170 or 2210 Pixals (2700 Used for Grid )
 
@@ -92,7 +93,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
         //sign[0]->setDebug(true);
     }
 
-    this->stars = new StarField(dmx);
+    this->stars = new StarField(dmx, new TimeInfo(skipTimeCheck,newYears));
     this->sign = new Sign(skipTimeCheck, newYears, sign);
     this->grid = new LargeGrid(skipTimeCheck, newYears,grid1, grid2);
 

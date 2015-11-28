@@ -1327,7 +1327,8 @@ int GenericGrid::drawLetterSmall(char letter, RGBColor* color, int startX, int s
             d[0][y]='1';
             d[x][y]='1';
             x+= dir;
-            if (x ==0) {
+            if (x ==0)
+            {
                 dir = 1;
                 x = 1;
             }
@@ -1446,7 +1447,7 @@ int GenericGrid::drawLetterSmall(char letter, RGBColor* color, int startX, int s
         d[1][8]=d[2][8]=d[3][8]=d[4][8]='1';
         offset=6;
     }
-        else if (letter == 'V')
+    else if (letter == 'V')
     {
         d[0][0]=d[0][1]=d[6][0]=d[6][1]='1';
         d[1][2]=d[1][3]=d[1][4]=d[5][2]=d[5][3]=d[5][4]='1';
@@ -2094,9 +2095,15 @@ void GenericGrid::spiral(RGBColor *color)
 int GenericGrid::_gridSleep(double d)
 {
     // Sleep in chunks to avoid long blocks
-    if (d < 0.5)
+    if (d < 0.1)
     {
         usleep((d) * 1000000);
+        if (this->interrupt)
+        {
+            this->interrupt = false;
+            return 1;
+        }
+
     }
     else
     {

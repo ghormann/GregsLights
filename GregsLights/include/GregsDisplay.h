@@ -20,6 +20,7 @@ private:
     static void * signThread(void *);
     static void * snowmenThread(void *);
     static void * gridThread(void *);
+    static void * starThread(void *);
     void do_it_bushes();
     void set_bush(int bush, int color, int intensity);
     void fade_bush(int bush, int color, int s_intensity, int f_intensity, double duration);

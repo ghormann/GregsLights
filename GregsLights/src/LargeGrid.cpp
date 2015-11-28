@@ -13,11 +13,13 @@ LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[], E131Networ
 {
     //ctor
     sprintf(message, "Booting up: Grid");
+    timeinfo = new TimeInfo(skipTime,newYears);
 
     int network = 0;
     int x = 0;
     int y = LGRID_PIXAL_HEIGHT -1;
     int networkPixal = 0;
+    nextAction = LG_SLEEP;
     int dir = -1;  /* 1 = Down, -1 = up */
 
     /*
@@ -131,6 +133,12 @@ LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[], E131Networ
         this->board[i] = new RGBLight(new DummyBulb(), new DummyBulb(), new DummyBulb());
     }
 
+}
+
+void LargeGrid::setNextAction(GRID_ACTIONS a)
+{
+    this->nextAction = a;
+    this->interruptThread();
 }
 
 RGBLight *LargeGrid::getPixal(int x, int y)
@@ -255,8 +263,6 @@ void LargeGrid::peakSanta()
         this->setDisplayPosition(0,--y);
         gridSleep(delay);
     }
-
-
 }
 
 void LargeGrid::trainText(string left)
@@ -612,7 +618,30 @@ char *LargeGrid::getMessage()
 
 void LargeGrid::run()
 {
-    test();
+    while (! timeinfo->isDisplayHours())
+    {
+        sprintf(message, "Sleeping during day (%02d)",
+                timeinfo->getHourOfDay());
+        setBackground(RGBColor::BLACK);
+        gridSleep(5);;
+    }
+
+    switch(nextAction)
+    {
+    case LG_GRINCH:
+        scrollGrinch();
+        gridSleep(5);
+        break;
+    case LG_HAT:
+        peakSanta();
+        gridSleep(5);
+        break;
+    default:
+        setBackground(RGBColor::BLACK);
+        gridSleep(5);
+        break;
+    }
+
 }
 
 LargeGrid::~LargeGrid()

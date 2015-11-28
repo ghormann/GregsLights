@@ -4,8 +4,9 @@
 
 using namespace std;
 
-StarField::StarField(E131Network *net)
+StarField::StarField(E131Network *net, TimeInfo *tmInfo)
 {
+    this->timeInfo = tmInfo;
     //ctor
     // Start at DMX 100, but really 99 in E131
     for (int i = 0; i < STAR_COUNT+1; ++i)
@@ -26,14 +27,14 @@ StarField::StarField(E131Network *net)
     // 7 -- Row 2
     swapStars(17,8); //OK #8
     swapStars(17,9); //OK #9
-    swapStars(16,10); //Ok 
+    swapStars(16,10); //Ok
     swapStars(13,11); //OK
     //12 ok
     swapStars(16,13); //OK
-    swapStars(17,14); 
-    swapStars(16,15); 
-    swapStars(17,16); 
-    //17 ok 
+    swapStars(17,14);
+    swapStars(16,15);
+    swapStars(17,16);
+    //17 ok
     swapStars(38,18); //OK
     swapStars(38,19); //OK
     swapStars(38,20); //OK
@@ -43,7 +44,7 @@ StarField::StarField(E131Network *net)
     //24 ok
     swapStars(28,25); //ok
     swapStars(29,26); //ok
-    swapStars(33,27); 
+    swapStars(33,27);
     //28 ok
     //29 ok
     swapStars(40,30); //ok
@@ -61,8 +62,8 @@ StarField::StarField(E131Network *net)
 
 
     // RED, GREEN, BLUE, WHITE, DK RED, PURPLE, DK BLUE, YELOW, DARK GREEN
-	
-    
+
+
 }
 
 StarField::~StarField()
@@ -72,9 +73,9 @@ StarField::~StarField()
 
 void StarField::swapStars(int i, int j)
 {
-	RGBLight *temp = stars[i];
-	stars[i] = stars[j];
-	stars[j] = temp;
+    RGBLight *temp = stars[i];
+    stars[i] = stars[j];
+    stars[j] = temp;
 }
 
 RGBLight* StarField::getStar(int id)
@@ -87,6 +88,40 @@ RGBLight* StarField::getStar(int id)
     return stars[id];
 }
 
+void StarField::setAll(RGBColor *c)
+{
+    for (int i=0; i < STAR_COUNT; i++) {
+        stars[i]->set(c);
+    }
+}
+
+void StarField::run()
+{
+    while (! timeInfo->isDisplayHours())
+    {
+        sprintf(message, "Sleeping during day (%02d)",
+                timeInfo->getHourOfDay());
+        setAll(RGBColor::BLACK);
+        gjhSleep(5);
+    }
+
+    RGBColor *colors[6];
+    colors[0] = RGBColor::RED;
+    colors[1] = RGBColor::GREEN;
+    colors[2] = RGBColor::BLUE;
+    colors[3] = RGBColor::WHITE;
+    colors[4] = RGBColor::PURPLE;
+
+    for (int j =0; j < 5; j++)
+    {
+        for (int i = 0; i < STAR_COUNT; i++)
+        {
+            getStar(i)->fadeTo(colors[j],2.0);
+        }
+        gjhSleep(3);
+    }
+}
+
 void StarField::test()
 {
     //((FadeableBulb *)stars[9]->getRedBulb())->setDebug(true);
@@ -97,26 +132,28 @@ void StarField::test()
     colors[2] = RGBColor::BLUE;
     colors[3] = RGBColor::WHITE;
 
-    while(0) {
-	int i ;
-	for (i =38; i < STAR_COUNT; i++) {
-		stars[i]->set(5,5,5);
-		gjhSleep(0.5);
-	}
-	i = 38;
-	stars[i+0]->set(RGBColor::RED);
-	stars[i+1]->set(RGBColor::GREEN);
-	stars[i+2]->set(RGBColor::BLUE);
-	stars[i+3]->set(RGBColor::WHITE);
-	stars[i+4]->set(2,0,0);
-	stars[i+5]->set(RGBColor::PURPLE);
-	//stars[i+6]->set(0,0,2);
-	//stars[i+7]->set(RGBColor::YELLOW);
-	//stars[i+8]->set(0,2,0);
+    while(0)
+    {
+        int i ;
+        for (i =38; i < STAR_COUNT; i++)
+        {
+            stars[i]->set(5,5,5);
+            gjhSleep(0.5);
+        }
+        i = 38;
+        stars[i+0]->set(RGBColor::RED);
+        stars[i+1]->set(RGBColor::GREEN);
+        stars[i+2]->set(RGBColor::BLUE);
+        stars[i+3]->set(RGBColor::WHITE);
+        stars[i+4]->set(2,0,0);
+        stars[i+5]->set(RGBColor::PURPLE);
+        //stars[i+6]->set(0,0,2);
+        //stars[i+7]->set(RGBColor::YELLOW);
+        //stars[i+8]->set(0,2,0);
 
-	sleep(10);
+        sleep(10);
 
-	}
+    }
     while(1)
     {
         for (int i =0; i<2; i++)
