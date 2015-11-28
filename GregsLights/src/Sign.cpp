@@ -269,7 +269,7 @@ void Sign::rotateSecondsToGo()
 
 void Sign::run()
 {
-    double textSpeed = 0.04;
+    double textSpeed = 0.02;
 
     // Not on douring the day
     if (timeInfo->isDayLight())
@@ -293,7 +293,7 @@ void Sign::run()
     }
     else if (numSeconds > 32 && numSeconds  <80)
     {
-        scrollText(RGBColor::WHITE, RGBColor::BLACK, "READY TO YELL?", textSpeed);
+        scrollText(RGBColor::WHITE, RGBColor::BLACK, "READY TO COUNTDOWN?", textSpeed);
     }
     else
     {

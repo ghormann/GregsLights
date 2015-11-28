@@ -61,9 +61,11 @@ char * MessageGenerator::getMessage()
             else
                 return "ARE YOU READY FOR CHRISTMAS?      I BET THE KIDS ARE...." ;
         else
-            return "HARD TO BELIEVE ANOTHER YEAR HAS PASSED";
+            if (timeInfo->getSecondsUntil() <= 0)
+                return "HARD TO BELIEVE ANOTHER YEAR HAS PASSED";
+            else
+                return "SO FEW SECONDS LEFT THIS YEAR";
     case 3:
-        return "^ MERRY CHRISTMAS FROM THE HORMANN FAMILY ^";
     case 4:
         if (timeInfo->getSecondsUntil() > 0)
         {
@@ -84,12 +86,18 @@ char * MessageGenerator::getMessage()
             return "MADE YOUR RESOLUTIONS FOR THE NEW YEAR?";
     case 6:
         if (timeInfo->getSecondsUntil() > 0)
-            return "JOIN US TO SEE THE CLOCK HIT ZERO";
+            if (isChristmas)
+                return "JOIN US TO SEE THE CLOCK HIT ZERO CHRISTMAS EVE";
+            else
+                return "SECONDS LEFT THIS YEAR";
         else
             return "JOIN US NEXT YEAR TO SEE THE CLOCK HIT ZERO";
     case 7:
         if (timeInfo->getSecondsUntil() > 0)
-            return "$ SECONDS LEFT #";
+            if (isChristmas)
+                return "$ SECONDS UNTIL CHRISTMAS #";
+            else
+                return "$ SECONDS UNTIL THE NEW YEAR #";
         else
             return "$ HAPPY HOLIDAYS #";
     case 8:
