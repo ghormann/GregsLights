@@ -1318,6 +1318,23 @@ int GenericGrid::drawLetterSmall(char letter, RGBColor* color, int startX, int s
 
         offset = 1;
     }
+    else if (letter == 'K')
+    {
+        x = 4;
+        int dir = -1;
+        for (y=0; y<9; y++)
+        {
+            d[0][y]='1';
+            d[x][y]='1';
+            x+= dir;
+            if (x ==0) {
+                dir = 1;
+                x = 1;
+            }
+        }
+
+        offset = 6;
+    }
     else if (letter == 'L')
     {
         for (y=0; y<9; y++)

@@ -290,7 +290,6 @@ void BasicGLPane::render( wxPaintEvent& evt )
         }
         for (int i =0; i < numCols; i++)
         {
-            std::cout << "Start: " << cnt << std::endl;
             RGBLight *pix = model->getStars()->getStar(cnt++);
             float red = ((float)pix->getRed())  / 100;
             float green = ((float)pix->getGreen()) / 100;
