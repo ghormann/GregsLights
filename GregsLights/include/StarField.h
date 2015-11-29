@@ -19,6 +19,7 @@ class StarField
         void fadeAllTo(int r, int g, int b, double duration);
         void setLeft(int r, int g, int b);
         void setRight(int r, int g, int b);
+        void fadeRandom(double duration);
         void fadeRight(int r, int g, int b, double duration);
         void fadeLeft(int r, int g, int b, double duration);
         void fadeLine(int i, int r,int g,int b, double duration);

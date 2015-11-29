@@ -72,8 +72,18 @@ void GregsDisplay::hormannTrain()
     model->getGrid()->setNextAction(LG_TRAIN_HORMANN);
     fadeAllHouse(RED,0,100,duration);
     fadeAllBush(BLUE,0,100,duration);
-    write_data(20);
+    model->getStars()->fadeRandom(4.0);
+    write_data(4.0);
+    model->getStars()->fadeRandom(4.0);
+    write_data(4.0);
+    model->getStars()->fadeRandom(4.0);
+    write_data(4.0);
+    model->getStars()->fadeRandom(4.0);
+    write_data(4.0);
+    model->getStars()->fadeRandom(4.0);
+    write_data(4.0);
 
+    setAllOff();
 }
 
 

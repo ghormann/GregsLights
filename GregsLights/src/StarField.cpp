@@ -223,6 +223,11 @@ void StarField::setLeft(int r, int g, int b)
     }
 }
 
+void StarField::fadeRandom(double dur) {
+    for (int i = 0; i < STAR_COUNT; i++) {
+        stars[i]->fadeTo(RGBColor::getRandom(), dur);
+    }
+}
 
 void StarField::fadeRight(int r, int g, int b, double duration)
 {
