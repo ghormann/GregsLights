@@ -78,6 +78,18 @@ bool RGBPicture::isMovie()
             || shortName.find(("scarf_")) == 0
             || shortName.find(("toder")) == 0
             || shortName.find(("tongue")) == 0
+            || shortName.find("Garland1_46") == 0
+            || shortName.find("Grinch_only_92") == 0
+            || shortName.find("holly_flat_64") == 0
+            || shortName.find("merryChristmasScroll46") == 0
+            || shortName.find("merryChristmasScroll_2_46") == 0
+            || shortName.find("mistletoe20.png") == 0
+            || shortName.find("olaf64") == 0
+            || shortName.find("santa-hat") == 0
+            || shortName.find("train") == 0
+            || shortName.find("wire_tree_64_0.png") == 0
+
+
        )
     {
         return true;

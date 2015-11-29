@@ -301,22 +301,22 @@ void LargeGrid::trainText(string left)
 void LargeGrid::rotatePictures()
 {
     std::vector<RGBPicture> allPictures = RGBPicture::getAllPictures();
-    vector<RGBPicture>::iterator it;
-    cout << "All Pictures: "  << allPictures.size() << endl;
-
-
-    for(it = allPictures.begin(); it != allPictures.end(); it++)
+    while (1) // Runs forever, but is interruptable
     {
-        RGBPicture pict = (*it);
-        if (! pict.isMovie())
-        {
-            cout << pict.getName() << endl;
-            this->setBackground(RGBColor::BLACK);
-            this->showPictureNowCenter(pict,false);
-            gridSleep(1.5);
-        }
-    }
 
+        while (picPos < allPictures.size())
+        {
+            RGBPicture pict = allPictures.at(picPos++);
+            if (! pict.isMovie())
+            {
+                cout << pict.getName() << endl;
+                this->setBackground(RGBColor::BLACK);
+                this->showPictureNowCenter(pict,false);
+                gridSleep(1.5);
+            }
+        }
+        picPos = 0; // Reset
+    }
 
 }
 

@@ -45,6 +45,7 @@ private:
     RGBLight *pixals[LGRID_TOTAL_PIXALS];
     RGBLight *board[ LGRID_DUMMY_HEIGHT * LGRID_DUMMY_WIDTH];
     TimeInfo *timeinfo;
+    size_t picPos = 0;
     GRID_ACTIONS nextAction;
 
     char message[80];
