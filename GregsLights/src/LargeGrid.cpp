@@ -313,7 +313,7 @@ void LargeGrid::rotatePictures()
             cout << pict.getName() << endl;
             this->setBackground(RGBColor::BLACK);
             this->showPictureNowCenter(pict,false);
-            gjhSleep(1.5);
+            gridSleep(1.5);
         }
     }
 
@@ -666,9 +666,9 @@ void LargeGrid::run()
         rotatePictures();
         break;
     default:
-        cout << "Grid Sleep 0.5" << endl;
+        cout << "Grid Sleep" << endl;
         setBackground(RGBColor::BLACK);
-        gridSleep(0.5);
+        gridSleep(5.0); // Interruptable
         break;
     }
 

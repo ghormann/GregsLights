@@ -2099,14 +2099,26 @@ int GenericGrid::_gridSleep(double d)
         this->interrupt = false;
         return 1;
     }
-
-    usleep((d) * 1000000);
-
-    if (this->interrupt)
+    while (d > 0)
     {
-        this->interrupt = false;
-        return 1;
+        if (d <= 0.5)
+        {
+            usleep((d) * 1000000);
+            d = 0;
+        }
+        else
+        {
+            usleep((0.5) * 1000000);
+            d -= 0.5;
+            if (d < 0) d = 0;
+        }
+        if (this->interrupt)
+        {
+            this->interrupt = false;
+            return 1;
+        }
     }
+
 
     return 0;
 }
