@@ -35,6 +35,7 @@ public:
     void scrollGrinch();
     void test();
     void run();
+    void rotatePictures();
     void peakSanta();
     void trainText(string left);
     char *getMessage();

@@ -21,9 +21,25 @@ GregsDisplay::~GregsDisplay()
     //dtor
 }
 
+void GregsDisplay::doGrinch()
+{
+    double duration = 10.0;
+    model->getGrid()->setNextAction(LG_GRINCH);
+    write_data(1.0); // Give it a second to load.
+    model->getStars()->fadeAllTo(0,100,0,duration);
+    fadeAllBush(GREEN,0,100,duration);
+    fadeAllHouse(GREEN,0,100,duration);
+    write_data(18.0);
+    model->getStars()->fadeAllTo(0,0,0,duration);
+    fadeAllBush(GREEN,100,0,duration);
+    fadeAllHouse(GREEN,100,0,duration);
+    write_data(duration);
+
+}
+
 void GregsDisplay::do_it_bushes()
 {
-
+    sleep(3); // GIve everything time to Boot up.
     while(1)
     {
         setAllOff();
@@ -37,15 +53,22 @@ void GregsDisplay::do_it_bushes()
             sleep(5);
         }
 
+        // STEP: Grinch
+        setAllOff();
+        write_data(0.1);
+        doGrinch();
+
+
         // Step 1 - Rotate_some
-        //model->getGrid()->setNextAction(LG_GRINCH);
         cout << "Step 1" << endl;
+        model->getGrid()->setNextAction(LG_SHOW_PICT);
+        write_data(0.5); // Give grid a second
         setAllOff();
         write_data(0.1);
         rotate_some();
 
         // STEP 2
-        //model->getGrid()->setNextAction(LG_HAT);
+        model->getGrid()->setNextAction(LG_HAT);
         cout << "Step 2" << endl;
         fadeThroughAll(5, 2);
 
