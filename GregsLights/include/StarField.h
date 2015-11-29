@@ -14,6 +14,7 @@ class StarField
         void test();
         RGBLight* getStar(int i);
         void setAll(RGBColor *c);
+        void setAll(int r, int g, int b);
         void fadeAllTo(RGBColor *c, double duration);
         void fadeAllTo(int r, int g, int b, double duration);
         void setLeft(RGBColor *c);

@@ -24,6 +24,7 @@ GregsDisplay::~GregsDisplay()
 void GregsDisplay::doGrinch()
 {
     double duration = 10.0;
+    strcpy(model->getMessage(1),"Grinch\n");
     model->getGrid()->setNextAction(LG_GRINCH);
     write_data(1.0); // Give it a second to load.
     model->getStars()->fadeAllTo(0,100,0,duration);
@@ -40,8 +41,30 @@ void GregsDisplay::doGrinch()
 void GregsDisplay::doClark()
 {
     model->getGrid()->setNextAction(LG_CLARK);
-    write_data(32);
+    strcpy(model->getMessage(1),"Clark Plug in\n");
+    write_data(5);
+    setAllToColor(WHITE,100);
+    setAllHouse(WHITE,100);
+    model->getStars()->setAll(100,100,100);
+    write_data(32-5);
 }
+
+void GregsDisplay::peekHat()
+{
+    double duration = 8.0;
+    model->getGrid()->setNextAction(LG_HAT);
+    strcpy(model->getMessage(1),"Peak hat\n");
+    fadeAllBush(WHITE,0,100,duration);
+    fadeAllHouse(RED,0,100,duration);
+    model->getStars()->fadeAllTo(100,100,100,duration);
+    write_data(duration);
+    fadeAllBush(WHITE,100,0,duration);
+    fadeAllHouse(RED,100,0,duration);
+    model->getStars()->fadeAllTo(0,0,0,duration);
+    write_data(duration);
+
+}
+
 
 void GregsDisplay::do_it_bushes()
 {
@@ -51,7 +74,8 @@ void GregsDisplay::do_it_bushes()
         setAllOff();
         sleep(1);
 
-        while (! timeinfo->isDisplayHours()) {
+        while (! timeinfo->isDisplayHours())
+        {
             sprintf(model->getMessage(1), "Sleeping during day (%02d)",
                     timeinfo->getHourOfDay());
             setAllOff();
@@ -66,23 +90,23 @@ void GregsDisplay::do_it_bushes()
 
 
         // STEP: Grinch
-        cout << "Starting Grinch" << endl;
         setAllOff();
         write_data(0.1);
         doGrinch();
 
 
-        // Step 1 - Rotate_some
-        cout << "Step 1" << endl;
+        // STEP: Rotate_some
         model->getGrid()->setNextAction(LG_SHOW_PICT);
         write_data(0.5); // Give grid a second
         setAllOff();
         write_data(0.1);
         rotate_some();
 
+        // STEP: HAt
+        peekHat();
+
         // STEP 2
-        model->getGrid()->setNextAction(LG_HAT);
-        cout << "Step 2" << endl;
+        model->getGrid()->setNextAction(LG_SHOW_PICT);
         fadeThroughAll(5, 2);
 
         // STEP 3
@@ -981,6 +1005,12 @@ void GregsDisplay::set_house(int lightId,int color,int intensity)
     else if (color == BLUE)
     {
         light->getBlueBulb()->setIntensity(intensity);
+    }
+    else if (color == WHITE)
+    {
+        light->getBlueBulb()->setIntensity(intensity);
+        light->getGreenBulb()->setIntensity(intensity);
+        light->getRedBulb()->setIntensity(intensity);
     }
 
 }

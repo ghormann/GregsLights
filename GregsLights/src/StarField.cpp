@@ -164,6 +164,12 @@ RGBLight* StarField::getStar(int id)
     return stars[id];
 }
 
+void StarField::setAll(int r, int g, int b) {
+    for(int i =0; i < STAR_COUNT; i++) {
+        stars[i]->set(r,g,b);
+    }
+}
+
 void StarField::setAll(RGBColor *c)
 {
     for (int i=0; i < STAR_COUNT; i++)

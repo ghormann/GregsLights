@@ -25,6 +25,7 @@ private:
     void fade_bush(int bush, int color, int s_intensity, int f_intensity, double duration);
     void setAllOff();
     void rotate_some();
+    void peekHat();
     void fadeThroughAll(double f_duration, double h_duration);
     void fadeAllHouse(int color, int s_intensity, int f_intensity, double duration);
     void setAllToColor(int color, int intensity);
