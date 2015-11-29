@@ -2233,6 +2233,7 @@ void GenericGrid::showMovie(string &startsWith, int cnt, double duration, int x,
     vector<RGBPicture> pics;
     this->setBackground(RGBColor::BLACK);
     RGBPicture::findStartsWith(startsWith, pics);
+    sprintf(message, "Show Movie: %s", startsWith.c_str());
 
     for (int i =0 ; i < cnt; i++)
     {
@@ -2245,6 +2246,8 @@ void GenericGrid::showMovie(string &startsWith, int cnt, double duration, int x,
             gridSleep(duration);
         }
     }
+
+    setBackground(RGBColor::BLACK);
 }
 
 void GenericGrid::scrollPictureLeft(RGBPicture &pic, double delay, bool hideBlack)

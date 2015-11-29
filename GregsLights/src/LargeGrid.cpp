@@ -1,6 +1,7 @@
 #include "../include/LargeGrid.h"
 #include <stdio.h>
 #include <string.h>
+#include "Generator.h"
 #include "../include/controller/DummyBulb.h"
 #include "RGBPicture.h"
 #include <vector>
@@ -13,6 +14,7 @@ LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[], E131Networ
 {
     //ctor
     sprintf(message, "Booting up: Grid");
+    srand (time(NULL));
     timeinfo = new TimeInfo(skipTime,newYears);
 
     int network = 0;
@@ -135,6 +137,16 @@ LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[], E131Networ
 
     // make sure Pictures are Loaded
     RGBPicture::getAllPictures();
+    movieNames.add(MovieInfo("toder", 6,0.15));
+    movieNames.add(MovieInfo("tongue", 3, 0.15));
+    movieNames.add(MovieInfo("scarf", 1,0.15));
+    movieNames.add(MovieInfo("puss_boots", 6,0.15));
+    movieNames.add(MovieInfo("candles", 12, 0.15));
+    movieNames.add(MovieInfo("19237_64", 1, 0.5));
+    movieNames.add(MovieInfo("elf-", 1, 0.15));
+
+
+
 }
 
 void LargeGrid::setNextAction(GRID_ACTIONS a)
@@ -313,6 +325,17 @@ void LargeGrid::rotatePictures()
                 this->setBackground(RGBColor::BLACK);
                 this->showPictureNowCenter(pict,false);
                 gridSleep(1.5);
+            }
+            // 6% chance to show a movie too
+            if (rand()%15 == 0)
+            {
+                GRID_ACTIONS lastAction = nextAction;
+                MovieInfo movie = movieNames.getRandom();
+                showMovieCenter(movie.name,movie.count,movie.duration);
+                // Check if Move was interrupted
+                if (lastAction != nextAction)
+                    return;
+
             }
         }
         picPos = 0; // Reset
@@ -690,3 +713,4 @@ LargeGrid::~LargeGrid()
 {
     //dtor
 }
+

@@ -4,6 +4,7 @@
 #include "controller/E131Network.h"
 #include "GenericGrid.h"
 #include "TimeInfo.h"
+#include "Generator.h"
 #define GRID_E11_COUNT 4*4
 #define LGRID_PIXAL_HEIGHT 46
 #define LGRID_PIXAL_WIDTH 106
@@ -47,6 +48,8 @@ private:
     RGBLight *pixals[LGRID_TOTAL_PIXALS];
     RGBLight *board[ LGRID_DUMMY_HEIGHT * LGRID_DUMMY_WIDTH];
     TimeInfo *timeinfo;
+    Generator<MovieInfo> movieNames;
+    Generator<string>pictureNames;
     size_t picPos = 0;
     GRID_ACTIONS nextAction;
 
