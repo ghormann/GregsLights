@@ -92,45 +92,49 @@ void GregsDisplay::do_it_bushes()
             setAllOff();
             sleep(5);
         }
-        /*
-                // STEP: CLARK
-                setAllOff();
-                write_data(0.1);
-                doClark();
+
+        // STEP: CLARK
+        setAllOff();
+        write_data(0.1);
+        doClark();
 
 
-                //STEP Horman Train
-                hormannTrain();
+        //STEP Horman Train
+        hormannTrain();
 
-                // STEP: Grinch
-                setAllOff();
-                write_data(0.1);
-                doGrinch();
-
-
-                // STEP: Rotate_some
-                model->getGrid()->setNextAction(LG_SHOW_PICT);
-                write_data(0.5); // Give grid a second
-                setAllOff();
-                write_data(0.1);
-                rotate_some();
-
-                // STEP: HAt
-                peekHat();
-
-                // STEP 2
-                model->getGrid()->setNextAction(LG_SHOW_PICT);
-                fadeThroughAll(5, 2);
-
-                // STEP 3
-                //cout << "Step 3" << endl;
-                model->getGrid()->setNextAction(LG_FIRE);
-                fade_offset();
+        // STEP: Grinch
+        setAllOff();
+        write_data(0.1);
+        doGrinch();
 
 
-                // Step 4
-                model->getGrid()->setNextAction(LG_SHOW_PICT);
-                moveFasterRight();
+        // STEP: Rotate_some
+        model->getGrid()->setNextAction(LG_SHOW_PICT);
+        write_data(0.5); // Give grid a second
+        setAllOff();
+        write_data(0.1);
+        rotate_some();
+
+        // STEP: HAt
+        peekHat();
+
+        // STEP 2
+        model->getGrid()->setNextAction(LG_SHOW_PICT);
+        fadeThroughAll(5, 2);
+
+        // STEP 3
+        //cout << "Step 3" << endl;
+        model->getGrid()->setNextAction(LG_FIRE);
+        fade_offset();
+
+
+        // Step 4
+        model->getGrid()->setNextAction(LG_SHOW_PICT);
+        moveFasterRight();
+
+        //Step
+        olaf();
+
 
 
         // Step 5
@@ -138,13 +142,39 @@ void GregsDisplay::do_it_bushes()
         moveFromMiddle();
         // Step 6
         fadeWhite();
-        */
         // Step 7
         redGreenFade();
+
+        // STEP
+        model->getGrid()->setNextAction(LG_TREE_CIRCLE);
+        write_data(5);
+
+
         // Step 8
-        change_one();  // Still doesn't fade 100% correctly.
+        //change_one();  // Still doesn't fade 100% correctly.
 
     }
+
+}
+
+void GregsDisplay::olaf()
+{
+    model->getGrid()->setNextAction(LG_OLAF);
+    double dur = 6.0;
+    fadeAllBush(WHITE,0,100,dur);
+    fadeAllHouse(WHITE,0,100,dur);
+    model->getStars()->fadeAllTo(100,100,100,dur);
+    write_data(dur);
+
+    dur=2.0;
+    fadeAllBush(WHITE,100,0,dur);
+    fadeAllBush(RED,0,100,dur);
+
+    fadeAllHouse(WHITE,100,0,dur);
+    fadeAllHouse(RED,0,100,dur);
+    model->getStars()->fadeAllTo(100,0,0,dur);
+    write_data(7);
+
 
 }
 

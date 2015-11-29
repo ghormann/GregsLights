@@ -21,7 +21,9 @@ enum GRID_ACTIONS
     LG_HAT,
     LG_SHOW_PICT,
     LG_CLARK,
-    LG_FIRE
+    LG_FIRE,
+    LG_OLAF,
+    LG_TREE_CIRCLE
 };
 
 
@@ -40,6 +42,7 @@ public:
     void run();
     void rotatePictures();
     void peakSanta();
+    void olaf();
     void trainText(string left);
     char *getMessage();
     void setNextAction(GRID_ACTIONS a);

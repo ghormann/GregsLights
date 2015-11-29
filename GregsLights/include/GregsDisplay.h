@@ -43,6 +43,7 @@ private:
     void redGreenFade();
     void fadeWhite();
     void fade_offset();
+    void olaf();
     void setRGB(int color, int &r, int &g, int &b);
     void set_house(int light, int color, int intensity);
     void fade_house(int light, int color, int s_intensity, int f_intensity, double duration);

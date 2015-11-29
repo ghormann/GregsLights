@@ -318,6 +318,8 @@ void LargeGrid::rotatePictures()
 
         while (picPos < allPictures.size())
         {
+            int randId = rand() %15;
+            cout << "Random ID: " << randId << endl;
             RGBPicture pict = allPictures.at(picPos++);
             if (! pict.isMovie())
             {
@@ -326,20 +328,36 @@ void LargeGrid::rotatePictures()
                 gridSleep(1.5);
             }
             // 6% chance to show a movie too
-            if (rand()%15 == 0)
+            if (randId == 0)
             {
                 GRID_ACTIONS lastAction = nextAction;
                 MovieInfo movie = movieNames.getRandom();
                 showMovieCenter(movie.name,movie.count,movie.duration);
                 // Check if Move was interrupted
-                if (lastAction != nextAction) {
+                if (lastAction != nextAction)
+                {
                     return;
-                    }
+                }
 
             }
         }
         picPos = 0; // Reset
     }
+
+}
+
+void LargeGrid::olaf()
+{
+    setDummyBackground(RGBColor::DARKGREEN, 0,0,gridWidth,gridHeight);
+    writeTextSmall(RGBColor::WHITE, 0,0, "SOME PEOPLE ARE");
+    writeTextSmall(RGBColor::WHITE, 0,14, "WORTH MELTING");
+    writeTextSmall(RGBColor::WHITE, 33,28, "FOR ...");
+
+    setDisplayPosition(0,0);
+    gridSleep(4.5);
+    wipeDown(RGBColor::BLACK,0.05);
+    string olafMelt = string("olaf_melt_64");
+    this->showMovie(olafMelt,3,0.15,0,0);
 
 }
 
@@ -677,10 +695,17 @@ void LargeGrid::run()
     }
     string clark = ("clark_Plug");
     string fire = ("fire-");
+            RGBPicture *p2 = RGBPicture::getPicture( string("christmas-tree_64_0.png"));
 
 
     switch(nextAction)
     {
+    case LG_TREE_CIRCLE:
+        this->colorAroundPicture(p2,150);
+        break;
+    case LG_OLAF:
+        olaf();
+        break;
     case LG_CLARK:
         showMovieCenter(clark,1,0.1);
         break;
