@@ -96,56 +96,6 @@ void StarField::setAll(RGBColor *c)
     }
 }
 
-void StarField::run()
-{
-    while (! timeInfo->isDisplayHours())
-    {
-        sprintf(message, "Sleeping during day (%02d)",
-                timeInfo->getHourOfDay());
-        setAll(RGBColor::BLACK);
-        gjhSleep(5);
-    }
-
-    RGBColor *colors[7];
-    colors[0] = RGBColor::RED;
-    colors[1] = RGBColor::GREEN;
-    colors[2] = RGBColor::BLUE;
-    colors[3] = RGBColor::WHITE;
-    colors[4] = RGBColor::PURPLE;
-    colors[5] = RGBColor::YELLOW;
-    colors[6] = RGBColor::ORANGE;
-
-    //Individual
-    for (int j =0; j < 7; j++)
-    {
-        for (int i = 0; i < STAR_COUNT; i++)
-        {
-            getStar(i)->fadeTo(RGBColor::getRandom(),2.0);
-        }
-        gjhSleep(3);
-    }
-    // Together
-    for (int j =0; j < 7; j++)
-    {
-        for (int i = 0; i < STAR_COUNT; i++)
-        {
-            getStar(i)->fadeTo(colors[j],2.0);
-        }
-        gjhSleep(3);
-    }
-
-    //Individual
-    for (int j =0; j < 7; j++)
-    {
-        for (int i = 0; i < STAR_COUNT; i++)
-        {
-            int c = (i+j)%6;
-            getStar(i)->fadeTo(colors[c],2.0);
-        }
-        gjhSleep(3);
-    }
-
-}
 
 void StarField::test()
 {

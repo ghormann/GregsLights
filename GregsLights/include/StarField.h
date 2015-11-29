@@ -12,7 +12,6 @@ class StarField
         StarField(E131Network *net, TimeInfo *);
         virtual ~StarField();
         void test();
-        void run();
         RGBLight* getStar(int i);
         void setAll(RGBColor *c);
     protected:
