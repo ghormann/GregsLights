@@ -37,9 +37,15 @@ void GregsDisplay::doGrinch()
 
 }
 
+void GregsDisplay::doClark()
+{
+    model->getGrid()->setNextAction(LG_CLARK);
+    write_data(32);
+}
+
 void GregsDisplay::do_it_bushes()
 {
-    sleep(3); // GIve everything time to Boot up.
+    sleep(2); // GIve everything time to Boot up.
     while(1)
     {
         setAllOff();
@@ -53,7 +59,14 @@ void GregsDisplay::do_it_bushes()
             sleep(5);
         }
 
+        // STEP: CLARK
+        setAllOff();
+        write_data(0.1);
+        doClark();
+
+
         // STEP: Grinch
+        cout << "Starting Grinch" << endl;
         setAllOff();
         write_data(0.1);
         doGrinch();

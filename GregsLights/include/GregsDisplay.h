@@ -34,6 +34,7 @@ private:
     void change_one(void);
     void slide_down(void);
     void moveFasterRight();
+    void doClark();
     void doGrinch();
     void moveFasterLeft();
     void moveFromMiddle();

@@ -12,6 +12,11 @@ using namespace std;
 
 #define PNG_BYTES_TO_CHECK 4
 
+// Tool for Convertng Videos
+
+// avconv -i {video name} -r 15 -f image2 clark_Plug-%3d.jpeg
+
+
 // Tool for Converting Images
 //convert test128.png -colorspace RGB -depth 8 -resize "64x64" test64.txt
 // make filename _%d.gif to extract

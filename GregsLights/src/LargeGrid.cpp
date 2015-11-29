@@ -652,9 +652,14 @@ void LargeGrid::run()
         setBackground(RGBColor::BLACK);
         gridSleep(5);;
     }
+    string clark = ("clark_Plug");
+
 
     switch(nextAction)
     {
+    case LG_CLARK:
+        showMovieCenter(clark,1,0.1);
+        break;
     case LG_GRINCH:
         scrollGrinch();
         break;

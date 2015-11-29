@@ -21,7 +21,7 @@ foreach my $file (@files) {
 	my $targetWidth = $width * ($targetHeight/$height);
 	my $targetWidth = int($targetWidth + 0.5);
 	print "Target: $targetWidth, $targetHeight\n";
-	my $cmd = "convert \"$full\" -colorspace RGB -depth 8 -resize \"${targetWidth}x$targetHeight\" \"$newName\"";
+	my $cmd = "convert \"$full\" -colorspace RGB -depth 8 -define png:color-type=2 -resize \"${targetWidth}x$targetHeight\" \"$newName\"";
 	print "$cmd\n";
 	system ($cmd);
 }
