@@ -19,7 +19,8 @@ enum GRID_ACTIONS
     LG_TRAIN_HORMANN,
     LG_HAT,
     LG_SHOW_PICT,
-    LG_CLARK
+    LG_CLARK,
+    LG_FIRE
 };
 
 

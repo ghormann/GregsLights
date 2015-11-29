@@ -128,21 +128,21 @@ void StarField::fadeAllTo(RGBColor *c, double duration) {
     }
 }
 
-void StarField::setLeft(RGBColor *c)
+void StarField::setLeft(int r, int g, int b)
 {
     for (int i =0; i < STAR_COUNT; i++)
     {
         if ('L' == startPos[i])
-            stars[i]->set(c);
+            stars[i]->set(r,g,b);
     }
 }
 
-void StarField::setRight(RGBColor *c)
+void StarField::setRight(int r, int g, int b)
 {
     for (int i =0; i < STAR_COUNT; i++)
     {
         if ('R' == startPos[i])
-            stars[i]->set(c);
+            stars[i]->set(r,g,b);
     }
 }
 

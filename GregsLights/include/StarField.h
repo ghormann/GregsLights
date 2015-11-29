@@ -17,8 +17,8 @@ class StarField
         void setAll(int r, int g, int b);
         void fadeAllTo(RGBColor *c, double duration);
         void fadeAllTo(int r, int g, int b, double duration);
-        void setLeft(RGBColor *c);
-        void setRight(RGBColor *c);
+        void setLeft(int r, int g, int b);
+        void setRight(int r, int g, int b);
     protected:
     private:
         void swapStars(int i, int j);

@@ -653,12 +653,19 @@ void LargeGrid::run()
         gridSleep(5);;
     }
     string clark = ("clark_Plug");
+    string fire = ("fire-");
 
 
     switch(nextAction)
     {
     case LG_CLARK:
         showMovieCenter(clark,1,0.1);
+        break;
+    case LG_FIRE:
+        showMovieCenter(fire,1,0.1);
+        break;
+    case LG_TRAIN_HORMANN:
+        trainText("MERRY CHRISTMAS FROM THE HORMANN FAMILY");
         break;
     case LG_GRINCH:
         scrollGrinch();

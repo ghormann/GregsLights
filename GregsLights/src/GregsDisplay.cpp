@@ -47,6 +47,7 @@ void GregsDisplay::doClark()
     setAllHouse(WHITE,100);
     model->getStars()->setAll(100,100,100);
     write_data(32-5);
+    setAllOff();
 }
 
 void GregsDisplay::peekHat()
@@ -65,6 +66,16 @@ void GregsDisplay::peekHat()
 
 }
 
+void GregsDisplay::hormannTrain()
+{
+    double duration = 5.0;
+    model->getGrid()->setNextAction(LG_TRAIN_HORMANN);
+    fadeAllHouse(RED,0,100,duration);
+    fadeAllBush(BLUE,0,100,duration);
+    write_data(20);
+
+}
+
 
 void GregsDisplay::do_it_bushes()
 {
@@ -79,15 +90,17 @@ void GregsDisplay::do_it_bushes()
             sprintf(model->getMessage(1), "Sleeping during day (%02d)",
                     timeinfo->getHourOfDay());
             setAllOff();
-            model->getStars()->setAll(RGBColor::BLACK);
             sleep(5);
         }
-
+/*
         // STEP: CLARK
         setAllOff();
         write_data(0.1);
         doClark();
 
+
+        //STEP Horman Train
+        hormannTrain();
 
         // STEP: Grinch
         setAllOff();
@@ -104,17 +117,18 @@ void GregsDisplay::do_it_bushes()
 
         // STEP: HAt
         peekHat();
-
+*/
         // STEP 2
         model->getGrid()->setNextAction(LG_SHOW_PICT);
         fadeThroughAll(5, 2);
 
         // STEP 3
         cout << "Step 3" << endl;
-        //model->getGrid()->setNextAction(LG_SLEEP);
+        model->getGrid()->setNextAction(LG_FIRE);
         fade_offset();
 
         // Step 4
+        model->getGrid()->setNextAction(LG_SLEEP);
         moveFasterRight();
 
         // Step 5

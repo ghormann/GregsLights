@@ -94,6 +94,8 @@ bool RGBPicture::isMovie()
             || shortName.find("train") == 0
             || shortName.find("wire_tree_64_0.png") == 0
             || shortName.find("clark_Plug") == 0
+            || shortName.find("elf_around") == 0
+            || shortName.find("fire-") == 0
        )
     {
         return true;
