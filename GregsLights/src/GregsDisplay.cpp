@@ -33,21 +33,24 @@ void GregsDisplay::do_it_bushes()
             sprintf(model->getMessage(1), "Sleeping during day (%02d)",
                     timeinfo->getHourOfDay());
             setAllOff();
+            model->getStars()->setAll(RGBColor::BLACK);
             sleep(5);
         }
 
         // Step 1 - Rotate_some
         //model->getGrid()->setNextAction(LG_GRINCH);
+        cout << "Step 1" << endl;
         setAllOff();
         write_data(0.1);
         rotate_some();
 
         // STEP 2
         //model->getGrid()->setNextAction(LG_HAT);
+        cout << "Step 2" << endl;
         fadeThroughAll(5, 2);
 
         // STEP 3
-        cout << "Step 2" << endl;
+        cout << "Step 3" << endl;
         //model->getGrid()->setNextAction(LG_SLEEP);
         fade_offset();
 
@@ -269,6 +272,7 @@ void GregsDisplay::fadeThroughAll(double f_duration, double h_duration)
         if (i <= 4)
             fade_house(i, RED, 0, 100, f_duration);
     }
+    model->getStars()->fadeAllTo(100,0,0, f_duration);
     write_data(f_duration);
     for (i=1; i<=4; i++)
         set_house(i, RED, 100);
@@ -290,6 +294,7 @@ void GregsDisplay::fadeThroughAll(double f_duration, double h_duration)
             fade_house(i, GREEN, 0, 100, f_duration);
         }
     }
+    model->getStars()->fadeAllTo(0,100,0, f_duration);
     write_data(f_duration);
     for (i=1; i<=4; i++)
     {
@@ -312,6 +317,7 @@ void GregsDisplay::fadeThroughAll(double f_duration, double h_duration)
         }
     }
 
+    model->getStars()->fadeAllTo(0,0,100, f_duration);
     write_data(f_duration);
     for (i=1; i<=4; i++)
     {
@@ -336,6 +342,7 @@ void GregsDisplay::fadeThroughAll(double f_duration, double h_duration)
         }
     }
 
+    model->getStars()->fadeAllTo(100,100,0, f_duration);
     write_data(f_duration);
     for (i=1; i<=4; i++)
     {
@@ -363,6 +370,7 @@ void GregsDisplay::fadeThroughAll(double f_duration, double h_duration)
         }
     }
 
+    model->getStars()->fadeAllTo(100,100,100,f_duration);
     write_data(f_duration);
     for (i=1; i<=4; i++)
     {
@@ -388,6 +396,7 @@ void GregsDisplay::fadeThroughAll(double f_duration, double h_duration)
                 fade_house(i, GREEN, 0, 100, f_duration);
         }
     }
+    model->getStars()->fadeAllTo(0,100,100,f_duration);
     write_data(f_duration);
     setAllToColor(WHITE, 0);
     setAllToColor(BLUE, 100);
@@ -415,6 +424,7 @@ void GregsDisplay::fadeThroughAll(double f_duration, double h_duration)
                 fade_house(i, GREEN, 100, 0, f_duration);
         }
     }
+    model->getStars()->fadeAllTo(0,0,0, f_duration);
     write_data(f_duration);
     setAllToColor(WHITE, 0);
     setAllToColor(BLUE, 0);
@@ -422,6 +432,7 @@ void GregsDisplay::fadeThroughAll(double f_duration, double h_duration)
     setAllToColor(RED, 0);
     setAllHouse(BLUE,0);
     setAllHouse(GREEN,0);
+
 }
 
 void GregsDisplay::chase_left(int baseColor, int diffColor, double startDuration,
@@ -865,6 +876,9 @@ void GregsDisplay::setAllOff()
     {
         model->getHouse(i)->turnOff();
     }
+
+    model->getStars()->setAll(RGBColor::BLACK);
+
 }
 
 void GregsDisplay::fade_bush(int bushId, int color, int s_intensity, int f_intensity, double duration)

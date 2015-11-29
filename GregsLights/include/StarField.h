@@ -14,12 +14,17 @@ class StarField
         void test();
         RGBLight* getStar(int i);
         void setAll(RGBColor *c);
+        void fadeAllTo(RGBColor *c, double duration);
+        void fadeAllTo(int r, int g, int b, double duration);
+        void setLeft(RGBColor *c);
+        void setRight(RGBColor *c);
     protected:
     private:
         void swapStars(int i, int j);
         char message[80];
         TimeInfo *timeInfo;
     RGBLight *stars[STAR_COUNT];
+    char startPos[STAR_COUNT];
 };
 
 #endif // STARFIELD_H
