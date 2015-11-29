@@ -89,18 +89,20 @@ StarField::StarField(E131Network *net, TimeInfo *tmInfo)
     starPos[23] = 'R';
     starPos[24] = 'R';
     starPos[25] = 'L';
+    starPos[26] = 'L';
     starPos[27] = 'L';
     starPos[28] = 'L';
     starPos[29] = 'R';
     starPos[30] = 'R';
     starPos[31] = 'R';
-    starPos[32] = 'R';
+    starPos[32] = 'L';
     starPos[33] = 'L';
     starPos[34] = 'L';
     starPos[35] = 'L';
+    starPos[36] = 'R';
     starPos[37] = 'R';
-    starPos[38] = 'R';
-    starPos[39] = 'R';
+    starPos[38] = 'L';
+    starPos[39] = 'L';
     starPos[40] = 'L';
     starPos[41] = 'L';
     starPos[42] = 'R';
@@ -189,9 +191,26 @@ void StarField::fadeAllTo(RGBColor *c, double duration) {
 void StarField::fadeLine(int line, int r,int g,int b, double duration) {
     for (int i = 0; i < STAR_COUNT; i++) {
         if (starLine[i] == line) {
-            cout << "Fading " << i << endl;
             stars[i]->fadeTo(r,g,b,duration);
         }
+    }
+}
+
+void StarField::setLine(int line, int r,int g,int b) {
+    for (int i = 0; i < STAR_COUNT; i++) {
+        if (starLine[i] == line) {
+            stars[i]->set(r,g,b);
+        }
+    }
+}
+
+
+void StarField::fadeLeft(int r, int g, int b, double duration)
+{
+    for (int i =0; i < STAR_COUNT; i++)
+    {
+        if ('L' == starPos[i])
+            stars[i]->fadeTo(r,g,b,duration);
     }
 }
 
@@ -204,6 +223,16 @@ void StarField::setLeft(int r, int g, int b)
     }
 }
 
+
+void StarField::fadeRight(int r, int g, int b, double duration)
+{
+    for (int i =0; i < STAR_COUNT; i++)
+    {
+        if ('R' == starPos[i])
+            stars[i]->fadeTo(r,g,b,duration);
+    }
+}
+
 void StarField::setRight(int r, int g, int b)
 {
     for (int i =0; i < STAR_COUNT; i++)
@@ -212,7 +241,6 @@ void StarField::setRight(int r, int g, int b)
             stars[i]->set(r,g,b);
     }
 }
-
 
 void StarField::swapStars(int i, int j)
 {

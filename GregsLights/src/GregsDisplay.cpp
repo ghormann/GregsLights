@@ -92,51 +92,53 @@ void GregsDisplay::do_it_bushes()
             setAllOff();
             sleep(5);
         }
-/*
-        // STEP: CLARK
-        setAllOff();
-        write_data(0.1);
-        doClark();
+        /*
+                // STEP: CLARK
+                setAllOff();
+                write_data(0.1);
+                doClark();
 
 
-        //STEP Horman Train
-        hormannTrain();
+                //STEP Horman Train
+                hormannTrain();
 
-        // STEP: Grinch
-        setAllOff();
-        write_data(0.1);
-        doGrinch();
+                // STEP: Grinch
+                setAllOff();
+                write_data(0.1);
+                doGrinch();
 
 
-        // STEP: Rotate_some
-        model->getGrid()->setNextAction(LG_SHOW_PICT);
-        write_data(0.5); // Give grid a second
-        setAllOff();
-        write_data(0.1);
-        rotate_some();
+                // STEP: Rotate_some
+                model->getGrid()->setNextAction(LG_SHOW_PICT);
+                write_data(0.5); // Give grid a second
+                setAllOff();
+                write_data(0.1);
+                rotate_some();
 
-        // STEP: HAt
-        peekHat();
+                // STEP: HAt
+                peekHat();
 
-        // STEP 2
-        model->getGrid()->setNextAction(LG_SHOW_PICT);
-        fadeThroughAll(5, 2);
-*/
+                // STEP 2
+                model->getGrid()->setNextAction(LG_SHOW_PICT);
+                fadeThroughAll(5, 2);
 
-        // STEP 3
-        //cout << "Step 3" << endl;
-        model->getGrid()->setNextAction(LG_FIRE);
-        fade_offset();
+                // STEP 3
+                //cout << "Step 3" << endl;
+                model->getGrid()->setNextAction(LG_FIRE);
+                fade_offset();
 
-        // Step 4
-        model->getGrid()->setNextAction(LG_SLEEP);
-        moveFasterRight();
+
+                // Step 4
+                model->getGrid()->setNextAction(LG_SHOW_PICT);
+                moveFasterRight();
+
 
         // Step 5
         model->getGrid()->setNextAction(LG_SHOW_PICT);
         moveFromMiddle();
         // Step 6
         fadeWhite();
+        */
         // Step 7
         redGreenFade();
         // Step 8
@@ -205,10 +207,16 @@ void GregsDisplay::setAllToColor(int color, int intensity)
 
 void GregsDisplay::redGreenFade()
 {
-    int i,j;
+    int i,j,r,g,b;
     int left = 0%2;
     int right = 1%2;
     double duration = 1.0;
+
+    setRGB(left,r,g,b);
+    model->getStars()->fadeLeft(r,g,b,duration);
+    setRGB(right,r,g,b);
+    model->getStars()->fadeRight(r,g,b,duration);
+
 
     for(i = 1; i<=6; i++)
     {
@@ -226,6 +234,10 @@ void GregsDisplay::redGreenFade()
         left = j%2;
         right = (j+1)%2;
         sprintf(model->getMessage(1),"RedGreenFade: %f", duration);
+        setRGB(left,r,g,b);
+        model->getStars()->fadeLeft(r,g,b,duration);
+        setRGB(right,r,g,b);
+        model->getStars()->fadeRight(r,g,b,duration);
         for(i = 1; i<=6; i++)
         {
             fade_bush(i, i<=3? left : right ,0,100,duration);
@@ -243,6 +255,7 @@ void GregsDisplay::redGreenFade()
     j++;
     left = j%2;
     right = (j+1)%2;
+    model->getStars()->fadeAllTo(100,100,0,duration);
     for (i = 1; i<=6; i++)
     {
         fade_bush(i, i<=3? left : right ,0,100,1.0);
@@ -568,9 +581,12 @@ void GregsDisplay::chase_right(int baseColor, int diffColor, double startDuratio
                                double decreasePct, double stopDuration)
 {
     double duration = startDuration;
+    int r,g,b;
     int bush = 1;
     sprintf(model->getMessage(1),"Chase Right - Duration: %f", duration);
     setAllOff();
+    setRGB(baseColor,r,g,b);
+    model->getStars()->setAll(r,g,b);
     setAllToColor(baseColor, 100);
     setAllHouse(baseColor, 100);
     write_data(.1);
@@ -580,12 +596,24 @@ void GregsDisplay::chase_right(int baseColor, int diffColor, double startDuratio
 
     while (duration > stopDuration)
     {
+        setRGB(diffColor,r,g,b);
         sprintf(model->getMessage(1),"Chase Right - Duration: %f", duration);
         set_bush(bush, baseColor, 0);
         set_bush(bush, diffColor, 100);
+        model->getStars()->setLine(bush,r,g,b);
+        if (bush == 1)
+            model->getStars()->setLine(0,r,g,b);
+        if (bush == 6)
+            model->getStars()->setLine(7,r,g,b);
         write_data(duration);
         set_bush(bush, baseColor, 100);
         set_bush(bush, diffColor, 0);
+        setRGB(baseColor,r,g,b);
+        model->getStars()->setLine(bush,r,g,b);
+        if (bush == 1)
+            model->getStars()->setLine(0,r,g,b);
+        if (bush == 6)
+            model->getStars()->setLine(7,r,g,b);
 
         if (++bush > 6)
             bush = 1;
@@ -593,6 +621,17 @@ void GregsDisplay::chase_right(int baseColor, int diffColor, double startDuratio
         duration -= (duration * decreasePct);
     }
 
+}
+
+void GregsDisplay:: setRGB(int color, int &r, int &g, int &b)
+{
+    r=g=b=0;
+    if (color == RED || color == WHITE)
+        r = 100;
+    if (color == GREEN || color == WHITE)
+        g = 100;
+    if (color == BLUE || color == WHITE)
+        b = 100;
 }
 
 /*
@@ -733,6 +772,7 @@ void GregsDisplay::fadeWhite()
             fade_house(i, RED, 0, 100, 2.0);
     }
     fadeAllBush(WHITE, 0, 100, 2.0);
+    model->getStars()->fadeAllTo(100,100,100,2.0);
     write_data(2.0);
 
     for (i=1; i < 3; i++)
@@ -745,6 +785,7 @@ void GregsDisplay::fadeWhite()
                 fade_house(j, RED, 100, 35, duration);
         }
         fadeAllBush(WHITE, 100, 35, duration);
+        model->getStars()->fadeAllTo(10,10,10,duration);
         write_data(duration);
 
         for (j=1; j <= 4; j++)
@@ -755,9 +796,11 @@ void GregsDisplay::fadeWhite()
                 fade_house(j, RED, 35, 100, duration);
         }
         fadeAllBush(WHITE, 35, 100, duration);
+        model->getStars()->fadeAllTo(100,100,100,duration);
         write_data(duration);
     }
     sprintf(model->getMessage(1),"Fade WHITE OFF");
+    model->getStars()->fadeAllTo(0,0,0,duration);
     for (i=1; i<=6; i++)
     {
         fade_bush(i, WHITE, 100, 0, duration);
@@ -783,6 +826,8 @@ void GregsDisplay::moveFasterRight()
     setAllOff();
     fadeAllBush(RED,0,100,3.0);
     fadeAllHouse(RED,0,100,3.0);
+    model->getStars()->fadeAllTo(100,0,0,3.0);
+
     write_data(3.0);
 
     chase_right(RED, GREEN, 1.3, 0.05, 0.1);
@@ -837,6 +882,7 @@ void GregsDisplay::moveFromMiddle()
     int iGreen = 0;
     int iRed = 0;
     int iWhite = 0;
+    int r,g,b;
     double duration=2.0;
 
     strcpy(model->getMessage(1),"MoveFromMiddle");
@@ -845,11 +891,29 @@ void GregsDisplay::moveFromMiddle()
     write_data(duration + 0.1);
     setAllToColor(GREEN, 100);
 
+    for (i = 0; i < 8; i++)
+    {
+        setRGB(i%(WHITE+1),r,g,b);
+        model->getStars()->fadeLine(i,r,g,b,10.0);
+    }
+
     // Really Start it
     duration=1.3;
     for (i=0; i < 50; i++)
     {
         sprintf(model->getMessage(1),"MoveFromMiddle - %f, %d ", duration, i);
+        cout << "Pos: " << i << endl;
+        if (i == 15)
+        {
+            for (int k = 0; k < 8; k++)
+            {
+                setRGB((k+1)%(WHITE+1),r,g,b);
+                if (r == 0 )
+                    r = 100;
+                model->getStars()->fadeLine(k,r,g,b,10.0);
+            }
+        }
+
         for(j=1; j<=6; j++)
         {
             if (j == bush1 || j == bush2 )
