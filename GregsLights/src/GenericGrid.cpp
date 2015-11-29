@@ -2094,30 +2094,18 @@ void GenericGrid::spiral(RGBColor *color)
 
 int GenericGrid::_gridSleep(double d)
 {
-    // Sleep in chunks to avoid long blocks
-    if (d < 0.1)
+    if (this->interrupt)
     {
-        usleep((d) * 1000000);
-        if (this->interrupt)
-        {
-            this->interrupt = false;
-            return 1;
-        }
-
+        this->interrupt = false;
+        return 1;
     }
-    else
+
+    usleep((d) * 1000000);
+
+    if (this->interrupt)
     {
-        double cur = 0;
-        while (cur < d)
-        {
-            usleep(0.05 * 1000000);
-            cur += 0.05;
-            if (this->interrupt)
-            {
-                this->interrupt = false;
-                return 1;
-            }
-        }
+        this->interrupt = false;
+        return 1;
     }
 
     return 0;
