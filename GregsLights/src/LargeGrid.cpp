@@ -318,27 +318,27 @@ void LargeGrid::rotatePictures()
 
         while (picPos < allPictures.size())
         {
-            int randId = rand() %15;
-            cout << "Random ID: " << randId << endl;
+            int randId = rand() %10;
             RGBPicture pict = allPictures.at(picPos++);
             if (! pict.isMovie())
             {
                 this->setBackground(RGBColor::BLACK);
                 this->showPictureNowCenter(pict,false);
                 gridSleep(1.5);
-            }
-            // 6% chance to show a movie too
-            if (randId == 0)
-            {
-                GRID_ACTIONS lastAction = nextAction;
-                MovieInfo movie = movieNames.getRandom();
-                showMovieCenter(movie.name,movie.count,movie.duration);
-                // Check if Move was interrupted
-                if (lastAction != nextAction)
-                {
-                    return;
-                }
 
+                // 10% chance to show a movie too
+                if (randId == 0 )
+                {
+                    GRID_ACTIONS lastAction = nextAction;
+                    MovieInfo movie = movieNames.getRandom();
+                    showMovieCenter(movie.name,movie.count,movie.duration);
+                    // Check if Move was interrupted
+                    if (lastAction != nextAction)
+                    {
+                        return;
+                    }
+
+                }
             }
         }
         picPos = 0; // Reset
@@ -695,7 +695,7 @@ void LargeGrid::run()
     }
     string clark = ("clark_Plug");
     string fire = ("fire-");
-            RGBPicture *p2 = RGBPicture::getPicture( string("christmas-tree_64_0.png"));
+    RGBPicture *p2 = RGBPicture::getPicture( string("christmas-tree_64_0.png"));
 
 
     switch(nextAction)

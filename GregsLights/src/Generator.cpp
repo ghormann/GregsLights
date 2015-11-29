@@ -20,6 +20,7 @@ void Generator<T>::add(T s)
 template <class T>
 T Generator<T>::getRandom()
 {
+    checkClear();
     size_t i = 0;
     while (usemap[i] == true)
     {
