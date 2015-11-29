@@ -143,7 +143,7 @@ LargeGrid::LargeGrid(bool skipTime, bool newYears,E131Network *net[], E131Networ
     movieNames.add(MovieInfo("puss_boots", 6,0.15));
     movieNames.add(MovieInfo("candles", 12, 0.15));
     movieNames.add(MovieInfo("19237_64", 1, 0.5));
-    movieNames.add(MovieInfo("elf-", 1, 0.15));
+    movieNames.add(MovieInfo("elf_", 1, 0.1));
 
 
 
@@ -321,7 +321,6 @@ void LargeGrid::rotatePictures()
             RGBPicture pict = allPictures.at(picPos++);
             if (! pict.isMovie())
             {
-                cout << pict.getName() << endl;
                 this->setBackground(RGBColor::BLACK);
                 this->showPictureNowCenter(pict,false);
                 gridSleep(1.5);
@@ -333,8 +332,9 @@ void LargeGrid::rotatePictures()
                 MovieInfo movie = movieNames.getRandom();
                 showMovieCenter(movie.name,movie.count,movie.duration);
                 // Check if Move was interrupted
-                if (lastAction != nextAction)
+                if (lastAction != nextAction) {
                     return;
+                    }
 
             }
         }

@@ -21,7 +21,7 @@ template <class T>
 T Generator<T>::getRandom()
 {
     size_t i = 0;
-    while (usemap[0] == true)
+    while (usemap[i] == true)
     {
         i = rand() % cnt;  // Don't show same message twice in a row.
     }

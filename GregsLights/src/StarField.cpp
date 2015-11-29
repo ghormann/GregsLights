@@ -63,49 +63,107 @@ StarField::StarField(E131Network *net, TimeInfo *tmInfo)
 
     // RED, GREEN, BLUE, WHITE, DK RED, PURPLE, DK BLUE, YELOW, DARK GREEN
 
-    startPos[0] = 'L';
-    startPos[1] = 'L';
-    startPos[2] = 'L';
-    startPos[3] = 'R';
-    startPos[4] = 'R';
-    startPos[5] = 'R';
-    startPos[6] = 'R';
-    startPos[7] = 'L';
-    startPos[8] = 'L';
-    startPos[9] = 'L';
-    startPos[10] = 'R';
-    startPos[11] = 'R';
-    startPos[12] = 'R';
-    startPos[13] = 'L';
-    startPos[14] = 'L';
-    startPos[15] = 'L';
-    startPos[16] = 'R';
-    startPos[17] = 'R';
-    startPos[18] = 'R';
-    startPos[19] = 'L';
-    startPos[20] = 'L';
-    startPos[21] = 'L';
-    startPos[22] = 'R';
-    startPos[23] = 'R';
-    startPos[24] = 'R';
-    startPos[25] = 'L';
-    startPos[27] = 'L';
-    startPos[28] = 'L';
-    startPos[29] = 'R';
-    startPos[30] = 'R';
-    startPos[31] = 'R';
-    startPos[32] = 'R';
-    startPos[33] = 'L';
-    startPos[34] = 'L';
-    startPos[35] = 'L';
-    startPos[37] = 'R';
-    startPos[38] = 'R';
-    startPos[39] = 'R';
-    startPos[40] = 'L';
-    startPos[41] = 'L';
-    startPos[42] = 'R';
-    startPos[43] = 'R';
-    startPos[44] = 'R';
+    starPos[0] = 'L';
+    starPos[1] = 'L';
+    starPos[2] = 'L';
+    starPos[3] = 'R';
+    starPos[4] = 'R';
+    starPos[5] = 'R';
+    starPos[6] = 'R';
+    starPos[7] = 'L';
+    starPos[8] = 'L';
+    starPos[9] = 'L';
+    starPos[10] = 'R';
+    starPos[11] = 'R';
+    starPos[12] = 'R';
+    starPos[13] = 'L';
+    starPos[14] = 'L';
+    starPos[15] = 'L';
+    starPos[16] = 'R';
+    starPos[17] = 'R';
+    starPos[18] = 'R';
+    starPos[19] = 'L';
+    starPos[20] = 'L';
+    starPos[21] = 'L';
+    starPos[22] = 'R';
+    starPos[23] = 'R';
+    starPos[24] = 'R';
+    starPos[25] = 'L';
+    starPos[27] = 'L';
+    starPos[28] = 'L';
+    starPos[29] = 'R';
+    starPos[30] = 'R';
+    starPos[31] = 'R';
+    starPos[32] = 'R';
+    starPos[33] = 'L';
+    starPos[34] = 'L';
+    starPos[35] = 'L';
+    starPos[37] = 'R';
+    starPos[38] = 'R';
+    starPos[39] = 'R';
+    starPos[40] = 'L';
+    starPos[41] = 'L';
+    starPos[42] = 'R';
+    starPos[43] = 'R';
+
+    // Row 1
+    starLine[0] = 1;
+    starLine[1] = 2;
+    starLine[2] = 3;
+    starLine[3] = 4;
+    starLine[4] = 5;
+    starLine[5] = 6;
+    starLine[6] = 7;
+
+    //Row 2
+    starLine[7] = 1;
+    starLine[8] = 2;
+    starLine[9] = 3;
+    starLine[10] = 4;
+    starLine[11] = 5;
+    starLine[12] = 6;
+
+    // Row 3
+    starLine[13] = 1;
+    starLine[14] = 2;
+    starLine[15] = 3;
+    starLine[16] = 4;
+    starLine[17] = 5;
+    starLine[18] = 6;
+
+   // Row 4
+    starLine[19] = 1;
+    starLine[20] = 2;
+    starLine[21] = 3;
+    starLine[22] = 4;
+    starLine[23] = 5;
+    starLine[24] = 6;
+
+   // Row 5
+    starLine[25] = 0;
+    starLine[26] = 1;
+    starLine[27] = 2;
+    starLine[28] = 3;
+    starLine[29] = 4;
+    starLine[30] = 5;
+    starLine[31] = 6;
+
+   // Row 6
+    starLine[32] = 0;
+    starLine[33] = 1;
+    starLine[34] = 2;
+    starLine[35] = 3;
+    starLine[36] = 4;
+    starLine[37] = 5;
+
+   // Row 7
+    starLine[38] = 0;
+    starLine[39] = 1;
+    starLine[40] = 2;
+    starLine[41] = 3;
+    starLine[42] = 4;
+    starLine[43] = 5;
+
 
 }
 
@@ -128,11 +186,20 @@ void StarField::fadeAllTo(RGBColor *c, double duration) {
     }
 }
 
+void StarField::fadeLine(int line, int r,int g,int b, double duration) {
+    for (int i = 0; i < STAR_COUNT; i++) {
+        if (starLine[i] == line) {
+            cout << "Fading " << i << endl;
+            stars[i]->fadeTo(r,g,b,duration);
+        }
+    }
+}
+
 void StarField::setLeft(int r, int g, int b)
 {
     for (int i =0; i < STAR_COUNT; i++)
     {
-        if ('L' == startPos[i])
+        if ('L' == starPos[i])
             stars[i]->set(r,g,b);
     }
 }
@@ -141,7 +208,7 @@ void StarField::setRight(int r, int g, int b)
 {
     for (int i =0; i < STAR_COUNT; i++)
     {
-        if ('R' == startPos[i])
+        if ('R' == starPos[i])
             stars[i]->set(r,g,b);
     }
 }

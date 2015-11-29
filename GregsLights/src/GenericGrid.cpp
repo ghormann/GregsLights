@@ -2246,8 +2246,6 @@ void GenericGrid::showMovie(string &startsWith, int cnt, double duration, int x,
             gridSleep(duration);
         }
     }
-
-    setBackground(RGBColor::BLACK);
 }
 
 void GenericGrid::scrollPictureLeft(RGBPicture &pic, double delay, bool hideBlack)

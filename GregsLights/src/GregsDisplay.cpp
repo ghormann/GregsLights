@@ -117,13 +117,14 @@ void GregsDisplay::do_it_bushes()
 
         // STEP: HAt
         peekHat();
-*/
+
         // STEP 2
         model->getGrid()->setNextAction(LG_SHOW_PICT);
         fadeThroughAll(5, 2);
+*/
 
         // STEP 3
-        cout << "Step 3" << endl;
+        //cout << "Step 3" << endl;
         model->getGrid()->setNextAction(LG_FIRE);
         fade_offset();
 
@@ -132,6 +133,7 @@ void GregsDisplay::do_it_bushes()
         moveFasterRight();
 
         // Step 5
+        model->getGrid()->setNextAction(LG_SHOW_PICT);
         moveFromMiddle();
         // Step 6
         fadeWhite();
@@ -265,6 +267,7 @@ void GregsDisplay::fade_offset()
     sprintf(model->getMessage(1),"Fade Offset");
     fadeAllBush(WHITE,0,100,3.0);
     fadeAllHouse(BLUE,0,100,3.0);
+    model->getStars()->fadeAllTo(100,100,100,3.0);
     //setAllToColor(WHITE,100);
     //setAllHouse(BLUE,100);
 
@@ -276,6 +279,15 @@ void GregsDisplay::fade_offset()
         {
             fade_bush(i,color,0,100,duration);
             fade_bush(i,(color+3)%4,100,0,duration);
+            int r = (color == RED || color == WHITE ? 100 : 0);
+            int g = (color == GREEN || color == WHITE ? 100 : 0);
+            int b = (color == BLUE || color == WHITE ? 100 : 0);
+            model->getStars()->fadeLine(i,r,g,b,duration);
+            if (i == 1)
+                model->getStars()->fadeLine(0,r,g,b,duration);
+            if (i== 6)
+                model->getStars()->fadeLine(7,r,g,b,duration);
+
             write_data(sleepBetween);
         }
     }
@@ -292,6 +304,7 @@ void GregsDisplay::fade_offset()
             fade_house(i,BLUE,100,0,5.0);
         fade_bush(i,WHITE,100,0,5.0);
     }
+    model->getStars()->fadeAllTo(0,0,0,5.0);
     write_data(5.0);
     setAllHouse(BLUE,0);
     setAllOff();
