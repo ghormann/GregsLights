@@ -133,10 +133,9 @@ void DisplayTester::testBushes()
             model->getBush(i)->getBlue()->setIntensity(0);
             model->getBush(i)->getWhite()->setIntensity(100);
         }
-        sleep(1);
         for (int i = 0; i < STAR_COUNT; i++) {
             model->getStars()->getStar(i)->set(RGBColor::WHITE);
-            gjhSleep(0.5);
+            gjhSleep(0.2);
             model->getStars()->getStar(i)->set(RGBColor::BLACK);
         }
     }

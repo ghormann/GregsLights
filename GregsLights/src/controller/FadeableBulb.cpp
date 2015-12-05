@@ -67,7 +67,7 @@ void * FadeableBulb::tickThread(void *)
     auto begin = std::chrono::high_resolution_clock::now() ;
     while (1)
     {
-        usleep(10 * 1000); // 10ms)
+        usleep(25 * 1000); // 25ms)
         auto end = std::chrono::high_resolution_clock::now() ;
         auto ticks = std::chrono::duration_cast<std::chrono::microseconds>(end-begin) ;
 
