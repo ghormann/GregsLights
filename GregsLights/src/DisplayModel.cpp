@@ -33,7 +33,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
      * maxBeforeSleep: Max Universes updated before taking an extra sleep
      * extraSleepMs: Duration (MS) of sleep when MaxBeforeSleep hit.
      */
-    networks = new NetworkCollection("Normal", 5,100,60,1, false);
+    networks = new NetworkCollection("Normal", 50,1,60,1, false);
     // name, 5, 2, 6, 15 is "OK" for Alpha Pix.
     // name: 5,2,6,5 I Fairly good.
     networkAlpha1 = new NetworkCollection("Alpha1",5,2,6,1,true);
