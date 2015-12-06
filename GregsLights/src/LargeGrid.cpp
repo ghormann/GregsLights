@@ -417,12 +417,12 @@ void LargeGrid::test()
         }
     }
 
-    while(1)
+    while(0)
     {
         trainText("MERRY CHRISTMAS FROM THE HORMANN FAMILY");
     }
 
-    // Start of Main.
+    // Show something Intereting
     while(1)
     {
 

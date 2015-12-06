@@ -507,6 +507,12 @@ void Snowmen::test_snowmen(void)
 {
     int i;
     setBodies(true);
+    sleep(1);
+    setBodies(true);
+    sleep(1);
+    setBodies(true);
+    sleep(1);
+    setBodies(true);
 
     for (i=1; i < 3; i++)
     {

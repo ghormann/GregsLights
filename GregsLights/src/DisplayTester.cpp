@@ -108,6 +108,20 @@ void DisplayTester::testClock()
 
 void DisplayTester::testBushes()
 {
+    // all one color
+    while(0)
+    {
+        for (int i=BUSH_LIGHT_START; i<= BUSH_LIGHT_END; i++)
+        {
+            //model->getBush(i)->getRed()->setIntensity(100);
+            //model->getBush(i)->getGreen()->setIntensity(100);
+            model->getBush(i)->getBlue()->setIntensity(100);
+            //model->getBush(i)->getWhite()->setIntensity(0);
+        }
+        sleep(10);
+    }
+
+
     while(1)
     {
         for (int i=BUSH_LIGHT_START; i<= BUSH_LIGHT_END; i++)
