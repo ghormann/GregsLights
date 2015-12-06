@@ -43,6 +43,8 @@ private:
     void redGreenFade();
     void fadeWhite();
     void fade_offset();
+    void garlandTrain();
+    void scrollTree();
     void olaf();
     void setRGB(int color, int &r, int &g, int &b);
     void set_house(int light, int color, int intensity);

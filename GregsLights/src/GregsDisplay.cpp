@@ -39,6 +39,28 @@ void GregsDisplay::doGrinch()
 
 }
 
+void GregsDisplay::garlandTrain()
+{
+    strcpy(model->getMessage(1),"Garland Train\n");
+    model->getGrid()->setNextAction(LG_GARLAND);
+    fadeAllBush(GREEN,0,100,6.0);
+    fadeAllHouse(GREEN,0,100,6.0);
+    model->getStars()->fadeAllTo(100,0,0,3.0);
+    write_data(3.0);
+    model->getStars()->fadeAllTo(0,0,100,3.0);
+    write_data(3.0);
+    model->getStars()->fadeLeft(100,0,0,3.0);
+    model->getStars()->fadeRight(0,100,0,3.0);
+    write_data(3.0);
+    model->getStars()->fadeAllTo(100,100,100,3.0);
+    write_data(3.0);
+    fadeAllBush(GREEN,100,0,3.0);
+    fadeAllHouse(GREEN,100,0,3.0);
+    model->getStars()->fadeAllTo(0,0,0,3.0);
+    write_data(3.0);
+
+}
+
 void GregsDisplay::doClark()
 {
     model->getGrid()->setNextAction(LG_CLARK);
@@ -86,6 +108,21 @@ void GregsDisplay::hormannTrain()
 
     setAllOff();
     write_data(0.2);
+}
+
+void GregsDisplay::scrollTree()
+{
+    model->getGrid()->setNextAction(LG_SCROLL_TREE);
+    fadeAllBush(RED,0,100,1.0);
+    fadeAllHouse(RED,0,100,1.0);
+    model->getStars()->fadeAllTo(100,0,0,1.0);
+    write_data(7.0);
+
+    fadeAllBush(RED,100,0,1.0);
+    fadeAllHouse(RED,100,0,1.0);
+    model->getStars()->fadeAllTo(0,0,0,1.0);
+    write_data(1.2);
+
 }
 
 
@@ -139,6 +176,7 @@ void GregsDisplay::do_it_bushes()
         model->getGrid()->setNextAction(LG_FIRE);
         fade_offset();
 
+        garlandTrain();
 
         // Step 4
         model->getGrid()->setNextAction(LG_SHOW_PICT);
@@ -152,9 +190,17 @@ void GregsDisplay::do_it_bushes()
         // Step 5
         model->getGrid()->setNextAction(LG_SHOW_PICT);
         moveFromMiddle();
+
         // Step 6
         fadeWhite();
+
+
+        scrollTree();
+        write_data(0.1);
+
+
         // Step 7
+        model->getGrid()->setNextAction(LG_SHOW_PICT);
         redGreenFade();
 
         // STEP
@@ -1014,9 +1060,9 @@ void GregsDisplay::rotate_some()
     double duration=0.3;
 
     model->getHouse(1)->fade(0,0,0,100,0,0,10);
-    model->getHouse(2)->fade(0,0,0,0,0,100,10);
+    model->getHouse(2)->fade(0,0,0,100,0,0,10);
     model->getHouse(3)->fade(0,0,0,0,0,100,10);
-    model->getHouse(4)->fade(0,0,0,0,100,0,10);
+    model->getHouse(4)->fade(0,0,0,0,0,100,10);
 
     while(start <= 6)
     {

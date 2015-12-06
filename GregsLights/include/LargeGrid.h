@@ -23,7 +23,9 @@ enum GRID_ACTIONS
     LG_CLARK,
     LG_FIRE,
     LG_OLAF,
-    LG_TREE_CIRCLE
+    LG_TREE_CIRCLE,
+    LG_GARLAND,
+    LG_SCROLL_TREE
 };
 
 
@@ -39,6 +41,8 @@ public:
     virtual RGBLight * getPixal(int x, int y);
     void scrollGrinch();
     void test();
+    void garlandTrain();
+    void scrollMerry();
     void run();
     void rotatePictures();
     void peakSanta();

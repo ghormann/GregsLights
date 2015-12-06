@@ -184,11 +184,13 @@ RGBLight *LargeGrid::getBoard(int x, int y)
 
     if (x <0 || x >= LGRID_DUMMY_WIDTH)
     {
+        cout << "Illegal Value for X in getBoard (Large Grid)" << endl;
         throw "Illegal Value for X in getBoard";
     }
 
     if (y <0 || y >= LGRID_DUMMY_HEIGHT)
     {
+        cout << "Illegal Value for Y in getBoard (Large Grid)" << endl;
         throw "Illegal Value for Y in getBoard";
     }
 
@@ -196,6 +198,7 @@ RGBLight *LargeGrid::getBoard(int x, int y)
 
     if (pos > (LGRID_DUMMY_HEIGHT * LGRID_DUMMY_WIDTH))
     {
+        cout << "Sign:getBoard: Invalid x and y positions (Large Grid)" << endl;
         throw "Sign:getBoard: Invalid x and y positions";
     }
 
@@ -343,6 +346,30 @@ void LargeGrid::rotatePictures()
         }
         picPos = 0; // Reset
     }
+
+}
+
+void LargeGrid::garlandTrain()
+{
+    int x = gridWidth+5;
+    int picWidth, picHeight;
+    RGBPicture *garland = RGBPicture::getPicture("Garland1_46.png");
+    RGBPicture *right = RGBPicture::getPicture(("train_right_46.png"));
+    setDummyBackground(RGBColor::BLACK,0,0,dummy_width,gridHeight);
+
+    this->showPictureDummy(*garland,x,0,false);
+    garland->getSize(picWidth,picHeight);
+    x+=picWidth;
+
+    right->getSize(picWidth,picHeight);
+    this->showPictureDummy(*right,x,0,false);
+    x+=picWidth;
+
+    while (x > 0){
+        this->setDisplayPosition(--x,0);
+        gridSleep(0.02);
+    }
+
 
 }
 
@@ -683,6 +710,13 @@ char *LargeGrid::getMessage()
     return message;
 }
 
+void LargeGrid::scrollMerry()
+{
+    RGBPicture *p2 = RGBPicture::getPicture( string("merryChristmasScroll46.png"));
+    this->scrollPictureLeft(*p2,0.02,false);
+
+}
+
 
 void LargeGrid::run()
 {
@@ -696,12 +730,23 @@ void LargeGrid::run()
     string clark = ("clark_Plug");
     string fire = ("fire-");
     RGBPicture *p2 = RGBPicture::getPicture( string("christmas-tree_64_0.png"));
+    RGBPicture *trees = RGBPicture::getPicture( string("wire_tree_64_0.png"));
+
 
 
     switch(nextAction)
     {
     case LG_TREE_CIRCLE:
         this->colorAroundPicture(p2,150);
+        break;
+    case LG_SCROLL_TREE:
+        this->scrollPictureRight(*trees,0.03,false);
+        gridSleep(2);
+        break;
+    case LG_GARLAND:
+        scrollMerry();
+        this->garlandTrain();
+        gridSleep(2);
         break;
     case LG_OLAF:
         olaf();
