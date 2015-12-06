@@ -27,6 +27,7 @@ void GregsDisplay::doGrinch()
     strcpy(model->getMessage(1),"Grinch\n");
     model->getGrid()->setNextAction(LG_GRINCH);
     write_data(1.0); // Give it a second to load.
+    model->getStars()->setAll(0,0,0);
     model->getStars()->fadeAllTo(0,100,0,duration);
     fadeAllBush(GREEN,0,100,duration);
     fadeAllHouse(GREEN,0,100,duration);
@@ -42,7 +43,7 @@ void GregsDisplay::doClark()
 {
     model->getGrid()->setNextAction(LG_CLARK);
     strcpy(model->getMessage(1),"Clark Plug in\n");
-    write_data(5);
+    write_data(4.5);
     setAllToColor(WHITE,100);
     setAllHouse(WHITE,100);
     model->getStars()->setAll(100,100,100);
@@ -84,6 +85,7 @@ void GregsDisplay::hormannTrain()
     write_data(4.0);
 
     setAllOff();
+    write_data(0.2);
 }
 
 
@@ -942,7 +944,6 @@ void GregsDisplay::moveFromMiddle()
     for (i=0; i < 50; i++)
     {
         sprintf(model->getMessage(1),"MoveFromMiddle - %f, %d ", duration, i);
-        cout << "Pos: " << i << endl;
         if (i == 15)
         {
             for (int k = 0; k < 8; k++)
