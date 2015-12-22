@@ -26,7 +26,15 @@ void GregsDisplay::doGrinch()
     double duration = 10.0;
     strcpy(model->getMessage(1),"Grinch\n");
     model->getGrid()->setNextAction(LG_GRINCH);
-    write_data(1.0); // Give it a second to load.
+    write_data(0.1); // Give it a second to load.
+    model->getStars()->setAll(0,0,0);
+    write_data(0.1); // Give it a second to load.
+    model->getStars()->setAll(0,0,0);
+    write_data(0.3); // Give it a second to load.
+    model->getStars()->setAll(0,0,0);
+    write_data(0.1); // Give it a second to load.
+    model->getStars()->setAll(0,0,0);
+    write_data(0.1); // Give it a second to load.
     model->getStars()->setAll(0,0,0);
     model->getStars()->fadeAllTo(0,100,0,duration);
     fadeAllBush(GREEN,0,100,duration);
@@ -1055,6 +1063,7 @@ void GregsDisplay::rotate_some()
 {
     int i;
     int j;
+    int r,g,b;
     int color;
     int start=1;
     double duration=0.3;
@@ -1063,9 +1072,19 @@ void GregsDisplay::rotate_some()
     model->getHouse(2)->fade(0,0,0,100,0,0,10);
     model->getHouse(3)->fade(0,0,0,0,0,100,10);
     model->getHouse(4)->fade(0,0,0,0,0,100,10);
+    for (i = 0; i < 8; i++) {
+       setRGB(i%4,r,g,b);
+       model->getStars()->fadeLine(i,r,g,b,10);
+    }
 
     while(start <= 6)
     {
+        if (start == 3) {
+           for (i = 0; i < 8; i++) {
+             setRGB((i+2)%4,r,g,b);
+             model->getStars()->fadeLine(i,r,g,b,10);
+           }
+        }
         for (j = 0; j < 2; j++)
         {
             for (color=RED; color<=WHITE; color++)
@@ -1074,6 +1093,14 @@ void GregsDisplay::rotate_some()
                 for (i = start; i <= 6; i++)
                 {
                     set_bush(i, color, 100);
+                    /*
+                    setRGB(color,r,g,b);
+                    model->getStars()->setLine(i,r,g,b);
+                    if (i == 1)
+                       model->getStars()->setLine(0,r,g,b);
+                    if (i == 6)
+                       model->getStars()->setLine(7,r,g,b);
+                    */
                 }
                 write_data(duration);
                 for (i = start; i <= 6; i++)
@@ -1083,7 +1110,16 @@ void GregsDisplay::rotate_some()
                 write_data(0.1);
             }
         }
+        // How to set the colors when they stop moving
         set_bush(start, (start-1)%4, 100);
+        /*
+        setRGB((start-1)%4,r,g,b);
+        model->getStars()->setLine(start,r,g,b);
+        if (start == 1)
+           model->getStars()->setLine(0,r,g,b);
+        if (start == 6)
+           model->getStars()->setLine(7,r,g,b);
+        */
         start++;
     }
     write_data(3);
@@ -1098,6 +1134,8 @@ void GregsDisplay::rotate_some()
     {
         model->getHouse(i)->fadeTo(0,0,0,duration);
     }
+
+    model->getStars()->fadeAllTo(0,0,0,duration);
 
     write_data(duration);
 

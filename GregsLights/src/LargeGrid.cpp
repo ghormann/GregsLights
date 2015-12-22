@@ -399,11 +399,11 @@ void LargeGrid::test()
         {
             for (int y = 0; y < LGRID_PIXAL_HEIGHT; y++)
             {
-                this->getPixal(x,y)->set(25,0,0);
+                this->getPixal(x,y)->set(25,00,00);
             }
         }
 
-        gjhSleep(1);
+        gjhSleep(5);
 
         for (int x = 0; x < LGRID_PIXAL_WIDTH; x++)
         {
