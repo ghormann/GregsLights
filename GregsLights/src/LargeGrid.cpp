@@ -393,13 +393,13 @@ void LargeGrid::test()
     int i;
 
     //Roate Colors
-    while(0)
+    while(1)
     {
         for (int x = 0; x < LGRID_PIXAL_WIDTH; x++)
         {
             for (int y = 0; y < LGRID_PIXAL_HEIGHT; y++)
             {
-                this->getPixal(x,y)->set(25,00,00);
+                this->getPixal(x,y)->set(100,0,0);
             }
         }
 
@@ -409,7 +409,7 @@ void LargeGrid::test()
         {
             for (int y = 0; y < LGRID_PIXAL_HEIGHT; y++)
             {
-                this->getPixal(x,y)->set(0,25,0);
+                this->getPixal(x,y)->set(0,100,0);
             }
         }
 
@@ -425,6 +425,10 @@ void LargeGrid::test()
             for (int j =0; j < LGRID_PIXAL_WIDTH; j++)
             {
                 getPixal(j,row)->set(RGBColor::RED);
+                if (row > 1)
+                   getPixal(j,row-1)->set(RGBColor::GREEN);
+                if (row > 2)
+                   getPixal(j,row-2)->set(RGBColor::BLUE);
             }
 
             for (int j=0; j< LGRID_PIXAL_HEIGHT; j++)
@@ -432,14 +436,18 @@ void LargeGrid::test()
                 getPixal(i,j)->set(RGBColor::GREEN);
             }
 
-            gjhSleep(0.25);
+            gjhSleep(0.5);
             for (int j =0; j < LGRID_PIXAL_WIDTH; j++)
             {
-                getPixal(j,row)->set(RGBColor::BLACK);
+                getPixal(j,row)->set(15,15,15);
+                if (row > 1)
+                   getPixal(j,row-1)->set(15,15,15);
+                if (row > 2)
+                   getPixal(j,row-2)->set(15,15,15);
             }
             for (int j=0; j< LGRID_PIXAL_HEIGHT; j++)
             {
-                getPixal(i,j)->set(RGBColor::BLACK);
+                getPixal(i,j)->set(15,15,15);
             }
         }
     }
