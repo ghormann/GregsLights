@@ -377,9 +377,11 @@ void LargeGrid::garlandTrain()
 void LargeGrid::olaf()
 {
     setDummyBackground(RGBColor::DARKGREEN, 0,0,gridWidth,gridHeight);
-    writeTextSmall(RGBColor::WHITE, 0,0, "SOME PEOPLE ARE");
-    writeTextSmall(RGBColor::WHITE, 0,14, "WORTH MELTING");
-    writeTextSmall(RGBColor::WHITE, 33,28, "FOR ...");
+    int x  = 5;
+    int y = 5;
+    writeTextSmall(RGBColor::WHITE, 0+x,0+y, "SOME PEOPLE ARE");
+    writeTextSmall(RGBColor::WHITE, 0+x,14+y, "WORTH MELTING");
+    writeTextSmall(RGBColor::WHITE, 33+x,28+y, "FOR ...");
 
     setDisplayPosition(0,0);
     gridSleep(4.5);
@@ -393,7 +395,7 @@ void LargeGrid::test()
 {
     int i;
 
-    while(1)
+    while(0)
     {
         setDummyBackground(RGBColor::BLACK,0,0,gridWidth,gridHeight+3);
         RGBColor *color = RGBColor::getRandom();
