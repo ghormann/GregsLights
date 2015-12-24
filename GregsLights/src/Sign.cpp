@@ -293,7 +293,7 @@ void Sign::run()
     }
     else if (numSeconds > 32 && numSeconds  <80)
     {
-        scrollText(RGBColor::WHITE, RGBColor::BLACK, "READY TO COUNTDOWN?", textSpeed);
+        scrollText(RGBColor::WHITE, RGBColor::BLACK, "READY TO COUNT?", textSpeed);
     }
     else
     {

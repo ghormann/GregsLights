@@ -365,7 +365,8 @@ void LargeGrid::garlandTrain()
     this->showPictureDummy(*right,x,0,false);
     x+=picWidth;
 
-    while (x > 0){
+    while (x > 0)
+    {
         this->setDisplayPosition(--x,0);
         gridSleep(0.02);
     }
@@ -391,6 +392,18 @@ void LargeGrid::olaf()
 void LargeGrid::test()
 {
     int i;
+
+    while(1)
+    {
+        setDummyBackground(RGBColor::BLACK,0,0,gridWidth,gridHeight+3);
+        RGBColor *color = RGBColor::getRandom();
+        writeText(color,13,0,"READY");
+        writeText(color,gridWidth/2-14,15,"TO");
+        writeText(color,10,30,"COUNT?");
+        setDisplayPosition(0,3);
+        gridSleep(0.25);
+
+    }
 
     //Roate Colors
     while(1)
@@ -426,9 +439,9 @@ void LargeGrid::test()
             {
                 getPixal(j,row)->set(RGBColor::RED);
                 if (row > 1)
-                   getPixal(j,row-1)->set(RGBColor::GREEN);
+                    getPixal(j,row-1)->set(RGBColor::GREEN);
                 if (row > 2)
-                   getPixal(j,row-2)->set(RGBColor::BLUE);
+                    getPixal(j,row-2)->set(RGBColor::BLUE);
             }
 
             for (int j=0; j< LGRID_PIXAL_HEIGHT; j++)
@@ -441,9 +454,9 @@ void LargeGrid::test()
             {
                 getPixal(j,row)->set(15,15,15);
                 if (row > 1)
-                   getPixal(j,row-1)->set(15,15,15);
+                    getPixal(j,row-1)->set(15,15,15);
                 if (row > 2)
-                   getPixal(j,row-2)->set(15,15,15);
+                    getPixal(j,row-2)->set(15,15,15);
             }
             for (int j=0; j< LGRID_PIXAL_HEIGHT; j++)
             {
@@ -722,6 +735,7 @@ void LargeGrid::scrollMerry()
 {
     RGBPicture *p2 = RGBPicture::getPicture( string("merryChristmasScroll46.png"));
     this->scrollPictureLeft(*p2,0.02,false);
+    this->garlandTrain();
 
 }
 
@@ -740,51 +754,69 @@ void LargeGrid::run()
     RGBPicture *p2 = RGBPicture::getPicture( string("christmas-tree_64_0.png"));
     RGBPicture *trees = RGBPicture::getPicture( string("wire_tree_64_0.png"));
 
-
-
-    switch(nextAction)
+    int numSeconds = timeInfo->getSecondsUntil();
+    if (numSeconds < 33 && numSeconds > 0)
     {
-    case LG_TREE_CIRCLE:
-        this->colorAroundPicture(p2,150);
-        break;
-    case LG_SCROLL_TREE:
-        this->scrollPictureRight(*trees,0.03,false);
-        gridSleep(2);
-        break;
-    case LG_GARLAND:
-        scrollMerry();
-        this->garlandTrain();
-        gridSleep(2);
-        break;
-    case LG_OLAF:
-        olaf();
-        break;
-    case LG_CLARK:
-        showMovieCenter(clark,1,0.1);
-        break;
-    case LG_FIRE:
-        showMovieCenter(fire,1,0.1);
-        break;
-    case LG_TRAIN_HORMANN:
-        trainText("MERRY CHRISTMAS FROM THE HORMANN FAMILY");
-        break;
-    case LG_GRINCH:
-        scrollGrinch();
-        break;
-    case LG_HAT:
-        peakSanta();
-        gridSleep(5);
-        break;
-    case LG_SHOW_PICT:
-        rotatePictures();
-        break;
-    default:
-        cout << "Grid Sleep" << endl;
-        setBackground(RGBColor::BLACK);
-        gridSleep(5.0); // Interruptable
-        break;
+        interruptAble = false;
+        countdown();
+        interruptAble = true;
     }
-
+    else if (numSeconds > 32 && numSeconds  <80)
+    {
+        interruptAble = false;
+        setDummyBackground(RGBColor::BLACK,0,0,gridWidth,gridHeight+3);
+        RGBColor *color = RGBColor::getRandom();
+        writeText(color,13,0,"READY");
+        writeText(color,gridWidth/2-14,15,"TO");
+        writeText(color,10,30,"COUNT?");
+        setDisplayPosition(0,3);
+        gridSleep(0.25);
+        interruptAble = true;
+    }
+    else
+    {
+        switch(nextAction)
+        {
+        case LG_TREE_CIRCLE:
+            this->colorAroundPicture(p2,150);
+            break;
+        case LG_SCROLL_TREE:
+            this->scrollPictureRight(*trees,0.03,false);
+            gridSleep(2);
+            break;
+        case LG_GARLAND:
+            scrollMerry();
+            gridSleep(2);
+            break;
+        case LG_OLAF:
+            olaf();
+            break;
+        case LG_CLARK:
+            showMovieCenter(clark,1,0.1);
+            break;
+        case LG_FIRE:
+            showMovieCenter(fire,1,0.1);
+            break;
+        case LG_TRAIN_HORMANN:
+            trainText("MERRY CHRISTMAS FROM THE HORMANN FAMILY");
+            break;
+        case LG_GRINCH:
+            scrollGrinch();
+            break;
+        case LG_HAT:
+            peakSanta();
+            gridSleep(5);
+            break;
+        case LG_SHOW_PICT:
+            rotatePictures();
+            break;
+        default:
+            cout << "Grid Sleep" << endl;
+            setBackground(RGBColor::BLACK);
+            gridSleep(5.0); // Interruptable
+            break;
+        }
+    }
 }
 
 LargeGrid::~LargeGrid()

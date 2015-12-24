@@ -69,6 +69,7 @@ public:
     void showMovie(std::string &startsWith, int cnt, double duration, int x, int y);
     void showMovieCenter(std::string &startsWith, int cnt, double duration);
     void interruptThread();
+    virtual void scrollMerry();
 protected:
     int gridHeight;
     int gridWidth ;
@@ -81,6 +82,7 @@ protected:
     MessageGenerator *generator;
     int _gridSleep(double d);
     bool interrupt;
+    bool interruptAble;
 
 private:
 };

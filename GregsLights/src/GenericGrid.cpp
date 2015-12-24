@@ -18,12 +18,14 @@ GenericGrid::GenericGrid(int width_, int height_, int dummy_width_, int dummy_he
     this->interrupt = false;
     currentX = 0;
     currentY = 0;
+    interruptAble = true;
 
 }
 
 void GenericGrid::interruptThread()
 {
-    this->interrupt = true;
+    if (interruptAble)
+        this->interrupt = true;
 }
 
 void GenericGrid::setBackground(RGBColor *bgColor)
@@ -215,25 +217,35 @@ void GenericGrid::countdown()
             }
         }
 
-        if (numseconds > 15)
+        int posy = gridHeight/2-10+1;
+        if (numseconds > 15 )
         {
-            int pos = 0;
-            pos += (drawLetter('B',RGBColor::BLACK,pos,0) +2);
-            pos += (drawLetter('E',RGBColor::BLACK,pos,0) +2);
-            pos += (drawLetter(' ',RGBColor::BLACK,pos,0) +2);
-            pos += (drawLetter('L',RGBColor::BLACK,pos,0) +2);
-            pos += (drawLetter('O',RGBColor::BLACK,pos,0) +2);
-            pos += (drawLetter('U',RGBColor::BLACK,pos,0) +2);
-            pos += (drawLetter('D',RGBColor::BLACK,pos,0) +2);
+            int pos =(gridWidth - 96)/2;
+            pos += (drawLetter('B',RGBColor::BLACK,pos,posy) +2);
+            pos += (drawLetter('E',RGBColor::BLACK,pos,posy) +2);
+            //pos += (drawLetter(' ',RGBColor::BLACK,pos,0) +2);
+            pos +=6;
+            pos += (drawLetter('L',RGBColor::BLACK,pos,posy) +2);
+            pos += (drawLetter('O',RGBColor::BLACK,pos,posy) +2);
+            pos += (drawLetter('U',RGBColor::BLACK,pos,posy) +2);
+            pos += (drawLetter('D',RGBColor::BLACK,pos,posy) +2);
 
+        }
+        else if (gridHeight == 20 && numseconds > 8)   // Small Grid
+        {
+            writeText(RGBColor::BLACK,4,posy,"ALMOST");
+        }
+        else if (gridHeight == 20 && numseconds >= 0)   // Small Grid
+        {
+            writeText(RGBColor::BLACK,10,posy,"THERE");
         }
         else
         {
             //setDummyBackground(RGBColor::BLACK,width/2-10,3,width/2+10,h-2);
             int pos = this->gridWidth/2 - (numseconds > 9 ? 7 : 13);
             sprintf(seconds_c, "%7d", numseconds);
-            pos += (drawLetter(seconds_c[5],RGBColor::BLACK,pos,1) + 2);
-            drawLetter(seconds_c[6],RGBColor::BLACK,pos,1);
+            pos += (drawLetter(seconds_c[5],RGBColor::BLACK,pos,posy) + 2);
+            drawLetter(seconds_c[6],RGBColor::BLACK,pos,posy);
         }
         setDisplayPosition(0,0);
         gridSleep(0.05);
@@ -242,6 +254,14 @@ void GenericGrid::countdown()
 
     }
 
+    for (int i = 0; i< 5; i++)
+    {
+        this->scrollMerry();
+    }
+}
+
+void GenericGrid::scrollMerry()
+{
     char text[80];
     if ( timeInfo->isNewYears())
     {
@@ -251,12 +271,9 @@ void GenericGrid::countdown()
     {
         sprintf(text, "MERRY CHRISTMAS");
     }
-
-    for (int i = 0; i< 5; i++)
-    {
-        scrollText(RGBColor::getRandom(), RGBColor::BLACK, text, 0.04);
-    }
+    scrollText(RGBColor::getRandom(), RGBColor::BLACK, text, 0.02);
 }
+
 
 int GenericGrid::drawLetter(char letter, RGBColor *color, int startX, int startY)
 {
@@ -2094,7 +2111,7 @@ void GenericGrid::spiral(RGBColor *color)
 
 int GenericGrid::_gridSleep(double d)
 {
-    if (this->interrupt)
+    if (this->interrupt && interruptAble)
     {
         this->interrupt = false;
         return 1;
