@@ -1,0 +1,15 @@
+Box 1: Max: 7.3A, Usually under 3A
+Box 2: Max: 4.5A, Usually under 2A
+Box 3: Max: 5.5A, Usually under 2A
+Box 4: Max: 9.0A, Usually under 4A
+Stars: Max: 2.0A
+Snow : max: 1.4A
+Grid1: Max: 11A
+Grid2: Max: 10A
+Grid3: Max: 10A
+Grid4: Max: 10A
+Clock: ??
+
+70.7A + CLock
+
+Computer: 6.6A (All 4 on) even thouh display says 280W
