@@ -96,6 +96,7 @@ bool RGBPicture::isMovie()
             || shortName.find("clark_Plug") == 0
             || shortName.find("elf_around") == 0
             || shortName.find("fire-") == 0
+            || shortName.find("happy_new_year_64") == 0
        )
     {
         return true;

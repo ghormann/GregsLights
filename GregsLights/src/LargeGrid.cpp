@@ -736,6 +736,9 @@ char *LargeGrid::getMessage()
 void LargeGrid::scrollMerry()
 {
     RGBPicture *p2 = RGBPicture::getPicture( string("merryChristmasScroll46.png"));
+    if (timeinfo->isNewYears()) {
+        p2 = RGBPicture::getPicture("happy_new_year_64_0.png");
+    }
     this->scrollPictureLeft(*p2,0.02,false);
     this->garlandTrain();
 
