@@ -7,8 +7,6 @@
 #include "CountdownClock.h"
 #include "Sign.h"
 #include "Snowmen.h"
-#include "LargeGrid.h"
-#include "StarField.h"
 
 
 #define HOUSE_LIGHT_START 1
