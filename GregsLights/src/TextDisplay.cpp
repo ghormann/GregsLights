@@ -57,62 +57,9 @@ void TextDisplay::update()
     mvprintw(2, 0, "Snowmen: %-60s", model->getSnowmen()->getMessage());
     mvprintw(3, 0, "Clock: %-60s", model->getClock()->getMessage());
     mvprintw(4, 0, "Sign: %-60s", model->getSign()->getMessage());
-    mvprintw(5, 0, "Grid: %-60s", model->getGrid()->getMessage());
 
     mvprintw(0, 64, "Clock: %7d", clock->getSecondsRemaining());
 
-
-    /*
-     * Print BUSH
-     */
-    int line = 9;
-    int pos = 0;
-    for (int i = BUSH_LIGHT_START; i <= BUSH_LIGHT_END; i++)
-    {
-        Bush *bush = model->getBush(i);
-        attrset(A_NORMAL);
-        mvprintw(line,pos+1, "Bush %d", i);
-        attron(COLOR_PAIR(1));
-        mvprintw(line+1, pos, "%3d", bush->getRed()->getIntensity());
-        attron(COLOR_PAIR(2));
-        mvprintw(line+1, pos+4, "%3d", bush->getGreen()->getIntensity());
-        attron(COLOR_PAIR(3));
-        mvprintw(line+2, pos, "%3d", bush->getBlue()->getIntensity());
-        attrset(A_NORMAL);
-        mvprintw(line+2, pos+4, "%3d", bush->getWhite()->getIntensity());
-
-        pos+= 12;
-        if (i == 3)
-        {
-            pos += 5;
-        }
-
-    }
-
-    /*
-     * Print House
-     */
-    line = 14;
-    pos = 0;
-    for (int i = HOUSE_LIGHT_START; i <= HOUSE_LIGHT_END; i++)
-    {
-        RGBLight *light = model->getHouse(i);
-        mvprintw(line,pos+3, "House %d", i);
-        attron(COLOR_PAIR(1));
-        mvprintw(line+1, pos, "%3d", light->getRed());
-        attron(COLOR_PAIR(2));
-        mvprintw(line+1, pos+4, "%3d", light->getGreen());
-        attron(COLOR_PAIR(3));
-        mvprintw(line+1, pos+8, "%3d", light->getBlue());
-        attrset(A_NORMAL);
-
-        pos+= 14;
-        if (i == 2)
-        {
-            pos += 10;
-        }
-
-    }
 
     //update display
     refresh();

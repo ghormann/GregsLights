@@ -105,6 +105,8 @@ BasicGLPane::BasicGLPane(wxFrame* parent, int* args) :
 
     GregsDisplay *display = new GregsDisplay(model);
     display->run();
+
+
 }
 
 BasicGLPane::~BasicGLPane()
@@ -206,107 +208,6 @@ void BasicGLPane::render( wxPaintEvent& evt )
         }
     }
 
-    // Large Grid
-    for (int j = 0; j < LGRID_PIXAL_HEIGHT; j++ )
-    {
-        for (int i = 0; i< LGRID_PIXAL_WIDTH; i++)
-        {
-            RGBLight *pix = model->getGrid()->getPixal(i,j);
-            float red = ((float)pix->getRed())  / 100;
-            float green = ((float)pix->getGreen()) / 100;
-            float blue = ((float)pix->getBlue()) / 100;
-            glColor4f(red, green, blue, 1);
-            glBegin(GL_QUADS);
-            glVertex3f(i*6+3, 3 + j*6 + LGRID_LINE, 0); // upper lefft
-            glVertex3f(i*6+3, 6 + j*6 + LGRID_LINE, 0);  // Lower Left
-            glVertex3f(i*6+6, 6 + j*6 + LGRID_LINE, 0); // Bottom Right
-            glVertex3f(i*6+6, 3 + j*6 + LGRID_LINE, 0); // Uper Right
-            glEnd();
-        }
-    }
-
-
-    // Bushes
-    for (int i = BUSH_LIGHT_START; i <= BUSH_LIGHT_END; i++)
-    {
-        Bush * bush = model->getBush(i);
-        float blue = ((float)bush->getBlue()->getIntensity()) / 100;
-        float red = ((float)bush->getRed()->getIntensity()) / 100;
-        float green = ((float)bush->getGreen()->getIntensity()) / 100;
-        float white = ((float)bush->getWhite()->getIntensity()) / 100;
-        int offset = 0;
-        if (i>3)
-        {
-            offset=50;
-        }
-        glColor4f(red, green, blue, 1);
-        glBegin(GL_QUADS);
-        glVertex3f(i*30+4+offset, 4 +BUSH_LINE, 0);
-        glVertex3f(i*30+4+offset, 20 + BUSH_LINE, 0);
-        glVertex3f(i*30+20+offset, 20 + BUSH_LINE, 0);
-        glVertex3f(i*30+20+offset, 4 + BUSH_LINE, 0);
-        glEnd();
-
-        // white
-        glColor4f(white, white, white, 1);
-        glBegin(GL_QUADS);
-        glVertex3f(i*30+4+offset, 4 +BUSH_LINE+30, 0);
-        glVertex3f(i*30+4+offset, 20 + BUSH_LINE+30, 0);
-        glVertex3f(i*30+20+offset, 20 + BUSH_LINE+30, 0);
-        glVertex3f(i*30+20+offset, 4 + BUSH_LINE+30, 0);
-        glEnd();
-    }
-
-    //Spot lights
-    for (int i = HOUSE_LIGHT_START; i <= HOUSE_LIGHT_END; i++)
-    {
-        RGBLight *pix = model->getHouse(i);
-        float red = ((float)pix->getRed())  / 100;
-        float green = ((float)pix->getGreen()) / 100;
-        float blue = ((float)pix->getBlue()) / 100;
-        int offset = -30;
-
-        if (i > 2)
-            offset = 30;
-
-        glColor4f(red, green, blue, 1);
-        glBegin(GL_QUADS);
-        glVertex3f(i*50+4+offset, 4 + BUSH_LINE+70, 0);
-        glVertex3f(i*50+4+offset, 20 + BUSH_LINE+70, 0);
-        glVertex3f(i*50+40+offset, 20 + BUSH_LINE+70, 0);
-        glVertex3f(i*50+40+offset, 4 + BUSH_LINE+70, 0);
-        glEnd();
-
-    }
-
-    // Stars
-    int cnt = 0;
-    for (int j = 0; j < 7; j++)
-    {
-        int offset = j%4 * 32/4;
-        int numCols = 6;
-        if (j == 0 || j == 4 ) {
-            numCols = 7;
-        }
-        for (int i =0; i < numCols; i++)
-        {
-            RGBLight *pix = model->getStars()->getStar(cnt++);
-            float red = ((float)pix->getRed())  / 100;
-            float green = ((float)pix->getGreen()) / 100;
-            float blue = ((float)pix->getBlue()) / 100;
-
-            glColor4f(red, green, blue, 1);
-            glBegin(GL_QUADS);
-
-            glVertex3f(i*32+3+offset, 3 + STAR_LINE + j*32, 0); // upper lefft
-            glVertex3f(i*32+3+offset, 9 + STAR_LINE + j*32, 0);  // Lower Left
-            glVertex3f(i*32+9+offset, 9 + STAR_LINE + j*32, 0); // Bottom Right
-            glVertex3f(i*32+9+offset, 3 + STAR_LINE + j*32, 0); // Uper Right
-
-            glEnd();
-
-        }
-    }
 
     glFlush();
     SwapBuffers();

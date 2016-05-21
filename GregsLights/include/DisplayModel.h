@@ -24,13 +24,9 @@ class DisplayModel
     public:
         DisplayModel(bool sendDMX, int skip_time_check, int show_new_year);
         virtual ~DisplayModel();
-        RGBLight *getHouse(int id);
-        Bush *getBush(int id);
         CountdownClock *getClock();
         Sign * getSign();
         Snowmen * getSnowmen();
-        LargeGrid *getGrid();
-        StarField *getStars();
         void setMessage(int id, char*);
         char *getMessage(int id);
         bool isSkipTimeCheck();
@@ -39,17 +35,11 @@ class DisplayModel
     protected:
     private:
         NetworkCollection *networks;
-        NetworkCollection *networkAlpha1;
-        NetworkCollection *networkAlpha2;
         NetworkCollection *networkClock;
-        RGBLight *house[HOUSE_LIGHT_END + 1];
-        Bush *bushes[BUSH_LIGHT_END+1];
         CountdownClock *clock;
         char *messages[NUM_MESSAGE_BUFFERS];
         Sign *sign;
         Snowmen *snowmen;
-        LargeGrid *grid;
-        StarField *stars;
         bool skipTimeCheck;
         bool newYears;
 
