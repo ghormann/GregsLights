@@ -50,7 +50,7 @@ void CountdownClock::testALlOn()
 void CountdownClock::test()
 {
     sprintf(message, "Testing Clock");
-    while(1) {
+    while(0) {
 	testALlOn();
 	}
 
