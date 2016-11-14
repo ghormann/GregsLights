@@ -272,7 +272,7 @@ void Sign::run()
     double textSpeed = 0.02;
 
     // Not on douring the day
-    if (timeInfo->isDayLight())
+    if (!timeInfo->isDisplayHours())
     {
         sprintf(message, "Sleeping During the day (%02d)",
                 timeInfo->getHourOfDay());

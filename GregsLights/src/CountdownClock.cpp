@@ -163,7 +163,7 @@ void CountdownClock::tick()
 
 
     // Not on douring the day
-    if (timeinfo->isDayLight())
+    if (!timeinfo->isDisplayHours())
     {
         sprintf(message, "Sleeping During Day: %d", timeinfo->getHourOfDay());
         setAllOff();
