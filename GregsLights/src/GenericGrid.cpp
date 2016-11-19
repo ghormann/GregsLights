@@ -2218,7 +2218,7 @@ void GenericGrid::candyCane()
             this->getPixal(x,y)->fadeTo(0,0,0,1);
         }
     }
-    gridSleep(1);
+    gridSleep(1.5);
 }
 
 void GenericGrid::showPictureNowCenter(RGBPicture &pic,bool hideBlack)

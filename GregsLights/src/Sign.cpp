@@ -496,7 +496,7 @@ void Sign::snowballFight()
     {
         getPixal(i)->fadeTo(0,0,0,duration);
     }
-    sleep(duration);
+    sleep(duration+1);
     delete bgColor;
 }
 
