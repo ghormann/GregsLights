@@ -93,6 +93,7 @@ char * MessageGenerator::getMessage()
         else
             return "JOIN US NEXT YEAR TO SEE THE CLOCK HIT ZERO";
     case 7:
+    case 8:
         if (timeInfo->getSecondsUntil() > 0)
             if (isChristmas)
                 return "$ SECONDS UNTIL CHRISTMAS #";
@@ -100,13 +101,17 @@ char * MessageGenerator::getMessage()
                 return "$ SECONDS UNTIL THE NEW YEAR #";
         else
             return "$ HAPPY HOLIDAYS #";
-    case 8:
+    case 9:
+        return "LISTEN TO THE LIGHTS AT 106.7 FM";
+
+    case 10:
         const char * when = timeInfo->isNewYears() ? "THE NEW YEAR" : "CHRISTMAS";
         if (timeInfo->getHoursUntil() > 1)
             sprintf(message, "\\ ONLY %d HOURS UNTIL %s \\", timeInfo->getHoursUntil(), when);
         else
             sprintf(message, "\\ ONLY %d MINUTES UNTIL %s \\", timeInfo->getSecondsUntil()/60, when);
         return message;
+
     }
 
     return "SHOULD NOT GET HERE";
