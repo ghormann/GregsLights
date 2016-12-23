@@ -239,7 +239,26 @@ void Sign::flashSecondsToGo(int times, double delay)
 
 }
 
+void Sign::radio()
+{
+    sprintf(message, "Radio Station");
+    RGBColor *bgColor = new RGBColor(0,15,0);
+    RGBColor *fgColor = new RGBColor(255,0,0);
+    for (int i = 0; i < SIGN_WIDTH; i++)
 
+    {
+        for (int j = 0; j < SIGN_HEIGHT; j++)
+        {
+            getBoard(i,j)->set(bgColor);
+        }
+    }
+    writeText(fgColor,5,0,"107.6 FM");
+    setDisplayPosition(0,0);
+    gjhSleep(4.0);
+
+    delete bgColor;
+    delete fgColor;
+}
 
 
 void Sign::rotateSecondsToGo()
@@ -302,7 +321,7 @@ void Sign::run()
         setDisplayPosition(0,0);
         checkClear();
 
-        int i = 9;
+        int i = 10;
         while (useMap[i] == 1)
         {
             i = rand() % SIGN_OPTIONS;  // Don't show same message twice in a row.
@@ -333,6 +352,9 @@ void Sign::run()
             break;
         case 9:
             candyCane();
+            break;
+        case 10:
+            radio();
             break;
         }
     }

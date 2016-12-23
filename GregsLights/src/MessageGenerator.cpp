@@ -48,7 +48,7 @@ char * MessageGenerator::getMessage()
     switch (i)
     {
     case 0:
-        return "HOW MANY TIMES PER DAY DO YOU CHECK THIS CLOCK?";
+        return "HOW MANY TIMES PER WEEK DO YOU CHECK THIS CLOCK?";
     case 1:
         if (isChristmas)
             return "HE IS COMING.... ARE YOU READY?";
@@ -94,6 +94,7 @@ char * MessageGenerator::getMessage()
             return "JOIN US NEXT YEAR TO SEE THE CLOCK HIT ZERO";
     case 7:
     case 8:
+    case 9:
         if (timeInfo->getSecondsUntil() > 0)
             if (isChristmas)
                 return "$ SECONDS UNTIL CHRISTMAS #";
@@ -101,10 +102,10 @@ char * MessageGenerator::getMessage()
                 return "$ SECONDS UNTIL THE NEW YEAR #";
         else
             return "$ HAPPY HOLIDAYS #";
-    case 9:
+    case 10:
         return "LISTEN TO THE LIGHTS AT 106.7 FM";
 
-    case 10:
+    case 11:
         const char * when = timeInfo->isNewYears() ? "THE NEW YEAR" : "CHRISTMAS";
         if (timeInfo->getHoursUntil() > 1)
             sprintf(message, "\\ ONLY %d HOURS UNTIL %s \\", timeInfo->getHoursUntil(), when);

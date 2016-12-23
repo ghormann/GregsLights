@@ -6,7 +6,7 @@
 #include "TimeInfo.h"
 #include "GenericGrid.h"
 
-#define SIGN_OPTIONS 10
+#define SIGN_OPTIONS 11
 #define SIGN_E11_COUNT 12
 #define SIGN_WIDTH 96  /* Was 48 */
 #define SIGN_HEIGHT 20
@@ -45,6 +45,7 @@ class Sign: public GenericGrid
         void snowballFight();
         void clear();
         void checkClear();
+        void radio();
     private:
         void moveBall(int x, RGBColor *bgColor, int snowballY);
         char useMap[SIGN_OPTIONS];
