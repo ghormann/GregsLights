@@ -252,7 +252,7 @@ void Sign::radio()
             getBoard(i,j)->set(bgColor);
         }
     }
-    writeText(fgColor,5,0,"107.6 FM");
+    writeText(fgColor,5,0,"106.7 FM");
     setDisplayPosition(0,0);
     gjhSleep(4.0);
 
