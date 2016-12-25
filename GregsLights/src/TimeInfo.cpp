@@ -1,6 +1,7 @@
 #include "TimeInfo.h"
 #include <stdio.h>
 #include <ctype.h>
+#include <math.h>
 
 
 TimeInfo::TimeInfo(bool skip_time_check, bool show_new_year )
@@ -72,7 +73,9 @@ int TimeInfo::getSecondsUntil()
 
 int TimeInfo::getHoursUntil()
 {
-    return getSecondsUntil()/3600;
+    double d = getSecondsUntil();
+    d = d/3600;
+    return (int) round(d);
 }
 
 bool TimeInfo::isDayLight()

@@ -39,7 +39,7 @@ char * MessageGenerator::getMessage()
 {
     checkClear();
 
-    int i = 8;
+    int i = 11;
     while (bitmap[i] == 1)
     {
         i = rand() % MESSAGE_GENERATOR_SIZE;  // Don't show same message twice in a row.
