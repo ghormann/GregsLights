@@ -39,7 +39,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     LORNetwork *lor = new LORNetwork((char*) "/dev/ttyS0", sendDMX);
 
 
-    char *signIP = "192.168.0.232";
+    char *signIP = "192.168.1.232";
     E131Network *sign[SIGN_E11_COUNT];
     sign[signId++] = new E131Network(signIP, 40, 512);  // port 4 170
     sign[signId++] = new E131Network(signIP, 41, 512); // port 4 170
