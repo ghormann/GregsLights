@@ -42,17 +42,18 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     char *signIP = "192.168.1.232";
     E131Network *sign[SIGN_E11_COUNT];
     sign[signId++] = new E131Network(signIP, 40, 512);  // port 4 170
-    sign[signId++] = new E131Network(signIP, 41, 512); // port 4 170
-    sign[signId++] = new E131Network(signIP, 42, 512); // port 4 170
+    sign[signId++] = new E131Network(signIP, 41, 512);  // port 4 170
+    sign[signId++] = new E131Network(signIP, 42, 512);  // port 4 170
+    sign[signId++] = new E131Network(signIP, 43, 512);  // port 4 130
     sign[signId++] = new E131Network(signIP, 10, 512);  // port 1 170
     sign[signId++] = new E131Network(signIP, 11, 512);  // port 1 170
     sign[signId++] = new E131Network(signIP, 12, 512);  // port 1 170
-    sign[signId++] = new E131Network(signIP, 13, 512);  // port 1 140
+    sign[signId++] = new E131Network(signIP, 13, 512);  // port 1 130
     sign[signId++] = new E131Network(signIP, 20, 512);  // port 2 170
-    sign[signId++] = new E131Network(signIP, 21, 512);  // port 2 140
-    sign[signId++] = new E131Network(signIP, 30, 512);  // port 3 170
-    sign[signId++] = new E131Network(signIP, 31, 512);  // port 3 170
-    sign[signId++] = new E131Network(signIP, 32, 512);  // port 3 170
+    sign[signId++] = new E131Network(signIP, 21, 512);  // port 2 170
+    sign[signId++] = new E131Network(signIP, 22, 512);  // port 2 170
+    sign[signId++] = new E131Network(signIP, 23, 512);  // port 2 130
+    // port 3 is used by the clock
 
     E131Network *clockE131 = new E131Network(signIP, 100, 512); // Universe 100 of Sign Controller
 

@@ -18,19 +18,19 @@ Sign::Sign(bool skipTime, bool newYears, E131Network *net[]) : GenericGrid(SIGN_
         ++cnt;
         ++i;
 
-        if (i == 20*24)   // End of first section (Port 4)
+        if (i == 640)   // End of first section (Port 4)
         {
             ++netId;
             cnt = 0;
         }
 
-        if (i== (20*32)+10 + (20*24))   // End of Second Section (Port 1)
+        if (i== 640*2)   // End of Second Section (Port 1)
         {
             ++netId;
             cnt = 0;
         }
 
-        if (i==20*15+10 + (20*32)+10 + (20*24))   // End of Second Section (Port 2)
+        if (i==640*3)   // End of Second Section (Port 2)
         {
             ++netId;
             cnt = 0;
