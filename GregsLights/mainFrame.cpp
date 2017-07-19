@@ -46,35 +46,35 @@ bool MyApp::OnInit()
     // Init x Positions
     for (int i=0; i<6; i++)
     {
-        digitX[i] = 0;
-        digitX[i+11] = 6; // 11-16
+        digitX[i] = 6;
+        digitX[i+11] = 0; // 11-16
     }
 
     for (int i=6; i<12; i++)
     {
-        digitX[i] = i-5;
+        digitX[i] = 11-i;
     }
 
-    int x=6;
+    int x=0;
     for (int i=17; i<24; i++)
-    {
-        digitX[i] = x--;
-    }
-
-    for (int i=23; i<=30; i++)
-    {
-        digitX[i] = 0;
-    }
-
-    x=0;
-    for (int i=30; i<37; i++)
     {
         digitX[i] = x++;
     }
 
+    for (int i=23; i<=30; i++)
+    {
+        digitX[i] = 6;
+    }
+
+    x=6;
+    for (int i=30; i<37; i++)
+    {
+        digitX[i] = x--;
+    }
+
     for (int i=36; i<=42; i++)
     {
-        digitX[i] =  6;
+        digitX[i] =  0;
     }
 
     //init Y positions

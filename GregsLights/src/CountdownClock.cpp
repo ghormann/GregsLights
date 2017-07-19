@@ -165,11 +165,11 @@ void CountdownClock::setDigit(int digit, int val)
         for (int i = 0; i < CLOCK_PIXALS_PER_DIGIT; i++)
         {
             data[i] = 0;
-            if (i > 10 && i < 18)
+            if (i >= 23 && i <= 30)
             {
                 data[i] = 1;
             }
-            if (i > 35)
+            if (i <= 5)
             {
                 data[i] = 1;
             }
@@ -180,7 +180,7 @@ void CountdownClock::setDigit(int digit, int val)
         for (int i = 0; i < CLOCK_PIXALS_PER_DIGIT; i++)
         {
             data[i] = 1;
-            if (i < 5 || i > 35)
+            if ((i >23 && i<30) || (i>11 && i < 17))
             {
                 data[i] = 0;
             }
@@ -191,7 +191,7 @@ void CountdownClock::setDigit(int digit, int val)
         for (int i = 0; i < CLOCK_PIXALS_PER_DIGIT; i++)
         {
             data[i] = 1;
-            if (i < 5 || (i>22 && i < 30))
+            if ((i >11 && i<18) || (i>36))
             {
                 data[i] = 0;
             }
@@ -206,7 +206,7 @@ void CountdownClock::setDigit(int digit, int val)
             {
                 data[i] = 0;
             }
-            if (i >23 && i < 36)
+            if (i>30)
             {
                 data[i] = 0;
             }
@@ -217,11 +217,7 @@ void CountdownClock::setDigit(int digit, int val)
         for (int i = 0; i < CLOCK_PIXALS_PER_DIGIT; i++)
         {
             data[i] = 1;
-            if (i > 11 && i < 17)
-            {
-                data[i] = 0;
-            }
-            if (i >23 && i < 30)
+            if (i <5 || i > 36)
             {
                 data[i] = 0;
             }
@@ -232,7 +228,7 @@ void CountdownClock::setDigit(int digit, int val)
         for (int i = 0; i < CLOCK_PIXALS_PER_DIGIT; i++)
         {
             data[i] = 1;
-            if (i > 11 && i < 17)
+            if (i < 5)
             {
                 data[i] = 0;
             }
@@ -243,7 +239,7 @@ void CountdownClock::setDigit(int digit, int val)
         for (int i = 0; i < CLOCK_PIXALS_PER_DIGIT; i++)
         {
             data[i] = 0;
-            if ((i > 4 && i < 18) || i > 35)
+            if ((i<12) || (i>22 && i<31))
             {
                 data[i] = 1;
             }
@@ -261,7 +257,7 @@ void CountdownClock::setDigit(int digit, int val)
         for (int i = 0; i < CLOCK_PIXALS_PER_DIGIT; i++)
         {
             data[i] = 1;
-            if ((i > 23 && i < 36) )
+            if ((i>30) )
             {
                 data[i] = 0;
             }
