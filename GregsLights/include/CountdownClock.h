@@ -1,6 +1,7 @@
 #ifndef COUNTDOWNCLOCK_H
 #define COUNTDOWNCLOCK_H
 
+#include "controller/E131Network.h"
 #include "controller/Bulb.h"
 #include "TimeInfo.h"
 #include <pthread.h>
@@ -9,8 +10,8 @@
 #include <stdio.h>
 #include <ctype.h>
 
-
-#define CLOCK_DIGITS    6
+#define CLOCK_DIGITS    7
+#define CLOCK_PIXALS_PER_DIGIT 43
 
 
         //Special
@@ -29,22 +30,21 @@
 class CountdownClock
 {
     public:
-        CountdownClock(bool skip_time_check, bool show_new_year);
+        CountdownClock(bool skip_time_check, bool show_new_year, E131Network *net[]);
         virtual ~CountdownClock();
-        void setBulb(int digit, int segment, Bulb *bulb);
         void setSpecial(int id, Bulb *blub);
         void setActive(bool);
         void test();
         void testALlOn();
         void tick();
         void setAllOff();
-        Bulb *getBulb(int digit, int segment);
         int getSecondsRemaining();
-        void setFirst(int value);
         char * getMessage();
+        RGBLight * getPixel(int, int);
     protected:
     private:
-        Bulb *bulbs[CLOCK_DIGITS*7 + 1];
+        RGBLight *pixals[CLOCK_DIGITS * CLOCK_PIXALS_PER_DIGIT];
+        void setDigit(int,int);
         Bulb *special[8];
         bool active;
         char message[100];

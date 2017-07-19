@@ -53,14 +53,21 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     sign[signId++] = new E131Network(signIP, 21, 512);  // port 2 170
     sign[signId++] = new E131Network(signIP, 22, 512);  // port 2 170
     sign[signId++] = new E131Network(signIP, 23, 512);  // port 2 130
-    // port 3 is used by the clock
 
-    E131Network *clockE131 = new E131Network(signIP, 100, 512); // Universe 100 of Sign Controller
+    // port 3 is used by the clock
+    E131Network *clockNetwork[2];
+    clockNetwork[0] = new E131Network(signIP, 30, 512);  // port 2 130
+    clockNetwork[1] = new E131Network(signIP, 31, 512);  // port 2 130
+
+    // Old DMX port
+    //E131Network *clockE131 = new E131Network(signIP, 100, 512); // Universe 100 of Sign Controller
 
     if (sendDMX)
     {
-        networks->addNetwork(clockE131);
+        //networks->addNetwork(clockE131);
         networks->addNetwork(lor);
+        networks->addNetwork(clockNetwork[0]);
+        networks->addNetwork(clockNetwork[1]);
         for (int j = 0; j< SIGN_E11_COUNT; j++)
         {
             networkClock->addNetwork(sign[j]);
@@ -81,64 +88,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
 
 
     //setup Clock
-    this->clock = new CountdownClock(this->skipTimeCheck, this->newYears);
-    int i = 100-1;   // Starting at the 100th spot
-    this->clock->setBulb(0,0,clockE131->getBulb(i + 19));
-    this->clock->setBulb(0,1,clockE131->getBulb(i + 15));
-    this->clock->setBulb(0,2,clockE131->getBulb(i + 14));
-    this->clock->setBulb(0,3,clockE131->getBulb(i + 20));
-    this->clock->setBulb(0,4,clockE131->getBulb(i + 17));
-    this->clock->setBulb(0,5,clockE131->getBulb(i + 18));
-    this->clock->setBulb(0,6,clockE131->getBulb(i + 16));
-    // Next
-    this->clock->setBulb(1,0,clockE131->getBulb(i + 12));
-    this->clock->setBulb(1,1,clockE131->getBulb(i + 10));
-    this->clock->setBulb(1,2,clockE131->getBulb(i + 13));
-    this->clock->setBulb(1,3,clockE131->getBulb(i + 7));
-    this->clock->setBulb(1,4,clockE131->getBulb(i + 9));
-    this->clock->setBulb(1,5,clockE131->getBulb(i + 6));
-    this->clock->setBulb(1,6,clockE131->getBulb(i + 11));
-    // Next
-    this->clock->setBulb(2,0,clockE131->getBulb(i + 1));
-    this->clock->setBulb(2,1,clockE131->getBulb(i + 0));
-    this->clock->setBulb(2,2,clockE131->getBulb(i + 3));
-    this->clock->setBulb(2,3,clockE131->getBulb(i + 5));
-    this->clock->setBulb(2,4,clockE131->getBulb(i + 8));
-    this->clock->setBulb(2,5,clockE131->getBulb(i + 4));
-    this->clock->setBulb(2,6,clockE131->getBulb(i + 2));
-    // Next
-    i = 130-1;   // Next controller
-    this->clock->setBulb(3,0,clockE131->getBulb(i + 2));
-    this->clock->setBulb(3,1,clockE131->getBulb(i + 5));
-    this->clock->setBulb(3,2,clockE131->getBulb(i + 0));
-    this->clock->setBulb(3,3,clockE131->getBulb(i + 6));
-    this->clock->setBulb(3,4,clockE131->getBulb(i + 3));
-    this->clock->setBulb(3,5,clockE131->getBulb(i + 4));
-    this->clock->setBulb(3,6,clockE131->getBulb(i + 1));
-    // Next
-    this->clock->setBulb(4,0,clockE131->getBulb(i + 12));
-    this->clock->setBulb(4,1,clockE131->getBulb(i + 8));
-    this->clock->setBulb(4,2,clockE131->getBulb(i + 13));
-    this->clock->setBulb(4,3,clockE131->getBulb(i + 7));
-    this->clock->setBulb(4,4,clockE131->getBulb(i + 11));
-    this->clock->setBulb(4,5,clockE131->getBulb(i + 10));
-    this->clock->setBulb(4,6,clockE131->getBulb(i + 9));
-    // Next
-    this->clock->setBulb(5,0,clockE131->getBulb(i + 14));
-    this->clock->setBulb(5,1,clockE131->getBulb(i + 20));
-    this->clock->setBulb(5,2,clockE131->getBulb(i + 19));
-    this->clock->setBulb(5,3,clockE131->getBulb(i + 17));
-    this->clock->setBulb(5,4,clockE131->getBulb(i + 15));
-    this->clock->setBulb(5,5,clockE131->getBulb(i + 16));
-    this->clock->setBulb(5,6,clockE131->getBulb(i + 18));
-    // Specials
-    this->clock->setSpecial(0, clockE131->getBulb(i+21));
-    this->clock->setSpecial(1, clockE131->getBulb(i+22));
-    this->clock->setSpecial(2, clockE131->getBulb(i+23));
-    this->clock->setSpecial(3, clockE131->getBulb(i+24));
-    this->clock->setSpecial(4, clockE131->getBulb(i+25));
-    this->clock->setSpecial(5, clockE131->getBulb(i+26));
-    this->clock->setSpecial(6, clockE131->getBulb(i+27));
+    this->clock = new CountdownClock(this->skipTimeCheck, this->newYears, clockNetwork);
 
 }
 
