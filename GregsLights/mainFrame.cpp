@@ -16,6 +16,10 @@
 
 #include <stdio.h>
 
+int digitX[50];
+int digitY[50];
+
+
 class MyApp: public wxApp
 {
     virtual bool OnInit();
@@ -39,6 +43,81 @@ int MyApp::OnExit()
 
 bool MyApp::OnInit()
 {
+    // Init x Positions
+    for (int i=0; i<6; i++)
+    {
+        digitX[i] = 0;
+        digitX[i+11] = 6; // 11-16
+    }
+
+    for (int i=6; i<12; i++)
+    {
+        digitX[i] = i-5;
+    }
+
+    int x=6;
+    for (int i=17; i<24; i++)
+    {
+        digitX[i] = x--;
+    }
+
+    for (int i=23; i<=30; i++)
+    {
+        digitX[i] = 0;
+    }
+
+    x=0;
+    for (int i=30; i<37; i++)
+    {
+        digitX[i] = x++;
+    }
+
+    for (int i=36; i<=42; i++)
+    {
+        digitX[i] =  6;
+    }
+
+    //init Y positions
+    int y=5;
+    for (int i =0; i<=5; i++)
+    {
+        digitY[i] = y--;
+    }
+
+    for (int i=6; i<12; i++)
+    {
+        digitY[i] = 0;
+    }
+
+    y=0;
+    for (int i=11; i<18; i++)
+    {
+        digitY[i] = y++;
+    }
+
+    for (int i=18; i<24; i++)
+    {
+        digitY[i] = 6;
+    }
+
+    y=6;
+    for (int i=23; i<31; i++)
+    {
+        digitY[i] = y++;
+    }
+
+    for (int i=30; i< 37; i++)
+    {
+        digitY[i] = 13;
+    }
+
+    y=13;
+    for (int i=36; i< 43; i++)
+    {
+        digitY[i] = y--;
+    }
+
+
     wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
     frame = new wxFrame((wxFrame *)NULL, -1,  wxT("Hello GL World"), wxPoint(50,50), wxSize(700,820));
 
@@ -204,6 +283,30 @@ void BasicGLPane::render( wxPaintEvent& evt )
             glVertex3f(i*6+3, 6 + j*6, 0);  // Lower Left
             glVertex3f(i*6+6, 6 + j*6, 0); // Bottom Right
             glVertex3f(i*6+6, 3 + j*6, 0); // Uper Right
+            glEnd();
+        }
+    }
+
+    // The Clock
+
+    for (int digit = 0; digit < CLOCK_DIGITS; digit++)
+    {
+        for (int i = 0; i  < 43; i++)
+        {
+            int x = 50+ (CLOCK_DIGITS-digit) * 60 + digitX[i]*6;
+            int y = 200 + digitY[i] * 6;
+
+            RGBLight *pix = model->getClock()->getPixel(digit,i);
+            float red = ((float)pix->getRed())  / 100;
+            float green = ((float)pix->getGreen()) / 100;
+            float blue = ((float)pix->getBlue()) / 100;
+
+            glColor4f(red, green, blue, 1);
+            glBegin(GL_QUADS);
+            glVertex3f(x, y, 0); // upper lefft
+            glVertex3f(x+3, y, 0);  // Lower Left
+            glVertex3f(x+3, y+3, 0); // Bottom Right
+            glVertex3f(x, y+3, 0); // Uper Right
             glEnd();
         }
     }
