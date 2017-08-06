@@ -61,8 +61,8 @@ void * DisplayTester::signThread(void *args)
 
 void DisplayTester::testClock()
 {
-    this->model->getClock()->testALlOn();
-    //this->model->getClock()->test();
+    //this->model->getClock()->testALlOn();
+    this->model->getClock()->test();
     //this->model->getClock()->setActive(true);
     while(1)
     {

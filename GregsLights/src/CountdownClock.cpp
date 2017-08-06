@@ -38,19 +38,29 @@ int CountdownClock::getSecondsRemaining()
 
 void CountdownClock::testALlOn()
 {
-    sprintf(message, "This needs fixed");
     while(1)
     {
+        sprintf(message, "Setting all On");
+        lastTick = 8888888;
+        for (int i = 0; i < 7; i++)   // Last 7 digits
+        {
+            setDigit(i,8);
+        }
         usleep(200 * 1000); // 200m
     }
 }
 
 void CountdownClock::test()
 {
-    sprintf(message, "This needs fixed");
+    sprintf(message, "Test() in clock: Looping though digits.");
     while(1)
     {
-        usleep(200 * 1000); // 200m
+        for (int cnt = 0; cnt < 10; cnt++) {
+            for (int i = 0; i< 7; i++) {
+                setDigit(i,cnt);
+                usleep(200 * 1000); // 200m
+            }
+        }
     }
 }
 
