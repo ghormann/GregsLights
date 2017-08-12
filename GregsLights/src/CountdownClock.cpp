@@ -7,6 +7,7 @@ CountdownClock::CountdownClock(bool skip_time_check, bool show_new_year, E131Net
     this->reset = true;
     this->clock_t = 0;
     this->lastTick = 0;
+    this->color = RGBColor::WHITE;
     this->timeinfo = new TimeInfo(skip_time_check,show_new_year);
     this->displayUnits = SECONDS;
 
@@ -301,9 +302,16 @@ void CountdownClock::setDigit(int digit, int val)
     // Set the data to the pixel
     for (int i = 0; i < CLOCK_PIXALS_PER_DIGIT; i++)
     {
-        int x = 100 * data[i];
-        pixals[(digit * CLOCK_PIXALS_PER_DIGIT) + i]->set(x,x,x);
+        RGBColor *digitColor = RGBColor::BLACK;
+        if (data[i] > 0) {
+            digitColor = color; /* Current color */
+        }
+        pixals[(digit * CLOCK_PIXALS_PER_DIGIT) + i]->set(digitColor);
     }
+}
+
+void CountdownClock::setDigitColor(RGBColor *c) {
+    this->color = c;
 }
 
 void * update_clock(void *args)

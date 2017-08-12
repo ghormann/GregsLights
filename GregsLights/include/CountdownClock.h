@@ -3,6 +3,7 @@
 
 #include "controller/E131Network.h"
 #include "controller/Bulb.h"
+#include "controller/RGBColor.h"
 #include "TimeInfo.h"
 #include <pthread.h>
 #include <unistd.h>
@@ -41,6 +42,7 @@ class CountdownClock
         void testALlOn();
         void tick();
         void setAllOff();
+        void setDigitColor(RGBColor *c);
         int getSecondsRemaining();
         char * getMessage();
         RGBLight * getPixel(int, int);
@@ -48,6 +50,7 @@ class CountdownClock
     private:
         RGBLight *pixals[CLOCK_DIGITS * CLOCK_PIXALS_PER_DIGIT];
         void setDigit(int,int);
+        RGBColor *color;
         Bulb *special[8];
         bool active;
         char message[100];

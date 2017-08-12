@@ -295,26 +295,31 @@ void Sign::toGo(clockUnits units)
     std::string text;
 
     clock->setUnits(units);
-    setDummyBackground(RGBColor::DARKGREEN,0,0,SIGN_WIDTH,SIGN_HEIGHT);
+    setDummyBackground(RGBColor::BLACK,0,0,SIGN_WIDTH,SIGN_HEIGHT);
     switch(units)
     {
     case MINUTES:
+        clock->setDigitColor(RGBColor::RED);
         writeTextSmall(RGBColor::RED,7,6,"MINUTES TO GO");
         break;
     case HOURS:
+        clock->setDigitColor(RGBColor::GREEN);
         writeTextSmall(RGBColor::GREEN,12,6,"HOURS TO GO");
         break;
     case DAYS:
-        writeTextSmall(RGBColor::BLUE,14,6,"DAYS TO GO");
+        clock->setDigitColor(RGBColor::PURPLE);
+        writeTextSmall(RGBColor::PURPLE,14,6,"DAYS TO GO");
         break;
     default:
+        clock->setDigitColor(RGBColor::WHITE);
         scrollText(RGBColor::WHITE, RGBColor::BLACK, "SECONDS UNTIL CHRISTMAS", 0.02);
         break;
     }
     setDisplayPosition(0,0);
     gridSleep(5);
 
-
+    // Reset things
+    clock->setDigitColor(RGBColor::WHITE);
     clock->setUnits(SECONDS);
     scrollText(RGBColor::getRandom(), RGBColor::BLACK, "SECONDS TO GO", 0.02);
 }
