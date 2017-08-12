@@ -75,7 +75,10 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
 
     }
 
-    this->sign = new Sign(skipTimeCheck, newYears, sign);
+    //setup Clock
+    this->clock = new CountdownClock(this->skipTimeCheck, this->newYears, clockNetwork);
+
+    this->sign = new Sign(clock, skipTimeCheck, newYears, sign);
 
 
     //setup Snowmen
@@ -86,9 +89,6 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
         snowmen->setBulb(i+8, lor->getBulb(6,i+1));
     }
 
-
-    //setup Clock
-    this->clock = new CountdownClock(this->skipTimeCheck, this->newYears, clockNetwork);
 
 }
 

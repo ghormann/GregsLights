@@ -2,11 +2,13 @@
 #define SIGN_H
 
 #include "controller/E131Network.h"
+#include "../include/CountdownClock.h"
+#include "CountdownClock.h"
 #include "MessageGenerator.h"
 #include "TimeInfo.h"
 #include "GenericGrid.h"
 
-#define SIGN_OPTIONS 11
+#define SIGN_OPTIONS 14
 #define SIGN_E11_COUNT 12
 #define SIGN_WIDTH 96  /* Was 48 */
 #define SIGN_HEIGHT 20
@@ -28,7 +30,7 @@
 class Sign: public GenericGrid
 {
     public:
-        Sign(bool skipTime, bool newYears, E131Network *net[]);
+        Sign(CountdownClock *clock, bool skipTime, bool newYears, E131Network *net[]);
         virtual ~Sign();
         void test();
         void testLines();
@@ -48,6 +50,8 @@ class Sign: public GenericGrid
         void radio();
     private:
         void moveBall(int x, RGBColor *bgColor, int snowballY);
+        void toGo(clockUnits);
+        CountdownClock *clock;
         char useMap[SIGN_OPTIONS];
         char message[80];
         E131Network *net1;

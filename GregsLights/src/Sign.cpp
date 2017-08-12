@@ -5,8 +5,9 @@
 
 
 
-Sign::Sign(bool skipTime, bool newYears, E131Network *net[]) : GenericGrid(SIGN_WIDTH,SIGN_HEIGHT,SIGN_DUMMY_WIDTH,SIGN_DUMMY_HEIGHT, skipTime, newYears)
+Sign::Sign(CountdownClock *clock, bool skipTime, bool newYears, E131Network *net[]) : GenericGrid(SIGN_WIDTH,SIGN_HEIGHT,SIGN_DUMMY_WIDTH,SIGN_DUMMY_HEIGHT, skipTime, newYears)
 {
+    this->clock = clock;
     this->clear();
     this->generator = new MessageGenerator(this->timeInfo);
     int netId = 0;
@@ -190,6 +191,9 @@ RGBLight *Sign::getBoard(int x, int y)
     return board[pos];
 }
 
+
+
+
 void Sign::staticSecondsToGo(RGBColor *fgColor, RGBColor *bgColor)
 {
     for (int i = 0; i < SIGN_WIDTH; i++)
@@ -286,6 +290,36 @@ void Sign::rotateSecondsToGo()
     wipeToRight(RGBColor::BLACK, 0.05);
 }
 
+void Sign::toGo(clockUnits units)
+{
+    std::string text;
+
+    clock->setUnits(units);
+    setDummyBackground(RGBColor::DARKGREEN,0,0,SIGN_WIDTH,SIGN_HEIGHT);
+    switch(units)
+    {
+    case MINUTES:
+        writeTextSmall(RGBColor::RED,7,6,"MINUTES TO GO");
+        break;
+    case HOURS:
+        writeTextSmall(RGBColor::GREEN,12,6,"HOURS TO GO");
+        break;
+    case DAYS:
+        writeTextSmall(RGBColor::BLUE,14,6,"DAYS TO GO");
+        break;
+    default:
+        scrollText(RGBColor::WHITE, RGBColor::BLACK, "SECONDS UNTIL CHRISTMAS", 0.02);
+        break;
+    }
+    setDisplayPosition(0,0);
+    gridSleep(5);
+
+
+    clock->setUnits(SECONDS);
+    scrollText(RGBColor::getRandom(), RGBColor::BLACK, "SECONDS TO GO", 0.02);
+}
+
+
 void Sign::run()
 {
     double textSpeed = 0.02;
@@ -321,7 +355,7 @@ void Sign::run()
         setDisplayPosition(0,0);
         checkClear();
 
-        int i = 10;
+        int i = 2;
         while (useMap[i] == 1)
         {
             i = rand() % SIGN_OPTIONS;  // Don't show same message twice in a row.
@@ -331,29 +365,38 @@ void Sign::run()
         switch(i)
         {
         case 0:
+            toGo(MINUTES);
+            break;
         case 1:
+            toGo(HOURS);
+            break;
         case 2:
+            toGo(DAYS);
+            break;
         case 3:
         case 4:
+        case 5:
+        case 6:
+        case 7:
             scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), textSpeed);
             break;
-        case 5:
+        case 8:
             if (numSeconds > 0)
                 rotateSecondsToGo();
             break;
-        case 6:
+        case 9:
             fewTrees();
             break;
-        case 7:
+        case 10:
             snowballFight();
             break;
-        case 8:
+        case 11:
             scrollSanta();
             break;
-        case 9:
+        case 12:
             candyCane();
             break;
-        case 10:
+        case 13:
             radio();
             break;
         }
@@ -624,7 +667,8 @@ void Sign::test()
 {
 
     //ALternate Green and Red
-    while(0) {
+    while(0)
+    {
         this->setDummyBackground(RGBColor::GREEN);
         this->setDisplayPosition(0,0);
         sleep(1);
@@ -633,7 +677,8 @@ void Sign::test()
         sleep(1);
     }
 
-    while (0) {
+    while (0)
+    {
         this->setBackground(RGBColor::YELLOW);
         sleep(5);
         this->setBackground(RGBColor::PURPLE);

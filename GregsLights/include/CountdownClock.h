@@ -27,6 +27,8 @@
 #define SPECIAL_P3      4
 #define SPECIAL_P5      5
 
+enum clockUnits {SECONDS, MINUTES, HOURS, DAYS};
+
 class CountdownClock
 {
     public:
@@ -34,6 +36,7 @@ class CountdownClock
         virtual ~CountdownClock();
         void setSpecial(int id, Bulb *blub);
         void setActive(bool);
+        void setUnits(clockUnits u);
         void test();
         void testALlOn();
         void tick();
@@ -49,7 +52,9 @@ class CountdownClock
         bool active;
         char message[100];
         int lastTick;
+        clockUnits displayUnits;
         TimeInfo *timeinfo;
+        bool reset;
         pthread_t clock_t;      /* Thread for writing to serial interface */
 
 };

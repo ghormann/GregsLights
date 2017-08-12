@@ -1,11 +1,14 @@
 #include "../include/CountdownClock.h"
+#include <math.h>
 
 CountdownClock::CountdownClock(bool skip_time_check, bool show_new_year, E131Network *net[])
 {
     this->active = false;
+    this->reset = true;
     this->clock_t = 0;
     this->lastTick = 0;
     this->timeinfo = new TimeInfo(skip_time_check,show_new_year);
+    this->displayUnits = SECONDS;
 
     int netId = 0;
     int cnt = 0;
@@ -25,6 +28,11 @@ CountdownClock::CountdownClock(bool skip_time_check, bool show_new_year, E131Net
     }
     sprintf(message, "Created Clock");
 
+}
+
+void CountdownClock::setUnits(clockUnits u) {
+    this->displayUnits = u;
+    reset = true;
 }
 
 CountdownClock::~CountdownClock()
@@ -96,8 +104,9 @@ void CountdownClock::tick()
     }
 
 
-    if (lastTick != num_seconds)
+    if (lastTick != num_seconds || reset == true)
     {
+        reset = false;
         sprintf(message, "Running");
         if (num_seconds <= 0)
         {
@@ -107,7 +116,22 @@ void CountdownClock::tick()
         }
         else
         {
-            sprintf(seconds_c, "%7d", num_seconds);
+            double temp = num_seconds;
+            switch(displayUnits) {
+                case MINUTES:
+                    temp = temp/60;
+                    break;
+                case HOURS:
+                    temp = temp/(3600);
+                    break;
+                case DAYS:
+                    temp = temp / (3600*24);
+                    break;
+                default:
+                    temp = temp;
+                    break;
+            }
+            sprintf(seconds_c, "%7d", ((int)round(temp)) );
         }
 
         // The real digits are identifeid as 0-6, but they are the
