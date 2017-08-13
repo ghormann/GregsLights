@@ -292,7 +292,15 @@ void Sign::rotateSecondsToGo()
 
 void Sign::toGo(clockUnits units)
 {
-    std::string text;
+    if (units == DAYS && clock->getSecondsRemaining() < 86400) {
+        units = HOURS;
+    }
+    if (units == HOURS && clock->getSecondsRemaining() < 3600) {
+        units = MINUTES;
+    }
+    if (clock->getSecondsRemaining() < 60) {
+        return;
+    }
 
     clock->setUnits(units);
     setDummyBackground(RGBColor::BLACK,0,0,SIGN_WIDTH,SIGN_HEIGHT);

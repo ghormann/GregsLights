@@ -15,6 +15,8 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     int signId = 0;
     this->skipTimeCheck = (skip_time_check == TRUE? true : false);
     this->newYears = (show_new_year == TRUE ? true: false);
+    /* initialize random seed: */
+    srand (time(NULL));
 
     //Initialize Memory Buffers
     for (int i = 0; i < NUM_MESSAGE_BUFFERS; i++)
