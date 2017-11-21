@@ -135,27 +135,19 @@ void CountdownClock::tick()
             sprintf(seconds_c, "%7d", ((int)round(temp)) );
         }
 
-        // The real digits are identifeid as 0-6, but they are the
-        // last digits, so we need to off set by one here when refereincing
-        // seconds_c
-
         for (int i = 0; i < 7; i++)   // Last 7 digits
         {
-            if (isblank(seconds_c[i+1]))
+            if (isblank(seconds_c[i]))
             {
                 num[i] = -1;
             }
             else
             {
-                num[i] = seconds_c[i+1] - 48;
+                num[i] = seconds_c[i] - 48;
             }
             setDigit(i,num[i]);
 
         } // for i=1->7
-
-        //Digit zero is special
-
-        // Need to add code here.
 
         lastTick = num_seconds;
     }
