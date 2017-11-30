@@ -126,7 +126,7 @@ void CountdownClock::tick()
                     temp = temp/(3600);
                     break;
                 case DAYS:
-                    temp = temp / (3600*24);
+                    temp = (temp / 86400)+1;
                     break;
                 default:
                     temp = temp;
