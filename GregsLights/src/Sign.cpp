@@ -246,7 +246,7 @@ void Sign::flashSecondsToGo(int times, double delay)
 void Sign::radio()
 {
     sprintf(message, "Radio Station");
-    RGBColor *bgColor = new RGBColor(0,15,0);
+    RGBColor *bgColor = new RGBColor(0,8,0);
     RGBColor *fgColor = new RGBColor(255,0,0);
     for (int i = 0; i < SIGN_WIDTH; i++)
 
@@ -368,7 +368,7 @@ void Sign::run()
         setDisplayPosition(0,0);
         checkClear();
 
-        int i = 2;
+        int i = 13;
         while (useMap[i] == 1)
         {
             i = rand() % SIGN_OPTIONS;  // Don't show same message twice in a row.
