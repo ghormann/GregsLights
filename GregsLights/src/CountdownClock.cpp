@@ -64,18 +64,19 @@ void CountdownClock::testALlOn()
 
 void CountdownClock::test()
 {
-    sprintf(message, "Test() in clock: Looping though digits.");
+    sprintf(message, "Test() in clock: Starting loop.");
     while(1)
     {
+        sprintf(message, "Test() in clock: Starting loop A.");
         this->setAllOff();
-        printf(message, "Test() in clock: Special on");
+        sprintf(message, "Test() in clock: Special on");
         this->special[SPECIAL_STROBE]->setIntensity(100);
-        usleep(200 * 1000*1000); // 2sec
+        usleep(2 * 1000*1000); // 2sec
 
         this->setAllOff();
-        printf(message, "Test() in clock: Sent Sign on");
+        sprintf(message, "Test() in clock: Sent Sign on");
         this->special[SPECIAL_SIGN_ON]->setIntensity(100);
-        usleep(200 * 1000*1000); // 2sec
+        usleep(2 * 1000*1000); // 2sec
 
         this->setAllOff();
         sprintf(message, "Test() in clock: Looping though digits.");
@@ -137,7 +138,7 @@ void CountdownClock::tick()
             this->reset = true; /* Force faster update */
             this->setDigitColor(RGBColor::PURPLE);
             sprintf(seconds_c, "0000000");
-            //special[SPECIAL_STROBE]->setIntensity(100);
+            special[SPECIAL_STROBE]->setIntensity(100);
         }
         else
         {
@@ -325,7 +326,7 @@ void CountdownClock::setDigit(int digit, int val)
             digitColor = color; /* Current color */
             if (this->sparkel)
             {
-                int random_number = rand() % 25;
+                int random_number = rand() % 55;
                 if (random_number == 0)
                 {
                     digitColor = RGBColor::WHITE;
