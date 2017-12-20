@@ -1,10 +1,12 @@
 #include "../include/CountdownClock.h"
 #include <math.h>
+#include <stdlib.h>
 
 CountdownClock::CountdownClock(bool skip_time_check, bool show_new_year, E131Network *net[])
 {
     this->active = false;
     this->reset = true;
+    this->sparkel = false;
     this->clock_t = 0;
     this->lastTick = 0;
     this->color = RGBColor::WHITE;
@@ -31,7 +33,8 @@ CountdownClock::CountdownClock(bool skip_time_check, bool show_new_year, E131Net
 
 }
 
-void CountdownClock::setUnits(clockUnits u) {
+void CountdownClock::setUnits(clockUnits u)
+{
     this->displayUnits = u;
     reset = true;
 }
@@ -64,10 +67,24 @@ void CountdownClock::test()
     sprintf(message, "Test() in clock: Looping though digits.");
     while(1)
     {
-        for (int cnt = 0; cnt < 10; cnt++) {
-            for (int i = 0; i< 7; i++) {
+        this->setAllOff();
+        printf(message, "Test() in clock: Special on");
+        this->special[SPECIAL_STROBE]->setIntensity(100);
+        usleep(200 * 1000*1000); // 2sec
+
+        this->setAllOff();
+        printf(message, "Test() in clock: Sent Sign on");
+        this->special[SPECIAL_SIGN_ON]->setIntensity(100);
+        usleep(200 * 1000*1000); // 2sec
+
+        this->setAllOff();
+        sprintf(message, "Test() in clock: Looping though digits.");
+        for (int cnt = 0; cnt < 10; cnt++)
+        {
+            for (int i = 0; i< 7; i++)
+            {
                 setDigit(i,cnt);
-                usleep(200 * 1000); // 200m
+                usleep(200 * 1000); // 200ms
             }
         }
     }
@@ -78,6 +95,10 @@ void CountdownClock::setAllOff()
     for (int i = 0 ; i < (CLOCK_DIGITS * CLOCK_PIXALS_PER_DIGIT); i++)
     {
         this->pixals[i]->set(0,0,0);
+    }
+
+    for (int i = 0; i <=6; i++) {
+        this->special[i]->setIntensity(0);
     }
 }
 
@@ -112,25 +133,29 @@ void CountdownClock::tick()
         if (num_seconds <= 0)
         {
             num_seconds = 0;
+            this->sparkel = true;
+            this->reset = true; /* Force faster update */
+            this->setDigitColor(RGBColor::PURPLE);
             sprintf(seconds_c, "0000000");
             //special[SPECIAL_STROBE]->setIntensity(100);
         }
         else
         {
             double temp = num_seconds;
-            switch(displayUnits) {
-                case MINUTES:
-                    temp = temp/60;
-                    break;
-                case HOURS:
-                    temp = temp/(3600);
-                    break;
-                case DAYS:
-                    temp = (temp / 86400)+1;
-                    break;
-                default:
-                    temp = temp;
-                    break;
+            switch(displayUnits)
+            {
+            case MINUTES:
+                temp = temp/60;
+                break;
+            case HOURS:
+                temp = temp/(3600);
+                break;
+            case DAYS:
+                temp = (temp / 86400)+1;
+                break;
+            default:
+                temp = temp;
+                break;
             }
             sprintf(seconds_c, "%7d", ((int)round(temp)) );
         }
@@ -295,14 +320,29 @@ void CountdownClock::setDigit(int digit, int val)
     for (int i = 0; i < CLOCK_PIXALS_PER_DIGIT; i++)
     {
         RGBColor *digitColor = RGBColor::BLACK;
-        if (data[i] > 0) {
+        if (data[i] > 0)
+        {
             digitColor = color; /* Current color */
+            if (this->sparkel)
+            {
+                int random_number = rand() % 25;
+                if (random_number == 0)
+                {
+                    digitColor = RGBColor::WHITE;
+                }
+            }
         }
         pixals[(digit * CLOCK_PIXALS_PER_DIGIT) + i]->set(digitColor);
     }
 }
 
-void CountdownClock::setDigitColor(RGBColor *c) {
+bool CountdownClock::isSparkel()
+{
+    return this->sparkel;
+}
+
+void CountdownClock::setDigitColor(RGBColor *c)
+{
     this->color = c;
 }
 
@@ -312,7 +352,11 @@ void * update_clock(void *args)
     while (1)
     {
         ptr->tick();
-        usleep(200 * 1000); // 200m
+        /*
+        Normally sleep 200ms, but if sparkel then sleep
+        25 ms
+        */
+        usleep( (ptr->isSparkel() ? 25 : 200) * 1000); // 50-200ms
     }
 
     return NULL;

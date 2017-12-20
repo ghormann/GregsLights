@@ -33,6 +33,8 @@ TimeInfo::TimeInfo(bool skip_time_check, bool show_new_year )
     }
 
     t_christmas = mktime(&tm_christmas);
+    /* Debug */
+    t_christmas = t_now + 10;
 
 }
 

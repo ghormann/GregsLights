@@ -61,12 +61,12 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     clockNetwork[0] = new E131Network(signIP, 30, 512);  // port 2 130
     clockNetwork[1] = new E131Network(signIP, 31, 512);  // port 2 130
 
-    // Old DMX port
-    //E131Network *clockE131 = new E131Network(signIP, 100, 512); // Universe 100 of Sign Controller
+    //DMX port
+    E131Network *clockE131 = new E131Network(signIP, 100, 512); // Universe 100 of Sign Controller
 
     if (sendDMX)
     {
-        //networks->addNetwork(clockE131);
+        networks->addNetwork(clockE131);
         networks->addNetwork(lor);
         networks->addNetwork(clockNetwork[0]);
         networks->addNetwork(clockNetwork[1]);
@@ -79,6 +79,10 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
 
     //setup Clock
     this->clock = new CountdownClock(this->skipTimeCheck, this->newYears, clockNetwork);
+
+    for (int i=0; i <=6; i++) {
+        this->clock->setSpecial(i, clockE131->getBulb(i+21));
+    }
 
     this->sign = new Sign(clock, skipTimeCheck, newYears, sign);
 

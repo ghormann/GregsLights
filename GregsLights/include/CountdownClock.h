@@ -23,6 +23,7 @@
         //4: POS 3
         //5: POS 4
 #define SPECIAL_STROBE  0
+#define SPECIAL_SIGN_ON 1
 #define SPECIAL_P6      2
 #define SPECIAL_HORZ    3
 #define SPECIAL_P3      4
@@ -43,6 +44,7 @@ class CountdownClock
         void tick();
         void setAllOff();
         void setDigitColor(RGBColor *c);
+        bool isSparkel();
         int getSecondsRemaining();
         char * getMessage();
         RGBLight * getPixel(int, int);
@@ -53,6 +55,7 @@ class CountdownClock
         RGBColor *color;
         Bulb *special[8];
         bool active;
+        bool sparkel;
         char message[100];
         int lastTick;
         clockUnits displayUnits;
