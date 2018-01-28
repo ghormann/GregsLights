@@ -3,6 +3,8 @@
 #include <fstream>
 #include <sstream>
 #include <json/json.h>
+#include <string.h>
+
 
 
 GregMQTT::GregMQTT(bool enable)
@@ -86,7 +88,29 @@ GregMQTT::GregMQTT(bool enable)
             isValid = false;
 
         }
+    }
+}
 
+std::string GregMQTT::getNextName()
+{
+    // Mutext clearned when block ends
+    std::lock_guard<std::mutex> lock(name_queue_mutex);
+    if (this->name_queue.size() > 0)
+    {
+        std::string name = this->name_queue.front();
+        this->name_queue.pop();
+        return name;
+    }
+    return std::string();
+}
+
+void GregMQTT::on_message(const struct mosquitto_message *message)
+{
+    if (strcmp("/christmas/personsName", message->topic) == 0)
+    {
+        std::string name = std::string(reinterpret_cast<char*>(message->payload));
+        std::lock_guard<std::mutex> lock(name_queue_mutex);
+        this->name_queue.push(name);
     }
 }
 
@@ -100,6 +124,8 @@ void GregMQTT::on_connect(int rc)
     }
     else
     {
+        std::cout << "Subscribing" << std::endl;
+        subscribe(NULL, "/christmas/personsName");
     }
 }
 

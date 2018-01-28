@@ -2,7 +2,8 @@
 #include "../include/RGBPicture.h"
 #include "../include/controller/DummyBulb.h"
 #include "RGBPicture.h"
-
+#include <string>
+#include <algorithm>
 
 
 Sign::Sign(CountdownClock *clock, bool skipTime, bool newYears, E131Network *net[], GregMQTT *mqtt) : GenericGrid(SIGN_WIDTH,SIGN_HEIGHT,SIGN_DUMMY_WIDTH,SIGN_DUMMY_HEIGHT, skipTime, newYears)
@@ -393,7 +394,15 @@ void Sign::run()
     }
     else
     {
-
+        std::string nextName = this->mqtt->getNextName();
+        while (nextName.length() > 0) {
+            std::string full_message = std::string(generator->getGreeting());
+            full_message += nextName;
+            full_message += "!";
+            transform(full_message.begin(), full_message.end(), full_message.begin(), ::toupper);
+            scrollText(RGBColor::getRandom(), RGBColor::BLACK, (char *)full_message.c_str(), textSpeed);
+            nextName = this->mqtt->getNextName();
+        }
         setDummyBackground(RGBColor::BLACK);
         setDisplayPosition(0,0);
         checkClear();

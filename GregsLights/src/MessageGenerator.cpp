@@ -35,6 +35,11 @@ void MessageGenerator::checkClear()
     this->clear();
 }
 
+const char * MessageGenerator::getGreeting()
+{
+    return isChristmas ? "MERRY CHRISTMAS " : "HAPPY NEW YEAR ";
+}
+
 char * MessageGenerator::getMessage()
 {
     checkClear();
