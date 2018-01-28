@@ -7,6 +7,7 @@
 #include "MessageGenerator.h"
 #include "TimeInfo.h"
 #include "GenericGrid.h"
+#include "GregMQTT.h"
 
 #define SIGN_OPTIONS 14
 #define SIGN_E11_COUNT 12
@@ -30,7 +31,7 @@
 class Sign: public GenericGrid
 {
     public:
-        Sign(CountdownClock *clock, bool skipTime, bool newYears, E131Network *net[]);
+        Sign(CountdownClock *clock, bool skipTime, bool newYears, E131Network *net[], GregMQTT *mqtt);
         virtual ~Sign();
         void test();
         void testLines();
@@ -48,10 +49,12 @@ class Sign: public GenericGrid
         void clear();
         void checkClear();
         void radio();
+        void sendStatus();
     private:
         void moveBall(int x, RGBColor *bgColor, int snowballY);
         void toGo(clockUnits);
         CountdownClock *clock;
+        GregMQTT *mqtt;
         char useMap[SIGN_OPTIONS];
         char message[80];
         E131Network *net1;

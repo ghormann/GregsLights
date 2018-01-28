@@ -81,11 +81,12 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     //setup Clock
     this->clock = new CountdownClock(this->skipTimeCheck, this->newYears, clockNetwork, this->getMqtt());
 
-    for (int i=0; i <=6; i++) {
+    for (int i=0; i <=6; i++)
+    {
         this->clock->setSpecial(i, clockE131->getBulb(i+21));
     }
 
-    this->sign = new Sign(clock, skipTimeCheck, newYears, sign);
+    this->sign = new Sign(clock, skipTimeCheck, newYears, sign, this->getMqtt());
 
 
     //setup Snowmen
@@ -99,7 +100,8 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
 
 }
 
-GregMQTT* DisplayModel::getMqtt() {
+GregMQTT* DisplayModel::getMqtt()
+{
     return this->mqtt;
 }
 

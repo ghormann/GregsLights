@@ -5,10 +5,13 @@
 
 
 
-Sign::Sign(CountdownClock *clock, bool skipTime, bool newYears, E131Network *net[]) : GenericGrid(SIGN_WIDTH,SIGN_HEIGHT,SIGN_DUMMY_WIDTH,SIGN_DUMMY_HEIGHT, skipTime, newYears)
+Sign::Sign(CountdownClock *clock, bool skipTime, bool newYears, E131Network *net[], GregMQTT *mqtt) : GenericGrid(SIGN_WIDTH,SIGN_HEIGHT,SIGN_DUMMY_WIDTH,SIGN_DUMMY_HEIGHT, skipTime, newYears)
 {
     this->clock = clock;
+    this->mqtt = mqtt;
     this->clear();
+    sprintf(message, "Booting up Sign.");
+    this->sendStatus();
     this->generator = new MessageGenerator(this->timeInfo);
     int netId = 0;
     int cnt = 0;
@@ -109,6 +112,12 @@ Sign::Sign(CountdownClock *clock, bool skipTime, bool newYears, E131Network *net
 Sign::~Sign()
 {
     //dtor
+}
+
+void Sign::sendStatus()
+{
+    std::string m = std::string(message);
+    this->mqtt->sendSignMessage(m);
 }
 
 RGBLight * Sign::getPixal(int i)
@@ -229,6 +238,9 @@ void Sign::staticSecondsToGo(RGBColor *fgColor, RGBColor *bgColor)
 
 void Sign::flashSecondsToGo(int times, double delay)
 {
+    sprintf(message, "Flash Seconds To Go");
+    this->sendStatus();
+
     RGBColor *bgColor = new RGBColor(0,0,5);
     for (int i =0; i < times; i++)
     {
@@ -246,6 +258,7 @@ void Sign::flashSecondsToGo(int times, double delay)
 void Sign::radio()
 {
     sprintf(message, "Radio Station");
+    this->sendStatus();
     RGBColor *bgColor = new RGBColor(0,8,0);
     RGBColor *fgColor = new RGBColor(255,0,0);
     for (int i = 0; i < SIGN_WIDTH; i++)
@@ -268,6 +281,7 @@ void Sign::radio()
 void Sign::rotateSecondsToGo()
 {
     sprintf(message, "Flashing Seconds To Go");
+    this->sendStatus();
     RGBColor *bgColor = new RGBColor(5,0,5);
     staticSecondsToGo(RGBColor::GREEN, bgColor);
     delete bgColor;
@@ -292,43 +306,55 @@ void Sign::rotateSecondsToGo()
 
 void Sign::toGo(clockUnits units)
 {
-    if (units == DAYS && clock->getSecondsRemaining() < 86400) {
+    if (units == DAYS && clock->getSecondsRemaining() < 86400)
+    {
         units = HOURS;
     }
-    if (units == HOURS && clock->getSecondsRemaining() < 3600) {
+    if (units == HOURS && clock->getSecondsRemaining() < 3600)
+    {
         units = MINUTES;
     }
-    if (clock->getSecondsRemaining() < 60) {
+    if (clock->getSecondsRemaining() < 60)
+    {
         return;
     }
 
     clock->setUnits(units);
+
     setDummyBackground(RGBColor::BLACK,0,0,SIGN_WIDTH,SIGN_HEIGHT);
     switch(units)
     {
     case MINUTES:
         clock->setDigitColor(RGBColor::RED);
         writeTextSmall(RGBColor::RED,7,6,"MINUTES TO GO");
+        sprintf(message, "Minutes to Go");
         break;
     case HOURS:
         clock->setDigitColor(RGBColor::GREEN);
         writeTextSmall(RGBColor::GREEN,12,6,"HOURS TO GO");
+        sprintf(message, "Hours to Go");
         break;
     case DAYS:
         clock->setDigitColor(RGBColor::PURPLE);
         writeTextSmall(RGBColor::PURPLE,14,6,"DAYS TO GO");
+        sprintf(message, "Days to Go");
         break;
     default:
         clock->setDigitColor(RGBColor::WHITE);
         scrollText(RGBColor::WHITE, RGBColor::BLACK, "SECONDS UNTIL CHRISTMAS", 0.02);
+        sprintf(message, "Seconds to Go");
         break;
     }
+    this->sendStatus();
+
     setDisplayPosition(0,0);
     gridSleep(5);
 
     // Reset things
     clock->setDigitColor(RGBColor::WHITE);
     clock->setUnits(SECONDS);
+    sprintf(message, "Seconds to Go");
+    this->sendStatus();
     scrollText(RGBColor::getRandom(), RGBColor::BLACK, "SECONDS TO GO", 0.02);
 }
 
@@ -336,12 +362,14 @@ void Sign::toGo(clockUnits units)
 void Sign::run()
 {
     double textSpeed = 0.02;
+    char *msg = NULL;
 
     // Not on douring the day
     if (!timeInfo->isDisplayHours())
     {
         sprintf(message, "Sleeping During the day (%02d)",
                 timeInfo->getHourOfDay());
+        this->sendStatus();
         setDummyBackground(RGBColor::BLACK);
         setDisplayPosition(0,0);
         sleep(5);
@@ -360,6 +388,8 @@ void Sign::run()
     else if (numSeconds > 32 && numSeconds  <80)
     {
         scrollText(RGBColor::WHITE, RGBColor::BLACK, "READY TO COUNT LOUD?", textSpeed);
+        sprintf(message, "Ready to Count?");
+        this->sendStatus();
     }
     else
     {
@@ -391,7 +421,11 @@ void Sign::run()
         case 5:
         case 6:
         case 7:
-            scrollText(RGBColor::getRandom(), RGBColor::BLACK, generator->getMessage(), textSpeed);
+            msg = generator->getMessage();
+            //sprintf(message, msg);
+            strcpy(message, msg);
+            this->sendStatus();
+            scrollText(RGBColor::getRandom(), RGBColor::BLACK, msg, textSpeed);
             break;
         case 8:
             if (numSeconds > 0)
@@ -407,6 +441,8 @@ void Sign::run()
             scrollSanta();
             break;
         case 12:
+            sprintf(message, "Candy Cane");
+            this->sendStatus();
             candyCane();
             break;
         case 13:
@@ -441,6 +477,7 @@ void Sign::clear()
 void Sign::fewTrees()
 {
     sprintf(message, "A Few Trees");
+    this->sendStatus();
 
     // Few Christimas Trees
     RGBColor *bgColor = new RGBColor(5,0,5);
@@ -487,6 +524,7 @@ void Sign::moveBall(int x, RGBColor *bgColor, int startY)
 void Sign::snowballFight()
 {
     sprintf(message, "Snowball Fights");
+    this->sendStatus();
 
     RGBColor *bgColor = new RGBColor(0,0,10);
     RGBColor *fgColor = RGBColor::PURPLE;
@@ -581,6 +619,8 @@ void Sign::snowballFight()
 void Sign::scrollSanta()
 {
     sprintf(message, "Scroll Santa");
+    this->sendStatus();
+
     RGBColor *bgColor = new RGBColor(0,0,15);
     setDummyBackground(bgColor);
     int xPos = SIGN_WIDTH+18;
