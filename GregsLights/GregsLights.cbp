@@ -55,6 +55,7 @@
 			<Add option="-fexceptions" />
 			<Add option="-Wno-write-strings" />
 			<Add option="-pthread" />
+			<Add directory="/usr/include/jsoncpp/" />
 		</Compiler>
 		<Linker>
 			<Add option="-pthread" />
@@ -62,6 +63,7 @@
 			<Add library="rt" />
 			<Add library="png" />
 			<Add library="mosquittopp" />
+			<Add library="jsoncpp" />
 		</Linker>
 		<Unit filename="include/CountdownClock.h" />
 		<Unit filename="include/DisplayModel.h" />

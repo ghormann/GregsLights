@@ -5,6 +5,10 @@ Required LIbaries (install using apt-get or simular)
 
 sudo apt-get install build-essential libgtk2.0-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev freeglut3-dev libmpg123-dev libwxgtk-media3.0-dev libncurses5-dev libjsoncpp1 libjsoncpp-dev libmosquittopp1 libmosquittopp-dev
 
+JSON Parser: https://github.com/open-source-parsers/jsoncpp/wiki
+
+Basic source for setting up SSL: http://www.steves-internet-guide.com/mosquitto-tls/
+
 
 Genereate a make file using: 
   * ../../cbp2make -in GregsLights.cbp 
