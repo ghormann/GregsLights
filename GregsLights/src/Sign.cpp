@@ -400,6 +400,8 @@ void Sign::run()
             full_message += nextName;
             full_message += "!";
             transform(full_message.begin(), full_message.end(), full_message.begin(), ::toupper);
+            strncpy(message, full_message.c_str(), 80);
+            this->sendStatus();
             scrollText(RGBColor::getRandom(), RGBColor::BLACK, (char *)full_message.c_str(), textSpeed);
             nextName = this->mqtt->getNextName();
         }
