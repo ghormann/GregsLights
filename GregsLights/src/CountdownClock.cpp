@@ -2,8 +2,9 @@
 #include <math.h>
 #include <stdlib.h>
 
-CountdownClock::CountdownClock(bool skip_time_check, bool show_new_year, E131Network *net[])
+CountdownClock::CountdownClock(bool skip_time_check, bool show_new_year, E131Network *net[], GregMQTT *mqtt)
 {
+    this->mqtt = mqtt;
     this->active = false;
     this->reset = true;
     this->sparkel = false;
@@ -175,6 +176,9 @@ void CountdownClock::tick()
 
         } // for i=1->7
 
+        if (lastTick != num_seconds) {
+            this->mqtt->sendClockMessage(num_seconds);
+        }
         lastTick = num_seconds;
     }
 }

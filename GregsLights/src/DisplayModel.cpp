@@ -12,6 +12,7 @@
 
 DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
 {
+    this->mqtt = new GregMQTT(true /*sendDMX*/);
     int signId = 0;
     this->skipTimeCheck = (skip_time_check == TRUE? true : false);
     this->newYears = (show_new_year == TRUE ? true: false);
@@ -78,7 +79,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     }
 
     //setup Clock
-    this->clock = new CountdownClock(this->skipTimeCheck, this->newYears, clockNetwork);
+    this->clock = new CountdownClock(this->skipTimeCheck, this->newYears, clockNetwork, this->getMqtt());
 
     for (int i=0; i <=6; i++) {
         this->clock->setSpecial(i, clockE131->getBulb(i+21));
@@ -96,6 +97,10 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     }
 
 
+}
+
+GregMQTT* DisplayModel::getMqtt() {
+    return this->mqtt;
 }
 
 void DisplayModel::shutdown()

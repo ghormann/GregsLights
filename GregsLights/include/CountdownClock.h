@@ -10,6 +10,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <ctype.h>
+#include "GregMQTT.h"
 
 #define CLOCK_DIGITS    7
 #define CLOCK_PIXALS_PER_DIGIT 43
@@ -34,7 +35,7 @@ enum clockUnits {SECONDS, MINUTES, HOURS, DAYS};
 class CountdownClock
 {
     public:
-        CountdownClock(bool skip_time_check, bool show_new_year, E131Network *net[]);
+        CountdownClock(bool skip_time_check, bool show_new_year, E131Network *net[], GregMQTT *mqtt);
         virtual ~CountdownClock();
         void setSpecial(int id, Bulb *blub);
         void setActive(bool);
@@ -61,6 +62,7 @@ class CountdownClock
         clockUnits displayUnits;
         TimeInfo *timeinfo;
         bool reset;
+        GregMQTT *mqtt;
         pthread_t clock_t;      /* Thread for writing to serial interface */
 
 };

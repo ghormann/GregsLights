@@ -7,7 +7,7 @@
 #include "CountdownClock.h"
 #include "Sign.h"
 #include "Snowmen.h"
-
+#include "GregMQTT.h"
 
 #define HOUSE_LIGHT_START 1
 #define HOUSE_LIGHT_END   4
@@ -30,10 +30,12 @@ class DisplayModel
         bool isSkipTimeCheck();
         bool isNewYears();
         void shutdown();
+        GregMQTT *getMqtt();
     protected:
     private:
         NetworkCollection *networks;
         NetworkCollection *networkClock;
+        GregMQTT *mqtt;
         CountdownClock *clock;
         char *messages[NUM_MESSAGE_BUFFERS];
         Sign *sign;

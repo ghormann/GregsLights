@@ -50,8 +50,8 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-std=c++0x" />
 			<Add option="-Wall" />
+			<Add option="-std=c++0x" />
 			<Add option="-fexceptions" />
 			<Add option="-Wno-write-strings" />
 			<Add option="-pthread" />
@@ -61,12 +61,14 @@
 			<Add option="-lncurses" />
 			<Add library="rt" />
 			<Add library="png" />
+			<Add library="mosquittopp" />
 		</Linker>
 		<Unit filename="include/CountdownClock.h" />
 		<Unit filename="include/DisplayModel.h" />
 		<Unit filename="include/DisplayTester.h" />
 		<Unit filename="include/Generator.h" />
 		<Unit filename="include/GenericGrid.h" />
+		<Unit filename="include/GregMQTT.h" />
 		<Unit filename="include/GregsDisplay.h" />
 		<Unit filename="include/MessageGenerator.h" />
 		<Unit filename="include/RGBPicture.h" />
@@ -99,6 +101,7 @@
 		<Unit filename="src/DisplayTester.cpp" />
 		<Unit filename="src/Generator.cpp" />
 		<Unit filename="src/GenericGrid.cpp" />
+		<Unit filename="src/GregMQTT.cpp" />
 		<Unit filename="src/GregsDisplay.cpp" />
 		<Unit filename="src/MessageGenerator.cpp" />
 		<Unit filename="src/RGBPicture.cpp" />
