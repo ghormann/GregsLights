@@ -292,6 +292,17 @@ int GenericGrid::drawLetter(char letter, RGBColor *color, int startX, int startY
     {
         offset = 7;
     }
+    else if (letter == '!')
+    {
+        for (y=0; y < 10; y++) {
+            d[0][y] = '1';
+            d[1][y] = '1';
+        }
+        d[0][12] = d[1][12] = '1';
+        d[0][13] = d[1][13] = '1';
+        offset=3;
+
+    }
     else if (letter == '.')
     {
 
@@ -1544,7 +1555,7 @@ int GenericGrid::drawLetterSmall(char letter, RGBColor* color, int startX, int s
     return offset;
 }
 
-int GenericGrid::writeTextSmall(RGBColor *fgColor, int x, int y , string str)
+int GenericGrid::writeTextSmall(RGBColor *fgColor, int x, int y, string str)
 {
     for ( std::string::iterator it=str.begin(); it!=str.end(); ++it)
     {
@@ -1553,7 +1564,7 @@ int GenericGrid::writeTextSmall(RGBColor *fgColor, int x, int y , string str)
     return x;
 }
 
-int GenericGrid::writeText(RGBColor *fgColor, int x, int y , string str)
+int GenericGrid::writeText(RGBColor *fgColor, int x, int y, string str)
 {
     for ( std::string::iterator it=str.begin(); it!=str.end(); ++it)
     {
