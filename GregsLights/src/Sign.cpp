@@ -396,10 +396,12 @@ void Sign::run()
     {
         std::string nextName = this->mqtt->getNextName();
         while (nextName.length() > 0) {
-            std::string full_message = std::string(generator->getGreeting());
+            std::string full_message = std::string("HI ");
             full_message += nextName;
-            full_message += "!";
+            full_message += "!   ";
+            full_message += std::string(generator->getGreeting());
             transform(full_message.begin(), full_message.end(), full_message.begin(), ::toupper);
+            full_message += "!!!";
             strncpy(message, full_message.c_str(), 80);
             this->sendStatus();
             scrollText(RGBColor::getRandom(), RGBColor::BLACK, (char *)full_message.c_str(), textSpeed);
