@@ -168,7 +168,7 @@ void GregMQTT::on_log(int level, const char *str)
 
 void GregMQTT::debug(std::string mesg)
 {
-    std::cout << "Debug: " << mesg << std::endl;
+    //std::cout << "Debug: " << mesg << std::endl;
 }
 
 GregMQTT::~GregMQTT()

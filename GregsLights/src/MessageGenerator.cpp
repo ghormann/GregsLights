@@ -111,6 +111,12 @@ char * MessageGenerator::getMessage()
         return "LISTEN TO THE LIGHTS AT 106.7 FM";
 
     case 11:
+    case 12:
+        return "TEXT YOUR FIRST NAME TO 513-854-1352 AND SEE YOUR NAME IN LIGHTS!";
+    case 13:
+    case 14:
+        return "TEXT YOUR FIRST NAME TO 513-854-1352 FOR A PERSONALIZED MESSAGE.";
+    case 15:
         const char * when = timeInfo->isNewYears() ? "THE NEW YEAR" : "CHRISTMAS";
         if (timeInfo->getHoursUntil() > 1)
             sprintf(message, "\\ ONLY %d HOURS UNTIL %s \\", timeInfo->getHoursUntil(), when);
