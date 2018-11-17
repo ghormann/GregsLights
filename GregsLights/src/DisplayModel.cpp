@@ -12,7 +12,8 @@
 
 DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
 {
-    this->mqtt = new GregMQTT(true /*sendDMX*/);
+    std::string clientId ="clock_" + std::to_string(time(NULL));
+    this->mqtt = new GregMQTT(true /*sendDMX*/, clientId.c_str());
     int signId = 0;
     this->skipTimeCheck = (skip_time_check == TRUE? true : false);
     this->newYears = (show_new_year == TRUE ? true: false);

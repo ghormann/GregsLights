@@ -309,6 +309,12 @@ int GenericGrid::drawLetter(char letter, RGBColor *color, int startX, int startY
         d[0][13]=d[0][12]=d[1][13]=d[1][12]='1';
         offset=3;
     }
+    else if (letter == ',')
+    {
+
+        d[0][13]=d[0][12]=d[1][12]='1';
+        offset=3;
+    }
     else if (letter == '^')
     {
         drawSpecial(startX,startY, GRID_TREE);
@@ -1526,6 +1532,12 @@ int GenericGrid::drawLetterSmall(char letter, RGBColor* color, int startX, int s
     else if (letter == '.')
     {
         d[0][8] = '1';
+        offset=2;
+    }
+    else if (letter == ',')
+    {
+        d[0][8] = '1';
+        d[1][7] = '1';
         offset=2;
     }
     else if (letter == 0x27)

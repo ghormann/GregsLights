@@ -53,6 +53,7 @@ class Sign: public GenericGrid
     private:
         void moveBall(int x, RGBColor *bgColor, int snowballY);
         void toGo(clockUnits);
+        std::string wrapName(std::string name);
         CountdownClock *clock;
         GregMQTT *mqtt;
         char useMap[SIGN_OPTIONS];

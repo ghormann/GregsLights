@@ -7,7 +7,7 @@
 
 
 
-GregMQTT::GregMQTT(bool enable)
+GregMQTT::GregMQTT(bool enable, const char * _id) : mosquittopp(_id)
 {
     isValid = enable;
 
@@ -72,7 +72,7 @@ GregMQTT::GregMQTT(bool enable)
         debug("Connecting");
         if (isValid)
         {
-            rc = connect(host.c_str(), port);
+            rc = connect(host.c_str(), port, 120);
             if (rc)
             {
                 std::cout << "Connect Failed with " << rc << std::endl;
@@ -149,6 +149,8 @@ void GregMQTT::myPublish(std::string topic, std::string value)
         return;
     }
     debug("Starting Publish");
+    debug(topic);
+    debug(value);
     int ret = publish(NULL, topic.c_str(), value.size(), value.c_str(), 1, false);
     debug("Ending Publish");
     if (ret != MOSQ_ERR_SUCCESS)
@@ -166,7 +168,7 @@ void GregMQTT::on_log(int level, const char *str)
 
 void GregMQTT::debug(std::string mesg)
 {
-    //std::cout << "Debug: " << mesg << std::endl;
+    std::cout << "Debug: " << mesg << std::endl;
 }
 
 GregMQTT::~GregMQTT()

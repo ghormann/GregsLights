@@ -12,7 +12,7 @@
 class GregMQTT : public mosqpp::mosquittopp
 {
 public:
-    GregMQTT(bool enabled);
+    GregMQTT(bool enabled, const char * _id);
     virtual ~GregMQTT();
     virtual void on_connect(int rc);
     void on_message(const struct mosquitto_message *message);

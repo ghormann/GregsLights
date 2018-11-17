@@ -360,6 +360,56 @@ void Sign::toGo(clockUnits units)
 }
 
 
+std::string Sign::wrapName(std::string name)
+{
+    std::string full_message = std::string("");
+    int i = rand() % 6;
+    switch(i)
+    {
+    case 0:
+        full_message += "HI ";
+        full_message += name;
+        full_message += "!   ";
+        full_message += std::string(generator->getGreeting());
+        break;
+    case 1:
+        full_message += std::string(generator->getGreeting());
+        full_message += name;
+        full_message += "! GLAD YOU ARE HERE!";
+        break;
+    case 2:
+        full_message += "LOOK! IT IS ";
+        full_message += name;
+        full_message += "! ";
+        full_message += std::string(generator->getGreeting());
+        full_message += "TO YOU!";
+        break;
+    case 3:
+        full_message += "HAVE A ";
+        full_message += std::string(generator->getGreeting());
+        full_message += name;
+        full_message += "!";
+        break;
+    case 4:
+        full_message += std::string(generator->getGreeting());
+        full_message += "TO YOU, ";
+        full_message += name;
+        full_message += "!";
+        break;
+    case 5:
+        full_message += "GREETINGS ";
+        full_message += name;
+        full_message += "! ";
+        full_message += std::string(generator->getGreeting());
+        full_message += "!";
+        break;
+    }
+
+    transform(full_message.begin(), full_message.end(), full_message.begin(), ::toupper);
+    return full_message;
+
+}
+
 void Sign::run()
 {
     double textSpeed = 0.02;
@@ -395,13 +445,9 @@ void Sign::run()
     else
     {
         std::string nextName = this->mqtt->getNextName();
-        while (nextName.length() > 0) {
-            std::string full_message = std::string("HI ");
-            full_message += nextName;
-            full_message += "!   ";
-            full_message += std::string(generator->getGreeting());
-            transform(full_message.begin(), full_message.end(), full_message.begin(), ::toupper);
-            full_message += "!!!";
+        while (nextName.length() > 0)
+        {
+            std::string full_message = wrapName(nextName);
             strncpy(message, full_message.c_str(), 80);
             this->sendStatus();
             scrollText(RGBColor::getRandom(), RGBColor::BLACK, (char *)full_message.c_str(), textSpeed);
