@@ -131,6 +131,7 @@ void CountdownClock::tick()
     if (lastTick != num_seconds || reset == true)
     {
         reset = false;
+	this->special[SPECIAL_SIGN_ON]->setIntensity(100);
         sprintf(message, "Running");
         if (num_seconds <= 0)
         {
