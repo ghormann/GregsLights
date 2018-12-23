@@ -4,7 +4,7 @@
 #include <sstream>
 #include <json/json.h>
 #include <string.h>
-
+#include <algorithm>
 
 
 GregMQTT::GregMQTT(bool enable, const char * _id) : mosquittopp(_id)
@@ -54,7 +54,6 @@ GregMQTT::GregMQTT(bool enable, const char * _id) : mosquittopp(_id)
             std::cout << "setting passwd failed" << std::endl;
             isValid = false;
         }
-
         debug("Setting CA");
         if (tls_set(ca_file.c_str()) != MOSQ_ERR_SUCCESS)
         {
@@ -98,7 +97,7 @@ std::string GregMQTT::getNextName()
     if (this->name_queue.size() > 0)
     {
         std::string name = this->name_queue.front();
-        this->name_queue.pop();
+        this->name_queue.pop_front();
         return name;
     }
     return std::string();
@@ -108,9 +107,18 @@ void GregMQTT::on_message(const struct mosquitto_message *message)
 {
     if (strcmp("/christmas/personsName", message->topic) == 0)
     {
-        std::string name = std::string(reinterpret_cast<char*>(message->payload));
-        std::lock_guard<std::mutex> lock(name_queue_mutex);
-        this->name_queue.push(name);
+        if (message->payload != NULL)
+        {
+            std::string name = std::string(reinterpret_cast<char*>(message->payload));
+            std::transform(name.begin(), name.end(),name.begin(), ::toupper);
+            // Push name only if not in queue already
+            std::lock_guard<std::mutex> lock(name_queue_mutex);
+            auto it = std::find(name_queue.begin(), name_queue.end(), name);
+            if (it == name_queue.end())
+            {
+                this->name_queue.push_back(name);
+            }
+        }
     }
 }
 

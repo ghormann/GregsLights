@@ -3,7 +3,7 @@
 
 #include <mosquittopp.h>
 #include <string>
-#include <queue>
+#include <deque>
 #include <mutex>
 
 # define GJH_SSL_VERIFY_PEER                 0x01
@@ -27,7 +27,7 @@ protected:
 private:
     bool isValid;
     void debug(std::string mesg);
-    std::queue<std::string> name_queue;
+    std::deque<std::string> name_queue;
     std::mutex name_queue_mutex;
 };
 
