@@ -1,6 +1,12 @@
 #ifndef RGBPICTURE_H
 #define RGBPICTURE_H
 
+// See: https://stackoverflow.com/questions/2442335/libpng-boostgil-png-infopp-null-not-found
+
+#define png_infopp_NULL (png_infopp)NULL
+#define png_voidp_NULL (png_voidp)NULL
+#define int_p_NULL (int*)NULL
+
 #include <sys/types.h>
 #include <png.h>
 #include <string>
