@@ -34,9 +34,9 @@ void Snowmen::run()
         }
         else
         {
-            sprintf(message2, "Sleeping during day %d", timeinfo->getHourOfDay());
+            sprintf(message2, "Sleeping during day as hour is %d", timeinfo->getHourOfDay());
             setBodies(false);
-            sleep(5);
+            sleep(60);
         }
     }
 }

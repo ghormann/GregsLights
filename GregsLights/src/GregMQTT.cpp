@@ -105,7 +105,11 @@ std::string GregMQTT::getNextName()
 
 void GregMQTT::on_message(const struct mosquitto_message *message)
 {
-    if (strcmp("/christmas/personsName", message->topic) == 0)
+    if (
+        (strcmp("/christmas/personsName", message->topic) == 0)
+        || (strcmp("/christmas/personsNameFront", message->topic) == 0)
+        || (strcmp("/christmas/personsNameLow", message->topic) == 0)
+    )
     {
         if (message->payload != NULL)
         {
@@ -134,6 +138,8 @@ void GregMQTT::on_connect(int rc)
     {
         std::cout << "Subscribing" << std::endl;
         subscribe(NULL, "/christmas/personsName");
+        subscribe(NULL, "/christmas/personsNameFront");
+        subscribe(NULL, "/christmas/personsNameLow");
     }
 }
 
