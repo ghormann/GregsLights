@@ -269,6 +269,7 @@ void BasicGLPane::render( wxPaintEvent& evt )
     glEnd();
 
     // The Sign
+    int signoffsetY = 120;
     for (int j = 0; j < SIGN_HEIGHT; j++ )
     {
         for (int i = 0; i< SIGN_WIDTH; i++)
@@ -279,10 +280,10 @@ void BasicGLPane::render( wxPaintEvent& evt )
             float blue = ((float)pix->getBlue()) / 100;
             glColor4f(red, green, blue, 1);
             glBegin(GL_QUADS);
-            glVertex3f(i*6+3, 3 + j*6, 0); // upper lefft
-            glVertex3f(i*6+3, 6 + j*6, 0);  // Lower Left
-            glVertex3f(i*6+6, 6 + j*6, 0); // Bottom Right
-            glVertex3f(i*6+6, 3 + j*6, 0); // Uper Right
+            glVertex3f(i*6+3, 3 + j*6 + signoffsetY, 0); // upper lefft
+            glVertex3f(i*6+3, 6 + j*6 + signoffsetY, 0);  // Lower Left
+            glVertex3f(i*6+6, 6 + j*6 + signoffsetY, 0); // Bottom Right
+            glVertex3f(i*6+6, 3 + j*6 + signoffsetY, 0); // Uper Right
             glEnd();
         }
     }
@@ -294,7 +295,7 @@ void BasicGLPane::render( wxPaintEvent& evt )
         for (int i = 0; i  < 43; i++)
         {
             int x = 50+ (CLOCK_DIGITS-digit) * 60 + digitX[i]*6;
-            int y = 200 + digitY[i] * 6;
+            int y = 0 + digitY[i] * 6;
 
             RGBLight *pix = model->getClock()->getPixel(digit,i);
             float red = ((float)pix->getRed())  / 100;

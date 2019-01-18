@@ -31,8 +31,8 @@ void * DisplayTester::snowmenThread(void * args)
     DisplayTester *ptr = (DisplayTester *) args;
     while(1)
     {
-        //ptr->model->getSnowmen()->run();
-        ptr->model->getSnowmen()->test_snowmen();
+        ptr->model->getSnowmen()->run();
+        //ptr->model->getSnowmen()->test_snowmen();
     }
     return NULL;
 }

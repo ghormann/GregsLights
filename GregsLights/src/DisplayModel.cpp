@@ -92,11 +92,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
 
     //setup Snowmen
     this->snowmen = new Snowmen(this->skipTimeCheck);
-    for (int i =0; i < 8; i++)
-    {
-        snowmen->setBulb(i, lor->getBulb(5,i+1));
-        snowmen->setBulb(i+8, lor->getBulb(6,i+1));
-    }
+    //
 
 
 }
