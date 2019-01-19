@@ -2,6 +2,7 @@
 #include "stdio.h"
 #include <stdio.h>
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -29,6 +30,23 @@ int GenericGrid::getGridHeight()
 int GenericGrid::getGridWidth()
 {
     return gridWidth;
+}
+
+
+void GenericGrid::drawCircle(int centerX, int centerY, int radius, RGBColor *color)
+{
+    int x, y;
+    for (x = centerX - radius; x <= centerX+radius; x++)
+    {
+        for (y = centerY-radius; y <= centerY+radius; y++)
+        {
+            int distiance = sqrt(pow(x-centerX, 2) + pow(y-centerY,2));
+            if (distiance <= radius)
+            {
+                getPixal(x,y)->set(color);
+            }
+        }
+    }
 }
 
 

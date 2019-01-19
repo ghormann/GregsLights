@@ -71,6 +71,7 @@ public:
     void interruptThread();
     int getGridHeight();
     int getGridWidth();
+    void drawCircle(int centerX, int centerY, int radius, RGBColor *color);
     virtual void scrollMerry();
 protected:
     int gridHeight;
