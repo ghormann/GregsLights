@@ -114,41 +114,65 @@ void Snowmen::run()
     }
 }
 
-void Snowmen::do_it_snowmen()
+void Snowmen::drawSnowmen(int pos)
 {
     int x,y;
-    GenericGrid * left = getSnowmen(SNOWMAN_LEFT);
+    GenericGrid * who = getSnowmen(pos);
     //TOP
-    left->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-65,10,RGBColor::WHITE);
+    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-65,10,RGBColor::WHITE);
     //Mid
-    left->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-45,14,RGBColor::WHITE);
+    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-45,14,RGBColor::WHITE);
     //Bottom
-    left->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-20,20,RGBColor::WHITE);
+    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-20,20,RGBColor::WHITE);
 
     //Nose
+    int startX = SNOWMEN_WIDTH/2+8;
+    int endX = SNOWMEN_WIDTH/2+16;
     y = SNOWMEN_HEIGHT-65;
-    for (x = +SNOWMEN_WIDTH/2+8; x < +SNOWMEN_WIDTH/2+16; x++)
+    if (pos == SNOWMAN_RIGHT)
     {
-        left->getPixal(x,y)->set(RGBColor::ORANGE);
-        left->getPixal(x,y-1)->set(RGBColor::ORANGE);
+        startX -=23;
+        endX -=23;
+    }
+
+    for (x = startX; x < endX; x++)
+    {
+        who->getPixal(x,y)->set(RGBColor::ORANGE);
+        who->getPixal(x,y-1)->set(RGBColor::ORANGE);
     }
     // Eye
-    left->drawCircle(SNOWMEN_WIDTH/2+5,SNOWMEN_HEIGHT-70,1,RGBColor::BLACK);
+    x = (pos==SNOWMAN_LEFT ? SNOWMEN_WIDTH/2+5 : SNOWMEN_WIDTH/2-4);
+    who->drawCircle(x,SNOWMEN_HEIGHT-70,1,RGBColor::BLACK);
     //Buttons
-    left->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-26,1,RGBColor::BLACK);
-    left->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-38,1,RGBColor::BLACK);
-    left->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-50,1,RGBColor::BLACK);
+    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-26,1,RGBColor::BLACK);
+    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-38,1,RGBColor::BLACK);
+    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-50,1,RGBColor::BLACK);
 
     // Mouth
+    if (pos == SNOWMAN_LEFT)
+    {
+        x=SNOWMEN_WIDTH/2+8;
+        y=SNOWMEN_HEIGHT-60;
+        who->getPixal(x,y)->set(RGBColor::BLACK);
+        who->getPixal(x-1,y)->set(RGBColor::BLACK);
+        who->getPixal(x-2,y-1)->set(RGBColor::BLACK);
+        who->getPixal(x-3,y-2)->set(RGBColor::BLACK);
+    }
+    else
+    {
+        x=SNOWMEN_WIDTH/2-8;
+        y=SNOWMEN_HEIGHT-60;
+        who->getPixal(x,y)->set(RGBColor::BLACK);
+        who->getPixal(x+1,y)->set(RGBColor::BLACK);
+        who->getPixal(x+2,y-1)->set(RGBColor::BLACK);
+        who->getPixal(x+3,y-2)->set(RGBColor::BLACK);
+    }
+}
 
-    x=SNOWMEN_WIDTH/2+8;
-    y=SNOWMEN_HEIGHT-60;
-    left->getPixal(x,y)->set(RGBColor::BLACK);
-    left->getPixal(x-1,y)->set(RGBColor::BLACK);
-    left->getPixal(x-2,y-1)->set(RGBColor::BLACK);
-    left->getPixal(x-3,y-2)->set(RGBColor::BLACK);
-
-
+void Snowmen::do_it_snowmen()
+{
+    drawSnowmen(SNOWMAN_LEFT);
+    drawSnowmen(SNOWMAN_RIGHT);
     sleep(5); // Replace me
 }
 
