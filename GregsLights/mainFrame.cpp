@@ -246,6 +246,31 @@ void RenderTimer::Notify()
     */
 }
 
+void drawGrid(int xoffset, int yoffset, int pixSpacing, GenericGrid * grid)
+{
+    int height = grid->getGridHeight();
+    int width = grid->getGridWidth();
+    for (int j = 0; j < height; j++ )
+    {
+        for (int i = 0; i< width; i++)
+        {
+            RGBLight *pix = grid->getPixal(i,j);
+            float red = ((float)pix->getRed())  / 100;
+            float green = ((float)pix->getGreen()) / 100;
+            float blue = ((float)pix->getBlue()) / 100;
+            glColor4f(red, green, blue, 1);
+            glBegin(GL_QUADS);
+            glVertex3f(i*pixSpacing*2 +pixSpacing + xoffset, pixSpacing + j*pixSpacing*2 + yoffset, 0); // upper lefft
+            glVertex3f(i*pixSpacing*2+pixSpacing + xoffset, (pixSpacing*2) + j*pixSpacing*2 + yoffset, 0);  // Lower Left
+            glVertex3f(i*pixSpacing*2+(pixSpacing*2) + xoffset, (pixSpacing*2) + j*pixSpacing*2 + yoffset, 0); // Bottom Right
+            glVertex3f(i*pixSpacing*2+(pixSpacing*2) + xoffset, pixSpacing + j*pixSpacing*2 + yoffset, 0); // Uper Right
+            glEnd();
+        }
+    }
+
+
+}
+
 void BasicGLPane::render( wxPaintEvent& evt )
 {
     if(!IsShown()) return;
@@ -268,6 +293,9 @@ void BasicGLPane::render( wxPaintEvent& evt )
     glVertex3f(0,getHeight(),0);
     glEnd();
 
+    drawGrid(0,120,3,model->getSign());
+
+    /*
     // The Sign
     int signoffsetY = 120;
     for (int j = 0; j < SIGN_HEIGHT; j++ )
@@ -287,6 +315,7 @@ void BasicGLPane::render( wxPaintEvent& evt )
             glEnd();
         }
     }
+    */
 
     // The Clock
 

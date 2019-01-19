@@ -22,6 +22,16 @@ GenericGrid::GenericGrid(int width_, int height_, int dummy_width_, int dummy_he
 
 }
 
+int GenericGrid::getGridHeight()
+{
+    return gridHeight;
+}
+int GenericGrid::getGridWidth()
+{
+    return gridWidth;
+}
+
+
 void GenericGrid::interruptThread()
 {
     if (interruptAble)
@@ -294,7 +304,8 @@ int GenericGrid::drawLetter(char letter, RGBColor *color, int startX, int startY
     }
     else if (letter == '!')
     {
-        for (y=0; y < 10; y++) {
+        for (y=0; y < 10; y++)
+        {
             d[0][y] = '1';
             d[1][y] = '1';
         }
