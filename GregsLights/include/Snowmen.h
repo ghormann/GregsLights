@@ -5,8 +5,19 @@
 #include "controller/Bulb.h"
 #include "TimeInfo.h"
 #include "GenericGrid.h"
+
 #define SNOWMEN_HEIGHT 95
 #define SNOWMEN_WIDTH 47
+
+#define SPLASH_GRID_HEIGHT 48
+#define SPLASH_GRID_WIDTH 24
+
+#define SKY_GRID_HEIGHT 24
+#define SKY_GRID_WIDTH 95
+
+#define SNOWMAN_RIGHT 1
+#define SNOWMAN_LEFT  0
+
 
 #define write_data(pause)  usleep((pause) * 1000000)
 
@@ -36,6 +47,8 @@ public:
     void setBulb(int i, Bulb *b);
     char * getMessage();
     SnowmenGrid *getSnowmen(int pos);
+    SnowmenGrid *getSplashGrid(int pos);
+    SnowmenGrid *getSkyGrid();
 protected:
     /*
         void hit_low_right(double pause);
@@ -52,6 +65,8 @@ protected:
 private:
     pthread_t snowman_t;
     SnowmenGrid *snowmen[2];
+    SnowmenGrid *splash[2];
+    SnowmenGrid *skyGrid;
     char message2[100];
     TimeInfo *timeinfo;
 };

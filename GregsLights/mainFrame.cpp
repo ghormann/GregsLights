@@ -3,6 +3,7 @@
 #include "wx/glcanvas.h"
 #include "include/graphics.h"
 #include <wx/timer.h>
+#include "../include/Snowmen.h"
 #include <iostream>
 
 // include OpenGL
@@ -119,7 +120,7 @@ bool MyApp::OnInit()
 
 
     wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
-    frame = new wxFrame((wxFrame *)NULL, -1,  wxT("Hello GL World"), wxPoint(50,50), wxSize(700,820));
+    frame = new wxFrame((wxFrame *)NULL, -1,  wxT("Hello GL World"), wxPoint(50,50), wxSize(1000,820));
 
     int args[] = {WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 16, 0};
 
@@ -297,7 +298,14 @@ void BasicGLPane::render( wxPaintEvent& evt )
     glVertex3f(0,getHeight(),0);
     glEnd();
 
+    // Sign
     drawGrid(130,100,2,model->getSign());
+    // Snowmen
+    drawGrid(0,250,1,model->getSnowmen()->getSnowmen(SNOWMAN_LEFT));
+    drawGrid(94,250,2,model->getSnowmen()->getSplashGrid(SNOWMAN_LEFT));
+    drawGrid(190,210,2,model->getSnowmen()->getSkyGrid());
+    drawGrid(570,250,2,model->getSnowmen()->getSplashGrid(SNOWMAN_RIGHT));
+    drawGrid(667,250,1,model->getSnowmen()->getSnowmen(SNOWMAN_RIGHT));
 
     // The Clock
 

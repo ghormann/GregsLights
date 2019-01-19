@@ -5,8 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define RIGHT 0
-#define LEFT  1
 
 
 
@@ -17,6 +15,9 @@ Snowmen::Snowmen(bool skipTime)
     snowman_t = 0;
     snowmen[0] = new SnowmenGrid(SNOWMEN_WIDTH,SNOWMEN_HEIGHT,SNOWMEN_WIDTH, SNOWMEN_HEIGHT,skipTime,false);
     snowmen[1] = new SnowmenGrid(SNOWMEN_WIDTH,SNOWMEN_HEIGHT,SNOWMEN_WIDTH, SNOWMEN_HEIGHT,skipTime,false);
+    splash[0] = new SnowmenGrid(SPLASH_GRID_WIDTH,SPLASH_GRID_HEIGHT,SPLASH_GRID_WIDTH, SPLASH_GRID_HEIGHT,skipTime,false);
+    splash[1] = new SnowmenGrid(SPLASH_GRID_WIDTH,SPLASH_GRID_HEIGHT,SPLASH_GRID_WIDTH, SPLASH_GRID_HEIGHT,skipTime,false);
+    skyGrid = new SnowmenGrid(SKY_GRID_WIDTH,SKY_GRID_HEIGHT,SKY_GRID_WIDTH, SKY_GRID_HEIGHT,skipTime,false);
     strcpy(message2, "Starting up");
 }
 
@@ -67,18 +68,34 @@ SnowmenGrid::SnowmenGrid(int width_, int height_, int dummy_with_, int dummy_hei
 
 // TODO (ghormann#1#): Fix Mapping of Pixals
         this->pixals[i] = new RGBLight(new DummyBulb(), new DummyBulb(), new DummyBulb());
+        this->pixals[i]->set(25,25,25);
     }
 
 }
 
 SnowmenGrid *  Snowmen::getSnowmen(int pos)
 {
-    if (pos < RIGHT || pos > LEFT)
+    if (pos != SNOWMAN_RIGHT && pos != SNOWMAN_LEFT)
     {
         throw "Invalid position";
     }
     return snowmen[pos];
 }
+
+SnowmenGrid *  Snowmen::getSkyGrid()
+{
+    return skyGrid;
+}
+
+SnowmenGrid *  Snowmen::getSplashGrid(int pos)
+{
+    if (pos != SNOWMAN_RIGHT && pos != SNOWMAN_LEFT)
+    {
+        throw "Invalid position";
+    }
+    return splash[pos];
+}
+
 
 void Snowmen::run()
 {
