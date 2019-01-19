@@ -32,6 +32,41 @@ int GenericGrid::getGridWidth()
     return gridWidth;
 }
 
+void GenericGrid::setPixelAA(int x, int y, double pct, RGBColor *color) {
+    int r = (color->getRed() * pct) / 100;
+    int g = (color->getGreen() * pct) / 100;
+    int b = (color->getBlue() * pct) / 100;
+    //printf("DEBUG: %d, %d:  %f, green: %d\n", x, y, pct, g);
+    getPixal(x,y)->set(r,g,b);
+}
+
+// Source: http://members.chello.at/~easyfilter/bresenham.html
+void GenericGrid::plotLineWidth(int x0, int y0, int x1, int y1, float wd, RGBColor *color)
+{
+   int dx = abs(x1-x0), sx = x0 < x1 ? 1 : -1;
+   int dy = abs(y1-y0), sy = y0 < y1 ? 1 : -1;
+   int err = dx-dy, e2, x2, y2;                          /* error value e_xy */
+   float ed = dx+dy == 0 ? 1 : sqrt((float)dx*dx+(float)dy*dy);
+
+   for (wd = (wd+1)/2; ; ) {                                   /* pixel loop */
+      setPixelAA(x0,y0,100-max((float)0,100*(abs(err-dx+dy)/ed-wd+1)),color);
+      e2 = err; x2 = x0;
+      if (2*e2 >= -dx) {                                           /* x step */
+         for (e2 += dy, y2 = y0; e2 < ed*wd && (y1 != y2 || dx > dy); e2 += dx)
+            setPixelAA(x0, y2 += sy, 100-max((float)0,100*(abs(e2)/ed-wd+1)),color);
+         if (x0 == x1) break;
+         e2 = err; err -= dy; x0 += sx;
+      }
+      if (2*e2 <= dy) {                                            /* y step */
+         for (e2 = dx-e2; e2 < ed*wd && (x1 != x2 || dx < dy); e2 += dy)
+            setPixelAA(x2 += sx, y0, 100-max((float)0,100*(abs(e2)/ed-wd+1)),color);
+         if (y0 == y1) break;
+         err += dx; y0 += sy;
+      }
+   }
+}
+
+
 
 void GenericGrid::drawCircle(int centerX, int centerY, int radius, RGBColor *color)
 {

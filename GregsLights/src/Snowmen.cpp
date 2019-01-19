@@ -169,10 +169,41 @@ void Snowmen::drawSnowmen(int pos)
     }
 }
 
+void DrawLine(GenericGrid *grid, int startX, int endX, double mx, int b, RGBColor *color) {
+    int x,y;
+    for (x = startX; x<=endX; x++) {
+        y = mx*x + b;
+        grid->getPixal(x,y)->set(color);
+    }
+}
+
+void Snowmen::throwLeft() {
+    int sholder_x = 12;
+    int sholder_y = 42;
+    int x,y;
+    double duration = 0.2;
+    x = sholder_x;
+    y = 16;
+
+    GenericGrid *left = getSnowmen(SNOWMAN_LEFT);
+    left->plotLineWidth(1,30,sholder_x,sholder_y,2.0,RGBColor::WHITE);
+    left->plotLineWidth(1,30,x,y,2.0,RGBColor::WHITE);
+    left->drawCircle(x,y,3, RGBColor::WHITE);
+    write_data(duration);
+
+    // POS2
+    left->setBackground(RGBColor::BLACK);
+    drawSnowmen(SNOWMAN_LEFT);
+    write_data(duration);
+
+
+}
+
 void Snowmen::do_it_snowmen()
 {
     drawSnowmen(SNOWMAN_LEFT);
     drawSnowmen(SNOWMAN_RIGHT);
+    throwLeft();
     sleep(5); // Replace me
 }
 

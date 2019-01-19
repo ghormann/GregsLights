@@ -72,6 +72,8 @@ public:
     int getGridHeight();
     int getGridWidth();
     void drawCircle(int centerX, int centerY, int radius, RGBColor *color);
+    void plotLineWidth(int x0, int y0, int x1, int y1, float wd, RGBColor *color);
+    void setPixelAA(int x, int y, double pct, RGBColor *color);
     virtual void scrollMerry();
 protected:
     int gridHeight;
