@@ -99,6 +99,7 @@ void Snowmen::run()
 
 void Snowmen::do_it_snowmen()
 {
+    sleep(5); // Replace me
 }
 
 
