@@ -169,33 +169,49 @@ void Snowmen::drawSnowmen(int pos)
     }
 }
 
-void DrawLine(GenericGrid *grid, int startX, int endX, double mx, int b, RGBColor *color) {
+void DrawLine(GenericGrid *grid, int startX, int endX, double mx, int b, RGBColor *color)
+{
     int x,y;
-    for (x = startX; x<=endX; x++) {
+    for (x = startX; x<=endX; x++)
+    {
         y = mx*x + b;
         grid->getPixal(x,y)->set(color);
     }
 }
 
-void Snowmen::throwLeft() {
-    int sholder_x = 12;
-    int sholder_y = 42;
-    int x,y;
-    double duration = 0.2;
-    x = sholder_x;
-    y = 16;
+void Snowmen::throwLeft()
+{
+    int sholder_x[] = {16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16};
+    int sholder_y[] = {42, 42,42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42};
+    int ball_x[] = {12,12,11, 10, 9, 8, 8, 7, 7, 6, 8, 10, 12, 14, 16, 19, 22, 25, 28, 32, 36, 40};
+    int ball_y[] = {16,16,16,16, 15, 15, 15, 14, 14, 13, 13, 12, 12, 11, 12, 12, 12, 12, 13, 14, 15, 17};
+    int elbow_x[] = {1,2,3, 4, 5, 5, 6, 7, 8, 9};
+    int elbow_y[] = {30,30,30, 30, 30, 30, 30, 30, 30, 30};
+    double duration = 0.02;
 
     GenericGrid *left = getSnowmen(SNOWMAN_LEFT);
-    left->plotLineWidth(1,30,sholder_x,sholder_y,2.0,RGBColor::WHITE);
-    left->plotLineWidth(1,30,x,y,2.0,RGBColor::WHITE);
-    left->drawCircle(x,y,3, RGBColor::WHITE);
-    write_data(duration);
+    for (int i = 0; i< 10; i++)
+    {
+        left->setBackground(RGBColor::BLACK);
+        drawSnowmen(SNOWMAN_LEFT);
 
-    // POS2
-    left->setBackground(RGBColor::BLACK);
-    drawSnowmen(SNOWMAN_LEFT);
-    write_data(duration);
+        left->plotLineWidth(elbow_x[i],elbow_y[i],sholder_x[i],sholder_y[i],2.0,RGBColor::WHITE);
+        left->plotLineWidth(elbow_x[i],elbow_y[i],ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
+        left->drawCircle(ball_x[i],ball_y[i],3, RGBColor::WHITE);
+        write_data(duration);
+    }
 
+    for (int i = 10; i< 22; i++)
+    {
+        left->setBackground(RGBColor::BLACK);
+        drawSnowmen(SNOWMAN_LEFT);
+
+        left->plotLineWidth(sholder_x[i],sholder_y[i],ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
+        left->drawCircle(ball_x[i],ball_y[i],3, RGBColor::WHITE);
+        write_data(duration);
+    }
+
+    write_data(1.0);
 
 }
 
@@ -203,8 +219,11 @@ void Snowmen::do_it_snowmen()
 {
     drawSnowmen(SNOWMAN_LEFT);
     drawSnowmen(SNOWMAN_RIGHT);
-    throwLeft();
-    sleep(5); // Replace me
+    while(1)
+    {
+        throwLeft();
+    }
+    //sleep(5); // Replace me
 }
 
 
