@@ -86,7 +86,10 @@ void GenericGrid::drawCircle(int centerX, int centerY, int radius, RGBColor *col
             int distiance = sqrt(pow(x-centerX, 2) + pow(y-centerY,2));
             if (distiance <= radius)
             {
-                getPixal(x,y)->set(color);
+                if (x >= 0 && x < gridWidth && y >=0 && y < gridHeight)
+                {
+                    getPixal(x,y)->set(color);
+                }
             }
         }
     }

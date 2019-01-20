@@ -181,34 +181,74 @@ void DrawLine(GenericGrid *grid, int startX, int endX, double mx, int b, RGBColo
 
 void Snowmen::throwLeft()
 {
-    int sholder_x[] = {16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16};
-    int sholder_y[] = {42, 42,42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42};
-    int ball_x[] = {12,12,11, 10, 9, 8, 8, 7, 7, 6, 8, 10, 12, 14, 16, 19, 22, 25, 28, 32, 36, 40};
-    int ball_y[] = {16,16,16,16, 15, 15, 15, 14, 14, 13, 13, 12, 12, 11, 12, 12, 12, 12, 13, 14, 15, 17};
-    int elbow_x[] = {1,2,3, 4, 5, 5, 6, 7, 8, 9};
-    int elbow_y[] = {30,30,30, 30, 30, 30, 30, 30, 30, 30};
-    double duration = 0.02;
+    const int sholder_x = 16;
+    const int sholder_y = 42;
+    const int ball_x[] = {12,12,11, 10, 9, 8, 8, 7, 7, 6, 8, 10, 12, 14, 16, 19, 22, 25, 28, 32, 36, 40};
+    const int ball_y[] = {16,16,16,16, 15, 15, 15, 14, 14, 13, 13, 12, 12, 11, 12, 12, 12, 12, 13, 14, 15, 17};
+    const int elbow_x[] = {1,2,3, 4, 5, 5, 6, 7, 8, 9};
+    const int elbow_y[] = {30,30,30, 30, 30, 30, 30, 30, 30, 30};
+
+    // For Arm away
+    const int hand_x[] = {41, 42, 43, 44, 43, 42};
+    const int hand_y[] = {20, 26, 32, 38, 44, 50};
+    const int ball2_x[] = {44,48, 0, 3, 6, 9, 12, 15, 18, 21, 23};
+    const int ball2_y[] = {17,17, 8, 8, 8, 8,  8,  8,  8, 8, 8};
+    const double duration = 0.02;
 
     GenericGrid *left = getSnowmen(SNOWMAN_LEFT);
+    GenericGrid *splash = getSplashGrid(SNOWMAN_LEFT);
+
+    // Pull back the Arm
     for (int i = 0; i< 10; i++)
     {
         left->setBackground(RGBColor::BLACK);
         drawSnowmen(SNOWMAN_LEFT);
 
-        left->plotLineWidth(elbow_x[i],elbow_y[i],sholder_x[i],sholder_y[i],2.0,RGBColor::WHITE);
+        left->plotLineWidth(elbow_x[i],elbow_y[i],sholder_x,sholder_y,2.0,RGBColor::WHITE);
         left->plotLineWidth(elbow_x[i],elbow_y[i],ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
         left->drawCircle(ball_x[i],ball_y[i],3, RGBColor::WHITE);
         write_data(duration);
     }
 
+    // Move the Arm foward as a Straight line
     for (int i = 10; i< 22; i++)
     {
         left->setBackground(RGBColor::BLACK);
         drawSnowmen(SNOWMAN_LEFT);
 
-        left->plotLineWidth(sholder_x[i],sholder_y[i],ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
+        left->plotLineWidth(sholder_x,sholder_y,ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
         left->drawCircle(ball_x[i],ball_y[i],3, RGBColor::WHITE);
         write_data(duration);
+    }
+
+    // Move Arm Away
+    for (int i = 0; i< 6; i++)
+    {
+        left->setBackground(RGBColor::BLACK);
+        drawSnowmen(SNOWMAN_LEFT);
+
+        left->plotLineWidth(sholder_x,sholder_y,hand_x[i],hand_y[i],2.0,RGBColor::WHITE);
+        if (i < 2)
+        {
+            left->drawCircle(ball2_x[i],ball2_y[i],3, RGBColor::WHITE);
+        }
+        else
+        {
+            splash->drawCircle(ball2_x[i],ball2_y[i],1, RGBColor::WHITE);
+        }
+        write_data(duration);
+        if (i>=2)
+        {
+            splash->drawCircle(ball2_x[i],ball2_y[i],1, RGBColor::BLACK);
+        }
+    }
+
+    // Throw slpash
+    for (int i = 6; i < 11; i++)
+    {
+        splash->drawCircle(ball2_x[i],ball2_y[i],1, RGBColor::WHITE);
+        write_data(duration);
+        splash->drawCircle(ball2_x[i],ball2_y[i],1, RGBColor::BLACK);
     }
 
     write_data(1.0);
