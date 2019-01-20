@@ -179,7 +179,7 @@ void DrawLine(GenericGrid *grid, int startX, int endX, double mx, int b, RGBColo
     }
 }
 
-void Snowmen::throwLeft()
+void Snowmen::throwLeft(bool loft)
 {
     const int sholder_x = 16;
     const int sholder_y = 42;
@@ -192,8 +192,19 @@ void Snowmen::throwLeft()
     const int hand_x[] = {41, 42, 43, 44, 43, 42};
     const int hand_y[] = {20, 26, 32, 38, 44, 50};
     const int ball2_x[] = {44,48, 0, 3, 6, 9, 12, 15, 18, 21, 23};
-    const int ball2_y[] = {17,17, 8, 8, 8, 8,  8,  8,  8, 8, 8};
+    int ball2_y[] = {17,17, 8, 8, 8, 8,  8,  8,  8, 8, 8};
     const double duration = 0.02;
+
+    if (loft)
+    {
+        ball2_y[4] = 7;
+        ball2_y[5] = 6;
+        ball2_y[6] = 5;
+        ball2_y[7] = 4;
+        ball2_y[8] = 3;
+        ball2_y[9] = 2;
+        ball2_y[10] = 1;
+    }
 
     GenericGrid *left = getSnowmen(SNOWMAN_LEFT);
     GenericGrid *splash = getSplashGrid(SNOWMAN_LEFT);
@@ -250,8 +261,30 @@ void Snowmen::throwLeft()
         write_data(duration);
         splash->drawCircle(ball2_x[i],ball2_y[i],1, RGBColor::BLACK);
     }
+}
 
-    write_data(1.0);
+void Snowmen::do_middle(int start_snowmen, int start_y, int high_y, int end_y, double duration)
+{
+    int x = 0;
+    int dx = 2;
+    if (start_snowmen == SNOWMAN_RIGHT)
+    {
+        dx = -2;
+        x = SKY_GRID_WIDTH - 1;
+    }
+    // GOing up
+    double dy1 = ((double)(high_y-start_y)) / ((double)SKY_GRID_WIDTH/4);
+    double y = (double) start_y;
+
+    for (int i = 0; i < SKY_GRID_WIDTH/4; i++)
+    {
+        //printf("DEBUG: %d, %d, %f\n", x, (int)y, dy1);
+        skyGrid->drawCircle(x,(int)y, 1, RGBColor::WHITE);
+        write_data(duration);
+        skyGrid->drawCircle(x,(int)y, 1, RGBColor::BLACK);
+        x += dx;
+        y += dy1;
+    }
 
 }
 
@@ -261,7 +294,12 @@ void Snowmen::do_it_snowmen()
     drawSnowmen(SNOWMAN_RIGHT);
     while(1)
     {
-        throwLeft();
+        throwLeft(true);
+        do_middle(SNOWMAN_LEFT,8,1,8,0.02);
+        write_data(1.0);
+        throwLeft(false);
+        do_middle(SNOWMAN_LEFT,18,12,18,0.02);
+        write_data(1.0);
     }
     //sleep(5); // Replace me
 }
@@ -271,3 +309,4 @@ char * Snowmen::getMessage()
 {
     return message2;
 }
+

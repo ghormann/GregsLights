@@ -64,11 +64,12 @@ protected:
     void do_it_snowmen();
 private:
     void drawSnowmen(int pos);
-    void throwLeft();
+    void throwLeft(bool loft);
     pthread_t snowman_t;
     SnowmenGrid *snowmen[2];
     SnowmenGrid *splash[2];
     SnowmenGrid *skyGrid;
+    void do_middle(int start_snowmen, int start_y, int high_y, int end_y,double duration);
     char message2[100];
     TimeInfo *timeinfo;
 };
