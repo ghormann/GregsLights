@@ -6,7 +6,7 @@
 #include <string.h>
 
 
-#define SNOWBALL_DURATION 0.2
+#define SNOWBALL_DURATION 0.02
 
 Snowmen::Snowmen(bool skipTime)
 {
@@ -246,7 +246,7 @@ void Snowmen::throwRight(bool loft)
         }
         else
         {
-            printf("DEBUG: Splash %d as %d, %d\n", i, ball2_x[i], ball2_y[i]);
+            //printf("DEBUG: Splash %d as %d, %d\n", i, ball2_x[i], ball2_y[i]);
             splash->drawCircle(ball2_x[i],ball2_y[i],1, RGBColor::WHITE);
         }
         write_data(SNOWBALL_DURATION);
@@ -403,12 +403,14 @@ void Snowmen::do_it_snowmen()
     drawSnowmen(SNOWMAN_RIGHT);
     while(1)
     {
-        throwRight(true);
         throwLeft(true);
-        //do_middle(SNOWMAN_LEFT,8,1,8,0.02);
+        do_middle(SNOWMAN_LEFT,8,1,8,0.02);
         //write_data(1.0);
         //throwLeft(false);
         //do_middle(SNOWMAN_LEFT,18,12,SKY_GRID_HEIGHT -1,0.02);
+        write_data(1.0);
+        throwRight(true);
+        do_middle(SNOWMAN_RIGHT,8,1,8,0.02);
         write_data(1.0);
     }
     //sleep(5); // Replace me
