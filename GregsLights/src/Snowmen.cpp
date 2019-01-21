@@ -261,6 +261,12 @@ void Snowmen::throwLeft(bool loft)
         write_data(duration);
         splash->drawCircle(ball2_x[i],ball2_y[i],1, RGBColor::BLACK);
     }
+
+    // Clean up Snowmen
+
+    left->setBackground(RGBColor::BLACK);
+    drawSnowmen(SNOWMAN_LEFT);
+
 }
 
 void Snowmen::do_middle(int start_snowmen, int start_y, int high_y, int end_y, double duration)
@@ -273,9 +279,10 @@ void Snowmen::do_middle(int start_snowmen, int start_y, int high_y, int end_y, d
         x = SKY_GRID_WIDTH - 1;
     }
     // GOing up
-    double dy1 = ((double)(high_y-start_y)) / ((double)SKY_GRID_WIDTH/4);
+    double dy = ((double)(high_y-start_y)) / ((double)SKY_GRID_WIDTH/4);
     double y = (double) start_y;
 
+    // First Half
     for (int i = 0; i < SKY_GRID_WIDTH/4; i++)
     {
         //printf("DEBUG: %d, %d, %f\n", x, (int)y, dy1);
@@ -283,7 +290,20 @@ void Snowmen::do_middle(int start_snowmen, int start_y, int high_y, int end_y, d
         write_data(duration);
         skyGrid->drawCircle(x,(int)y, 1, RGBColor::BLACK);
         x += dx;
-        y += dy1;
+        y += dy;
+    }
+
+    //Second Half
+    y = high_y;
+    dy = ((double)(end_y-high_y)) / ((double)SKY_GRID_WIDTH/4);
+    for (int i = 0; i <= SKY_GRID_WIDTH/4; i++)
+    {
+        //printf("DEBUG: %d, %d, %f\n", x, (int)y, dy1);
+        skyGrid->drawCircle(x,(int)y, 1, RGBColor::WHITE);
+        write_data(duration);
+        skyGrid->drawCircle(x,(int)y, 1, RGBColor::BLACK);
+        x += dx;
+        y += dy;
     }
 
 }
@@ -298,7 +318,7 @@ void Snowmen::do_it_snowmen()
         do_middle(SNOWMAN_LEFT,8,1,8,0.02);
         write_data(1.0);
         throwLeft(false);
-        do_middle(SNOWMAN_LEFT,18,12,18,0.02);
+        do_middle(SNOWMAN_LEFT,18,12,SKY_GRID_HEIGHT -1,0.02);
         write_data(1.0);
     }
     //sleep(5); // Replace me
