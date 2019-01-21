@@ -65,6 +65,7 @@ protected:
 private:
     void drawSnowmen(int pos);
     void throwLeft(bool loft);
+    void throwRight(bool loft);
     pthread_t snowman_t;
     SnowmenGrid *snowmen[2];
     SnowmenGrid *splash[2];
