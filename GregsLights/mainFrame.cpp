@@ -301,11 +301,13 @@ void BasicGLPane::render( wxPaintEvent& evt )
     // Sign
     drawGrid(130,100,2,model->getSign());
     // Snowmen
+    model->getSnowmen()->lockSnowmen();
     drawGrid(0,250,1,model->getSnowmen()->getSnowmen(SNOWMAN_LEFT));
     drawGrid(94,250,2,model->getSnowmen()->getSplashGrid(SNOWMAN_LEFT));
     drawGrid(190,210,2,model->getSnowmen()->getSkyGrid());
     drawGrid(570,250,2,model->getSnowmen()->getSplashGrid(SNOWMAN_RIGHT));
     drawGrid(667,250,1,model->getSnowmen()->getSnowmen(SNOWMAN_RIGHT));
+    model->getSnowmen()->releaseSnowmen();
 
     // The Clock
 

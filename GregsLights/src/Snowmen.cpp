@@ -10,6 +10,12 @@
 
 Snowmen::Snowmen(bool skipTime)
 {
+    if (pthread_mutex_init(&lock, NULL) != 0)
+    {
+        printf("\n mutex init failed\n");
+        throw "Mutext init failed for Snowmen";
+    }
+
     //ctor
     timeinfo = new TimeInfo(skipTime,false);
     snowman_t = 0;
@@ -96,6 +102,15 @@ SnowmenGrid *  Snowmen::getSplashGrid(int pos)
     return splash[pos];
 }
 
+void Snowmen::lockSnowmen()
+{
+    pthread_mutex_lock(&lock);
+}
+
+void Snowmen::releaseSnowmen()
+{
+    pthread_mutex_unlock(&lock);
+}
 
 void Snowmen::run()
 {
@@ -167,6 +182,7 @@ void Snowmen::drawSnowmen(int pos)
         who->getPixal(x+2,y-1)->set(RGBColor::BLACK);
         who->getPixal(x+3,y-2)->set(RGBColor::BLACK);
     }
+
 }
 
 void DrawLine(GenericGrid *grid, int startX, int endX, double mx, int b, RGBColor *color)
@@ -213,29 +229,34 @@ void Snowmen::throwRight(bool loft)
     // Pull back the Arm
     for (int i = 0; i< 10; i++)
     {
+        lockSnowmen();
         right->setBackground(RGBColor::BLACK);
         drawSnowmen(SNOWMAN_RIGHT);
 
         right->plotLineWidth(elbow_x[i],elbow_y[i],sholder_x,sholder_y,2.0,RGBColor::WHITE);
         right->plotLineWidth(elbow_x[i],elbow_y[i],ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
         right->drawCircle(ball_x[i],ball_y[i],3, RGBColor::WHITE);
+        releaseSnowmen();
         write_data(SNOWBALL_DURATION);
     }
 
     // Move the Arm foward as a Straight line
     for (int i = 10; i< 22; i++)
     {
+        lockSnowmen();
         right->setBackground(RGBColor::BLACK);
         drawSnowmen(SNOWMAN_RIGHT);
 
         right->plotLineWidth(sholder_x,sholder_y,ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
         right->drawCircle(ball_x[i],ball_y[i],3, RGBColor::WHITE);
+        releaseSnowmen();
         write_data(SNOWBALL_DURATION);
     }
 
     // Move Arm Away
     for (int i = 0; i< 6; i++)
     {
+        lockSnowmen();
         right->setBackground(RGBColor::BLACK);
         drawSnowmen(SNOWMAN_RIGHT);
 
@@ -249,6 +270,7 @@ void Snowmen::throwRight(bool loft)
             //printf("DEBUG: Splash %d as %d, %d\n", i, ball2_x[i], ball2_y[i]);
             splash->drawCircle(ball2_x[i],ball2_y[i],1, RGBColor::WHITE);
         }
+        releaseSnowmen();
         write_data(SNOWBALL_DURATION);
         if (i>=2)
         {
@@ -257,8 +279,10 @@ void Snowmen::throwRight(bool loft)
     }
 
     // Clean up Snowmen
+    lockSnowmen();
     right->setBackground(RGBColor::BLACK);
     drawSnowmen(SNOWMAN_RIGHT);
+    releaseSnowmen();
 
     // Throw slpash
     for (int i = 6; i < 11; i++)
@@ -301,29 +325,34 @@ void Snowmen::throwLeft(bool loft)
     // Pull back the Arm
     for (int i = 0; i< 10; i++)
     {
+        lockSnowmen();
         left->setBackground(RGBColor::BLACK);
         drawSnowmen(SNOWMAN_LEFT);
 
         left->plotLineWidth(elbow_x[i],elbow_y[i],sholder_x,sholder_y,2.0,RGBColor::WHITE);
         left->plotLineWidth(elbow_x[i],elbow_y[i],ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
         left->drawCircle(ball_x[i],ball_y[i],3, RGBColor::WHITE);
+        releaseSnowmen();
         write_data(SNOWBALL_DURATION);
     }
 
     // Move the Arm foward as a Straight line
     for (int i = 10; i< 22; i++)
     {
+        lockSnowmen();
         left->setBackground(RGBColor::BLACK);
         drawSnowmen(SNOWMAN_LEFT);
 
         left->plotLineWidth(sholder_x,sholder_y,ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
         left->drawCircle(ball_x[i],ball_y[i],3, RGBColor::WHITE);
+        releaseSnowmen();
         write_data(SNOWBALL_DURATION);
     }
 
     // Move Arm Away
     for (int i = 0; i< 6; i++)
     {
+        lockSnowmen();
         left->setBackground(RGBColor::BLACK);
         drawSnowmen(SNOWMAN_LEFT);
 
@@ -336,6 +365,7 @@ void Snowmen::throwLeft(bool loft)
         {
             splash->drawCircle(ball2_x[i],ball2_y[i],1, RGBColor::WHITE);
         }
+        releaseSnowmen();
         write_data(SNOWBALL_DURATION);
         if (i>=2)
         {
@@ -344,6 +374,7 @@ void Snowmen::throwLeft(bool loft)
     }
 
     // Clean up Snowmen
+    lockSnowmen();
     left->setBackground(RGBColor::BLACK);
     drawSnowmen(SNOWMAN_LEFT);
 
@@ -354,6 +385,7 @@ void Snowmen::throwLeft(bool loft)
         write_data(SNOWBALL_DURATION);
         splash->drawCircle(ball2_x[i],ball2_y[i],1, RGBColor::BLACK);
     }
+    releaseSnowmen();
 
 
 }

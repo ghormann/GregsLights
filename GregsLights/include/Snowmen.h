@@ -49,6 +49,8 @@ public:
     SnowmenGrid *getSnowmen(int pos);
     SnowmenGrid *getSplashGrid(int pos);
     SnowmenGrid *getSkyGrid();
+    void lockSnowmen();
+    void releaseSnowmen();
 protected:
     /*
         void hit_low_right(double pause);
@@ -66,6 +68,7 @@ private:
     void drawSnowmen(int pos);
     void throwLeft(bool loft);
     void throwRight(bool loft);
+    pthread_mutex_t lock;
     pthread_t snowman_t;
     SnowmenGrid *snowmen[2];
     SnowmenGrid *splash[2];
