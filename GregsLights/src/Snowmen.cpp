@@ -129,6 +129,38 @@ void Snowmen::run()
     }
 }
 
+void Snowmen::hitNose(int snowmen)
+{
+    GenericGrid *grid = getSnowmen(snowmen);
+    int pos_x = (snowmen == SNOWMAN_RIGHT ? 1 : SNOWMEN_WIDTH-1);
+    int i;
+    for (i =0; i < 4; i++)
+    {
+        int pos_y = 23 + i*2;
+        grid->drawCircle(pos_x,pos_y, 2, RGBColor::WHITE);
+        write_data(SNOWBALL_DURATION);
+        grid->drawCircle(pos_x,pos_y, 2, RGBColor::BLACK);
+        pos_x += (snowmen == SNOWMAN_RIGHT ? 2 : -2);
+    }
+    pos_x = (snowmen == SNOWMAN_RIGHT ? SNOWMEN_WIDTH - (SNOWMEN_WIDTH/2+16) : SNOWMEN_WIDTH/2+16);
+    grid->drawCircle(pos_x, SNOWMAN_NOSE_HEIGHT-1, 2, RGBColor::WHITE);
+    write_data(1.0);
+    // Fade snowball
+    i = 100;
+    while (i> -1)
+    {
+        // RGBColor is proper C++ for Memory Mangement.
+        RGBColor c =  RGBColor(i,i,i);
+        grid->drawCircle(pos_x, SNOWMAN_NOSE_HEIGHT-1, 2, &c);
+        write_data(SNOWBALL_DURATION);
+        i -=10;
+
+    }
+
+    drawSnowmen(snowmen);
+
+}
+
 void Snowmen::drawSnowmen(int pos)
 {
     int x,y;
@@ -143,7 +175,7 @@ void Snowmen::drawSnowmen(int pos)
     //Nose
     int startX = SNOWMEN_WIDTH/2+8;
     int endX = SNOWMEN_WIDTH/2+16;
-    y = SNOWMEN_HEIGHT-65;
+    y = SNOWMAN_NOSE_HEIGHT;
     if (pos == SNOWMAN_RIGHT)
     {
         startX -=23;
@@ -429,6 +461,24 @@ void Snowmen::do_middle(int start_snowmen, int start_y, int high_y, int end_y, d
 
 }
 
+// Used to have ball come across Splash gird
+void Snowmen::ball_line(GenericGrid *grid, int start_x, int start_y, int end_x, int end_y, double ballSize)
+{
+    int dx = (end_x > start_x) ? 1: -1;
+    double dy = ((double)(end_y-start_y)) / abs(start_x-end_x);
+
+    int x = start_x;
+    double y = (double)start_y;
+    while (x != end_x)
+    {
+        grid->drawCircle(x,(int)y,ballSize, RGBColor::WHITE);
+        write_data(SNOWBALL_DURATION);
+        grid->drawCircle(x,(int)y,ballSize, RGBColor::BLACK);
+        x += dx;
+        y += dy;
+    }
+}
+
 void Snowmen::do_it_snowmen()
 {
     drawSnowmen(SNOWMAN_LEFT);
@@ -437,12 +487,16 @@ void Snowmen::do_it_snowmen()
     {
         throwLeft(true);
         do_middle(SNOWMAN_LEFT,8,1,8,0.02);
+        ball_line(this->getSplashGrid(SNOWMAN_RIGHT), 0, 0, SPLASH_GRID_WIDTH, 12, 1.0);
+        hitNose(SNOWMAN_RIGHT);
         //write_data(1.0);
         //throwLeft(false);
         //do_middle(SNOWMAN_LEFT,18,12,SKY_GRID_HEIGHT -1,0.02);
         write_data(1.0);
         throwRight(true);
         do_middle(SNOWMAN_RIGHT,8,1,8,0.02);
+        ball_line(this->getSplashGrid(SNOWMAN_LEFT), SPLASH_GRID_WIDTH, 0, 0, 12, 1.0);
+        hitNose(SNOWMAN_LEFT);
         write_data(1.0);
     }
     //sleep(5); // Replace me

@@ -18,6 +18,8 @@
 #define SNOWMAN_RIGHT 1
 #define SNOWMAN_LEFT  0
 
+#define SNOWMAN_NOSE_HEIGHT (SNOWMEN_HEIGHT-65)
+
 
 #define write_data(pause)  usleep((pause) * 1000000)
 
@@ -68,11 +70,13 @@ private:
     void drawSnowmen(int pos);
     void throwLeft(bool loft);
     void throwRight(bool loft);
+    void hitNose(int snowmen);
     pthread_mutex_t lock;
     pthread_t snowman_t;
     SnowmenGrid *snowmen[2];
     SnowmenGrid *splash[2];
     SnowmenGrid *skyGrid;
+    void ball_line(GenericGrid *grid, int start_x, int start_y, int end_x, int end_y, double ballSize);
     void do_middle(int start_snowmen, int start_y, int high_y, int end_y,double duration);
     char message2[100];
     TimeInfo *timeinfo;
