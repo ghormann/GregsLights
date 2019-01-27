@@ -76,14 +76,14 @@ void GenericGrid::plotLineWidth(int x0, int y0, int x1, int y1, float wd, RGBCol
 
 
 
-void GenericGrid::drawCircle(int centerX, int centerY, int radius, RGBColor *color)
+void GenericGrid::drawCircle(int centerX, int centerY, double radius, RGBColor *color)
 {
     int x, y;
     for (x = centerX - radius; x <= centerX+radius; x++)
     {
         for (y = centerY-radius; y <= centerY+radius; y++)
         {
-            int distiance = sqrt(pow(x-centerX, 2) + pow(y-centerY,2));
+            double distiance = sqrt(pow(x-centerX, 2) + pow(y-centerY,2));
             if (distiance <= radius)
             {
                 if (x >= 0 && x < gridWidth && y >=0 && y < gridHeight)

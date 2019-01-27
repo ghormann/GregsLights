@@ -7,6 +7,8 @@
 
 
 #define SNOWBALL_DURATION 0.02
+#define BALL_SIZE_1IN   3
+#define BALL_SIZE_2IN   1.7
 
 Snowmen::Snowmen(bool skipTime)
 {
@@ -74,7 +76,7 @@ SnowmenGrid::SnowmenGrid(int width_, int height_, int dummy_with_, int dummy_hei
 
 // TODO (ghormann#1#): Fix Mapping of Pixals
         this->pixals[i] = new RGBLight(new DummyBulb(), new DummyBulb(), new DummyBulb());
-        this->pixals[i]->set(25,25,25);
+        this->pixals[i]->set(0,0,0);
     }
 
 }
@@ -129,21 +131,23 @@ void Snowmen::run()
     }
 }
 
-void Snowmen::hitNose(int snowmen)
+void Snowmen::hitNose(int snowmen, int start_y)
 {
     GenericGrid *grid = getSnowmen(snowmen);
     int pos_x = (snowmen == SNOWMAN_RIGHT ? 1 : SNOWMEN_WIDTH-1);
     int i;
+    double dy = ((double)(SNOWMAN_NOSE_HEIGHT-1-start_y))/4;
+    double pos_y = start_y;
     for (i =0; i < 4; i++)
     {
-        int pos_y = 23 + i*2;
-        grid->drawCircle(pos_x,pos_y, 2, RGBColor::WHITE);
+        grid->drawCircle(pos_x,pos_y, BALL_SIZE_1IN, RGBColor::WHITE);
         write_data(SNOWBALL_DURATION);
-        grid->drawCircle(pos_x,pos_y, 2, RGBColor::BLACK);
+        grid->drawCircle(pos_x,(int)pos_y, BALL_SIZE_1IN, RGBColor::BLACK);
         pos_x += (snowmen == SNOWMAN_RIGHT ? 2 : -2);
+        pos_y += dy;
     }
     pos_x = (snowmen == SNOWMAN_RIGHT ? SNOWMEN_WIDTH - (SNOWMEN_WIDTH/2+16) : SNOWMEN_WIDTH/2+16);
-    grid->drawCircle(pos_x, SNOWMAN_NOSE_HEIGHT-1, 2, RGBColor::WHITE);
+    grid->drawCircle(pos_x, SNOWMAN_NOSE_HEIGHT-1, BALL_SIZE_1IN, RGBColor::WHITE);
     write_data(1.0);
     // Fade snowball
     i = 100;
@@ -151,7 +155,7 @@ void Snowmen::hitNose(int snowmen)
     {
         // RGBColor is proper C++ for Memory Mangement.
         RGBColor c =  RGBColor(i,i,i);
-        grid->drawCircle(pos_x, SNOWMAN_NOSE_HEIGHT-1, 2, &c);
+        grid->drawCircle(pos_x, SNOWMAN_NOSE_HEIGHT-1, BALL_SIZE_1IN, &c);
         write_data(SNOWBALL_DURATION);
         i -=10;
 
@@ -267,7 +271,7 @@ void Snowmen::throwRight(bool loft)
 
         right->plotLineWidth(elbow_x[i],elbow_y[i],sholder_x,sholder_y,2.0,RGBColor::WHITE);
         right->plotLineWidth(elbow_x[i],elbow_y[i],ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
-        right->drawCircle(ball_x[i],ball_y[i],3, RGBColor::WHITE);
+        right->drawCircle(ball_x[i],ball_y[i],BALL_SIZE_1IN, RGBColor::WHITE);
         releaseSnowmen();
         write_data(SNOWBALL_DURATION);
     }
@@ -280,7 +284,7 @@ void Snowmen::throwRight(bool loft)
         drawSnowmen(SNOWMAN_RIGHT);
 
         right->plotLineWidth(sholder_x,sholder_y,ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
-        right->drawCircle(ball_x[i],ball_y[i],3, RGBColor::WHITE);
+        right->drawCircle(ball_x[i],ball_y[i],BALL_SIZE_1IN, RGBColor::WHITE);
         releaseSnowmen();
         write_data(SNOWBALL_DURATION);
     }
@@ -295,18 +299,18 @@ void Snowmen::throwRight(bool loft)
         right->plotLineWidth(sholder_x,sholder_y,hand_x[i],hand_y[i],2.0,RGBColor::WHITE);
         if (i < 2)
         {
-            right->drawCircle(ball2_x[i],ball2_y[i],3, RGBColor::WHITE);
+            right->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_1IN, RGBColor::WHITE);
         }
         else
         {
             //printf("DEBUG: Splash %d as %d, %d\n", i, ball2_x[i], ball2_y[i]);
-            splash->drawCircle(ball2_x[i],ball2_y[i],1, RGBColor::WHITE);
+            splash->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_2IN, RGBColor::WHITE);
         }
         releaseSnowmen();
         write_data(SNOWBALL_DURATION);
         if (i>=2)
         {
-            splash->drawCircle(ball2_x[i],ball2_y[i],1, RGBColor::BLACK);
+            splash->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_2IN, RGBColor::BLACK);
         }
     }
 
@@ -319,9 +323,9 @@ void Snowmen::throwRight(bool loft)
     // Throw slpash
     for (int i = 6; i < 11; i++)
     {
-        splash->drawCircle(ball2_x[i],ball2_y[i],1, RGBColor::WHITE);
+        splash->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_2IN, RGBColor::WHITE);
         write_data(SNOWBALL_DURATION);
-        splash->drawCircle(ball2_x[i],ball2_y[i],1, RGBColor::BLACK);
+        splash->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_2IN, RGBColor::BLACK);
     }
 }
 
@@ -363,7 +367,7 @@ void Snowmen::throwLeft(bool loft)
 
         left->plotLineWidth(elbow_x[i],elbow_y[i],sholder_x,sholder_y,2.0,RGBColor::WHITE);
         left->plotLineWidth(elbow_x[i],elbow_y[i],ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
-        left->drawCircle(ball_x[i],ball_y[i],3, RGBColor::WHITE);
+        left->drawCircle(ball_x[i],ball_y[i],BALL_SIZE_1IN, RGBColor::WHITE);
         releaseSnowmen();
         write_data(SNOWBALL_DURATION);
     }
@@ -376,7 +380,7 @@ void Snowmen::throwLeft(bool loft)
         drawSnowmen(SNOWMAN_LEFT);
 
         left->plotLineWidth(sholder_x,sholder_y,ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
-        left->drawCircle(ball_x[i],ball_y[i],3, RGBColor::WHITE);
+        left->drawCircle(ball_x[i],ball_y[i],BALL_SIZE_1IN, RGBColor::WHITE);
         releaseSnowmen();
         write_data(SNOWBALL_DURATION);
     }
@@ -391,17 +395,17 @@ void Snowmen::throwLeft(bool loft)
         left->plotLineWidth(sholder_x,sholder_y,hand_x[i],hand_y[i],2.0,RGBColor::WHITE);
         if (i < 2)
         {
-            left->drawCircle(ball2_x[i],ball2_y[i],3, RGBColor::WHITE);
+            left->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_1IN, RGBColor::WHITE);
         }
         else
         {
-            splash->drawCircle(ball2_x[i],ball2_y[i],1, RGBColor::WHITE);
+            splash->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_2IN, RGBColor::WHITE);
         }
         releaseSnowmen();
         write_data(SNOWBALL_DURATION);
         if (i>=2)
         {
-            splash->drawCircle(ball2_x[i],ball2_y[i],1, RGBColor::BLACK);
+            splash->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_2IN, RGBColor::BLACK);
         }
     }
 
@@ -413,9 +417,9 @@ void Snowmen::throwLeft(bool loft)
     // Throw slpash
     for (int i = 6; i < 11; i++)
     {
-        splash->drawCircle(ball2_x[i],ball2_y[i],1, RGBColor::WHITE);
+        splash->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_2IN, RGBColor::WHITE);
         write_data(SNOWBALL_DURATION);
-        splash->drawCircle(ball2_x[i],ball2_y[i],1, RGBColor::BLACK);
+        splash->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_2IN, RGBColor::BLACK);
     }
     releaseSnowmen();
 
@@ -439,9 +443,9 @@ void Snowmen::do_middle(int start_snowmen, int start_y, int high_y, int end_y, d
     for (int i = 0; i < SKY_GRID_WIDTH/4; i++)
     {
         //printf("DEBUG: %d, %d, %f\n", x, (int)y, dy1);
-        skyGrid->drawCircle(x,(int)y, 1, RGBColor::WHITE);
+        skyGrid->drawCircle(x,(int)y, BALL_SIZE_2IN, RGBColor::WHITE);
         write_data(duration);
-        skyGrid->drawCircle(x,(int)y, 1, RGBColor::BLACK);
+        skyGrid->drawCircle(x,(int)y, BALL_SIZE_2IN, RGBColor::BLACK);
         x += dx;
         y += dy;
     }
@@ -452,9 +456,9 @@ void Snowmen::do_middle(int start_snowmen, int start_y, int high_y, int end_y, d
     for (int i = 0; i <= SKY_GRID_WIDTH/4; i++)
     {
         //printf("DEBUG: %d, %d, %f\n", x, (int)y, dy1);
-        skyGrid->drawCircle(x,(int)y, 1, RGBColor::WHITE);
+        skyGrid->drawCircle(x,(int)y, BALL_SIZE_2IN, RGBColor::WHITE);
         write_data(duration);
-        skyGrid->drawCircle(x,(int)y, 1, RGBColor::BLACK);
+        skyGrid->drawCircle(x,(int)y, BALL_SIZE_2IN, RGBColor::BLACK);
         x += dx;
         y += dy;
     }
@@ -479,24 +483,49 @@ void Snowmen::ball_line(GenericGrid *grid, int start_x, int start_y, int end_x, 
     }
 }
 
+void Snowmen::throwLeftStickNose(bool arch)
+{
+    throwLeft(arch);
+    if (arch)
+    {
+        do_middle(SNOWMAN_LEFT,8,1,8,0.02);
+    }
+    else
+    {
+        do_middle(SNOWMAN_LEFT,18,14,18 -1,0.02);
+    }
+    ball_line(this->getSplashGrid(SNOWMAN_RIGHT), 0, arch ? 0 : 8, SPLASH_GRID_WIDTH, 12, BALL_SIZE_2IN);
+    hitNose(SNOWMAN_RIGHT, 24);
+}
+
+void Snowmen::throwRightStickNose(bool arch)
+{
+    throwRight(arch);
+    if (arch)
+    {
+        do_middle(SNOWMAN_RIGHT,8,1,8,0.02);
+    }
+    else
+    {
+        do_middle(SNOWMAN_RIGHT,18,14,18 -1,0.02);
+    }
+    ball_line(this->getSplashGrid(SNOWMAN_LEFT), SPLASH_GRID_WIDTH,  arch ? 0 : 8, 0, 12, BALL_SIZE_2IN);
+    hitNose(SNOWMAN_LEFT, 24);
+}
+
+
 void Snowmen::do_it_snowmen()
 {
     drawSnowmen(SNOWMAN_LEFT);
     drawSnowmen(SNOWMAN_RIGHT);
     while(1)
     {
-        throwLeft(true);
-        do_middle(SNOWMAN_LEFT,8,1,8,0.02);
-        ball_line(this->getSplashGrid(SNOWMAN_RIGHT), 0, 0, SPLASH_GRID_WIDTH, 12, 1.0);
-        hitNose(SNOWMAN_RIGHT);
-        //write_data(1.0);
-        //throwLeft(false);
-        //do_middle(SNOWMAN_LEFT,18,12,SKY_GRID_HEIGHT -1,0.02);
-        write_data(1.0);
-        throwRight(true);
-        do_middle(SNOWMAN_RIGHT,8,1,8,0.02);
-        ball_line(this->getSplashGrid(SNOWMAN_LEFT), SPLASH_GRID_WIDTH, 0, 0, 12, 1.0);
-        hitNose(SNOWMAN_LEFT);
+
+        throwLeftStickNose(true);
+        throwLeftStickNose(false);
+        throwRightStickNose(true);
+        throwRightStickNose(false);
+
         write_data(1.0);
     }
     //sleep(5); // Replace me

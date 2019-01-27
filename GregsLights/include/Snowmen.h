@@ -70,7 +70,9 @@ private:
     void drawSnowmen(int pos);
     void throwLeft(bool loft);
     void throwRight(bool loft);
-    void hitNose(int snowmen);
+    void hitNose(int snowmen, int start_y);
+    void throwLeftStickNose(bool arch);
+    void throwRightStickNose(bool arch);
     pthread_mutex_t lock;
     pthread_t snowman_t;
     SnowmenGrid *snowmen[2];
