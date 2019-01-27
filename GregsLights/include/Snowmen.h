@@ -67,12 +67,13 @@ protected:
         */
     void do_it_snowmen();
 private:
-    void drawSnowmen(int pos);
+    void drawSnowmen(int pos, bool withHat = true);
     void throwLeft(bool loft);
     void throwRight(bool loft);
     void hitNose(int snowmen, int start_y);
     void throwLeftStickNose(bool arch);
     void throwRightStickNose(bool arch);
+    void hitHat(int pos);
     pthread_mutex_t lock;
     pthread_t snowman_t;
     SnowmenGrid *snowmen[2];

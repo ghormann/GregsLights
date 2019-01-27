@@ -167,7 +167,45 @@ void Snowmen::hitNose(int snowmen, int start_y)
 
 }
 
-void Snowmen::drawSnowmen(int pos)
+void Snowmen::hitHat(int pos)
+{
+    double duration = SNOWBALL_DURATION * 2.5;
+    RGBPicture *hats[10];
+    int pos_x[] = {7,10,13,16,19,21,25,28,31,34};
+    int pos_y[] = {-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,};
+    hats[0] = RGBPicture::getPicture("small_hat_0.png");
+    hats[1] = RGBPicture::getPicture("small_hat_10.png");
+    hats[2] = RGBPicture::getPicture("small_hat_20.png");
+    hats[3] = RGBPicture::getPicture("small_hat_30.png");
+    hats[4] = RGBPicture::getPicture("small_hat_40.png");
+    hats[5] = RGBPicture::getPicture("small_hat_50.png");
+    hats[6] = RGBPicture::getPicture("small_hat_60.png");
+    hats[7] = RGBPicture::getPicture("small_hat_70.png");
+    hats[8] = RGBPicture::getPicture("small_hat_80.png");
+    hats[9] = RGBPicture::getPicture("small_hat_90.png");
+    GenericGrid *snowman = getSnowmen(pos);
+
+    for (int i = 0; i < 10; i++)
+    {
+        lockSnowmen();
+        snowman->setBackground(RGBColor::BLACK);
+        drawSnowmen(pos, false);
+        RGBPicture *hat = hats[i];
+        snowman->showPictureNow(*hat, pos_x[i], pos_y[i], true);
+        releaseSnowmen();
+        write_data(duration);
+    }
+
+    // cleanup
+    lockSnowmen();
+    snowman->setBackground(RGBColor::BLACK);
+    drawSnowmen(pos, false);
+    releaseSnowmen();
+    write_data(duration);
+
+}
+
+void Snowmen::drawSnowmen(int pos, bool withHat)
 {
     int x,y;
     GenericGrid * who = getSnowmen(pos);
@@ -177,6 +215,12 @@ void Snowmen::drawSnowmen(int pos)
     who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-45,14,RGBColor::WHITE);
     //Bottom
     who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-20,20,RGBColor::WHITE);
+
+    if (withHat)
+    {
+        RGBPicture *hat = RGBPicture::getPicture("small_hat_0.png");
+        who->showPictureNow(*hat, 7, -2, true);
+    }
 
 
     //Nose
@@ -195,11 +239,6 @@ void Snowmen::drawSnowmen(int pos)
         who->getPixal(x,y)->set(RGBColor::ORANGE);
         who->getPixal(x,y-1)->set(RGBColor::ORANGE);
     }
-
-    // Hat
-    RGBPicture *hat = RGBPicture::getPicture("small_hat_0.png");
-    who->showPictureNow(*hat,7,-2,true);
-
 
     // Eye
     x = (pos==SNOWMAN_LEFT ? SNOWMEN_WIDTH/2+5 : SNOWMEN_WIDTH/2-4);
@@ -532,9 +571,10 @@ void Snowmen::do_it_snowmen()
     {
 
         throwLeftStickNose(true);
-        throwLeftStickNose(false);
-        throwRightStickNose(true);
-        throwRightStickNose(false);
+        hitHat(SNOWMAN_RIGHT);
+        //throwLeftStickNose(false);
+        //throwRightStickNose(true);
+        //throwRightStickNose(false);
 
         write_data(1.0);
     }
