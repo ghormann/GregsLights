@@ -6,7 +6,7 @@
 #include <string.h>
 
 
-#define SNOWBALL_DURATION 0.02
+#define SNOWBALL_DURATION 0.015
 #define BALL_SIZE_1IN   3
 #define BALL_SIZE_2IN   1.7
 
@@ -413,6 +413,7 @@ void Snowmen::throwLeft(bool loft)
     lockSnowmen();
     left->setBackground(RGBColor::BLACK);
     drawSnowmen(SNOWMAN_LEFT);
+    releaseSnowmen();
 
     // Throw slpash
     for (int i = 6; i < 11; i++)
@@ -421,7 +422,6 @@ void Snowmen::throwLeft(bool loft)
         write_data(SNOWBALL_DURATION);
         splash->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_2IN, RGBColor::BLACK);
     }
-    releaseSnowmen();
 
 
 }
@@ -488,11 +488,11 @@ void Snowmen::throwLeftStickNose(bool arch)
     throwLeft(arch);
     if (arch)
     {
-        do_middle(SNOWMAN_LEFT,8,1,8,0.02);
+        do_middle(SNOWMAN_LEFT,8,1,8,SNOWBALL_DURATION);
     }
     else
     {
-        do_middle(SNOWMAN_LEFT,18,14,18 -1,0.02);
+        do_middle(SNOWMAN_LEFT,18,14,18 -1,SNOWBALL_DURATION);
     }
     ball_line(this->getSplashGrid(SNOWMAN_RIGHT), 0, arch ? 0 : 8, SPLASH_GRID_WIDTH, 12, BALL_SIZE_2IN);
     hitNose(SNOWMAN_RIGHT, 24);
@@ -503,11 +503,11 @@ void Snowmen::throwRightStickNose(bool arch)
     throwRight(arch);
     if (arch)
     {
-        do_middle(SNOWMAN_RIGHT,8,1,8,0.02);
+        do_middle(SNOWMAN_RIGHT,8,1,8,SNOWBALL_DURATION);
     }
     else
     {
-        do_middle(SNOWMAN_RIGHT,18,14,18 -1,0.02);
+        do_middle(SNOWMAN_RIGHT,18,14,18 -1,SNOWBALL_DURATION);
     }
     ball_line(this->getSplashGrid(SNOWMAN_LEFT), SPLASH_GRID_WIDTH,  arch ? 0 : 8, 0, 12, BALL_SIZE_2IN);
     hitNose(SNOWMAN_LEFT, 24);
