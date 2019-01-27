@@ -134,7 +134,12 @@ void GenericGrid::showPictureNow(RGBPicture &pict, int posX, int posY, bool hide
             }
             else
             {
-                this->getPixal(x+posX, y+posY)->set(r,g,b);
+                int full_x = x+posX;
+                int full_y = y+posY;
+                if (full_x < gridWidth && full_x > -1 && full_y > -1 && full_y < gridHeight)
+                {
+                    this->getPixal(full_x, full_y)->set(r,g,b);
+                }
             }
         }
     }
