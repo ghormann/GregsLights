@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include "RGBPicture.h"
 
 
 #define SNOWBALL_DURATION 0.015
@@ -26,6 +27,7 @@ Snowmen::Snowmen(bool skipTime)
     splash[0] = new SnowmenGrid(SPLASH_GRID_WIDTH,SPLASH_GRID_HEIGHT,SPLASH_GRID_WIDTH, SPLASH_GRID_HEIGHT,skipTime,false);
     splash[1] = new SnowmenGrid(SPLASH_GRID_WIDTH,SPLASH_GRID_HEIGHT,SPLASH_GRID_WIDTH, SPLASH_GRID_HEIGHT,skipTime,false);
     skyGrid = new SnowmenGrid(SKY_GRID_WIDTH,SKY_GRID_HEIGHT,SKY_GRID_WIDTH, SKY_GRID_HEIGHT,skipTime,false);
+    RGBPicture::getAllPictures(); // Load all Pictures
     strcpy(message2, "Starting up");
 }
 
@@ -176,6 +178,7 @@ void Snowmen::drawSnowmen(int pos)
     //Bottom
     who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-20,20,RGBColor::WHITE);
 
+
     //Nose
     int startX = SNOWMEN_WIDTH/2+8;
     int endX = SNOWMEN_WIDTH/2+16;
@@ -186,11 +189,18 @@ void Snowmen::drawSnowmen(int pos)
         endX -=23;
     }
 
+
     for (x = startX; x < endX; x++)
     {
         who->getPixal(x,y)->set(RGBColor::ORANGE);
         who->getPixal(x,y-1)->set(RGBColor::ORANGE);
     }
+
+    // Hat
+    RGBPicture *hat = RGBPicture::getPicture("small_hat_0.png");
+    who->showPictureNow(*hat,7,-2,true);
+
+
     // Eye
     x = (pos==SNOWMAN_LEFT ? SNOWMEN_WIDTH/2+5 : SNOWMEN_WIDTH/2-4);
     who->drawCircle(x,SNOWMEN_HEIGHT-70,1,RGBColor::BLACK);
