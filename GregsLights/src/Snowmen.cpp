@@ -173,25 +173,42 @@ void Snowmen::hitHat(int pos)
     RGBPicture *hats[10];
     int pos_x[] = {7,10,13,16,19,21,25,28,31,34};
     int pos_y[] = {-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,};
-    hats[0] = RGBPicture::getPicture("small_hat_0.png");
-    hats[1] = RGBPicture::getPicture("small_hat_10.png");
-    hats[2] = RGBPicture::getPicture("small_hat_20.png");
-    hats[3] = RGBPicture::getPicture("small_hat_30.png");
-    hats[4] = RGBPicture::getPicture("small_hat_40.png");
-    hats[5] = RGBPicture::getPicture("small_hat_50.png");
-    hats[6] = RGBPicture::getPicture("small_hat_60.png");
-    hats[7] = RGBPicture::getPicture("small_hat_70.png");
-    hats[8] = RGBPicture::getPicture("small_hat_80.png");
-    hats[9] = RGBPicture::getPicture("small_hat_90.png");
+    if (pos == SNOWMAN_RIGHT)
+    {
+        hats[0] = RGBPicture::getPicture("small_hat_0.png");
+        hats[1] = RGBPicture::getPicture("small_hat_10.png");
+        hats[2] = RGBPicture::getPicture("small_hat_20.png");
+        hats[3] = RGBPicture::getPicture("small_hat_30.png");
+        hats[4] = RGBPicture::getPicture("small_hat_40.png");
+        hats[5] = RGBPicture::getPicture("small_hat_50.png");
+        hats[6] = RGBPicture::getPicture("small_hat_60.png");
+        hats[7] = RGBPicture::getPicture("small_hat_70.png");
+        hats[8] = RGBPicture::getPicture("small_hat_80.png");
+        hats[9] = RGBPicture::getPicture("small_hat_90.png");
+    }
+    else
+    {
+        hats[0] = RGBPicture::getPicture("small_hat_0.png");
+        hats[1] = RGBPicture::getPicture("small_hat_-10.png");
+        hats[2] = RGBPicture::getPicture("small_hat_-20.png");
+        hats[3] = RGBPicture::getPicture("small_hat_-30.png");
+        hats[4] = RGBPicture::getPicture("small_hat_-40.png");
+        hats[5] = RGBPicture::getPicture("small_hat_-50.png");
+        hats[6] = RGBPicture::getPicture("small_hat_-60.png");
+        hats[7] = RGBPicture::getPicture("small_hat_-70.png");
+        hats[8] = RGBPicture::getPicture("small_hat_-80.png");
+        hats[9] = RGBPicture::getPicture("small_hat_-90.png");
+    }
     GenericGrid *snowman = getSnowmen(pos);
 
     for (int i = 0; i < 10; i++)
     {
+        int x = (pos == SNOWMAN_RIGHT ? pos_x[i] : (SNOWMEN_WIDTH/2 - pos_x[i] - 1));
         lockSnowmen();
         snowman->setBackground(RGBColor::BLACK);
         drawSnowmen(pos, false);
         RGBPicture *hat = hats[i];
-        snowman->showPictureNow(*hat, pos_x[i], pos_y[i], true);
+        snowman->showPictureNow(*hat, x, pos_y[i], true);
         releaseSnowmen();
         write_data(duration);
     }
@@ -569,9 +586,10 @@ void Snowmen::do_it_snowmen()
     drawSnowmen(SNOWMAN_RIGHT);
     while(1)
     {
-
+        hitHat(SNOWMAN_LEFT);
         throwLeftStickNose(true);
         hitHat(SNOWMAN_RIGHT);
+
         //throwLeftStickNose(false);
         //throwRightStickNose(true);
         //throwRightStickNose(false);
