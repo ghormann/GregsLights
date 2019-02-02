@@ -75,6 +75,8 @@ public:
     void plotLineWidth(int x0, int y0, int x1, int y1, float wd, RGBColor *color);
     void setPixelAA(int x, int y, double pct, RGBColor *color);
     virtual void scrollMerry();
+    void plotQuadBezierSegAA(int x0, int y0, int x1, int y1, int x2, int y2, RGBColor *color);
+    void archBallOverTime(double radius,double r_x, double r_y, int start_x, int stop_x, double width, double timeDuration, RGBColor *color);
 protected:
     int gridHeight;
     int gridWidth ;

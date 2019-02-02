@@ -78,7 +78,7 @@ SnowmenGrid::SnowmenGrid(int width_, int height_, int dummy_with_, int dummy_hei
 
 // TODO (ghormann#1#): Fix Mapping of Pixals
         this->pixals[i] = new RGBLight(new DummyBulb(), new DummyBulb(), new DummyBulb());
-        this->pixals[i]->set(0,0,0);
+        this->pixals[i]->set(30,0,0);
     }
 
 }
@@ -169,21 +169,31 @@ void Snowmen::hitNose(int snowmen, int start_y)
 
 void Snowmen::placeHatBack(int pos)
 {
-    RGBPicture *hat = RGBPicture::getPicture("small_hat_0.png");
+    RGBPicture *hat[4];
+    hat[0] = RGBPicture::getPicture("small_hat_0.png");
+    hat[1] = RGBPicture::getPicture("small_hat_10.png");
+    hat[2] = RGBPicture::getPicture("small_hat_0.png");
+    hat[3] = RGBPicture::getPicture("small_hat_-10.png");
     GenericGrid *snowman = getSnowmen(pos);
+
+    int hatId = 0;
 
     int end_x= (pos == SNOWMAN_RIGHT ? 7 : (SNOWMEN_WIDTH/2-16));
 
     for (int y = -28; y < -1; y++)
     {
-        snowman->showPictureNow(*hat, end_x, y, true);
-        write_data(SNOWBALL_DURATION*2);
+        snowman->showPictureNow(*hat[hatId], end_x, y, true);
+        write_data(SNOWBALL_DURATION*3);
         lockSnowmen();
         snowman->setBackground(RGBColor::BLACK);
         drawSnowmen(pos,false);
         releaseSnowmen();
+        if (++hatId > 3)
+        {
+            hatId = 0;
+        }
     }
-        drawSnowmen(pos,true);
+    drawSnowmen(pos,true);
 
 
 }
@@ -509,8 +519,6 @@ void Snowmen::throwLeft(bool loft)
         write_data(SNOWBALL_DURATION);
         splash->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_2IN, RGBColor::BLACK);
     }
-
-
 }
 
 void Snowmen::do_middle(int start_snowmen, int start_y, int high_y, int end_y, double duration)
@@ -635,17 +643,78 @@ void Snowmen::throwHitHat(int pos)
 
 }
 
+void Snowmen::throwGround(int pos, bool goHigh)
+{
+    int start_y;
+    double dy;
+    GenericGrid *splash = getSplashGrid(pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT : SNOWMAN_LEFT);
+    if (pos == SNOWMAN_LEFT)
+    {
+        throwLeft(goHigh);
+    }
+    else
+    {
+        throwLeft(goHigh);
+    }
+
+    if (goHigh)
+    {
+        do_middle(pos,8,1,SKY_GRID_HEIGHT-5,SNOWBALL_DURATION);
+        start_y = 10;
+        dy = 2.5;
+    }
+    else
+    {
+        do_middle(SNOWMAN_LEFT,18,16,SKY_GRID_HEIGHT +1,SNOWBALL_DURATION);
+        start_y = 15;
+        dy = 2.0;
+    }
+
+    /*
+     * Do Drop
+     */
+    int x = 0;
+    int dx = 2;
+    if (pos == SNOWMAN_RIGHT)
+    {
+        dx = -2;
+        x = SKY_GRID_WIDTH - 1;
+    }
+    // GOing up
+    double y = (double) start_y;
+
+    for (int i = 0; i < SPLASH_GRID_WIDTH/2; i++)
+    {
+        //printf("DEBUG: %d, %d, %f\n", x, (int)y, dy1);
+        splash->drawCircle(x,(int)y, BALL_SIZE_2IN, RGBColor::WHITE);
+        write_data(SNOWBALL_DURATION);
+        splash->drawCircle(x,(int)y, BALL_SIZE_2IN, RGBColor::BLACK);
+        dy += 0.15;
+        x += dx;
+        y += dy;
+    }
+
+
+}
+
 void Snowmen::do_it_snowmen()
 {
     drawSnowmen(SNOWMAN_LEFT);
     drawSnowmen(SNOWMAN_RIGHT);
     while(1)
     {
-        throwHitHat(SNOWMAN_LEFT);
-        placeHatBack(SNOWMAN_RIGHT);
+
+        getSkyGrid()->archBallOverTime(14,0, SKY_GRID_HEIGHT/2,0,SKY_GRID_WIDTH,BALL_SIZE_2IN,SNOWBALL_DURATION*5,RGBColor::WHITE);
+
+        //throwGround(SNOWMAN_LEFT, true);
         write_data(1.0);
-        throwHitHat(SNOWMAN_RIGHT);
-        placeHatBack(SNOWMAN_LEFT);
+        //throwGround(SNOWMAN_LEFT, false);
+
+        //throwHitHat(SNOWMAN_LEFT);
+        //placeHatBack(SNOWMAN_RIGHT);
+        //write_data(1.0);
+        //throwHitHat(SNOWMAN_RIGHT);
+        //placeHatBack(SNOWMAN_LEFT);
 
         //hitHat(SNOWMAN_LEFT);
         //throwLeftStickNose(true);

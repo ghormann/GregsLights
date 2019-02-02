@@ -57,6 +57,7 @@ protected:
     void throwLeftStickNose(bool arch);
     void throwRightStickNose(bool arch);
     void throwHitHat(int pos);
+    void throwGround(int pos, bool goHigh);
     /*
         void hit_low_right(double pause);
         void hit_low_left(double pause);

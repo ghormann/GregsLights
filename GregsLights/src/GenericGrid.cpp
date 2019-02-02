@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <cmath>
+#include <assert.h>
 
 using namespace std;
 
@@ -32,14 +33,107 @@ int GenericGrid::getGridWidth()
     return gridWidth;
 }
 
+void GenericGrid::archBallOverTime(double radius,double r_x, double r_y, int start_x, int stop_x, double width, double timeDuration, RGBColor *color) {
+
+    double radiusSqr = radius*radius;
+    double dx = stop_x > start_x? 0.5 : -0.5;
+    double x = start_x;
+
+    while (x <= stop_x) {
+        double y1 = r_y + sqrt(radiusSqr - pow(x-r_x,2));
+        double y2 = r_y - sqrt(radiusSqr - pow(x-r_x,2));
+        drawCircle(x,(int)y1,width,color);
+        drawCircle(x,(int)y2,width,color);
+        usleep((timeDuration) * 1000000/2);
+        drawCircle(x,(int)y1,width,RGBColor::BLACK);
+        drawCircle(x,(int)y2,width,RGBColor::BLACK);
+        x += dx;
+    }
+}
+
 void GenericGrid::setPixelAA(int x, int y, double pct, RGBColor *color)
 {
     int r = (color->getRed() * pct) / 100;
     int g = (color->getGreen() * pct) / 100;
     int b = (color->getBlue() * pct) / 100;
     //printf("DEBUG: %d, %d:  %f, green: %d\n", x, y, pct, g);
-    getPixal(x,y)->set(r,g,b);
+    if (x >=0 && y>=0 && x < gridWidth && y < gridHeight)
+    {
+        getPixal(x,y)->set(r,g,b);
+    }
 }
+
+void GenericGrid::plotQuadBezierSegAA(int x0, int y0, int x1, int y1, int x2, int y2, RGBColor *color)
+{
+    int sx = x2-x1, sy = y2-y1;
+    long xx = x0-x1, yy = y0-y1, xy;         /* relative values for checks */
+    double dx, dy, err, ed, cur = xx*sy-yy*sx;                /* curvature */
+
+    assert(xx*sx >= 0 && yy*sy >= 0);  /* sign of gradient must not change */
+
+    if (sx*(long)sx+sy*(long)sy > xx*xx+yy*yy)   /* begin with longer part */
+    {
+        x2 = x0;
+        x0 = sx+x1;
+        y2 = y0;
+        y0 = sy+y1;
+        cur = -cur; /* swap P0 P2 */
+    }
+    if (cur != 0)
+    {
+        /* no straight line */
+        xx += sx;
+        xx *= sx = x0 < x2 ? 1 : -1;          /* x step direction */
+        yy += sy;
+        yy *= sy = y0 < y2 ? 1 : -1;          /* y step direction */
+        xy = 2*xx*yy;
+        xx *= xx;
+        yy *= yy;         /* differences 2nd degree */
+        if (cur*sx*sy < 0)                            /* negated curvature? */
+        {
+            xx = -xx;
+            yy = -yy;
+            xy = -xy;
+            cur = -cur;
+        }
+        dx = 4.0*sy*(x1-x0)*cur+xx-xy;            /* differences 1st degree */
+        dy = 4.0*sx*(y0-y1)*cur+yy-xy;
+        xx += xx;
+        yy += yy;
+        err = dx+dy+xy;               /* error 1st step */
+        do
+        {
+            cur = fmin(dx+xy,-xy-dy);
+            ed = fmax(dx+xy,-xy-dy);           /* approximate error distance */
+            ed = 255/(ed+2*ed*cur*cur/(4.*ed*ed+cur*cur));
+            setPixelAA(x0,y0, ed*fabs(err-dx-dy-xy), color);          /* plot curve */
+            if (x0 == x2 && y0 == y2)
+                return;/* last pixel -> curve finished */
+            x1 = x0;
+            cur = dx-err;
+            y1 = 2*err+dy < 0;
+            if (2*err+dx > 0)                                      /* x step */
+            {
+                if (err-dy < ed)
+                    setPixelAA(x0,y0+sy, ed*fabs(err-dy), color);
+                x0 += sx;
+                dx -= xy;
+                err += dy += yy;
+            }
+            if (y1)                                                /* y step */
+            {
+                if (cur < ed)
+                    setPixelAA(x1+sx,y0, ed*fabs(cur), color);
+                y0 += sy;
+                dy -= xy;
+                err += dx += xx;
+            }
+        }
+        while (dy < dx);                /* gradient negates -> close curves */
+    }
+    plotLineWidth(x0,y0, x2,y2, 1.0, color);              /* plot remaining needle to end */
+}
+
 
 // Source: http://members.chello.at/~easyfilter/bresenham.html
 void GenericGrid::plotLineWidth(int x0, int y0, int x1, int y1, float wd, RGBColor *color)
@@ -58,7 +152,8 @@ void GenericGrid::plotLineWidth(int x0, int y0, int x1, int y1, float wd, RGBCol
         {
             for (e2 += dy, y2 = y0; e2 < ed*wd && (y1 != y2 || dx > dy); e2 += dx)
                 setPixelAA(x0, y2 += sy, 100-max((float)0,100*(abs(e2)/ed-wd+1)),color);
-            if (x0 == x1) break;
+            if (x0 == x1)
+                break;
             e2 = err;
             err -= dy;
             x0 += sx;
@@ -67,7 +162,8 @@ void GenericGrid::plotLineWidth(int x0, int y0, int x1, int y1, float wd, RGBCol
         {
             for (e2 = dx-e2; e2 < ed*wd && (x1 != x2 || dx < dy); e2 += dy)
                 setPixelAA(x2 += sx, y0, 100-max((float)0,100*(abs(e2)/ed-wd+1)),color);
-            if (y0 == y1) break;
+            if (y0 == y1)
+                break;
             err += dx;
             y0 += sy;
         }
@@ -2237,7 +2333,8 @@ int GenericGrid::_gridSleep(double d)
         {
             usleep((0.5) * 1000000);
             d -= 0.5;
-            if (d < 0) d = 0;
+            if (d < 0)
+                d = 0;
         }
         if (this->interrupt)
         {
