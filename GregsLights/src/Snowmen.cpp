@@ -203,7 +203,7 @@ void Snowmen::hitHat(int pos)
 
     for (int i = 0; i < 10; i++)
     {
-        int x = (pos == SNOWMAN_RIGHT ? pos_x[i] : (SNOWMEN_WIDTH/2 - pos_x[i] - 1));
+        int x = (pos == SNOWMAN_RIGHT ? pos_x[i] : (SNOWMEN_WIDTH/2 - pos_x[i] - 10));
         lockSnowmen();
         snowman->setBackground(RGBColor::BLACK);
         drawSnowmen(pos, false);
