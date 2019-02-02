@@ -167,6 +167,27 @@ void Snowmen::hitNose(int snowmen, int start_y)
 
 }
 
+void Snowmen::placeHatBack(int pos)
+{
+    RGBPicture *hat = RGBPicture::getPicture("small_hat_0.png");
+    GenericGrid *snowman = getSnowmen(pos);
+
+    int end_x= (pos == SNOWMAN_RIGHT ? 7 : (SNOWMEN_WIDTH/2-16));
+
+    for (int y = -28; y < -1; y++)
+    {
+        snowman->showPictureNow(*hat, end_x, y, true);
+        write_data(SNOWBALL_DURATION*2);
+        lockSnowmen();
+        snowman->setBackground(RGBColor::BLACK);
+        drawSnowmen(pos,false);
+        releaseSnowmen();
+    }
+        drawSnowmen(pos,true);
+
+
+}
+
 void Snowmen::hitHat(int pos)
 {
     double duration = SNOWBALL_DURATION * 2.5;
@@ -621,8 +642,10 @@ void Snowmen::do_it_snowmen()
     while(1)
     {
         throwHitHat(SNOWMAN_LEFT);
+        placeHatBack(SNOWMAN_RIGHT);
         write_data(1.0);
         throwHitHat(SNOWMAN_RIGHT);
+        placeHatBack(SNOWMAN_LEFT);
 
         //hitHat(SNOWMAN_LEFT);
         //throwLeftStickNose(true);

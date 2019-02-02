@@ -71,6 +71,7 @@ protected:
     void do_it_snowmen();
 private:
     void drawSnowmen(int pos, bool withHat = true);
+    void placeHatBack(int pos);
     void throwLeft(bool loft);
     void throwRight(bool loft);
     void hitNose(int snowmen, int start_y);
