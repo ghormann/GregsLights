@@ -579,6 +579,40 @@ void Snowmen::throwRightStickNose(bool arch)
     hitNose(SNOWMAN_LEFT, 24);
 }
 
+void Snowmen::throwHitHat(int pos)
+{
+    int pos_y[] = {10,10,11,11,12,12,13,13,14,14};
+    GenericGrid *hat;
+    if (pos == SNOWMAN_LEFT)
+    {
+        hat = getSnowmen(SNOWMAN_RIGHT);
+        throwLeft(true);
+        do_middle(pos,8,1,8,SNOWBALL_DURATION);
+        ball_line(this->getSplashGrid(SNOWMAN_RIGHT), 0, 0, SPLASH_GRID_WIDTH, 6, BALL_SIZE_2IN);
+        for (int x = 0; x< 10; x=x+2)
+        {
+            hat->drawCircle(x*2,pos_y[x],BALL_SIZE_1IN,RGBColor::WHITE);
+            write_data(SNOWBALL_DURATION);
+            hat->drawCircle(x*2,pos_y[x],BALL_SIZE_1IN,RGBColor::BLACK);
+        }
+        hitHat(SNOWMAN_RIGHT);
+    }
+    else
+    {
+        hat = getSnowmen(SNOWMAN_LEFT);
+        throwRight(true);
+        do_middle(pos,8,1,8,SNOWBALL_DURATION);
+        ball_line(this->getSplashGrid(SNOWMAN_LEFT), SPLASH_GRID_WIDTH, 0, 0, 6, BALL_SIZE_2IN);
+        for (int x = 0; x< 10; x=x+2)
+        {
+            hat->drawCircle(SNOWMEN_WIDTH - x*2,pos_y[x],BALL_SIZE_1IN,RGBColor::WHITE);
+            write_data(SNOWBALL_DURATION);
+            hat->drawCircle(SNOWMEN_WIDTH - x*2,pos_y[x],BALL_SIZE_1IN,RGBColor::BLACK);
+        }
+        hitHat(SNOWMAN_LEFT);
+    }
+
+}
 
 void Snowmen::do_it_snowmen()
 {
@@ -586,9 +620,13 @@ void Snowmen::do_it_snowmen()
     drawSnowmen(SNOWMAN_RIGHT);
     while(1)
     {
-        hitHat(SNOWMAN_LEFT);
-        throwLeftStickNose(true);
-        hitHat(SNOWMAN_RIGHT);
+        throwHitHat(SNOWMAN_LEFT);
+        write_data(1.0);
+        throwHitHat(SNOWMAN_RIGHT);
+
+        //hitHat(SNOWMAN_LEFT);
+        //throwLeftStickNose(true);
+        //hitHat(SNOWMAN_RIGHT);
 
         //throwLeftStickNose(false);
         //throwRightStickNose(true);

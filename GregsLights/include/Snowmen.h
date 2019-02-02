@@ -54,6 +54,9 @@ public:
     void lockSnowmen();
     void releaseSnowmen();
 protected:
+    void throwLeftStickNose(bool arch);
+    void throwRightStickNose(bool arch);
+    void throwHitHat(int pos);
     /*
         void hit_low_right(double pause);
         void hit_low_left(double pause);
@@ -71,8 +74,6 @@ private:
     void throwLeft(bool loft);
     void throwRight(bool loft);
     void hitNose(int snowmen, int start_y);
-    void throwLeftStickNose(bool arch);
-    void throwRightStickNose(bool arch);
     void hitHat(int pos);
     pthread_mutex_t lock;
     pthread_t snowman_t;
