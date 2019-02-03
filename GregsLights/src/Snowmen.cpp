@@ -167,7 +167,7 @@ void Snowmen::hitNose(int snowmen, int start_y)
 
     }
 
-    drawSnowmen(snowmen);
+    drawSnowmen(snowmen, hatStatus[snowmen]);
 
 }
 
@@ -197,6 +197,7 @@ void Snowmen::placeHatBack(int pos)
             hatId = 0;
         }
     }
+    hatStatus[pos] = true;
     drawSnowmen(pos,true);
 
 
@@ -253,6 +254,7 @@ void Snowmen::hitHat(int pos)
     snowman->setBackground(RGBColor::BLACK);
     drawSnowmen(pos, false);
     releaseSnowmen();
+    hatStatus[pos] = false;
     write_data(duration);
 
 }
@@ -370,7 +372,7 @@ void Snowmen::throwRight(bool loft)
     {
         lockSnowmen();
         right->setBackground(RGBColor::BLACK);
-        drawSnowmen(SNOWMAN_RIGHT);
+        drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
 
         right->plotLineWidth(elbow_x[i],elbow_y[i],sholder_x,sholder_y,2.0,RGBColor::WHITE);
         right->plotLineWidth(elbow_x[i],elbow_y[i],ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
@@ -384,7 +386,7 @@ void Snowmen::throwRight(bool loft)
     {
         lockSnowmen();
         right->setBackground(RGBColor::BLACK);
-        drawSnowmen(SNOWMAN_RIGHT);
+        drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
 
         right->plotLineWidth(sholder_x,sholder_y,ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
         right->drawCircle(ball_x[i],ball_y[i],BALL_SIZE_1IN, RGBColor::WHITE);
@@ -397,7 +399,7 @@ void Snowmen::throwRight(bool loft)
     {
         lockSnowmen();
         right->setBackground(RGBColor::BLACK);
-        drawSnowmen(SNOWMAN_RIGHT);
+        drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
 
         right->plotLineWidth(sholder_x,sholder_y,hand_x[i],hand_y[i],2.0,RGBColor::WHITE);
         if (i < 2)
@@ -420,7 +422,7 @@ void Snowmen::throwRight(bool loft)
     // Clean up Snowmen
     lockSnowmen();
     right->setBackground(RGBColor::BLACK);
-    drawSnowmen(SNOWMAN_RIGHT);
+    drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
     releaseSnowmen();
 
     // Throw slpash
@@ -466,7 +468,7 @@ void Snowmen::throwLeft(bool loft)
     {
         lockSnowmen();
         left->setBackground(RGBColor::BLACK);
-        drawSnowmen(SNOWMAN_LEFT);
+        drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
 
         left->plotLineWidth(elbow_x[i],elbow_y[i],sholder_x,sholder_y,2.0,RGBColor::WHITE);
         left->plotLineWidth(elbow_x[i],elbow_y[i],ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
@@ -480,7 +482,7 @@ void Snowmen::throwLeft(bool loft)
     {
         lockSnowmen();
         left->setBackground(RGBColor::BLACK);
-        drawSnowmen(SNOWMAN_LEFT);
+        drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
 
         left->plotLineWidth(sholder_x,sholder_y,ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
         left->drawCircle(ball_x[i],ball_y[i],BALL_SIZE_1IN, RGBColor::WHITE);
@@ -493,7 +495,7 @@ void Snowmen::throwLeft(bool loft)
     {
         lockSnowmen();
         left->setBackground(RGBColor::BLACK);
-        drawSnowmen(SNOWMAN_LEFT);
+        drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
 
         left->plotLineWidth(sholder_x,sholder_y,hand_x[i],hand_y[i],2.0,RGBColor::WHITE);
         if (i < 2)
@@ -515,7 +517,7 @@ void Snowmen::throwLeft(bool loft)
     // Clean up Snowmen
     lockSnowmen();
     left->setBackground(RGBColor::BLACK);
-    drawSnowmen(SNOWMAN_LEFT);
+    drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
     releaseSnowmen();
 
     // Throw slpash
@@ -741,24 +743,32 @@ void Snowmen::fadeSnow()
 
 void Snowmen::do_it_snowmen()
 {
-    drawSnowmen(SNOWMAN_LEFT);
-    drawSnowmen(SNOWMAN_RIGHT);
+    drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
+    drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
+    write_data(10.0);
     while(1)
     {
 
         throwGround(SNOWMAN_LEFT, true);
         write_data(1.0);
-        throwGround(SNOWMAN_RIGHT, true);
-        write_data(1.0);
-        throwGround(SNOWMAN_RIGHT, false);
-        write_data(1.0);
         throwGround(SNOWMAN_LEFT, false);
+        write_data(1.0);
+        throwHitHat(SNOWMAN_LEFT);
+        write_data(1.0);
+        throwLeftStickNose(false);
+        throwGround(SNOWMAN_LEFT, true);
+        throwGround(SNOWMAN_RIGHT, true);
 
-        if (groundSnowLevel[SNOWMAN_LEFT] >=4.0 || groundSnowLevel[SNOWMAN_RIGHT] >= 4.0) {
-            fadeSnow();
-            drawSnowmen(SNOWMAN_LEFT,true);
-            drawSnowmen(SNOWMAN_RIGHT,true);
-        }
+        write_data(2.0);
+
+
+        fadeSnow();
+        write_data(1.0);
+        placeHatBack(SNOWMAN_RIGHT);
+
+        drawSnowmen(SNOWMAN_LEFT,hatStatus[SNOWMAN_LEFT]);
+        drawSnowmen(SNOWMAN_RIGHT,hatStatus[SNOWMAN_RIGHT]);
+
 
         //throwHitHat(SNOWMAN_LEFT);
         //placeHatBack(SNOWMAN_RIGHT);
