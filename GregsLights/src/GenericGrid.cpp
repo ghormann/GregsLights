@@ -39,7 +39,7 @@ void GenericGrid::archBallOverTime(double radius,double r_x, double r_y, int sta
     double dx = stop_x > start_x? 0.5 : -0.5;
     double x = start_x;
 
-    while (x <= stop_x) {
+    while (true) {
         double y1 = r_y + sqrt(radiusSqr - pow(x-r_x,2));
         double y2 = r_y - sqrt(radiusSqr - pow(x-r_x,2));
         drawCircle(x,(int)y1,width,color);
@@ -48,6 +48,12 @@ void GenericGrid::archBallOverTime(double radius,double r_x, double r_y, int sta
         drawCircle(x,(int)y1,width,RGBColor::BLACK);
         drawCircle(x,(int)y2,width,RGBColor::BLACK);
         x += dx;
+        if (dx >0 && x>stop_x) {
+            break;
+        }
+        if (dx <0 && x < stop_x) {
+            break;
+        }
     }
 }
 

@@ -58,6 +58,7 @@ protected:
     void throwRightStickNose(bool arch);
     void throwHitHat(int pos);
     void throwGround(int pos, bool goHigh);
+    void drawGroundSnow(int pos);
     /*
         void hit_low_right(double pause);
         void hit_low_left(double pause);
@@ -79,6 +80,7 @@ private:
     void hitHat(int pos);
     pthread_mutex_t lock;
     pthread_t snowman_t;
+    int groundSnowLevel[2];
     SnowmenGrid *snowmen[2];
     SnowmenGrid *splash[2];
     SnowmenGrid *skyGrid;
