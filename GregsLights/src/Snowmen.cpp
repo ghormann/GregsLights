@@ -20,6 +20,8 @@ Snowmen::Snowmen(bool skipTime)
     }
     groundSnowLevel[SNOWMAN_LEFT] = 0;
     groundSnowLevel[SNOWMAN_RIGHT] = 0;
+    hatStatus[SNOWMAN_LEFT] = true;
+    hatStatus[SNOWMAN_RIGHT] = true;
 
     //ctor
     timeinfo = new TimeInfo(skipTime,false);
@@ -318,7 +320,7 @@ void Snowmen::drawSnowmen(int pos, bool withHat)
         who->getPixal(x+3,y-2)->set(RGBColor::BLACK);
     }
 
-    drawGroundSnow(pos);
+    drawGroundSnow(pos, RGBColor::WHITE);
 
 }
 
@@ -685,16 +687,16 @@ void Snowmen::throwGround(int pos, bool goHigh)
     }
 
     ++groundSnowLevel[pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT : SNOWMAN_LEFT];
-    drawGroundSnow(pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT : SNOWMAN_LEFT);
+    drawGroundSnow(pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT : SNOWMAN_LEFT, RGBColor::WHITE);
 
 }
 
-void Snowmen::drawGroundSnow(int pos)
+void Snowmen::drawGroundSnow(int pos, RGBColor *color)
 {
-    int level = groundSnowLevel[pos];
+    double level = groundSnowLevel[pos];
     int x,y;
 
-    if (level == 0)
+    if (level <= 0)
     {
         return;
     }
@@ -707,11 +709,33 @@ void Snowmen::drawGroundSnow(int pos)
 
     y = SNOWMEN_HEIGHT -2;
     x = pos== SNOWMAN_RIGHT ? 1 : SNOWMEN_WIDTH -2;
-    snowman->drawCircle(x,y,BALL_SIZE_1IN * level,RGBColor::WHITE);
+    snowman->drawCircle(x,y,BALL_SIZE_1IN * level, color);
 
     y= SPLASH_GRID_HEIGHT -1;
     x = pos== SNOWMAN_LEFT ? 1 : SPLASH_GRID_WIDTH -2;
-    splash->drawCircle(x,y,BALL_SIZE_2IN * level,RGBColor::WHITE);
+    splash->drawCircle(x,y,BALL_SIZE_2IN * level,color);
+
+}
+
+void Snowmen::fadeSnow()
+{
+    while(groundSnowLevel[SNOWMAN_LEFT] > 0 || groundSnowLevel[SNOWMAN_RIGHT] > 0)
+    {
+        lockSnowmen();
+        drawGroundSnow(SNOWMAN_LEFT, RGBColor::BLACK);
+        drawGroundSnow(SNOWMAN_RIGHT, RGBColor::BLACK);
+        groundSnowLevel[SNOWMAN_LEFT] += -0.1;
+        groundSnowLevel[SNOWMAN_RIGHT] += -0.1;
+        drawGroundSnow(SNOWMAN_LEFT, RGBColor::WHITE);
+        drawGroundSnow(SNOWMAN_RIGHT, RGBColor::WHITE);
+        drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
+        drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
+        releaseSnowmen();
+        write_data(SNOWBALL_DURATION*3);
+    }
+
+    groundSnowLevel[SNOWMAN_LEFT] = 0;
+    groundSnowLevel[SNOWMAN_RIGHT] = 0;
 
 }
 
@@ -729,6 +753,12 @@ void Snowmen::do_it_snowmen()
         throwGround(SNOWMAN_RIGHT, false);
         write_data(1.0);
         throwGround(SNOWMAN_LEFT, false);
+
+        if (groundSnowLevel[SNOWMAN_LEFT] >=4.0 || groundSnowLevel[SNOWMAN_RIGHT] >= 4.0) {
+            fadeSnow();
+            drawSnowmen(SNOWMAN_LEFT,true);
+            drawSnowmen(SNOWMAN_RIGHT,true);
+        }
 
         //throwHitHat(SNOWMAN_LEFT);
         //placeHatBack(SNOWMAN_RIGHT);
