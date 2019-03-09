@@ -86,7 +86,7 @@ SnowmenGrid::SnowmenGrid(int width_, int height_, int dummy_with_, int dummy_hei
 
 // TODO (ghormann#1#): Fix Mapping of Pixals
         this->pixals[i] = new RGBLight(new DummyBulb(), new DummyBulb(), new DummyBulb());
-        this->pixals[i]->set(0,0,25);
+        this->pixals[i]->set(0,0,0);
     }
 
 }
@@ -800,6 +800,7 @@ void Snowmen::cannonShot(int snowmen_pos)
     {
         lockSnowmen();
         cannon_grid->setBackground(RGBColor::BLACK);
+        drawGroundSnow(snowmen_pos, RGBColor::WHITE);
         cannon_grid->showPictureNow(*cannon,0,y,true);
         releaseSnowmen();
         write_data(SNOWBALL_DURATION);
@@ -868,23 +869,30 @@ void Snowmen::cannonShot(int snowmen_pos)
     for (int i = 0; i < 38; i++)
     {
         end_snowman->drawCircle(snowman_x,-6,size_1in,RGBColor::BLACK);
+        end_splash_Grid->drawCircle(SPLASH_GRID_WIDTH/2,SPLASH_GRID_HEIGHT,size_1in,RGBColor::BLACK);
         write_data(SNOWBALL_DURATION/2);
         size_1in += 3.0;
     }
+    // Reset
+    groundSnowLevel[snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT] = 0;
+    noseBalls[snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT] = 0;
+    hatStatus[snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT] = false;
 
     getSkyGrid()->writeText(RGBColor::GREEN,10,0,"GONE!", false);
     size_1in = 1;
     write_data(2.0);
     for (int i =0; i< 50; i++)
     {
+        lockSnowmen();
         cannon_grid->drawCircle(SPLASH_GRID_WIDTH/2,SPLASH_GRID_HEIGHT/2,size_1in,RGBColor::BLACK);
+        drawGroundSnow(snowmen_pos, RGBColor::WHITE);
+        releaseSnowmen();
         skyGrid->drawCircle(SKY_GRID_WIDTH/2,SKY_GRID_HEIGHT/2,size_1in,RGBColor::BLACK);
         write_data(SNOWBALL_DURATION);
         size_1in += 1;
     }
 
     // reset
-    hatStatus[snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT] = false;
     drawSnowmen(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT, false);
     placeHatBack(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT);
 
@@ -897,66 +905,193 @@ void Snowmen::do_it_snowmen()
     drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
 
     // Debug area
-    while(1)
+    while(0)
     {
+        throwGround(SNOWMAN_RIGHT, true);
+        throwGround(SNOWMAN_RIGHT, false);
+        throwGround(SNOWMAN_RIGHT, true);
+        write_data(1.0);
+        throwRightStickNose(true);
+        write_data(1.0);
+        throwRightStickNose(false);
+        throwHitHat(SNOWMAN_RIGHT);
+        write_data(2.0);
         this->cannonShot(SNOWMAN_LEFT);
         write_data(2.0);
-        this->cannonShot(SNOWMAN_RIGHT);
-        write_data(2.0);
-    }
-
-    //write_data(10.0);
-    while(1)
-
-
-    {
-        /*
-                throwGround(SNOWMAN_LEFT, true);
-                write_data(1.0);
-                throwGround(SNOWMAN_LEFT, false);
-                write_data(1.0);
-                throwHitHat(SNOWMAN_LEFT);
-                write_data(1.0);
-        */
-        throwLeftStickNose(false);
-        throwLeftStickNose(true);
-        throwRightStickNose(true);
-        throwRightStickNose(false);
-        fadeNoseBalls();
-        throwLeftStickNose(false);
-        fadeNoseBalls();
-
-//        throwGround(SNOWMAN_LEFT, true);
-//       throwGround(SNOWMAN_RIGHT, true);
-
-        write_data(2.0);
-
-
         fadeSnow();
-        write_data(1.0);
-        placeHatBack(SNOWMAN_RIGHT);
-
-        drawSnowmen(SNOWMAN_LEFT,hatStatus[SNOWMAN_LEFT]);
-        drawSnowmen(SNOWMAN_RIGHT,hatStatus[SNOWMAN_RIGHT]);
-
-
-        //throwHitHat(SNOWMAN_LEFT);
-        //placeHatBack(SNOWMAN_RIGHT);
-        //write_data(1.0);
-        //throwHitHat(SNOWMAN_RIGHT);
-        //placeHatBack(SNOWMAN_LEFT);
-
-        //hitHat(SNOWMAN_LEFT);
-        //throwLeftStickNose(true);
-        //hitHat(SNOWMAN_RIGHT);
-
-        //throwLeftStickNose(false);
-        //throwRightStickNose(true);
-        //throwRightStickNose(false);
-
-        write_data(1.0);
+        fadeNoseBalls();
     }
-    //sleep(5); // Replace me
+
+    bool didSomething = true;
+    int id = rand()%12;
+    int chance = rand()%4;
+    switch(id)
+    {
+    case 0:
+        if (noseBalls[SNOWMAN_LEFT]>=2 || noseBalls[SNOWMAN_RIGHT] >=2)
+        {
+            fadeNoseBalls();
+        }
+        else
+        {
+            throwLeftStickNose(false);
+        }
+        break;
+    case 1:
+        if (noseBalls[SNOWMAN_LEFT]>=2 || noseBalls[SNOWMAN_RIGHT] >=2)
+        {
+            fadeNoseBalls();
+        }
+        else
+        {
+            throwLeftStickNose(true);
+        }
+        break;
+    case 2:
+        if (noseBalls[SNOWMAN_LEFT]>=2 || noseBalls[SNOWMAN_RIGHT] >=2)
+        {
+            fadeNoseBalls();
+        }
+        else
+        {
+            throwRightStickNose(false);
+        }
+        break;
+    case 3:
+        if (noseBalls[SNOWMAN_LEFT]>=2 || noseBalls[SNOWMAN_RIGHT] >=2)
+        {
+            fadeNoseBalls();
+        }
+        else
+        {
+            throwRightStickNose(true);
+        }
+        break;
+    case 4:
+        if (groundSnowLevel[SNOWMAN_RIGHT] >= 3)
+        {
+            fadeSnow();
+        }
+        else
+        {
+            throwGround(SNOWMAN_LEFT, true);
+        }
+        break;
+    case 5:
+        if (groundSnowLevel[SNOWMAN_RIGHT] >= 3)
+        {
+            fadeSnow();
+        }
+        else
+        {
+            throwGround(SNOWMAN_LEFT, false);
+        }
+        break;
+    case 6:
+        if (groundSnowLevel[SNOWMAN_LEFT] >= 3)
+        {
+            fadeSnow();
+        }
+        else
+        {
+
+            throwGround(SNOWMAN_RIGHT, true);
+        }
+        break;
+    case 7:
+        if (groundSnowLevel[SNOWMAN_LEFT] >= 3)
+        {
+            fadeSnow();
+        }
+        else
+        {
+            throwGround(SNOWMAN_RIGHT, false);
+        }
+        break;
+    case 8:
+        if (hatStatus[SNOWMAN_LEFT] == true)
+        {
+            throwHitHat(SNOWMAN_RIGHT);
+        }
+        else
+        {
+            placeHatBack(SNOWMAN_LEFT);
+        }
+        break;
+    case 9:
+        if (hatStatus[SNOWMAN_RIGHT] == true)
+        {
+            throwHitHat(SNOWMAN_LEFT);
+        }
+        else
+        {
+            placeHatBack(SNOWMAN_RIGHT);
+        }
+        break;
+    case 10:
+        if (chance == 0)
+            cannonShot(SNOWMAN_LEFT);
+        else
+            didSomething = false;
+        break;
+    case 11:
+        if (chance == 0)
+            cannonShot(SNOWMAN_RIGHT);
+        else
+            didSomething = false;
+        break;
+
+
+    default:
+        break;
+    }
+
+    // wait between
+    if (didSomething)
+    {
+        id = rand()%10;
+        switch(id)
+        {
+        case 0:
+        case 1:
+        case 2:
+            write_data(0.2);
+            break;
+        case 3:
+        case 4:
+        case 5:
+            write_data(0.8);
+            break;
+        case 6:
+            // Do nothing
+            break;
+        case 7:
+        case 8:
+            write_data(1.0);
+            break;
+        case 9:
+            write_data(1.5);
+            break;
+        default:
+            break;
+        }
+    }
+
+
+    //throwHitHat(SNOWMAN_LEFT);
+    //placeHatBack(SNOWMAN_RIGHT);
+    //write_data(1.0);
+    //throwHitHat(SNOWMAN_RIGHT);
+    //placeHatBack(SNOWMAN_LEFT);
+
+    //hitHat(SNOWMAN_LEFT);
+    //throwLeftStickNose(true);
+    //hitHat(SNOWMAN_RIGHT);
+
+    //throwLeftStickNose(false);
+    //throwRightStickNose(true);
+    //throwRightStickNose(false);
+
 }
 
 
