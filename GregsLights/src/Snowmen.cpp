@@ -18,10 +18,11 @@ Snowmen::Snowmen(bool skipTime)
         printf("\n mutex init failed\n");
         throw "Mutext init failed for Snowmen";
     }
-    groundSnowLevel[SNOWMAN_LEFT] = 0;
-    groundSnowLevel[SNOWMAN_RIGHT] = 0;
+    groundSnowLevel[SNOWMAN_LEFT] = groundSnowLevel[SNOWMAN_RIGHT]= 0;
+    noseBalls[SNOWMAN_LEFT] = noseBalls[SNOWMAN_RIGHT] = 0;
     hatStatus[SNOWMAN_LEFT] = true;
     hatStatus[SNOWMAN_RIGHT] = true;
+    noseBallColor = RGBColor::WHITE;
 
     //ctor
     timeinfo = new TimeInfo(skipTime,false);
@@ -152,24 +153,35 @@ void Snowmen::hitNose(int snowmen, int start_y)
         pos_x += (snowmen == SNOWMAN_RIGHT ? 2 : -2);
         pos_y += dy;
     }
-    pos_x = (snowmen == SNOWMAN_RIGHT ? SNOWMEN_WIDTH - (SNOWMEN_WIDTH/2+16) : SNOWMEN_WIDTH/2+16);
-    grid->drawCircle(pos_x, SNOWMAN_NOSE_HEIGHT-1, BALL_SIZE_1IN, RGBColor::WHITE);
-    write_data(1.0);
-    // Fade snowball
-    i = 100;
-    while (i> -1)
-    {
-        // RGBColor is proper C++ for Memory Mangement.
-        RGBColor c =  RGBColor(i,i,i);
-        grid->drawCircle(pos_x, SNOWMAN_NOSE_HEIGHT-1, BALL_SIZE_1IN, &c);
-        write_data(SNOWBALL_DURATION);
-        i -=10;
 
-    }
+    ++noseBalls[snowmen];
 
     drawSnowmen(snowmen, hatStatus[snowmen]);
 
 }
+
+
+// Fade snowball
+void Snowmen::fadeNoseBalls()
+{
+    int i = 100;
+    while (i> -1)
+    {
+        RGBColor *c = new  RGBColor(i,i,i);
+        noseBallColor = c;
+        drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
+        drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_LEFT]);
+        write_data(SNOWBALL_DURATION);
+        i -=5;
+        noseBallColor = RGBColor::WHITE;
+        delete c; // Memory Management
+    }
+
+    noseBalls[SNOWMAN_LEFT] = noseBalls[SNOWMAN_RIGHT] = 0;
+    drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
+    drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_LEFT]);
+}
+
 
 void Snowmen::placeHatBack(int pos)
 {
@@ -321,6 +333,20 @@ void Snowmen::drawSnowmen(int pos, bool withHat)
         who->getPixal(x+2,y-1)->set(RGBColor::BLACK);
         who->getPixal(x+3,y-2)->set(RGBColor::BLACK);
     }
+
+    // Snowball Nose L1
+    if (noseBalls[pos] > 0)
+    {
+        x = (pos == SNOWMAN_RIGHT ? SNOWMEN_WIDTH - (SNOWMEN_WIDTH/2+14) : SNOWMEN_WIDTH/2+12);
+        who->drawCircle(x, SNOWMAN_NOSE_HEIGHT-1, BALL_SIZE_1IN, noseBallColor);
+    }
+
+    if (noseBalls[pos] > 1)
+    {
+        x = (pos == SNOWMAN_RIGHT ? SNOWMEN_WIDTH - (SNOWMEN_WIDTH/2+18) : SNOWMEN_WIDTH/2+16);
+        who->drawCircle(x, SNOWMAN_NOSE_HEIGHT-1, BALL_SIZE_1IN, noseBallColor);
+    }
+
 
     drawGroundSnow(pos, RGBColor::WHITE);
 
@@ -745,19 +771,27 @@ void Snowmen::do_it_snowmen()
 {
     drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
     drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
-    write_data(10.0);
+    //write_data(10.0);
     while(1)
     {
-
-        throwGround(SNOWMAN_LEFT, true);
-        write_data(1.0);
-        throwGround(SNOWMAN_LEFT, false);
-        write_data(1.0);
-        throwHitHat(SNOWMAN_LEFT);
-        write_data(1.0);
+        /*
+                throwGround(SNOWMAN_LEFT, true);
+                write_data(1.0);
+                throwGround(SNOWMAN_LEFT, false);
+                write_data(1.0);
+                throwHitHat(SNOWMAN_LEFT);
+                write_data(1.0);
+        */
         throwLeftStickNose(false);
-        throwGround(SNOWMAN_LEFT, true);
-        throwGround(SNOWMAN_RIGHT, true);
+        throwLeftStickNose(true);
+        throwRightStickNose(true);
+        throwRightStickNose(false);
+        fadeNoseBalls();
+        throwLeftStickNose(false);
+        fadeNoseBalls();
+
+//        throwGround(SNOWMAN_LEFT, true);
+//       throwGround(SNOWMAN_RIGHT, true);
 
         write_data(2.0);
 

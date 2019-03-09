@@ -59,6 +59,7 @@ protected:
     void throwHitHat(int pos);
     void throwGround(int pos, bool goHigh);
     void fadeSnow();
+    void fadeNoseBalls();
     void drawGroundSnow(int pos, RGBColor* color);
     /*
         void hit_low_right(double pause);
@@ -79,9 +80,11 @@ private:
     void throwRight(bool loft);
     void hitNose(int snowmen, int start_y);
     void hitHat(int pos);
+    RGBColor *noseBallColor;
     pthread_mutex_t lock;
     pthread_t snowman_t;
     double groundSnowLevel[2];
+    int noseBalls[2];
     bool hatStatus[2];
     SnowmenGrid *snowmen[2];
     SnowmenGrid *splash[2];
