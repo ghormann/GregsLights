@@ -143,6 +143,8 @@ void Snowmen::run()
 
 void Snowmen::hitNose(int snowmen, int start_y)
 {
+    strcpy(message2, "Hit Nose");
+
     GenericGrid *grid = getSnowmen(snowmen);
     int pos_x = (snowmen == SNOWMAN_RIGHT ? 1 : SNOWMEN_WIDTH-1);
     int i;
@@ -167,6 +169,8 @@ void Snowmen::hitNose(int snowmen, int start_y)
 // Fade snowball
 void Snowmen::fadeNoseBalls()
 {
+    strcpy(message2, "Fade Nose Balls");
+
     int i = 100;
     while (i> -1)
     {
@@ -194,6 +198,8 @@ void Snowmen::placeHatBack(int pos)
     hat[2] = RGBPicture::getPicture("small_hat_0.png");
     hat[3] = RGBPicture::getPicture("small_hat_-10.png");
     GenericGrid *snowman = getSnowmen(pos);
+    strcpy(message2, "Place Hat Back");
+
 
     int hatId = 0;
 
@@ -220,6 +226,8 @@ void Snowmen::placeHatBack(int pos)
 
 void Snowmen::hitHat(int pos)
 {
+    strcpy(message2, "Hit Hat");
+
     double duration = SNOWBALL_DURATION * 2.5;
     RGBPicture *hats[10];
     int pos_x[] = {7,10,13,16,19,21,25,28,31,34};
@@ -617,6 +625,8 @@ void Snowmen::ball_line(GenericGrid *grid, int start_x, int start_y, int end_x, 
 
 void Snowmen::throwLeftStickNose(bool arch)
 {
+    strcpy(message2, "TThrow Left Nose");
+
     throwLeft(arch);
     if (arch)
     {
@@ -632,6 +642,8 @@ void Snowmen::throwLeftStickNose(bool arch)
 
 void Snowmen::throwRightStickNose(bool arch)
 {
+    strcpy(message2, "Throw Right Stick Nose");
+
     throwRight(arch);
     if (arch)
     {
@@ -648,6 +660,8 @@ void Snowmen::throwRightStickNose(bool arch)
 void Snowmen::throwHitHat(int pos)
 {
     int pos_y[] = {10,10,11,11,12,12,13,13,14,14};
+    strcpy(message2, "Throw Hit Hat");
+
     GenericGrid *hat;
     if (pos == SNOWMAN_LEFT)
     {
@@ -750,6 +764,8 @@ void Snowmen::drawGroundSnow(int pos, RGBColor *color)
 
 void Snowmen::fadeSnow()
 {
+    strcpy(message2, "Fade Snow");
+
     while(groundSnowLevel[SNOWMAN_LEFT] > 0 || groundSnowLevel[SNOWMAN_RIGHT] > 0)
     {
         lockSnowmen();
@@ -779,6 +795,8 @@ void Snowmen::cannonShot(int snowmen_pos)
     int x,y,dx, splash_x, splash_y, snowman_x;
     double size_1in = CANNON_BALL_SIZE_1IN;
     static int dy[] = {24,22,20,19,18,17,16,15,14,13,12,11,11,10,10,9,9,8,8,8,7,7,7,6,6,6,5,5,5,5,5,6,6,6,7,7,7,8,8,9,9,10,10,11,11,12,12, 13, 13, 14, 14, 15, 15, 15, 15,15, 15,15,15,15,15,15,15,0,0,0,0,0,0,0};
+
+    strcpy(message2, "Cannon Shot");
 
     if (snowmen_pos == SNOWMAN_LEFT)
     {
@@ -907,6 +925,7 @@ void Snowmen::do_it_snowmen()
     // Debug area
     while(0)
     {
+        strcpy(message2, "DEBUG MODE");
         throwGround(SNOWMAN_RIGHT, true);
         throwGround(SNOWMAN_RIGHT, false);
         throwGround(SNOWMAN_RIGHT, true);
