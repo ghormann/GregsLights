@@ -771,8 +771,24 @@ void Snowmen::do_it_snowmen()
 {
     drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
     drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
+
+    // Debug area
+    while(1)
+    {
+        RGBPicture *cannon = RGBPicture::getPicture("cannon_right.png");
+        this->getSplashGrid(SNOWMAN_LEFT)->showPictureNow(*cannon,0,20,true);
+
+        cannon = RGBPicture::getPicture("cannon_left.png");
+        this->getSplashGrid(SNOWMAN_RIGHT)->showPictureNow(*cannon,0,20,true);
+
+
+        write_data(2.0);
+    }
+
     //write_data(10.0);
     while(1)
+
+
     {
         /*
                 throwGround(SNOWMAN_LEFT, true);
