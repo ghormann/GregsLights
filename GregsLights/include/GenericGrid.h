@@ -49,12 +49,14 @@ public:
     void setDisplayPosition(int x, int y);
     void redrawDisplay();
     int drawLetter(char letter, RGBColor *color, int x, int y);
+    int drawLetter(char letter, RGBColor *color, int startX, int startY, bool onDummy);
     int drawLetterSmall(char letter, RGBColor *color, int x, int y);
     char *getMessage();
     void testGridLayout();
     void countdown();
     void drawSpecial(int x, int y, GRID_SPECIAL type);
     int writeText(RGBColor *fgColor, int x, int y, std::string text);
+    int writeText(RGBColor *fgColor, int x, int y, std::string text, bool onDummy);
     int writeTextSmall(RGBColor *fgColor, int x, int y, std::string text);
     void scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, double speed);
     void candyCane();

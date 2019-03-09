@@ -10,6 +10,9 @@
 #define SNOWBALL_DURATION 0.015
 #define BALL_SIZE_1IN   3
 #define BALL_SIZE_2IN   1.7
+#define CANNON_BALL_SIZE_1IN 11.9
+#define CANNON_BALL_SIZE_2IN 5.9
+
 
 Snowmen::Snowmen(bool skipTime)
 {
@@ -83,7 +86,7 @@ SnowmenGrid::SnowmenGrid(int width_, int height_, int dummy_with_, int dummy_hei
 
 // TODO (ghormann#1#): Fix Mapping of Pixals
         this->pixals[i] = new RGBLight(new DummyBulb(), new DummyBulb(), new DummyBulb());
-        this->pixals[i]->set(0,0,0);
+        this->pixals[i]->set(0,0,25);
     }
 
 }
@@ -767,6 +770,127 @@ void Snowmen::fadeSnow()
 
 }
 
+void Snowmen::cannonShot(int snowmen_pos)
+{
+    RGBPicture *cannon;
+    GenericGrid *cannon_grid = getSplashGrid(snowmen_pos);
+    GenericGrid *end_splash_Grid = getSplashGrid(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT);
+    GenericGrid *end_snowman = getSnowmen(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT);
+    int x,y,dx, splash_x, splash_y, snowman_x;
+    double size_1in = CANNON_BALL_SIZE_1IN;
+    static int dy[] = {24,22,20,19,18,17,16,15,14,13,12,11,11,10,10,9,9,8,8,8,7,7,7,6,6,6,5,5,5,5,5,6,6,6,7,7,7,8,8,9,9,10,10,11,11,12,12, 13, 13, 14, 14, 15, 15, 15, 15,15, 15,15,15,15,15,15,15,0,0,0,0,0,0,0};
+
+    if (snowmen_pos == SNOWMAN_LEFT)
+    {
+        cannon = RGBPicture::getPicture("cannon_right.png");
+        dx=+2;
+        x=0;
+    }
+    else
+    {
+        cannon = RGBPicture::getPicture("cannon_left.png");
+        dx=-2;
+        x=SKY_GRID_WIDTH;
+    }
+
+    /*
+     * Drop the cannon
+     */
+    for (y=-30; y <=20; y++)
+    {
+        lockSnowmen();
+        cannon_grid->setBackground(RGBColor::BLACK);
+        cannon_grid->showPictureNow(*cannon,0,y,true);
+        releaseSnowmen();
+        write_data(SNOWBALL_DURATION);
+    }
+
+    /*
+     * Fire across sky
+     */
+    y=SKY_GRID_HEIGHT/2;
+    for (int i = 0; i < SKY_GRID_WIDTH/2+SPLASH_GRID_WIDTH/2+13; i++)
+    {
+        y=dy[i];
+        splash_x = i-44;
+        splash_y = (i-42)/2;
+        if (snowmen_pos == SNOWMAN_RIGHT)
+        {
+            splash_x = SPLASH_GRID_WIDTH - splash_x;
+        }
+        getSkyGrid()->drawCircle(x,y,CANNON_BALL_SIZE_2IN,RGBColor::WHITE);
+        if (i > 44)
+        {
+            end_splash_Grid->drawCircle(splash_x,splash_y,CANNON_BALL_SIZE_2IN, RGBColor::WHITE);
+        }
+        if (i > 60)
+        {
+            snowman_x = (i-70)*2;
+            if (snowmen_pos == SNOWMAN_RIGHT)
+            {
+                snowman_x = SNOWMEN_WIDTH - snowman_x;
+            }
+            end_snowman->drawCircle(snowman_x,splash_y*2,CANNON_BALL_SIZE_1IN, RGBColor::WHITE);
+        }
+
+        write_data(SNOWBALL_DURATION);
+        getSkyGrid()->drawCircle(x,y,CANNON_BALL_SIZE_2IN,RGBColor::BLACK);
+        if (i > 44)
+        {
+            end_splash_Grid->drawCircle(splash_x,splash_y,CANNON_BALL_SIZE_2IN, RGBColor::BLACK);
+        }
+        if (i > 60)
+        {
+            end_snowman->drawCircle(snowman_x,splash_y*2,CANNON_BALL_SIZE_1IN, RGBColor::BLACK);
+        }
+        x += dx;
+    }
+
+    /*
+     * Do Explosition
+     */
+
+    splash_y = splash_y*2;
+    for (int i = 0; i < 22; i++)
+    {
+        snowman_x += (dx/2);
+        splash_y += 1;
+        end_snowman->drawCircle(snowman_x,splash_y,size_1in,RGBColor::WHITE);
+        write_data(SNOWBALL_DURATION);
+        size_1in += 2.0;
+    }
+    // fill buttom
+    end_snowman->drawCircle(SNOWMEN_HEIGHT,SNOWMEN_WIDTH/2,size_1in,RGBColor::WHITE);
+
+    // to black
+    snowman_x = (snowmen_pos == SNOWMAN_RIGHT ? SNOWMEN_WIDTH : 0);
+    size_1in = 0;
+    for (int i = 0; i < 38; i++)
+    {
+        end_snowman->drawCircle(snowman_x,-6,size_1in,RGBColor::BLACK);
+        write_data(SNOWBALL_DURATION/2);
+        size_1in += 3.0;
+    }
+
+    getSkyGrid()->writeText(RGBColor::GREEN,10,0,"GONE!", false);
+    size_1in = 1;
+    write_data(2.0);
+    for (int i =0; i< 50; i++)
+    {
+        cannon_grid->drawCircle(SPLASH_GRID_WIDTH/2,SPLASH_GRID_HEIGHT/2,size_1in,RGBColor::BLACK);
+        skyGrid->drawCircle(SKY_GRID_WIDTH/2,SKY_GRID_HEIGHT/2,size_1in,RGBColor::BLACK);
+        write_data(SNOWBALL_DURATION);
+        size_1in += 1;
+    }
+
+    // reset
+    hatStatus[snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT] = false;
+    drawSnowmen(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT, false);
+    placeHatBack(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT);
+
+
+}
+
 void Snowmen::do_it_snowmen()
 {
     drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
@@ -775,13 +899,9 @@ void Snowmen::do_it_snowmen()
     // Debug area
     while(1)
     {
-        RGBPicture *cannon = RGBPicture::getPicture("cannon_right.png");
-        this->getSplashGrid(SNOWMAN_LEFT)->showPictureNow(*cannon,0,20,true);
-
-        cannon = RGBPicture::getPicture("cannon_left.png");
-        this->getSplashGrid(SNOWMAN_RIGHT)->showPictureNow(*cannon,0,20,true);
-
-
+        this->cannonShot(SNOWMAN_LEFT);
+        write_data(2.0);
+        this->cannonShot(SNOWMAN_RIGHT);
         write_data(2.0);
     }
 

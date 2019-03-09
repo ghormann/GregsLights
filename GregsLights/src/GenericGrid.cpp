@@ -33,13 +33,15 @@ int GenericGrid::getGridWidth()
     return gridWidth;
 }
 
-void GenericGrid::archBallOverTime(double radius,double r_x, double r_y, int start_x, int stop_x, double width, double timeDuration, RGBColor *color) {
+void GenericGrid::archBallOverTime(double radius,double r_x, double r_y, int start_x, int stop_x, double width, double timeDuration, RGBColor *color)
+{
 
     double radiusSqr = radius*radius;
     double dx = stop_x > start_x? 0.5 : -0.5;
     double x = start_x;
 
-    while (true) {
+    while (true)
+    {
         double y1 = r_y + sqrt(radiusSqr - pow(x-r_x,2));
         double y2 = r_y - sqrt(radiusSqr - pow(x-r_x,2));
         drawCircle(x,(int)y1,width,color);
@@ -48,10 +50,12 @@ void GenericGrid::archBallOverTime(double radius,double r_x, double r_y, int sta
         drawCircle(x,(int)y1,width,RGBColor::BLACK);
         drawCircle(x,(int)y2,width,RGBColor::BLACK);
         x += dx;
-        if (dx >0 && x>stop_x) {
+        if (dx >0 && x>stop_x)
+        {
             break;
         }
-        if (dx <0 && x < stop_x) {
+        if (dx <0 && x < stop_x)
+        {
             break;
         }
     }
@@ -455,8 +459,13 @@ void GenericGrid::scrollMerry()
     scrollText(RGBColor::getRandom(), RGBColor::BLACK, text, 0.02);
 }
 
-
 int GenericGrid::drawLetter(char letter, RGBColor *color, int startX, int startY)
+{
+    return this->drawLetter(letter,color,startX,startY,true);
+}
+
+
+int GenericGrid::drawLetter(char letter, RGBColor *color, int startX, int startY, bool onDummy)
 {
     int x=0;
     int y=0;
@@ -1401,7 +1410,16 @@ int GenericGrid::drawLetter(char letter, RGBColor *color, int startX, int startY
         for (y=0; y<40; y++)
         {
             if (d[x][y] == '1')
-                this->getBoard(startX+x, startY+y+3)->set(color);
+            {
+                if (onDummy)
+                {
+                    this->getBoard(startX+x, startY+y)->set(color);
+                }
+                else
+                {
+                    this->getPixal(startX+x, startY+y)->set(color);
+                }
+            }
         }
     }
 
@@ -1749,7 +1767,9 @@ int GenericGrid::drawLetterSmall(char letter, RGBColor* color, int startX, int s
         for (y=0; y<10; y++)
         {
             if (d[x][y] == '1')
+            {
                 this->getBoard(startX+x, startY+y)->set(color);
+            }
         }
     }
 
@@ -1767,9 +1787,14 @@ int GenericGrid::writeTextSmall(RGBColor *fgColor, int x, int y, string str)
 
 int GenericGrid::writeText(RGBColor *fgColor, int x, int y, string str)
 {
+    return this->writeText(fgColor,x,y,str, true);
+}
+
+int GenericGrid::writeText(RGBColor *fgColor, int x, int y, string str, bool onDummy)
+{
     for ( std::string::iterator it=str.begin(); it!=str.end(); ++it)
     {
-        x += drawLetter(*it,fgColor,x,y) + 2;
+        x += drawLetter(*it,fgColor,x,y, onDummy) + 2;
     }
 
     return x;

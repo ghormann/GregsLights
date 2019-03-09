@@ -58,6 +58,7 @@ protected:
     void throwRightStickNose(bool arch);
     void throwHitHat(int pos);
     void throwGround(int pos, bool goHigh);
+    void cannonShot(int snowmen_pos);
     void fadeSnow();
     void fadeNoseBalls();
     void drawGroundSnow(int pos, RGBColor* color);
