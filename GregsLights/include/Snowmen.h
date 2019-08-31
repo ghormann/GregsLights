@@ -54,6 +54,7 @@ public:
     SnowmenGrid *getSkyGrid();
     void lockSnowmen();
     void releaseSnowmen();
+    pthread_mutex_t* getLock();
 protected:
     void throwLeftStickNose(bool arch);
     void throwRightStickNose(bool arch);

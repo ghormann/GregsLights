@@ -75,7 +75,16 @@ void NetworkCollection::doUpdate()
         if (networks[netId] != 0)
         {
             force = (counts[netId] > maxTicks);
-            if (networks[netId]->doUpdate(force))
+            if (clientLock)
+            {
+                pthread_mutex_lock(clientLock);
+            }
+            bool didUpdate = networks[netId]->doUpdate(force);
+            if (clientLock)
+            {
+                pthread_mutex_unlock(clientLock);
+            }
+            if (didUpdate)
             {
                 ++change;
                 counts[netId] = 0;
@@ -123,6 +132,10 @@ void NetworkCollection::removeNetwork( LightNetwork *net)
     }
 }
 
+void NetworkCollection::setClientLock(pthread_mutex_t* lock)
+{
+    this->clientLock = lock;
+}
 
 void NetworkCollection::addNetwork( LightNetwork *net)
 {

@@ -216,6 +216,11 @@ SnowmenGrid *  Snowmen::getSplashGrid(int pos)
     return splash[pos];
 }
 
+pthread_mutex_t*  Snowmen::getLock()
+{
+    return &lock;
+}
+
 void Snowmen::lockSnowmen()
 {
     pthread_mutex_lock(&lock);
@@ -228,7 +233,8 @@ void Snowmen::releaseSnowmen()
 
 void Snowmen::test_snowmen()
 {
-    while(1) {
+    while(1)
+    {
         this->run();
     }
     while(1)

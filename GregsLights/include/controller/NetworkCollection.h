@@ -21,10 +21,12 @@ class NetworkCollection
         void removeNetwork ( LightNetwork *net);
         void doUpdate();
         void doShutdown();
+        void setClientLock(pthread_mutex_t* lock);
         void setControllerLimits(int maxUpdates, int sleepMS);
         int msBetween;
     protected:
     private:
+        pthread_mutex_t* clientLock = NULL;
         LightNetwork* networks[MAX_LIGHT_NETWORKS];
         int counts[MAX_LIGHT_NETWORKS];  // Ticks since last update
 /*

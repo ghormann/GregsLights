@@ -104,6 +104,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
 
     //setup Snowmen
     this->snowmen = new Snowmen(this->skipTimeCheck, snowmanList);
+    networkSnowman->setClientLock(this->snowmen->getLock());
     //
 
 
