@@ -95,7 +95,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     E131Network *snowmanList[99];
     for (int i = 0; i < 99; i++)
     {
-        snowmanList[i] = new E131Network(snowmanIP, i+1, 510);
+        snowmanList[i] = new E131Network(snowmanIP, i+100, 510);
         if (sendDMX)
         {
             networkSnowman->addNetwork(snowmanList[i]);
