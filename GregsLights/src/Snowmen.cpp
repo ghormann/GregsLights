@@ -43,9 +43,10 @@ Snowmen::Snowmen(bool skipTime,  E131Network *network[])
     int y_cnt = 0;
     int port = 0; // Array is zero based.
     int channel = 0; // also zero based.
+    int pixels_in_string = 0;
 
     //Snowman house aka Right
-    for (x = 0; x < SNOWMEN_WIDTH; x++)
+    for (x = SNOWMEN_WIDTH-1; x >= 0; x--)
     {
         y_delta *= -1; // Swap direction
         y_start = (y_delta == 1 ? 0 : SNOWMEN_HEIGHT - 1);
@@ -53,8 +54,15 @@ Snowmen::Snowmen(bool skipTime,  E131Network *network[])
 
         for (y = y_start; y_cnt < SNOWMEN_HEIGHT; y += y_delta, ++y_cnt )
         {
-            snowmen[SNOWMAN_RIGHT]->setPixal(x,y, network[port]->getRGB(channel));
+            snowmen[SNOWMAN_RIGHT]->setPixal(x,SNOWMEN_HEIGHT-1 - y, network[port]->getRGB(channel));
             channel += 3;
+            pixels_in_string++;
+            if (pixels_in_string >= 1000)
+            {
+                pixels_in_string = 0;
+                channel = 0;
+                ++port;
+            }
             if (channel >= 510)
             {
                 channel = 0;
@@ -216,6 +224,29 @@ void Snowmen::lockSnowmen()
 void Snowmen::releaseSnowmen()
 {
     pthread_mutex_unlock(&lock);
+}
+
+void Snowmen::test_snowmen()
+{
+    while(1) {
+        this->run();
+    }
+    while(1)
+    {
+        SnowmenGrid *grid = getSnowmen(SNOWMAN_RIGHT);
+        grid->setBackground(RGBColor::BLUE);
+        write_data(2.0);
+        for (int x = SNOWMEN_WIDTH-1; x >= 0; x--)
+        {
+            RGBColor *color = ((x%2) == 0 ? RGBColor::GREEN : RGBColor::RED);
+            for (int y = 0; y < SNOWMEN_HEIGHT; y++)
+            {
+                grid->getPixal(x,y)->set(color);
+                write_data(0.005);
+            }
+        }
+        write_data(3.0);
+    }
 }
 
 void Snowmen::run()
