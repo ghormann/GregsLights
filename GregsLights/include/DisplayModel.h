@@ -35,6 +35,7 @@ class DisplayModel
     private:
         NetworkCollection *networks;
         NetworkCollection *networkClock;
+        NetworkCollection *networkSnowman;
         GregMQTT *mqtt;
         CountdownClock *clock;
         char *messages[NUM_MESSAGE_BUFFERS];

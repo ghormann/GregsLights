@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX_LIGHT_NETWORKS 50
-
 void *update_thread(void *args);
 
 

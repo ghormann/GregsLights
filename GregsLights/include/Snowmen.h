@@ -3,6 +3,7 @@
 
 #include "pthread.h"
 #include "controller/Bulb.h"
+#include "controller/E131Network.h"
 #include "TimeInfo.h"
 #include "GenericGrid.h"
 
@@ -42,7 +43,7 @@ private:
 class Snowmen
 {
 public:
-    Snowmen(bool skipTime);
+    Snowmen(bool skipTime, E131Network * network[]);
     virtual ~Snowmen();
     void test_snowmen(void);
     void run();

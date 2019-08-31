@@ -37,10 +37,11 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     // name, 5, 2, 6, 15 is "OK" for Alpha Pix.
     // name: 5,2,6,5 I Fairly good.
     networkClock = new NetworkCollection("Clock", 5,2,6,1, true);
+    networkSnowman = new NetworkCollection("Snowmen", 50,1,99,1,false);
 
 
     //LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB0", sendDMX);
-    LORNetwork *lor = new LORNetwork((char*) "/dev/ttyS0", sendDMX);
+    //LORNetwork *lor = new LORNetwork((char*) "/dev/ttyS0", sendDMX);
 
 
     char *signIP = "192.168.1.232";
@@ -69,7 +70,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     if (sendDMX)
     {
         networks->addNetwork(clockE131);
-        networks->addNetwork(lor);
+        //networks->addNetwork(lor);
         networks->addNetwork(clockNetwork[0]);
         networks->addNetwork(clockNetwork[1]);
         for (int j = 0; j< SIGN_E11_COUNT; j++)
@@ -90,8 +91,19 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     this->sign = new Sign(clock, skipTimeCheck, newYears, sign, this->getMqtt());
 
 
+    char *snowmanIP = "192.168.1.239";
+    E131Network *snowmanList[99];
+    for (int i = 0; i < 99; i++)
+    {
+        snowmanList[i] = new E131Network(snowmanIP, i+1, 510);
+        if (sendDMX)
+        {
+            networkSnowman->addNetwork(snowmanList[i]);
+        }
+    }
+
     //setup Snowmen
-    this->snowmen = new Snowmen(this->skipTimeCheck);
+    this->snowmen = new Snowmen(this->skipTimeCheck, snowmanList);
     //
 
 
@@ -107,6 +119,7 @@ void DisplayModel::shutdown()
     printf("Shutting Down model\n");
     networks->doShutdown();
     networkClock->doShutdown();
+    networkSnowman->doShutdown();
     sleep(1); // Give system time to clean up
 }
 

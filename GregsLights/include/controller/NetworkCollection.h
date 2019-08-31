@@ -1,7 +1,7 @@
 #ifndef NETWORKCOLLECTION_H
 #define NETWORKCOLLECTION_H
 
-#define MAX_LIGHT_NETWORKS 50
+#define MAX_LIGHT_NETWORKS 100
 #include "LightNetwork.h"
 #include <pthread.h>
 #include <unistd.h>
