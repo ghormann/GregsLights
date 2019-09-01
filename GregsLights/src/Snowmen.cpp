@@ -528,6 +528,29 @@ void Snowmen::drawSnowmen(int pos, bool withHat)
     //Bottom
     who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-20,20,RGBColor::WHITE);
 
+    //Fix the one on edge points bottom
+    who->getPixal(SNOWMEN_WIDTH/2-20,SNOWMEN_HEIGHT-19)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2-20,SNOWMEN_HEIGHT-21)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2+20,SNOWMEN_HEIGHT-19)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2+20,SNOWMEN_HEIGHT-21)->set(RGBColor::WHITE);
+
+        //Fix the one on edge points MID
+    who->getPixal(SNOWMEN_WIDTH/2-14,SNOWMEN_HEIGHT-46)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2-14,SNOWMEN_HEIGHT-44)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2+14,SNOWMEN_HEIGHT-46)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2+14,SNOWMEN_HEIGHT-44)->set(RGBColor::WHITE);
+
+            //Fix the one on edge points TOP
+    who->getPixal(SNOWMEN_WIDTH/2-10,SNOWMEN_HEIGHT-64)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2-10,SNOWMEN_HEIGHT-66)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2+10,SNOWMEN_HEIGHT-64)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2+10,SNOWMEN_HEIGHT-66)->set(RGBColor::WHITE);
+
+    who->getPixal(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT+74)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2+2,SNOWMEN_HEIGHT+74)->set(RGBColor::WHITE);
+
+
+
     if (withHat)
     {
         RGBPicture *hat = RGBPicture::getPicture("small_hat_0.png");
