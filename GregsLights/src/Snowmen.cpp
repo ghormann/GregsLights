@@ -412,7 +412,7 @@ void Snowmen::fadeNoseBalls()
         RGBColor *c = new  RGBColor(i,i,i);
         noseBallColor = c;
         drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
-        drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_LEFT]);
+        drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
         write_data(SNOWBALL_DURATION);
         i -=5;
         noseBallColor = RGBColor::WHITE;
@@ -421,7 +421,7 @@ void Snowmen::fadeNoseBalls()
 
     noseBalls[SNOWMAN_LEFT] = noseBalls[SNOWMAN_RIGHT] = 0;
     drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
-    drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_LEFT]);
+    drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
 }
 
 
