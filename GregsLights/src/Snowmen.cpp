@@ -133,20 +133,12 @@ Snowmen::Snowmen(bool skipTime,  E131Network *network[])
         }
     }
 
-    for (x = 0; x < SPLASH_GRID_WIDTH; x++)
-    {
-        for (y = 0; y < SPLASH_GRID_HEIGHT; y++ )
-        {
-            splash[SNOWMAN_LEFT]->setPixal(x,y,new RGBLight(new DummyBulb(), new DummyBulb(), new DummyBulb()));
-        }
-    }
-
     //Snowman left aka Road
     y_delta = -1; // Will be switched at start -1 = down, 1 = up
     port = 78; // Array is zero based. Port = 178
     channel = 0; // also zero based.
     pixels_in_string = 0;
-    for (x = 0; x <= SNOWMEN_WIDTH; x++)
+    for (x = 0; x < SNOWMEN_WIDTH; x++)
     {
         y_delta *= -1; // Swap direction
         y_start = (y_delta == 1 ? 0 : SNOWMEN_HEIGHT - 1);
@@ -155,7 +147,7 @@ Snowmen::Snowmen(bool skipTime,  E131Network *network[])
         for (y = y_start; y_cnt < SNOWMEN_HEIGHT; y += y_delta, ++y_cnt )
         {
             snowmen[SNOWMAN_LEFT]->setPixal(x,SNOWMEN_HEIGHT-1 - y, network[port]->getRGB(channel));
-            printf("X: %d, Y: %d, port: %d, channel: %d\n", x,y,port,channel);
+            //printf("X: %d, Y: %d, port: %d, channel: %d\n", x,y,port,channel);
             channel += 3;
             pixels_in_string++;
             if (pixels_in_string >= 1000)
@@ -182,6 +174,53 @@ Snowmen::Snowmen(bool skipTime,  E131Network *network[])
                 {
                     printf("Error settng up Left snowman.\n");
                     throw "Error setting up Left Snowmen.";
+                }
+                else
+                {
+                    ++port;
+                }
+            }
+            if (channel >= 510)
+            {
+                channel = 0;
+                ++port;
+            }
+        }
+    }
+    printf("SNOWMAN LEFT FINAL: X: %d, Y: %d, port: %d, channel: %d\n", x,y,port,channel);
+
+
+    //Splash left aka Road
+    y_delta = 1; // Will be switched at start -1 = down, 1 = up
+
+    for (x = 0; x <= SPLASH_GRID_WIDTH; x++)
+    {
+        y_delta *= -1; // Swap direction
+        y_start = (y_delta == 1 ? 0 : SPLASH_GRID_HEIGHT - 1);
+        y_cnt = 0;
+
+        for (y = y_start; y_cnt < SPLASH_GRID_HEIGHT; y += y_delta, ++y_cnt )
+        {
+            splash[SNOWMAN_LEFT]->setPixal(x,SPLASH_GRID_HEIGHT-1 - y, network[port]->getRGB(channel));
+            printf("Splash: X: %d, Y: %d, port: %d, channel: %d\n", x,y,port,channel);
+            channel += 3;
+            pixels_in_string++;
+            if (pixels_in_string >= 1000)
+            {
+                pixels_in_string = 0;
+                channel = 0;
+                if (port > 60) // really 160
+                {
+                    port = 54; // really 154
+                }
+                else if (port > 54) // really 154
+                {
+                    port = 48; // really 138
+                }
+                else if (port < 48)
+                {
+                    printf("Error settng up Left Splash.\n");
+                    throw "Error setting up Left Splash.";
                 }
                 else
                 {
@@ -289,7 +328,7 @@ void Snowmen::releaseSnowmen()
 
 void Snowmen::test_snowmen()
 {
-    while(0)
+    while(1)
     {
         this->run();
     }
@@ -301,7 +340,7 @@ void Snowmen::test_snowmen()
         getSplashGrid(SNOWMAN_LEFT)->setBackground(RGBColor::BLUE);
 
         write_data(2.0);
-        for (int x = SNOWMEN_WIDTH-1; x >= 0; x--)
+        for (int x = SPLASH_GRID_WIDTH-1; x >= 0; x--)
         {
             RGBColor *color = ((x%2) == 0 ? RGBColor::GREEN : RGBColor::RED);
             for (int y = 0; y < SNOWMEN_HEIGHT; y++)
@@ -313,7 +352,7 @@ void Snowmen::test_snowmen()
                     getSplashGrid(SNOWMAN_LEFT)->getPixal(x,y)->set(color);
                     getSplashGrid(SNOWMAN_RIGHT)->getPixal(x,y)->set(color);
                 }
-                write_data(0.005);
+                write_data(0.05);
             }
         }
         write_data(3.0);
