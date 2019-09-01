@@ -202,7 +202,7 @@ Snowmen::Snowmen(bool skipTime,  E131Network *network[])
         for (y = y_start; y_cnt < SPLASH_GRID_HEIGHT; y += y_delta, ++y_cnt )
         {
             splash[SNOWMAN_LEFT]->setPixal(x,SPLASH_GRID_HEIGHT-1 - y, network[port]->getRGB(channel));
-            printf("Splash: X: %d, Y: %d, port: %d, channel: %d\n", x,y,port,channel);
+            //printf("Splash: X: %d, Y: %d, port: %d, channel: %d\n", x,y,port,channel);
             channel += 3;
             pixels_in_string++;
             if (pixels_in_string >= 1000)
