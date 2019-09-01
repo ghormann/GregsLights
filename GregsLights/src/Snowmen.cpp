@@ -428,10 +428,20 @@ void Snowmen::fadeNoseBalls()
 void Snowmen::placeHatBack(int pos)
 {
     RGBPicture *hat[4];
-    hat[0] = RGBPicture::getPicture("small_hat_0.png");
-    hat[1] = RGBPicture::getPicture("small_hat_10.png");
-    hat[2] = RGBPicture::getPicture("small_hat_0.png");
-    hat[3] = RGBPicture::getPicture("small_hat_-10.png");
+    if (pos == SNOWMAN_LEFT)
+    {
+        hat[0] = RGBPicture::getPicture("small_hat_0g.png");
+        hat[1] = RGBPicture::getPicture("small_hat_10g.png");
+        hat[2] = RGBPicture::getPicture("small_hat_0g.png");
+        hat[3] = RGBPicture::getPicture("small_hat_-10g.png");
+    }
+    else
+    {
+        hat[0] = RGBPicture::getPicture("small_hat_0.png");
+        hat[1] = RGBPicture::getPicture("small_hat_10.png");
+        hat[2] = RGBPicture::getPicture("small_hat_0.png");
+        hat[3] = RGBPicture::getPicture("small_hat_-10.png");
+    }
     GenericGrid *snowman = getSnowmen(pos);
     strcpy(message2, "Place Hat Back");
 
@@ -482,16 +492,16 @@ void Snowmen::hitHat(int pos)
     }
     else
     {
-        hats[0] = RGBPicture::getPicture("small_hat_0.png");
-        hats[1] = RGBPicture::getPicture("small_hat_-10.png");
-        hats[2] = RGBPicture::getPicture("small_hat_-20.png");
-        hats[3] = RGBPicture::getPicture("small_hat_-30.png");
-        hats[4] = RGBPicture::getPicture("small_hat_-40.png");
-        hats[5] = RGBPicture::getPicture("small_hat_-50.png");
-        hats[6] = RGBPicture::getPicture("small_hat_-60.png");
-        hats[7] = RGBPicture::getPicture("small_hat_-70.png");
-        hats[8] = RGBPicture::getPicture("small_hat_-80.png");
-        hats[9] = RGBPicture::getPicture("small_hat_-90.png");
+        hats[0] = RGBPicture::getPicture("small_hat_0g.png");
+        hats[1] = RGBPicture::getPicture("small_hat_-10g.png");
+        hats[2] = RGBPicture::getPicture("small_hat_-20g.png");
+        hats[3] = RGBPicture::getPicture("small_hat_-30g.png");
+        hats[4] = RGBPicture::getPicture("small_hat_-40g.png");
+        hats[5] = RGBPicture::getPicture("small_hat_-50g.png");
+        hats[6] = RGBPicture::getPicture("small_hat_-60g.png");
+        hats[7] = RGBPicture::getPicture("small_hat_-70g.png");
+        hats[8] = RGBPicture::getPicture("small_hat_-80g.png");
+        hats[9] = RGBPicture::getPicture("small_hat_-90g.png");
     }
     GenericGrid *snowman = getSnowmen(pos);
 
@@ -534,13 +544,13 @@ void Snowmen::drawSnowmen(int pos, bool withHat)
     who->getPixal(SNOWMEN_WIDTH/2+20,SNOWMEN_HEIGHT-19)->set(RGBColor::WHITE);
     who->getPixal(SNOWMEN_WIDTH/2+20,SNOWMEN_HEIGHT-21)->set(RGBColor::WHITE);
 
-        //Fix the one on edge points MID
+    //Fix the one on edge points MID
     who->getPixal(SNOWMEN_WIDTH/2-14,SNOWMEN_HEIGHT-46)->set(RGBColor::WHITE);
     who->getPixal(SNOWMEN_WIDTH/2-14,SNOWMEN_HEIGHT-44)->set(RGBColor::WHITE);
     who->getPixal(SNOWMEN_WIDTH/2+14,SNOWMEN_HEIGHT-46)->set(RGBColor::WHITE);
     who->getPixal(SNOWMEN_WIDTH/2+14,SNOWMEN_HEIGHT-44)->set(RGBColor::WHITE);
 
-            //Fix the one on edge points TOP
+    //Fix the one on edge points TOP
     who->getPixal(SNOWMEN_WIDTH/2-10,SNOWMEN_HEIGHT-64)->set(RGBColor::WHITE);
     who->getPixal(SNOWMEN_WIDTH/2-10,SNOWMEN_HEIGHT-66)->set(RGBColor::WHITE);
     who->getPixal(SNOWMEN_WIDTH/2+10,SNOWMEN_HEIGHT-64)->set(RGBColor::WHITE);
@@ -554,6 +564,10 @@ void Snowmen::drawSnowmen(int pos, bool withHat)
     if (withHat)
     {
         RGBPicture *hat = RGBPicture::getPicture("small_hat_0.png");
+        if (pos == SNOWMAN_LEFT)
+        {
+            hat = RGBPicture::getPicture("small_hat_0g.png");
+        }
         who->showPictureNow(*hat, 7, -2, true);
     }
 
