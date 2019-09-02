@@ -77,12 +77,13 @@ protected:
         */
     void do_it_snowmen();
 private:
-    void drawSnowmen(int pos, bool withHat = true);
+    void drawSnowmen(int pos, bool withHat = true, int offset=0);
     void placeHatBack(int pos);
     void throwLeft(bool loft);
     void throwRight(bool loft);
     void hitNose(int snowmen, int start_y);
     void hitHat(int pos);
+    void duckSnowman(int pos);
     RGBColor *noseBallColor;
     pthread_mutex_t lock;
     pthread_t snowman_t;

@@ -326,6 +326,51 @@ void Snowmen::releaseSnowmen()
     pthread_mutex_unlock(&lock);
 }
 
+void Snowmen::duckSnowman(int pos)
+{
+    int pos_y[] = {8,10,12,14,16,18,20,22,24,26, 28, 30, 32, 32, 32, 32,32,32,32,32};
+    int duck[] = {1,2,3,4,5,6,7,8,9,8, 7,6,5,4,3,2,1,0};
+    strcpy(message2, "Duck Snowman");
+    SnowmenGrid *who;
+
+    if (pos == SNOWMAN_LEFT)
+    {
+        who = getSnowmen(SNOWMAN_RIGHT);
+        throwLeft(true);
+        do_middle(pos,8,1,8,SNOWBALL_DURATION);
+        ball_line(this->getSplashGrid(SNOWMAN_RIGHT), 0, 1, SPLASH_GRID_WIDTH, 6, BALL_SIZE_2IN);
+        int x = 0;
+        for (int i = 0; i< 18; i++, x=x+2)
+        {
+            lockSnowmen();
+            snowmen[SNOWMAN_RIGHT]->setBackground(RGBColor::BLACK);
+            drawSnowmen(SNOWMAN_RIGHT,hatStatus[SNOWMAN_RIGHT], duck[i]);
+            who->drawCircle(x*2,pos_y[i],BALL_SIZE_1IN,RGBColor::WHITE);
+            releaseSnowmen();
+            write_data(SNOWBALL_DURATION);
+            who->drawCircle(x*2,pos_y[i],BALL_SIZE_1IN,RGBColor::BLACK);
+        }
+    }
+    else
+    {
+        int x = 0;
+        who = getSnowmen(SNOWMAN_LEFT);
+        throwRight(true);
+        do_middle(pos,8,1,8,SNOWBALL_DURATION);
+        ball_line(this->getSplashGrid(SNOWMAN_LEFT), SPLASH_GRID_WIDTH, 0, 0, 6, BALL_SIZE_2IN);
+        for (int i = 0; i< 18; i++, x=x+2)
+        {
+            lockSnowmen();
+            snowmen[SNOWMAN_LEFT]->setBackground(RGBColor::BLACK);
+            drawSnowmen(SNOWMAN_LEFT,hatStatus[SNOWMAN_LEFT], duck[i]);
+            who->drawCircle(SNOWMEN_WIDTH - x*2,pos_y[i],BALL_SIZE_1IN,RGBColor::WHITE);
+            releaseSnowmen();
+            write_data(SNOWBALL_DURATION);
+            who->drawCircle(SNOWMEN_WIDTH - x*2,pos_y[i],BALL_SIZE_1IN,RGBColor::BLACK);
+        }
+    }
+}
+
 void Snowmen::test_snowmen()
 {
     while(1)
@@ -527,37 +572,39 @@ void Snowmen::hitHat(int pos)
 
 }
 
-void Snowmen::drawSnowmen(int pos, bool withHat)
+void Snowmen::drawSnowmen(int pos, bool withHat, int offset)
 {
     int x,y;
+    int topOffset = 3*offset;
+    int midOffset = 2*offset;
     GenericGrid * who = getSnowmen(pos);
     //TOP
-    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-65,10,RGBColor::WHITE);
+    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-65+topOffset,10,RGBColor::WHITE);
     //Mid
-    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-45,14,RGBColor::WHITE);
+    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-45+midOffset,14,RGBColor::WHITE);
     //Bottom
-    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-20,20,RGBColor::WHITE);
+    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-20+offset,20,RGBColor::WHITE);
 
     //Fix the one on edge points bottom
-    who->getPixal(SNOWMEN_WIDTH/2-20,SNOWMEN_HEIGHT-19)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2-20,SNOWMEN_HEIGHT-21)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2+20,SNOWMEN_HEIGHT-19)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2+20,SNOWMEN_HEIGHT-21)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2-20,SNOWMEN_HEIGHT-19+offset)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2-20,SNOWMEN_HEIGHT-21+offset)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2+20,SNOWMEN_HEIGHT-19+offset)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2+20,SNOWMEN_HEIGHT-21+offset)->set(RGBColor::WHITE);
 
     //Fix the one on edge points MID
-    who->getPixal(SNOWMEN_WIDTH/2-14,SNOWMEN_HEIGHT-46)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2-14,SNOWMEN_HEIGHT-44)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2+14,SNOWMEN_HEIGHT-46)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2+14,SNOWMEN_HEIGHT-44)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2-14,SNOWMEN_HEIGHT-46+midOffset)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2-14,SNOWMEN_HEIGHT-44+midOffset)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2+14,SNOWMEN_HEIGHT-46+midOffset)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2+14,SNOWMEN_HEIGHT-44+midOffset)->set(RGBColor::WHITE);
 
     //Fix the one on edge points TOP
-    who->getPixal(SNOWMEN_WIDTH/2-10,SNOWMEN_HEIGHT-64)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2-10,SNOWMEN_HEIGHT-66)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2+10,SNOWMEN_HEIGHT-64)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2+10,SNOWMEN_HEIGHT-66)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2-10,SNOWMEN_HEIGHT-64+topOffset)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2-10,SNOWMEN_HEIGHT-66+topOffset)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2+10,SNOWMEN_HEIGHT-64+topOffset)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2+10,SNOWMEN_HEIGHT-66+topOffset)->set(RGBColor::WHITE);
 
-    who->getPixal(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT+74)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2+2,SNOWMEN_HEIGHT+74)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2-1,SNOWMEN_HEIGHT-75+topOffset)->set(RGBColor::WHITE);
+    who->getPixal(SNOWMEN_WIDTH/2+1,SNOWMEN_HEIGHT-75+topOffset)->set(RGBColor::WHITE);
 
 
 
@@ -568,14 +615,14 @@ void Snowmen::drawSnowmen(int pos, bool withHat)
         {
             hat = RGBPicture::getPicture("small_hat_0g.png");
         }
-        who->showPictureNow(*hat, 7, -2, true);
+        who->showPictureNow(*hat, 7, -2 + topOffset, true);
     }
 
 
     //Nose
     int startX = SNOWMEN_WIDTH/2+8;
     int endX = SNOWMEN_WIDTH/2+16;
-    y = SNOWMAN_NOSE_HEIGHT;
+    y = SNOWMAN_NOSE_HEIGHT + topOffset;
     if (pos == SNOWMAN_RIGHT)
     {
         startX -=23;
@@ -591,17 +638,18 @@ void Snowmen::drawSnowmen(int pos, bool withHat)
 
     // Eye
     x = (pos==SNOWMAN_LEFT ? SNOWMEN_WIDTH/2+5 : SNOWMEN_WIDTH/2-4);
-    who->drawCircle(x,SNOWMEN_HEIGHT-70,1,RGBColor::BLACK);
+    who->drawCircle(x,SNOWMEN_HEIGHT-70 + topOffset,1,RGBColor::BLACK);
+
     //Buttons
-    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-26,1,RGBColor::BLACK);
-    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-38,1,RGBColor::BLACK);
-    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-50,1,RGBColor::BLACK);
+    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-26+ midOffset,1,RGBColor::BLACK);
+    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-38+ midOffset,1,RGBColor::BLACK);
+    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-50+ midOffset,1,RGBColor::BLACK);
 
     // Mouth
     if (pos == SNOWMAN_LEFT)
     {
         x=SNOWMEN_WIDTH/2+8;
-        y=SNOWMEN_HEIGHT-60;
+        y=SNOWMEN_HEIGHT-60+ topOffset;
         who->getPixal(x,y)->set(RGBColor::BLACK);
         who->getPixal(x-1,y)->set(RGBColor::BLACK);
         who->getPixal(x-2,y-1)->set(RGBColor::BLACK);
@@ -610,7 +658,7 @@ void Snowmen::drawSnowmen(int pos, bool withHat)
     else
     {
         x=SNOWMEN_WIDTH/2-8;
-        y=SNOWMEN_HEIGHT-60;
+        y=SNOWMEN_HEIGHT-60+ topOffset;
         who->getPixal(x,y)->set(RGBColor::BLACK);
         who->getPixal(x+1,y)->set(RGBColor::BLACK);
         who->getPixal(x+2,y-1)->set(RGBColor::BLACK);
@@ -621,13 +669,13 @@ void Snowmen::drawSnowmen(int pos, bool withHat)
     if (noseBalls[pos] > 0)
     {
         x = (pos == SNOWMAN_RIGHT ? SNOWMEN_WIDTH - (SNOWMEN_WIDTH/2+14) : SNOWMEN_WIDTH/2+12);
-        who->drawCircle(x, SNOWMAN_NOSE_HEIGHT-1, BALL_SIZE_1IN, noseBallColor);
+        who->drawCircle(x, SNOWMAN_NOSE_HEIGHT-1 + topOffset, BALL_SIZE_1IN, noseBallColor);
     }
 
     if (noseBalls[pos] > 1)
     {
         x = (pos == SNOWMAN_RIGHT ? SNOWMEN_WIDTH - (SNOWMEN_WIDTH/2+18) : SNOWMEN_WIDTH/2+16);
-        who->drawCircle(x, SNOWMAN_NOSE_HEIGHT-1, BALL_SIZE_1IN, noseBallColor);
+        who->drawCircle(x, SNOWMAN_NOSE_HEIGHT-1 + topOffset, BALL_SIZE_1IN, noseBallColor);
     }
 
 
@@ -888,6 +936,7 @@ void Snowmen::ball_line(GenericGrid *grid, int start_x, int start_y, int end_x, 
     while (x != end_x)
     {
         grid->drawCircle(x,(int)y,ballSize, RGBColor::WHITE);
+        //printf("ball: %d, %d\n", x, (int)y);
         write_data(SNOWBALL_DURATION);
         grid->drawCircle(x,(int)y,ballSize, RGBColor::BLACK);
         x += dx;
@@ -1214,8 +1263,8 @@ void Snowmen::do_it_snowmen()
     }
 
     bool didSomething = true;
-    int id = rand()%12;
-    int chance = rand()%4;
+    int id = rand()%14;
+    int chance = 0;
     switch(id)
     {
     case 0:
@@ -1320,18 +1369,33 @@ void Snowmen::do_it_snowmen()
         }
         break;
     case 10:
+        chance = rand()%4;
         if (chance == 0)
             cannonShot(SNOWMAN_LEFT);
         else
             didSomething = false;
         break;
     case 11:
+        chance = rand()%4;
         if (chance == 0)
             cannonShot(SNOWMAN_RIGHT);
         else
             didSomething = false;
         break;
-
+    case 12:
+        chance = rand()%3;
+        if (chance == 0)
+            duckSnowman(SNOWMAN_LEFT);
+        else
+            didSomething = false;
+        break;
+    case 13:
+        chance = rand()%3;
+        if (chance == 0)
+            duckSnowman(SNOWMAN_RIGHT);
+        else
+            didSomething = false;
+        break;
 
     default:
         break;
@@ -1340,7 +1404,7 @@ void Snowmen::do_it_snowmen()
     // wait between
     if (didSomething)
     {
-        id = rand()%10;
+        id = rand()%11;
         switch(id)
         {
         case 0:
@@ -1362,6 +1426,9 @@ void Snowmen::do_it_snowmen()
             break;
         case 9:
             write_data(1.5);
+            break;
+        case 10:
+            write_data(2.5);
             break;
         default:
             break;
