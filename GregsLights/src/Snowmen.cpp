@@ -678,6 +678,26 @@ void Snowmen::drawSnowmen(int pos, bool withHat, int offset)
         who->drawCircle(x, SNOWMAN_NOSE_HEIGHT-1 + topOffset, BALL_SIZE_1IN, noseBallColor);
     }
 
+    // If fading then draw nose again.
+    if (noseBallColor->getBlue() < 100)
+    {
+
+        int startX = SNOWMEN_WIDTH/2+8;
+        int endX = SNOWMEN_WIDTH/2+16;
+        y = SNOWMAN_NOSE_HEIGHT + topOffset;
+        if (pos == SNOWMAN_RIGHT)
+        {
+            startX -=23;
+            endX -=23;
+        }
+        for (x = startX; x < endX; x++)
+        {
+            who->getPixal(x,y)->set(RGBColor::ORANGE);
+            who->getPixal(x,y-1)->set(RGBColor::ORANGE);
+        }
+    }
+
+
 
     drawGroundSnow(pos, RGBColor::WHITE);
 
@@ -1240,8 +1260,10 @@ void Snowmen::cannonShot(int snowmen_pos)
 
 void Snowmen::do_it_snowmen()
 {
+    lockSnowmen();
     drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
     drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
+    releaseSnowmen();
 
     // Debug area
     while(0)
