@@ -373,9 +373,34 @@ void Snowmen::duckSnowman(int pos)
 
 void Snowmen::test_snowmen()
 {
-    while(0)
+    while(1)
     {
         this->run();
+    }
+
+    while(1) {
+        // Alignment lines
+        getSnowmen(SNOWMAN_RIGHT)->setBackground(RGBColor::BLUE);
+        getSnowmen(SNOWMAN_LEFT)->setBackground(RGBColor::BLUE);
+        getSplashGrid(SNOWMAN_LEFT)->setBackground(RGBColor::BLUE);
+        getSplashGrid(SNOWMAN_RIGHT)->setBackground(RGBColor::BLUE);
+        skyGrid->setBackground(RGBColor::BLUE);
+
+        for (int x = 0; x < SKY_GRID_WIDTH; x++) {
+            skyGrid->getPixal(x,10)->set(RGBColor::WHITE); // 10 is top
+            skyGrid->getPixal(x,SKY_GRID_HEIGHT-1)->set(RGBColor::WHITE); // 10 is top
+        }
+
+        for (int x =0; x < SPLASH_GRID_WIDTH; x++) {
+            splash[SNOWMAN_LEFT]->getPixal(x,0)->set(RGBColor::WHITE);
+            splash[SNOWMAN_RIGHT]->getPixal(x,0)->set(RGBColor::WHITE);
+            splash[SNOWMAN_LEFT]->getPixal(x,13)->set(RGBColor::WHITE);
+            splash[SNOWMAN_RIGHT]->getPixal(x,13)->set(RGBColor::WHITE);
+        }
+
+
+
+        write_data(5.0);
     }
 
 
