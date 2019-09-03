@@ -373,31 +373,41 @@ void Snowmen::duckSnowman(int pos)
 
 void Snowmen::test_snowmen()
 {
-    while(1)
+    while(0)
     {
         this->run();
     }
+
+
     while(1)
     {
+        // test vertical lines
         getSnowmen(SNOWMAN_RIGHT)->setBackground(RGBColor::BLUE);
         getSnowmen(SNOWMAN_LEFT)->setBackground(RGBColor::BLUE);
         getSplashGrid(SNOWMAN_RIGHT)->setBackground(RGBColor::BLUE);
+        skyGrid->setBackground(RGBColor::BLUE);
+
         getSplashGrid(SNOWMAN_LEFT)->setBackground(RGBColor::BLUE);
 
         write_data(2.0);
-        for (int x = SPLASH_GRID_WIDTH-1; x >= 0; x--)
+        for (int x = SKY_GRID_WIDTH-1; x >= 0; x--)
         {
             RGBColor *color = ((x%2) == 0 ? RGBColor::GREEN : RGBColor::RED);
             for (int y = 0; y < SNOWMEN_HEIGHT; y++)
             {
+                if (x < SNOWMEN_WIDTH) {
                 getSnowmen(SNOWMAN_LEFT)->getPixal(x,y)->set(color);
                 getSnowmen(SNOWMAN_RIGHT)->getPixal(x,y)->set(color);
+                }
                 if (x < SPLASH_GRID_WIDTH && y < SPLASH_GRID_HEIGHT)
                 {
                     getSplashGrid(SNOWMAN_LEFT)->getPixal(x,y)->set(color);
                     getSplashGrid(SNOWMAN_RIGHT)->getPixal(x,y)->set(color);
                 }
-                write_data(0.05);
+                if (x < SKY_GRID_WIDTH && y < SKY_GRID_HEIGHT) {
+                    skyGrid->getPixal(x,y)->set(color);
+                }
+                write_data(0.005);
             }
         }
         write_data(3.0);
