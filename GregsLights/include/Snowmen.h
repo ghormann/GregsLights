@@ -84,6 +84,8 @@ private:
     void hitNose(int snowmen, int start_y);
     void hitHat(int pos);
     void duckSnowman(int pos);
+    void eatSnowball(int pos);
+    void drawMouth(int pos, double mouthPos);
     RGBColor *noseBallColor;
     pthread_mutex_t lock;
     pthread_t snowman_t;

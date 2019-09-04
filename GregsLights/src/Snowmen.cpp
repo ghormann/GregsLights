@@ -371,6 +371,92 @@ void Snowmen::duckSnowman(int pos)
     }
 }
 
+void Snowmen::drawMouth(int pos, double mouthPos) {
+
+    int x = 0;
+    int y = 0;
+    SnowmenGrid * who = getSnowmen(pos);
+
+    if (mouthPos < 1)
+        return ;
+
+    // Mouth
+    if (pos == SNOWMAN_LEFT)
+    {
+        x=SNOWMEN_WIDTH/2+8;
+        y=SNOWMEN_HEIGHT-60;
+        who->drawCircle(x-1,y-1,mouthPos,RGBColor::BLACK);
+        who->drawCircle(x,y-1,mouthPos,RGBColor::BLACK);
+    }
+    else
+    {
+        x=SNOWMEN_WIDTH/2-8;
+        y=SNOWMEN_HEIGHT-60;
+        who->drawCircle(x+1,y-1,mouthPos,RGBColor::BLACK);
+        who->drawCircle(x,y-1,mouthPos,RGBColor::BLACK);
+    }
+
+}
+
+void Snowmen::eatSnowball(int pos)
+{
+    int pos_y[] = {32,33,34,34,36,38,100,100,100,100, 100, 100, 100, 100, 32, 32,32,32,32,32};
+    strcpy(message2, "Eat Snowball");
+    SnowmenGrid *who;
+    double mouth = 0;
+
+    if (pos == SNOWMAN_LEFT)
+    {
+        who = getSnowmen(SNOWMAN_RIGHT);
+        throwLeft(true);
+        do_middle(pos,10,6,16,SNOWBALL_DURATION);
+        ball_line(this->getSplashGrid(SNOWMAN_RIGHT), 0, 8, SPLASH_GRID_WIDTH, 16, BALL_SIZE_2IN);
+        int x = 0;
+        for (int i = 0; i< 18; i++, x=x+2)
+        {
+            mouth = (i+1) * .3;
+            if (i > 8) {
+                mouth = (17-i) * .3;
+            }
+            lockSnowmen();
+            snowmen[SNOWMAN_RIGHT]->setBackground(RGBColor::BLACK);
+            drawSnowmen(SNOWMAN_RIGHT,hatStatus[SNOWMAN_RIGHT]);
+            drawMouth(SNOWMAN_RIGHT,mouth);
+            who->drawCircle(x*2,pos_y[i],BALL_SIZE_1IN,RGBColor::WHITE);
+            releaseSnowmen();
+            write_data(SNOWBALL_DURATION);
+        }
+    }
+    else
+    {
+        int x = 0;
+        who = getSnowmen(SNOWMAN_LEFT);
+        throwRight(true);
+        do_middle(pos,10,6,16,SNOWBALL_DURATION);
+        ball_line(this->getSplashGrid(SNOWMAN_LEFT), SPLASH_GRID_WIDTH, 8, 0, 16, BALL_SIZE_2IN);
+        for (int i = 0; i< 18; i++, x=x+2)
+        {
+            mouth = (i+1) * .3;
+            if (i > 8) {
+                mouth = (17-i) * .3;
+            }
+
+            lockSnowmen();
+            snowmen[SNOWMAN_LEFT]->setBackground(RGBColor::BLACK);
+            drawSnowmen(SNOWMAN_LEFT,hatStatus[SNOWMAN_LEFT]);
+            drawMouth(SNOWMAN_LEFT,mouth);
+            who->drawCircle(SNOWMEN_WIDTH - x*2,pos_y[i],BALL_SIZE_1IN,RGBColor::WHITE);
+            releaseSnowmen();
+            write_data(SNOWBALL_DURATION);
+        }
+    }
+        getSkyGrid()->writeText(RGBColor::GREEN,16,0,"YUM!", false);
+        write_data(2.0);
+        getSkyGrid()->setBackground(RGBColor::BLACK);
+
+}
+
+
 void Snowmen::test_snowmen()
 {
     while(1)
@@ -1320,7 +1406,7 @@ void Snowmen::do_it_snowmen()
     }
 
     bool didSomething = true;
-    int id = rand()%14;
+    int id = rand()%15;
     int chance = 0;
     switch(id)
     {
@@ -1452,6 +1538,11 @@ void Snowmen::do_it_snowmen()
             duckSnowman(SNOWMAN_RIGHT);
         else
             didSomething = false;
+        break;
+
+    case 14:
+        chance = rand()%2;
+        eatSnowball(chance == 0 ? SNOWMAN_LEFT : SNOWMAN_RIGHT);
         break;
 
     default:
