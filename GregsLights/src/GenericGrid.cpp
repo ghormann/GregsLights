@@ -10,6 +10,12 @@ using namespace std;
 
 GenericGrid::GenericGrid(int width_, int height_, int dummy_width_, int dummy_height_, bool skipTime, bool newYears)
 {
+    if (pthread_mutex_init(&lock, NULL) != 0)
+    {
+        printf("\n mutex init failed\n");
+        throw "Mutext init failed for Snowmen";
+    }
+
     //ctor
     sprintf(message, "Booting up: %s", (newYears ? "for new Years" : "for Christmas"));
     this->gridWidth = width_;
@@ -23,6 +29,23 @@ GenericGrid::GenericGrid(int width_, int height_, int dummy_width_, int dummy_he
     interruptAble = true;
 
 }
+
+pthread_mutex_t*  GenericGrid::getLock()
+{
+    return &lock;
+}
+
+void GenericGrid::lockSign()
+{
+    pthread_mutex_lock(&lock);
+}
+
+void GenericGrid::releaseSign()
+{
+    pthread_mutex_unlock(&lock);
+}
+
+
 
 int GenericGrid::getGridHeight()
 {
@@ -288,6 +311,7 @@ void GenericGrid::setDisplayPosition(int xOffset, int yOffset)
 {
     this->currentX = xOffset;
     this->currentY = yOffset;
+    lockSign();
     for (int i =0; i < this->gridWidth; i++)
     {
         for (int j = 0; j < this->gridHeight; j++)
@@ -295,6 +319,7 @@ void GenericGrid::setDisplayPosition(int xOffset, int yOffset)
             this->getPixal(i,j)->copyFrom(this->getBoard(i+xOffset,j+yOffset));
         }
     }
+    releaseSign();
     // Debug
     //printf("%d    %d\n", xOffset, yOffset);
     //sleep(1);

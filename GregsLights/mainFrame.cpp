@@ -299,7 +299,9 @@ void BasicGLPane::render( wxPaintEvent& evt )
     glEnd();
 
     // Sign
+    model->getSign()->lockSign();
     drawGrid(130,100,2,model->getSign());
+    model->getSign()->releaseSign();
     // Snowmen
     model->getSnowmen()->lockSnowmen();
     drawGrid(0,250,1,model->getSnowmen()->getSnowmen(SNOWMAN_LEFT));
