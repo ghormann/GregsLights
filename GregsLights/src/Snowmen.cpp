@@ -614,7 +614,9 @@ void Snowmen::hitNose(int snowmen, int start_y)
 
     ++noseBalls[snowmen];
 
+    lockSnowmen();
     drawSnowmen(snowmen, hatStatus[snowmen]);
+    releaseSnowmen();
 
 }
 
@@ -629,8 +631,10 @@ void Snowmen::fadeNoseBalls()
     {
         RGBColor *c = new  RGBColor(i,i,i);
         noseBallColor = c;
+        lockSnowmen();
         drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
         drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
+        releaseSnowmen();
         write_data(SNOWBALL_DURATION);
         i -=5;
         noseBallColor = RGBColor::WHITE;
@@ -638,8 +642,10 @@ void Snowmen::fadeNoseBalls()
     }
 
     noseBalls[SNOWMAN_LEFT] = noseBalls[SNOWMAN_RIGHT] = 0;
+    lockSnowmen();
     drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
     drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
+    releaseSnowmen();
 }
 
 
@@ -682,7 +688,9 @@ void Snowmen::placeHatBack(int pos)
         }
     }
     hatStatus[pos] = true;
+    lockSnowmen();
     drawSnowmen(pos,true);
+    releaseSnowmen();
 
 
 }
@@ -1425,7 +1433,9 @@ void Snowmen::cannonShot(int snowmen_pos)
     }
 
     // reset
+    lockSnowmen();
     drawSnowmen(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT, false);
+    releaseSnowmen();
     placeHatBack(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT);
 
 
