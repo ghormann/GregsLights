@@ -14,7 +14,7 @@
 #define SPLASH_GRID_WIDTH 24
 
 #define SKY_GRID_HEIGHT 24
-#define SKY_GRID_WIDTH 95
+#define SKY_GRID_WIDTH 96
 
 #define SNOWMAN_RIGHT 1
 #define SNOWMAN_LEFT  0

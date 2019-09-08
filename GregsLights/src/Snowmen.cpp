@@ -102,9 +102,10 @@ Snowmen::Snowmen(bool skipTime,  E131Network *network[])
     printf("DEBUG: SPLASH Right Port: %d, channel: %d\n", port, channel);
 
     //SKY house aka Right
-    for (x = 0; x < SKY_GRID_WIDTH/2; x++) // this is really too grids
+    y_delta = -1; // Will be switched at start -1 = down, 1 = up
+    for (x = SKY_GRID_WIDTH -1; x >= SKY_GRID_WIDTH/2; x--) // this is really too grids
     {
-        y_delta *= 1; // Swap direction, starts high
+        y_delta *= -1; // Swap direction, starts high
         y_start = (y_delta == 1 ? 0 : SKY_GRID_HEIGHT - 1);
         y_cnt = 0;
 
@@ -112,6 +113,13 @@ Snowmen::Snowmen(bool skipTime,  E131Network *network[])
         {
             skyGrid->setPixal(x,y, network[port]->getRGB(channel));
             channel += 3;
+            pixels_in_string++;
+            if (pixels_in_string >= 1000)
+            {
+                pixels_in_string = 0;
+                channel = 0;
+                ++port;
+            }
             if (channel >= 510)
             {
                 channel = 0;
@@ -120,18 +128,6 @@ Snowmen::Snowmen(bool skipTime,  E131Network *network[])
         }
     }
     printf("DEBUG: Sky Right: Port: %d, channel: %d\n", port, channel);
-
-    /*
-     * Fix me
-     */
-
-    for (x = SKY_GRID_WIDTH/2; x < SKY_GRID_WIDTH; x++)
-    {
-        for (y = 0; y < SKY_GRID_HEIGHT; y++ )
-        {
-            skyGrid->setPixal(x,y,new RGBLight(new DummyBulb(), new DummyBulb(), new DummyBulb()));
-        }
-    }
 
     //Snowman left aka Road
     y_delta = -1; // Will be switched at start -1 = down, 1 = up
@@ -193,7 +189,7 @@ Snowmen::Snowmen(bool skipTime,  E131Network *network[])
     //Splash left aka Road
     y_delta = 1; // Will be switched at start -1 = down, 1 = up
 
-    for (x = 0; x <= SPLASH_GRID_WIDTH; x++)
+    for (x = 0; x < SPLASH_GRID_WIDTH; x++)
     {
         y_delta *= -1; // Swap direction
         y_start = (y_delta == 1 ? 0 : SPLASH_GRID_HEIGHT - 1);
@@ -234,8 +230,56 @@ Snowmen::Snowmen(bool skipTime,  E131Network *network[])
             }
         }
     }
+    printf("SPLASH LEFT FINAL: X: %d, Y: %d, port: %d, channel: %d\n", x,y,port,channel);
 
+    /*
+     * Last of SKy
+     */
 
+    y_delta = 1; // Will be switched at start -1 = down, 1 = up
+
+    for (x = 0 ; x < SKY_GRID_WIDTH/2; x++)
+    {
+        y_delta *= -1; // Swap direction
+        y_start = (y_delta == 1 ? 0 : SKY_GRID_HEIGHT - 1);
+        y_cnt = 0;
+
+        for (y = y_start; y_cnt < SKY_GRID_HEIGHT; y += y_delta, ++y_cnt )
+        {
+            //printf("DEBUG: X: %d, Y: %d, port: %d, channel: %d\n", x,y,port,channel);
+            skyGrid->setPixal(x,SKY_GRID_HEIGHT-1 - y, network[port]->getRGB(channel));
+            channel += 3;
+            pixels_in_string++;
+            if (pixels_in_string >= 1000)
+            {
+                pixels_in_string = 0;
+                channel = 0;
+                if (port > 54) // really 160
+                {
+                    port = 48; // really 154
+                }
+                else if (port > 48) // really 154
+                {
+                    port = 42; // really +100
+                }
+                else if (port < 42)
+                {
+                    printf("Error settng up Left Splash.\n");
+                    throw "Error setting up Left Splash.";
+                }
+                else
+                {
+                    ++port;
+                }
+            }
+            if (channel >= 510)
+            {
+                channel = 0;
+                ++port;
+            }
+        }
+    }
+    printf("sky Road: X: %d, Y: %d, port: %d, channel: %d\n", x,y,port,channel);
 
     RGBPicture::getAllPictures(); // Load all Pictures
     strcpy(message2, "Starting up");
@@ -464,7 +508,15 @@ void Snowmen::test_snowmen()
         this->run();
     }
 
-    while(1) {
+    while(0) {
+        getSplashGrid(SNOWMAN_LEFT)->setBackground(RGBColor::BLUE);
+        skyGrid->setBackground(RGBColor::PURPLE);
+        skyGrid->getPixal(0,0)->set(RGBColor::GREEN);
+        skyGrid->getPixal(SKY_GRID_WIDTH-1,SKY_GRID_HEIGHT-1)->set(RGBColor::RED);
+        write_data(5.0);
+    }
+
+    while(0) {
         // Alignment lines
         getSnowmen(SNOWMAN_RIGHT)->setBackground(RGBColor::BLUE);
         getSnowmen(SNOWMAN_LEFT)->setBackground(RGBColor::BLUE);

@@ -175,7 +175,7 @@ BasicGLPane::BasicGLPane(wxFrame* parent, int* args) :
     // To avoid flashing on MSW
     SetBackgroundStyle(wxBG_STYLE_CUSTOM);
 
-    bool sendDMX = false;
+    bool sendDMX = true;
     model = new DisplayModel(sendDMX, true, false);
     sleep(1); // Wait for threads
     //new TextDisplay(model);
@@ -305,8 +305,8 @@ void BasicGLPane::render( wxPaintEvent& evt )
     drawGrid(0,250,1,model->getSnowmen()->getSnowmen(SNOWMAN_LEFT));
     drawGrid(94,250,2,model->getSnowmen()->getSplashGrid(SNOWMAN_LEFT));
     drawGrid(190,210,2,model->getSnowmen()->getSkyGrid());
-    drawGrid(570,250,2,model->getSnowmen()->getSplashGrid(SNOWMAN_RIGHT));
-    drawGrid(667,250,1,model->getSnowmen()->getSnowmen(SNOWMAN_RIGHT));
+    drawGrid(574,250,2,model->getSnowmen()->getSplashGrid(SNOWMAN_RIGHT));
+    drawGrid(671,250,1,model->getSnowmen()->getSnowmen(SNOWMAN_RIGHT));
     model->getSnowmen()->releaseSnowmen();
 
     // The Clock
