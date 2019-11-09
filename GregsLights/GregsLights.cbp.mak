@@ -49,7 +49,7 @@ LIB_GRAPHICS = $(LIB)
 LDFLAGS_GRAPHICS = $(LDFLAGS) -lGL -lGLU `wx-config  --libs std,media,gl`
 OBJDIR_GRAPHICS = .objs
 DEP_GRAPHICS = 
-OUT_GRAPHICS = /GregsLights
+OUT_GRAPHICS = ./GregsLights
 
 OBJ_DEBUG = $(OBJDIR_DEBUG)/src/Snowmen.o $(OBJDIR_DEBUG)/src/CountdownClock.o $(OBJDIR_DEBUG)/src/DisplayModel.o $(OBJDIR_DEBUG)/src/DisplayTester.o $(OBJDIR_DEBUG)/src/Generator.o $(OBJDIR_DEBUG)/src/GenericGrid.o $(OBJDIR_DEBUG)/src/GregMQTT.o $(OBJDIR_DEBUG)/src/GregsDisplay.o $(OBJDIR_DEBUG)/src/MessageGenerator.o $(OBJDIR_DEBUG)/src/RGBPicture.o $(OBJDIR_DEBUG)/src/Sign.o $(OBJDIR_DEBUG)/main.o $(OBJDIR_DEBUG)/src/TextDisplay.o $(OBJDIR_DEBUG)/src/TimeInfo.o $(OBJDIR_DEBUG)/src/controller/Bulb.o $(OBJDIR_DEBUG)/src/controller/DummyBulb.o $(OBJDIR_DEBUG)/src/controller/E131Network.o $(OBJDIR_DEBUG)/src/controller/FadeableBulb.o $(OBJDIR_DEBUG)/src/controller/LORNetwork.o $(OBJDIR_DEBUG)/src/controller/NetworkCollection.o $(OBJDIR_DEBUG)/src/controller/RGBColor.o $(OBJDIR_DEBUG)/src/controller/RGBLight.o $(OBJDIR_DEBUG)/src/controller/serial_posix.o
 
