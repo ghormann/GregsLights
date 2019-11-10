@@ -3,6 +3,16 @@
 #include <ctype.h>
 #include <math.h>
 
+TimeInfo* TimeInfo::m_pInstance = NULL;
+
+TimeInfo* TimeInfo::getInstance()
+{
+    if (!m_pInstance)   // Only allow one instance of class to be generated.
+        m_pInstance = new TimeInfo(false,false);
+
+    return m_pInstance;
+}
+
 
 TimeInfo::TimeInfo(bool skip_time_check, bool show_new_year )
 {
@@ -10,6 +20,7 @@ TimeInfo::TimeInfo(bool skip_time_check, bool show_new_year )
     this->skipTimeCheck = skip_time_check;
     this->newYears = show_new_year;
     this->num_seconds = 0;
+    this->noShow = true;
 
     time(&t_now);
     tm_now = localtime(&t_now);
@@ -48,10 +59,27 @@ int TimeInfo::getNextYear()
     return tm_christmas.tm_year+1901;
 }
 
+void TimeInfo::setNewYear(bool b)
+{
+    this->newYears = b;
+}
+
 bool TimeInfo::isNewYears()
 {
     return newYears;
 }
+
+bool TimeInfo::isNoShow()
+{
+    return noShow;
+}
+
+void TimeInfo::setNoShow(bool b)
+{
+    this->noShow = b;
+}
+
+
 
 void TimeInfo::tick()
 {
@@ -82,7 +110,8 @@ int TimeInfo::getHoursUntil()
 
 bool TimeInfo::isDayLight()
 {
-    if (skipTimeCheck) return false;
+    if (skipTimeCheck)
+        return false;
 
     int hour = getHourOfDay();
     return (hour >=9 && hour < 17) ? true: false;
@@ -95,11 +124,15 @@ void TimeInfo::setSkipTimeCheck(bool skipIt)
 
 bool TimeInfo::isDisplayHours()
 {
-    if (skipTimeCheck) return true;
-    if (isDayLight()) return false;
-    if (getSecondsUntil() < 60*60*4) return true; // all night long christmas, but not during the day.
+    if (skipTimeCheck)
+        return true;
+    if (isDayLight())
+        return false;
+    if (getSecondsUntil() < 60*60*4)
+        return true; // all night long christmas, but not during the day.
     int hour = getHourOfDay();
-    if (hour <6 || hour == 23) return false;
+    if (hour <6 || hour == 23)
+        return false;
 
     return true;
 

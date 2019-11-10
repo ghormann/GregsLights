@@ -23,6 +23,14 @@ void MessageGenerator::clear()
         bitmap[i] = 0;
     }
 
+    if (this->timeInfo->isNoShow()) {
+        bitmap[11] = 1;
+        bitmap[12] = 1;
+        bitmap[13] = 1;
+        bitmap[14] = 1;
+        bitmap[15] = 1;
+    }
+
 }
 
 void MessageGenerator::checkClear()
@@ -33,6 +41,10 @@ void MessageGenerator::checkClear()
     }
     // If we got this far, everything is used up.  Clear it.
     this->clear();
+}
+
+char * getStartDate() {
+    return "FULL DISPLAY STARTS NOV 30";
 }
 
 const char * MessageGenerator::getGreeting()
@@ -53,8 +65,14 @@ char * MessageGenerator::getMessage()
     switch (i)
     {
     case 0:
+        if (timeInfo->isNoShow()) {
+            return getStartDate();
+        }
         return "HOW MANY TIMES PER WEEK DO YOU CHECK THIS CLOCK?";
     case 1:
+        if (timeInfo->isNoShow()) {
+            return getStartDate();
+        }
         if (isChristmas)
             return "HE IS COMING.... ARE YOU READY?";
         else
@@ -108,6 +126,9 @@ char * MessageGenerator::getMessage()
         else
             return "$ HAPPY HOLIDAYS #";
     case 10:
+        if (timeInfo->isNoShow()) {
+            return getStartDate();
+        }
         return "LISTEN TO THE LIGHTS AT 106.7 FM";
 
     case 11:

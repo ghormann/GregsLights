@@ -515,7 +515,8 @@ void Sign::checkClear()
 {
     for (int i = 0; i < SIGN_OPTIONS; i++)
     {
-        if (useMap[i] == 0) return;
+        if (useMap[i] == 0)
+            return;
     }
     // If we got this far, everything is used up.  Clear it.
     this->clear();
@@ -527,6 +528,14 @@ void Sign::clear()
     for (int i = 0; i < SIGN_OPTIONS; i++)
     {
         useMap[i] = 0;
+    }
+
+    if (this->timeInfo->isNoShow())
+    {
+        for (int i = 9; i < SIGN_OPTIONS; i++)
+        {
+            useMap[i] = 1;
+        }
     }
 
 }

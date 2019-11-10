@@ -13,7 +13,9 @@ using namespace std;
 GregsDisplay::GregsDisplay(DisplayModel *m)
 {
     this->model = m;
-    timeinfo = new TimeInfo(m->isSkipTimeCheck(), m->isNewYears());
+    timeinfo = TimeInfo::getInstance();
+    timeinfo->setSkipTimeCheck(m->isSkipTimeCheck());
+    timeinfo->setNewYear(m->isNewYears());
 }
 
 GregsDisplay::~GregsDisplay()

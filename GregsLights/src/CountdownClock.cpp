@@ -11,8 +11,11 @@ CountdownClock::CountdownClock(bool skip_time_check, bool show_new_year, E131Net
     this->clock_t = 0;
     this->lastTick = 0;
     this->color = RGBColor::WHITE;
-    this->timeinfo = new TimeInfo(skip_time_check,show_new_year);
+    this->timeinfo = TimeInfo::getInstance();
     this->displayUnits = SECONDS;
+
+    timeinfo->setNewYear(show_new_year);
+    timeinfo->setSkipTimeCheck(skip_time_check);
 
     int netId = 0;
     int cnt = 0;

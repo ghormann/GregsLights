@@ -7,7 +7,7 @@
 class TimeInfo
 {
 public:
-    TimeInfo(bool skipTimeCheck, bool newYears);
+    static TimeInfo* getInstance();
     virtual ~TimeInfo();
     int getHourOfDay();
     int getSecondsUntil();
@@ -15,11 +15,16 @@ public:
     int getNextYear();
     bool isDayLight();
     bool isDisplayHours();
+    bool isNoShow();
     void setSkipTimeCheck(bool skipIt);
     bool isNewYears();
+    void setNoShow(bool b);
+    void setNewYear(bool b);
 protected:
     void tick();
 private:
+    TimeInfo(bool skipTimeCheck, bool newYears);
+    static TimeInfo* m_pInstance;
     struct tm tm_christmas;
     time_t t_christmas;
     time_t t_now;
@@ -27,6 +32,7 @@ private:
     int lastTick;
     bool skipTimeCheck;
     bool newYears;
+    bool noShow;
     int num_seconds;
 };
 

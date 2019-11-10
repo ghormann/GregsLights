@@ -5,6 +5,7 @@
 #include <json/json.h>
 #include <string.h>
 #include <algorithm>
+#include "TimeInfo.h"
 
 
 GregMQTT::GregMQTT(bool enable, const char * _id) : mosquittopp(_id)
@@ -105,7 +106,24 @@ std::string GregMQTT::getNextName()
 
 void GregMQTT::on_message(const struct mosquitto_message *message)
 {
-    if (
+    if (strcmp("/christmas/clock/noShow", message->topic) ==0)
+    {
+        if (message->payload != NULL)
+        {
+            std::string data = std::string(reinterpret_cast<char*>(message->payload));
+            std::for_each(data.begin(), data.end(), [](char & c)
+            {
+                c = ::toupper(c);
+            });
+            bool newMode = false;
+            if (data.compare("TRUE") == 0) {
+                newMode = true;
+            }
+            TimeInfo::getInstance()->setNoShow(newMode);
+            printf("Setting debug to %s becasuse of %s\n", (newMode? "True" : "False"), data.c_str());
+        }
+    }
+    else if (
         (strcmp("/christmas/personsName", message->topic) == 0)
         || (strcmp("/christmas/personsNameFront", message->topic) == 0)
         || (strcmp("/christmas/personsNameLow", message->topic) == 0)
@@ -140,6 +158,7 @@ void GregMQTT::on_connect(int rc)
         subscribe(NULL, "/christmas/personsName");
         subscribe(NULL, "/christmas/personsNameFront");
         subscribe(NULL, "/christmas/personsNameLow");
+        subscribe(NULL, "/christmas/clock/noShow");
     }
 }
 

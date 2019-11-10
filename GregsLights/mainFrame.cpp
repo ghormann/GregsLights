@@ -175,7 +175,7 @@ BasicGLPane::BasicGLPane(wxFrame* parent, int* args) :
     // To avoid flashing on MSW
     SetBackgroundStyle(wxBG_STYLE_CUSTOM);
 
-    bool sendDMX = true;
+    bool sendDMX = false;
     model = new DisplayModel(sendDMX, true, false);
     sleep(1); // Wait for threads
     //new TextDisplay(model);

@@ -22,11 +22,14 @@ GenericGrid::GenericGrid(int width_, int height_, int dummy_width_, int dummy_he
     this->gridHeight = height_;
     this->dummy_height = dummy_height_;
     this->dummy_width = dummy_width_;
-    this->timeInfo = new TimeInfo(skipTime, newYears);
+    this->timeInfo = TimeInfo::getInstance();
     this->interrupt = false;
     currentX = 0;
     currentY = 0;
     interruptAble = true;
+
+    timeInfo->setNewYear(newYears);
+    timeInfo->setSkipTimeCheck(skipTime);
 
 }
 
