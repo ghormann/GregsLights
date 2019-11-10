@@ -22,15 +22,6 @@ void MessageGenerator::clear()
     {
         bitmap[i] = 0;
     }
-
-    if (this->timeInfo->isNoShow()) {
-        bitmap[11] = 1;
-        bitmap[12] = 1;
-        bitmap[13] = 1;
-        bitmap[14] = 1;
-        bitmap[15] = 1;
-    }
-
 }
 
 void MessageGenerator::checkClear()
@@ -78,6 +69,9 @@ char * MessageGenerator::getMessage()
         else
             return "WISHING YOU A GREAT NEW YEAR";
     case 2:
+        if (timeInfo->isNoShow()) {
+            return getStartDate();
+        }
         if (isChristmas)
             if (timeInfo->getSecondsUntil() <= 0)
                 return "MERRY CHRISTMAS";
@@ -103,11 +97,17 @@ char * MessageGenerator::getMessage()
 
         return "THANKS FOR VISITING US";
     case 5:
+        if (timeInfo->isNoShow()) {
+            return getStartDate();
+        }
         if (isChristmas)
             return "+ HAVE YOU BEEN NAUGHTY OR NICE? +";
         else
             return "MADE YOUR RESOLUTIONS FOR THE NEW YEAR?";
     case 6:
+        if (timeInfo->isNoShow()) {
+            return getStartDate();
+        }
         if (timeInfo->getSecondsUntil() > 0)
             if (isChristmas)
                 return "JOIN US TO SEE THE CLOCK HIT ZERO CHRISTMAS EVE";
@@ -133,11 +133,20 @@ char * MessageGenerator::getMessage()
 
     case 11:
     case 12:
+        if (timeInfo->isNoShow()) {
+            return getStartDate();
+        }
         return "TEXT YOUR FIRST NAME TO 513-854-1352 AND SEE YOUR NAME IN LIGHTS!";
     case 13:
     case 14:
+        if (timeInfo->isNoShow()) {
+            return getStartDate();
+        }
         return "TEXT YOUR FIRST NAME TO 513-854-1352 FOR A PERSONALIZED MESSAGE.";
     case 15:
+        if (timeInfo->isNoShow()) {
+            return getStartDate();
+        }
         const char * when = timeInfo->isNewYears() ? "THE NEW YEAR" : "CHRISTMAS";
         if (timeInfo->getHoursUntil() > 1)
             sprintf(message, "\\ ONLY %d HOURS UNTIL %s \\", timeInfo->getHoursUntil(), when);
