@@ -20,10 +20,20 @@ TimeInfo::TimeInfo(bool skip_time_check, bool show_new_year )
     this->skipTimeCheck = skip_time_check;
     this->newYears = show_new_year;
     this->num_seconds = 0;
-    this->noShow = true;
+    this->noShow = false;
 
     time(&t_now);
     tm_now = localtime(&t_now);
+    updateTmChristmas();
+
+}
+
+TimeInfo::~TimeInfo()
+{
+    //dtor
+}
+
+void TimeInfo::updateTmChristmas() {
     tm_christmas.tm_sec    = 0;     //0
     tm_christmas.tm_min    = 0;     //0
     tm_christmas.tm_hour   = 0;     //0
@@ -34,7 +44,7 @@ TimeInfo::TimeInfo(bool skip_time_check, bool show_new_year )
     tm_christmas.tm_zone   = tm_now->tm_zone;
     tm_christmas.tm_gmtoff = tm_now->tm_gmtoff;
 
-    if (show_new_year == true)
+    if (this->isNewYears())
     {
         tm_christmas.tm_sec    = 59;
         tm_christmas.tm_min    = 59;
@@ -49,11 +59,6 @@ TimeInfo::TimeInfo(bool skip_time_check, bool show_new_year )
 
 }
 
-TimeInfo::~TimeInfo()
-{
-    //dtor
-}
-
 int TimeInfo::getNextYear()
 {
     return tm_christmas.tm_year+1901;
@@ -62,6 +67,7 @@ int TimeInfo::getNextYear()
 void TimeInfo::setNewYear(bool b)
 {
     this->newYears = b;
+    this->updateTmChristmas();
 }
 
 bool TimeInfo::isNewYears()

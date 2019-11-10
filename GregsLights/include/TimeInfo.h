@@ -24,6 +24,7 @@ protected:
     void tick();
 private:
     TimeInfo(bool skipTimeCheck, bool newYears);
+    void updateTmChristmas();
     static TimeInfo* m_pInstance;
     struct tm tm_christmas;
     time_t t_christmas;
