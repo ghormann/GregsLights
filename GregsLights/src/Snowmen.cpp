@@ -503,7 +503,7 @@ void Snowmen::eatSnowball(int pos)
 
 void Snowmen::test_snowmen()
 {
-    while(1)
+    while(0)
     {
         this->run();
     }
@@ -516,7 +516,8 @@ void Snowmen::test_snowmen()
         write_data(5.0);
     }
 
-    while(0) {
+    while(1) {
+        strcpy(message2, "Align Snowman");
         // Alignment lines
         getSnowmen(SNOWMAN_RIGHT)->setBackground(RGBColor::BLUE);
         getSnowmen(SNOWMAN_LEFT)->setBackground(RGBColor::BLUE);
