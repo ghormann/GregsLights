@@ -588,7 +588,13 @@ void Snowmen::run()
         else
         {
             sprintf(message2, "Sleeping during day as hour is %d", timeinfo->getHourOfDay());
-            //setBodies(false);
+            // Turn things off
+            getSplashGrid(SNOWMAN_LEFT)->setBackground(RGBColor::BLACK);
+            getSplashGrid(SNOWMAN_RIGHT)->setBackground(RGBColor::BLACK);
+            getSnowmen(SNOWMAN_LEFT)->setBackground(RGBColor::BLACK);
+            getSnowmen(SNOWMAN_RIGHT)->setBackground(RGBColor::BLACK);
+            getSkyGrid()->setBackground(RGBColor::BLACK);
+
             sleep(60);
         }
     }
