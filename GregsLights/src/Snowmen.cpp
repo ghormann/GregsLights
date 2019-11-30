@@ -415,7 +415,8 @@ void Snowmen::duckSnowman(int pos)
     }
 }
 
-void Snowmen::drawMouth(int pos, double mouthPos) {
+void Snowmen::drawMouth(int pos, double mouthPos)
+{
 
     int x = 0;
     int y = 0;
@@ -459,7 +460,8 @@ void Snowmen::eatSnowball(int pos)
         for (int i = 0; i< 18; i++, x=x+2)
         {
             mouth = (i+1) * .3;
-            if (i > 8) {
+            if (i > 8)
+            {
                 mouth = (17-i) * .3;
             }
             lockSnowmen();
@@ -481,7 +483,8 @@ void Snowmen::eatSnowball(int pos)
         for (int i = 0; i< 18; i++, x=x+2)
         {
             mouth = (i+1) * .3;
-            if (i > 8) {
+            if (i > 8)
+            {
                 mouth = (17-i) * .3;
             }
 
@@ -494,21 +497,22 @@ void Snowmen::eatSnowball(int pos)
             write_data(SNOWBALL_DURATION);
         }
     }
-        getSkyGrid()->writeText(RGBColor::GREEN,16,0,"YUM!", false);
-        write_data(2.0);
-        getSkyGrid()->setBackground(RGBColor::BLACK);
+    getSkyGrid()->writeText(RGBColor::GREEN,16,0,"YUM!", false);
+    write_data(2.0);
+    getSkyGrid()->setBackground(RGBColor::BLACK);
 
 }
 
 
 void Snowmen::test_snowmen()
 {
-    while(0)
+    if(0)
     {
         this->run();
     }
 
-    while(0) {
+    if(0)
+    {
         getSplashGrid(SNOWMAN_LEFT)->setBackground(RGBColor::BLUE);
         skyGrid->setBackground(RGBColor::PURPLE);
         skyGrid->getPixal(0,0)->set(RGBColor::GREEN);
@@ -516,7 +520,8 @@ void Snowmen::test_snowmen()
         write_data(5.0);
     }
 
-    while(1) {
+    if(1)
+    {
         strcpy(message2, "Align Snowman");
         // Alignment lines
         getSnowmen(SNOWMAN_RIGHT)->setBackground(RGBColor::BLUE);
@@ -525,26 +530,27 @@ void Snowmen::test_snowmen()
         getSplashGrid(SNOWMAN_RIGHT)->setBackground(RGBColor::BLUE);
         skyGrid->setBackground(RGBColor::BLUE);
 
-        for (int x = 0; x < SKY_GRID_WIDTH; x++) {
+        for (int x = 0; x < SKY_GRID_WIDTH; x++)
+        {
             skyGrid->getPixal(x,10)->set(RGBColor::WHITE); // 10 is top
             skyGrid->getPixal(x,SKY_GRID_HEIGHT-1)->set(RGBColor::WHITE); // 10 is top
         }
 
-        for (int x =0; x < SPLASH_GRID_WIDTH; x++) {
+        for (int x =0; x < SPLASH_GRID_WIDTH; x++)
+        {
             splash[SNOWMAN_LEFT]->getPixal(x,0)->set(RGBColor::WHITE);
             splash[SNOWMAN_RIGHT]->getPixal(x,0)->set(RGBColor::WHITE);
             splash[SNOWMAN_LEFT]->getPixal(x,13)->set(RGBColor::WHITE);
             splash[SNOWMAN_RIGHT]->getPixal(x,13)->set(RGBColor::WHITE);
         }
 
-
-
         write_data(5.0);
     }
 
 
-    while(1)
+    if(0)
     {
+        strcpy(message2, "Test Vertical Lines");
         // test vertical lines
         getSnowmen(SNOWMAN_RIGHT)->setBackground(RGBColor::BLUE);
         getSnowmen(SNOWMAN_LEFT)->setBackground(RGBColor::BLUE);
@@ -559,16 +565,18 @@ void Snowmen::test_snowmen()
             RGBColor *color = ((x%2) == 0 ? RGBColor::GREEN : RGBColor::RED);
             for (int y = 0; y < SNOWMEN_HEIGHT; y++)
             {
-                if (x < SNOWMEN_WIDTH) {
-                getSnowmen(SNOWMAN_LEFT)->getPixal(x,y)->set(color);
-                getSnowmen(SNOWMAN_RIGHT)->getPixal(x,y)->set(color);
+                if (x < SNOWMEN_WIDTH)
+                {
+                    getSnowmen(SNOWMAN_LEFT)->getPixal(x,y)->set(color);
+                    getSnowmen(SNOWMAN_RIGHT)->getPixal(x,y)->set(color);
                 }
                 if (x < SPLASH_GRID_WIDTH && y < SPLASH_GRID_HEIGHT)
                 {
                     getSplashGrid(SNOWMAN_LEFT)->getPixal(x,y)->set(color);
                     getSplashGrid(SNOWMAN_RIGHT)->getPixal(x,y)->set(color);
                 }
-                if (x < SKY_GRID_WIDTH && y < SKY_GRID_HEIGHT) {
+                if (x < SKY_GRID_WIDTH && y < SKY_GRID_HEIGHT)
+                {
                     skyGrid->getPixal(x,y)->set(color);
                 }
                 write_data(0.005);
@@ -578,17 +586,7 @@ void Snowmen::test_snowmen()
     }
 }
 
-void Snowmen::run()
-{
-    while(1)
-    {
-        if (timeinfo->isDisplayHours())
-        {
-            do_it_snowmen();
-        }
-        else
-        {
-            sprintf(message2, "Sleeping during day as hour is %d", timeinfo->getHourOfDay());
+void Snowmen::setAllOff() {
             // Turn things off
             getSplashGrid(SNOWMAN_LEFT)->setBackground(RGBColor::BLACK);
             getSplashGrid(SNOWMAN_RIGHT)->setBackground(RGBColor::BLACK);
@@ -596,7 +594,27 @@ void Snowmen::run()
             getSnowmen(SNOWMAN_RIGHT)->setBackground(RGBColor::BLACK);
             getSkyGrid()->setBackground(RGBColor::BLACK);
 
-            sleep(60);
+
+}
+
+void Snowmen::run()
+{
+    while(1)
+    {
+        if (timeinfo->isDebug())
+        {
+            test_snowmen();
+            setAllOff();
+        }
+        else if (timeinfo->isDisplayHours())
+        {
+            do_it_snowmen();
+        }
+        else
+        {
+            sprintf(message2, "Sleeping during day as hour is %d", timeinfo->getHourOfDay());
+            setAllOff();
+            sleep(2);
         }
     }
 }

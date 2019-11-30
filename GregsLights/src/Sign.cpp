@@ -415,6 +415,11 @@ void Sign::run()
     double textSpeed = 0.02;
     char *msg = NULL;
 
+    if (timeInfo->isDebug()) {
+        test();
+        return ;
+    }
+
     // Not on douring the day
     if (!timeInfo->isDisplayHours())
     {
@@ -423,7 +428,7 @@ void Sign::run()
         this->sendStatus();
         setDummyBackground(RGBColor::BLACK);
         setDisplayPosition(0,0);
-        sleep(5);
+        sleep(2);
         return;
     }
 
@@ -788,7 +793,7 @@ void Sign::test()
 {
 
     //ALternate Green and Red
-    while(0)
+    if(0)
     {
         this->setDummyBackground(RGBColor::GREEN);
         this->setDisplayPosition(0,0);
@@ -798,7 +803,7 @@ void Sign::test()
         sleep(1);
     }
 
-    while (0)
+    if (0)
     {
         this->setBackground(RGBColor::YELLOW);
         sleep(5);
@@ -811,14 +816,14 @@ void Sign::test()
     }
 
     // Test Lines
-    while(0)
+    if(1)
     {
         getPixal(0,0)->set(RGBColor::WHITE);
         sleep(1);
         testLines();
     }
 
-    while(0)
+    if(0)
     {
         int x, y, picWidth, picHeight;
         RGBPicture * picture = new RGBPicture("/home/ghormann/Documents/src/gregslights/GregsLights/resources/orig/test.png");
@@ -841,12 +846,12 @@ void Sign::test()
     }
 
 
-    while(1)
+    if(0)
     {
         run();
     }
 
-    while(0)
+    if(0)
     {
         getPixal(10,10)->fadeTo(100,0,0,10.0);
         sleep(12);
@@ -861,7 +866,7 @@ void Sign::test()
 
     }
 
-    while (0)
+    if (0)
     {
         //timeInfo->setSkipTimeCheck(true);
 
@@ -895,7 +900,7 @@ void Sign::test()
     this->pixals[0]->set(RGBColor::BLACK);
 
 
-    while (true)
+    if (0)
     {
         setDummyBackground(RGBColor::BLACK);
         setDisplayPosition(0,0);

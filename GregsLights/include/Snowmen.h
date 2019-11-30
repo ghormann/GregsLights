@@ -86,6 +86,7 @@ private:
     void duckSnowman(int pos);
     void eatSnowball(int pos);
     void drawMouth(int pos, double mouthPos);
+    void setAllOff();
     RGBColor *noseBallColor;
     pthread_mutex_t lock;
     double groundSnowLevel[2];

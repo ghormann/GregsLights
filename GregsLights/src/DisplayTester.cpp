@@ -47,14 +47,20 @@ void DisplayTester::testSign()
 void * DisplayTester::clockThread(void *args)
 {
     DisplayTester *ptr = (DisplayTester *) args;
-    ptr->testClock();
+    while (1)
+    {
+        ptr->testClock();
+    }
     return NULL;
 }
 
 void * DisplayTester::signThread(void *args)
 {
     DisplayTester *ptr = (DisplayTester *) args;
-    ptr->testSign();
+    while (1)
+    {
+        ptr->testSign();
+    }
     return NULL;
 }
 
@@ -62,11 +68,11 @@ void * DisplayTester::signThread(void *args)
 void DisplayTester::testClock()
 {
     //this->model->getClock()->testALlOn();
-    this->model->getClock()->test();
     //this->model->getClock()->setActive(true);
     while(1)
     {
-        sleep(100);  // Needed because setActive starts its own thread.
+        this->model->getClock()->test();
+        //sleep(100);  // Needed because setActive starts its own thread.
     }
 }
 

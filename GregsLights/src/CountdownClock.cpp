@@ -69,7 +69,7 @@ void CountdownClock::testALlOn()
 void CountdownClock::test()
 {
     sprintf(message, "Test() in clock: Starting loop.");
-    while(1)
+    if(1)
     {
         sprintf(message, "Test() in clock: Starting loop A.");
         this->setAllOff();
@@ -129,13 +129,19 @@ void CountdownClock::tick()
         this->mqtt->sendClockMessage(num_seconds);
     }
 
+    if (timeinfo->isDebug()) {
+        sprintf(message, "Test Mode");
+        test();
+        return;
+    }
+
 
     // Not on douring the day
     if (!timeinfo->isDisplayHours())
     {
         sprintf(message, "Sleeping During Day: %d", timeinfo->getHourOfDay());
         setAllOff();
-        sleep(5);
+        sleep(2);
         return;
     }
 
