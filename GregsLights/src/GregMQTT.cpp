@@ -106,7 +106,7 @@ std::string GregMQTT::getNextName()
 
 void GregMQTT::on_message(const struct mosquitto_message *message)
 {
-    if (strcmp("/christmas/clock/noShow", message->topic) ==0)
+    if (strcmp("/christmas/clock/setNoShow", message->topic) ==0)
     {
         if (message->payload != NULL)
         {
@@ -116,11 +116,48 @@ void GregMQTT::on_message(const struct mosquitto_message *message)
                 c = ::toupper(c);
             });
             bool newMode = false;
-            if (data.compare("TRUE") == 0) {
+            if (data.compare("TRUE") == 0)
+            {
                 newMode = true;
             }
             TimeInfo::getInstance()->setNoShow(newMode);
-            printf("Setting debug to %s becasuse of %s\n", (newMode? "True" : "False"), data.c_str());
+            printf("Setting noShow to %s becasuse of %s\n", (newMode? "True" : "False"), data.c_str());
+        }
+    }
+    else if (strcmp("/christmas/clock/setTimeCheck", message->topic) ==0)
+    {
+        if (message->payload != NULL)
+        {
+            std::string data = std::string(reinterpret_cast<char*>(message->payload));
+            std::for_each(data.begin(), data.end(), [](char & c)
+            {
+                c = ::toupper(c);
+            });
+            bool newMode = false;
+            if (data.compare("TRUE") == 0)
+            {
+                newMode = true;
+            }
+            TimeInfo::getInstance()->setSkipTimeCheck(newMode);
+            printf("Setting Timecheck to %s becasuse of %s\n", (newMode? "True" : "False"), data.c_str());
+        }
+    }
+    else if (strcmp("/christmas/clock/setDebug", message->topic) ==0)
+    {
+        if (message->payload != NULL)
+        {
+            std::string data = std::string(reinterpret_cast<char*>(message->payload));
+            std::for_each(data.begin(), data.end(), [](char & c)
+            {
+                c = ::toupper(c);
+            });
+            bool newMode = false;
+            if (data.compare("TRUE") == 0)
+            {
+                newMode = true;
+            }
+            TimeInfo::getInstance()->setDebug(newMode);
+            printf("Setting Debug to %s becasuse of %s\n", (newMode? "True" : "False"), data.c_str());
         }
     }
     else if (
@@ -158,7 +195,9 @@ void GregMQTT::on_connect(int rc)
         subscribe(NULL, "/christmas/personsName");
         subscribe(NULL, "/christmas/personsNameFront");
         subscribe(NULL, "/christmas/personsNameLow");
-        subscribe(NULL, "/christmas/clock/noShow");
+        subscribe(NULL, "/christmas/clock/setNoShow");
+        subscribe(NULL, "/christmas/clock/setTimeCheck");
+        subscribe(NULL, "/christmas/clock/setDebug");
     }
 }
 
@@ -167,6 +206,22 @@ void GregMQTT::sendClockMessage(int t)
     std::ostringstream out;
     out << t;
     this->myPublish("/christmas/clock", out.str());
+}
+
+void GregMQTT::sendTimeInfo()
+{
+    TimeInfo *ti = TimeInfo::getInstance();
+    Json::Value obj;
+    obj["skipTime"] = ti->isSkipTimeCheck();
+    obj["debug"] = ti->isDebug();
+    obj["newYears"] = ti->isNewYears();
+    obj["noShow"] = ti->isNoShow();
+    obj["displayHours"] = ti->isDisplayHours();
+
+    Json::StreamWriterBuilder builder;
+    builder["indentation"] = ""; // If you want whitespace-less output
+    const std::string output = Json::writeString(builder, obj);
+    this->myPublish("/christmas/timeinfo", output.c_str());
 }
 
 void GregMQTT::sendSignMessage(std::string msg)

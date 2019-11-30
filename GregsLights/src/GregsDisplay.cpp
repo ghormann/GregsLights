@@ -28,8 +28,10 @@ void GregsDisplay::run()
 {
     pthread_t sign_t;
     pthread_t snowmen_t;
+    pthread_t mqtt_t;
     pthread_create(&(sign_t), NULL, GregsDisplay::signThread, (void*) this);
     pthread_create(&(snowmen_t), NULL, GregsDisplay::snowmenThread, (void*) this);
+    pthread_create(&(mqtt_t), NULL, GregsDisplay::mqttThread, (void*) this);
 
     getModel()->getClock()->setActive(true);
 }
@@ -39,6 +41,16 @@ DisplayModel *GregsDisplay::getModel()
     return model;
 }
 
+void * GregsDisplay::mqttThread(void * args)
+{
+    GregsDisplay *ptr = (GregsDisplay *) args;
+    while (1)
+    {
+        ptr->getModel()->getMqtt()->sendTimeInfo();
+        sleep(5);
+    }
+    return NULL;
+}
 
 void * GregsDisplay::snowmenThread(void * args)
 {

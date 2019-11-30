@@ -16,10 +16,13 @@ public:
     bool isDayLight();
     bool isDisplayHours();
     bool isNoShow();
+    bool isDebug();
     void setSkipTimeCheck(bool skipIt);
     bool isNewYears();
+    bool isSkipTimeCheck();
     void setNoShow(bool b);
     void setNewYear(bool b);
+    void setDebug(bool b);
 protected:
     void tick();
 private:
@@ -34,6 +37,7 @@ private:
     bool skipTimeCheck;
     bool newYears;
     bool noShow;
+    bool debug;
     int num_seconds;
 };
 

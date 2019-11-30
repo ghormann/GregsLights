@@ -102,7 +102,8 @@ void CountdownClock::setAllOff()
         this->pixals[i]->set(0,0,0);
     }
 
-    for (int i = 0; i <=6; i++) {
+    for (int i = 0; i <=6; i++)
+    {
         this->special[i]->setIntensity(0);
     }
 }
@@ -119,22 +120,30 @@ void CountdownClock::tick()
     int num_seconds = timeinfo->getSecondsUntil();
     int num[10];
 
+    bool hasChange = false;
+
+    if (lastTick != num_seconds || reset == true)
+    {
+        hasChange = true;
+        lastTick = num_seconds;
+        this->mqtt->sendClockMessage(num_seconds);
+    }
+
 
     // Not on douring the day
     if (!timeinfo->isDisplayHours())
     {
         sprintf(message, "Sleeping During Day: %d", timeinfo->getHourOfDay());
         setAllOff();
-        lastTick = -1;
         sleep(5);
         return;
     }
 
 
-    if (lastTick != num_seconds || reset == true)
+    if (hasChange)
     {
         reset = false;
-	this->special[SPECIAL_SIGN_ON]->setIntensity(100);
+        this->special[SPECIAL_SIGN_ON]->setIntensity(100);
         sprintf(message, "Running");
         if (num_seconds <= 0)
         {
@@ -179,11 +188,6 @@ void CountdownClock::tick()
             setDigit(i,num[i]);
 
         } // for i=1->7
-
-        if (lastTick != num_seconds) {
-            this->mqtt->sendClockMessage(num_seconds);
-        }
-        lastTick = num_seconds;
     }
 }
 

@@ -88,7 +88,6 @@ private:
     void drawMouth(int pos, double mouthPos);
     RGBColor *noseBallColor;
     pthread_mutex_t lock;
-    pthread_t snowman_t;
     double groundSnowLevel[2];
     int noseBalls[2];
     bool hatStatus[2];

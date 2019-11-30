@@ -21,6 +21,7 @@ TimeInfo::TimeInfo(bool skip_time_check, bool show_new_year )
     this->newYears = show_new_year;
     this->num_seconds = 0;
     this->noShow = false;
+    this->debug = false;
 
     time(&t_now);
     tm_now = localtime(&t_now);
@@ -33,7 +34,8 @@ TimeInfo::~TimeInfo()
     //dtor
 }
 
-void TimeInfo::updateTmChristmas() {
+void TimeInfo::updateTmChristmas()
+{
     tm_christmas.tm_sec    = 0;     //0
     tm_christmas.tm_min    = 0;     //0
     tm_christmas.tm_hour   = 0;     //0
@@ -85,7 +87,15 @@ void TimeInfo::setNoShow(bool b)
     this->noShow = b;
 }
 
+bool TimeInfo::isDebug()
+{
+    return debug;
+}
 
+void TimeInfo::setDebug(bool b)
+{
+    this->debug = b;
+}
 
 void TimeInfo::tick()
 {
@@ -126,6 +136,11 @@ bool TimeInfo::isDayLight()
 void TimeInfo::setSkipTimeCheck(bool skipIt)
 {
     this->skipTimeCheck = skipIt;
+}
+
+bool TimeInfo::isSkipTimeCheck()
+{
+    return this->skipTimeCheck;
 }
 
 bool TimeInfo::isDisplayHours()

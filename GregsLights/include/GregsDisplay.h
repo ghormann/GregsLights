@@ -17,6 +17,7 @@ private:
     TimeInfo *timeinfo;
     static void * signThread(void *);
     static void * snowmenThread(void *);
+    static void * mqttThread(void *);
 };
 
 #endif // GREGSDISPLAY_H

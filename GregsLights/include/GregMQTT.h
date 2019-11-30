@@ -6,6 +6,7 @@
 #include <deque>
 #include <mutex>
 
+
 # define GJH_SSL_VERIFY_PEER                 0x01
 
 
@@ -19,6 +20,7 @@ public:
     void on_log(int level, const char *str);
     void sendSignMessage(std::string msg);
     void sendClockMessage(int t);
+    void sendTimeInfo();
     std::string getNextName();
 
 protected:
@@ -29,6 +31,7 @@ private:
     void debug(std::string mesg);
     std::deque<std::string> name_queue;
     std::mutex name_queue_mutex;
+
 };
 
 #endif // GREGMQTT_H
