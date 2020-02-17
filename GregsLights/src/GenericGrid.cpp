@@ -8,7 +8,7 @@
 using namespace std;
 
 
-GenericGrid::GenericGrid(int width_, int height_, int dummy_width_, int dummy_height_, bool skipTime, bool newYears)
+GenericGrid::GenericGrid(int width_, int height_, int dummy_width_, int dummy_height_)
 {
     if (pthread_mutex_init(&lock, NULL) != 0)
     {
@@ -17,7 +17,7 @@ GenericGrid::GenericGrid(int width_, int height_, int dummy_width_, int dummy_he
     }
 
     //ctor
-    sprintf(message, "Booting up: %s", (newYears ? "for new Years" : "for Christmas"));
+    sprintf(message, "Booting up: %s", (TimeInfo::getInstance()->isNewYears() ? "for new Years" : "for Christmas"));
     this->gridWidth = width_;
     this->gridHeight = height_;
     this->dummy_height = dummy_height_;
@@ -27,10 +27,6 @@ GenericGrid::GenericGrid(int width_, int height_, int dummy_width_, int dummy_he
     currentX = 0;
     currentY = 0;
     interruptAble = true;
-
-    timeInfo->setNewYear(newYears);
-    timeInfo->setSkipTimeCheck(skipTime);
-
 }
 
 pthread_mutex_t*  GenericGrid::getLock()

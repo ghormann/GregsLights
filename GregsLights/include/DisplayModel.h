@@ -6,6 +6,7 @@
 #include "controller/NetworkCollection.h"
 #include "CountdownClock.h"
 #include "Sign.h"
+#include "GarageSign.h"
 #include "Snowmen.h"
 #include "GregMQTT.h"
 
@@ -25,6 +26,7 @@ class DisplayModel
         CountdownClock *getClock();
         Sign * getSign();
         Snowmen * getSnowmen();
+        GarageSign *getGarageSign();
         void setMessage(int id, char*);
         char *getMessage(int id);
         bool isSkipTimeCheck();
@@ -41,6 +43,7 @@ class DisplayModel
         char *messages[NUM_MESSAGE_BUFFERS];
         Sign *sign;
         Snowmen *snowmen;
+        GarageSign *garageSign;
         bool skipTimeCheck;
         bool newYears;
 

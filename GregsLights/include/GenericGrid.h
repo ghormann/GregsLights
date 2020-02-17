@@ -38,7 +38,7 @@ enum GRID_SPECIAL
 class GenericGrid
 {
 public:
-    GenericGrid(int width_, int height_, int dummy_with_, int dummy_height, bool skipTime, bool newYears);
+    GenericGrid(int width_, int height_, int dummy_with_, int dummy_height);
     virtual ~GenericGrid() = 0;
     virtual RGBLight * getBoard(int x, int y) = 0;
     virtual RGBLight * getPixal(int x, int y) = 0;

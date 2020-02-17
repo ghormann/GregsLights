@@ -278,7 +278,8 @@ void drawGrid(int xoffset, int yoffset, int pixSpacing, GenericGrid * grid)
 
 void BasicGLPane::render( wxPaintEvent& evt )
 {
-    if(!IsShown()) return;
+    if(!IsShown())
+        return;
 
     wxGLCanvas::SetCurrent(*m_context);
     wxPaintDC(this); // only to be used in paint events. use wxClientDC to paint outside the paint event
@@ -334,6 +335,9 @@ void BasicGLPane::render( wxPaintEvent& evt )
             glEnd();
         }
     }
+
+    drawGrid(50,500,1,model->getGarageSign());
+
 
 
     glFlush();

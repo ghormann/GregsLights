@@ -6,7 +6,7 @@
 #include <algorithm>
 
 
-Sign::Sign(CountdownClock *clock, bool skipTime, bool newYears, E131Network *net[], GregMQTT *mqtt) : GenericGrid(SIGN_WIDTH,SIGN_HEIGHT,SIGN_DUMMY_WIDTH,SIGN_DUMMY_HEIGHT, skipTime, newYears)
+Sign::Sign(CountdownClock *clock, E131Network *net[], GregMQTT *mqtt) : GenericGrid(SIGN_WIDTH,SIGN_HEIGHT,SIGN_DUMMY_WIDTH,SIGN_DUMMY_HEIGHT)
 {
     this->clock = clock;
     this->mqtt = mqtt;

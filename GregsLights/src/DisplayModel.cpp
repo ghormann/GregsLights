@@ -20,6 +20,9 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     /* initialize random seed: */
     srand (time(NULL));
 
+    TimeInfo::getInstance()->setNewYear(this->newYears);
+    TimeInfo::getInstance()->setSkipTimeCheck(this->skipTimeCheck);
+
     //Initialize Memory Buffers
     for (int i = 0; i < NUM_MESSAGE_BUFFERS; i++)
     {
@@ -88,7 +91,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
         this->clock->setSpecial(i, clockE131->getBulb(i+21));
     }
 
-    this->sign = new Sign(clock, skipTimeCheck, newYears, sign, this->getMqtt());
+    this->sign = new Sign(clock, sign, this->getMqtt());
 
 
     char *snowmanIP = "192.168.1.239";
@@ -108,6 +111,11 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     networkClock->setClientLock(this->getSign()->getLock());
     //
 
+
+    /*
+     * Setup Garage Sign
+    */
+    garageSign = new GarageSign(NULL,mqtt);
 
 }
 
@@ -158,6 +166,10 @@ char *DisplayModel::getMessage(int i)
         throw "Invalid Message ID";
     }
     return messages[i];
+}
+
+GarageSign *DisplayModel::getGarageSign() {
+    return garageSign;
 }
 
 

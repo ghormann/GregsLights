@@ -18,6 +18,7 @@ private:
     static void * signThread(void *);
     static void * snowmenThread(void *);
     static void * mqttThread(void *);
+    static void * garageThread(void *);
 };
 
 #endif // GREGSDISPLAY_H

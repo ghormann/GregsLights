@@ -29,7 +29,10 @@ void GregsDisplay::run()
     pthread_t sign_t;
     pthread_t snowmen_t;
     pthread_t mqtt_t;
+    pthread_t garage_t;
+
     pthread_create(&(sign_t), NULL, GregsDisplay::signThread, (void*) this);
+    pthread_create(&(garage_t), NULL, GregsDisplay::garageThread, (void*) this);
     pthread_create(&(snowmen_t), NULL, GregsDisplay::snowmenThread, (void*) this);
     pthread_create(&(mqtt_t), NULL, GregsDisplay::mqttThread, (void*) this);
 
@@ -62,6 +65,14 @@ void * GregsDisplay::snowmenThread(void * args)
     return NULL;
 }
 
+void *GregsDisplay::garageThread(void *args) {
+    GregsDisplay *ptr = (GregsDisplay *) args;
+    while (1)
+    {
+        ptr->getModel()->getGarageSign()->run();
+    }
+    return NULL;
+}
 
 void * GregsDisplay::signThread(void *args)
 {

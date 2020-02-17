@@ -27,7 +27,7 @@
 class SnowmenGrid: public GenericGrid
 {
 public:
-    SnowmenGrid(int width_, int height_, int dummy_with_, int dummy_height, bool skipTime, bool newYears);
+    SnowmenGrid(int width_, int height_, int dummy_with_, int dummy_height);
     virtual RGBLight * getPixal(int x, int y);  /* Overriden */
     void setPixal(int x, int y, RGBLight * p);
 protected:

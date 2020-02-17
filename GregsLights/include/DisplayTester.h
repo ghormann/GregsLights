@@ -12,9 +12,11 @@ class DisplayTester
         void testClock();
         void testSign();
         void testAll();
+        void testGarage();
         static void * clockThread(void *);
         static void * signThread(void *);
         static void * snowmenThread(void *);
+        static void * garageThread(void *);
     protected:
     private:
         DisplayModel *model;

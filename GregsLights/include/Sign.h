@@ -31,14 +31,14 @@
 class Sign: public GenericGrid
 {
     public:
-        Sign(CountdownClock *clock, bool skipTime, bool newYears, E131Network *net[], GregMQTT *mqtt);
+        Sign(CountdownClock *clock, E131Network *net[], GregMQTT *mqtt);
         virtual ~Sign();
         void test();
         void testLines();
         void staticSecondsToGo(RGBColor *fgColor, RGBColor *bgColor);
         void flashSecondsToGo(int times, double delay);
         virtual RGBLight * getPixal(int x, int y);  /* Overriden */
-        RGBLight * getPixal(int i);
+        RGBLight * getPixal(int i); /* Overriden */
         void run();
         void scrollSanta();
     protected:

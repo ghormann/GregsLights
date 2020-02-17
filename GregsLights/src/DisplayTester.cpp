@@ -15,14 +15,12 @@ void DisplayTester::testAll()
     pthread_t clock_t;
     pthread_t sign_t;
     pthread_t snowmen_t;
+    pthread_t garage_t;
     pthread_create(&(clock_t), NULL, DisplayTester::clockThread, (void*) this);
     pthread_create(&(sign_t), NULL, DisplayTester::signThread, (void*) this);
     pthread_create(&(snowmen_t), NULL, DisplayTester::snowmenThread, (void*) this);
+    pthread_create(&(garage_t), NULL, DisplayTester::garageThread, (void*) this);
 
-    // Join disabled becaue the graphics byild needs testAll to return....
-    //pthread_join(clock_t, NULL);
-    //pthread_join(dmx_t, NULL);
-    //pthread_join(sign_t, NULL);
 }
 
 
@@ -64,6 +62,20 @@ void * DisplayTester::signThread(void *args)
     return NULL;
 }
 
+void *DisplayTester::garageThread(void *args) {
+    DisplayTester *ptr = (DisplayTester *) args;
+    while(1) {
+        ptr->testGarage();
+    }
+
+    return NULL;
+}
+
+void DisplayTester::testGarage() {
+    while(1) {
+        this->model->getGarageSign()->test();
+    }
+}
 
 void DisplayTester::testClock()
 {
