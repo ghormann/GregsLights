@@ -17,7 +17,7 @@ GregMQTT::GregMQTT(bool enable, const char * _id) : mosquittopp(_id)
         isValid = true;
         int port = 8883;
         int rc = 0;
-        std::string ca_file, username, password, host;
+        std::string username, password, host;
 
         Json::Value root;
         try
@@ -25,17 +25,17 @@ GregMQTT::GregMQTT(bool enable, const char * _id) : mosquittopp(_id)
             std::ifstream config_doc("/home/ghormann/greglights_config.json", std::ifstream::binary);
             config_doc.exceptions ( std::ifstream::failbit | std::ifstream::badbit );
             config_doc >> root;
-            ca_file = root.get("ca_file", "" ).asString();
+            //ca_file = root.get("ca_file", "" ).asString();
             username = root.get("username", "" ).asString();
             password = root.get("password", "" ).asString();
             host = root.get("host", "" ).asString();
             port = root.get("port", "8883" ).asInt();
-            if (host.length() == 0 || password.length() == 0 || username.length() == 0 || ca_file.length() ==0)
+            if (host.length() == 0 || password.length() == 0 || username.length() == 0  /*|| ca_file.length() ==0*/ )
             {
                 isValid = false;
                 std::cerr << "Invalid options in Json file" << std::endl;
             }
-            std::cout << "CA File : " << ca_file << std::endl;
+            //std::cout << "CA File : " << ca_file << std::endl;
             std::cout << "username: " << username << std::endl;
             std::cout << "host    : " << host <<  std::endl;
         }
@@ -55,6 +55,7 @@ GregMQTT::GregMQTT(bool enable, const char * _id) : mosquittopp(_id)
             std::cout << "setting passwd failed" << std::endl;
             isValid = false;
         }
+        /*
         debug("Setting CA");
         if (tls_set(ca_file.c_str()) != MOSQ_ERR_SUCCESS)
         {
@@ -68,6 +69,7 @@ GregMQTT::GregMQTT(bool enable, const char * _id) : mosquittopp(_id)
             std::cout << "Failed Setting tls version" << std::endl;
             isValid = false;
         }
+        */
 
         debug("Connecting");
         if (isValid)
