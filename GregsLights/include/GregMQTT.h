@@ -10,6 +10,12 @@
 # define GJH_SSL_VERIFY_PEER                 0x01
 
 
+class PowerCallbackInterface
+{
+public:
+    virtual void setPowerCallback(double power) = 0;
+};
+
 class GregMQTT : public mosqpp::mosquittopp
 {
 public:
@@ -21,6 +27,7 @@ public:
     void sendSignMessage(std::string msg);
     void sendClockMessage(int t);
     void sendTimeInfo();
+    void setPowerCallback(PowerCallbackInterface *ptr);
     std::string getNextName();
 
 protected:
@@ -28,6 +35,7 @@ protected:
 
 private:
     bool isValid;
+    PowerCallbackInterface *powerCallback;
     void debug(std::string mesg);
     std::deque<std::string> name_queue;
     std::mutex name_queue_mutex;

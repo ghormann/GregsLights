@@ -230,15 +230,20 @@ void GenericGrid::interruptThread()
         this->interrupt = true;
 }
 
-void GenericGrid::setBackground(RGBColor *bgColor)
+void GenericGrid::setBackground(RGBColor *bgColor,int xStart, int yStart,int xEnd, int yEnd)
 {
-    for (int x = 0; x < gridWidth; x++)
+    for (int x = xStart; x < xEnd; x++)
     {
-        for (int y = 0; y < gridHeight; y++)
+        for (int y = yStart; y < yEnd; y++)
         {
             this->getPixal(x,y)->set(bgColor);
         }
     }
+}
+
+void GenericGrid::setBackground(RGBColor *bgColor)
+{
+    setBackground(bgColor,0,0,this->gridWidth, this->gridHeight);
 }
 
 void GenericGrid::showPictureNow(RGBPicture &pict, int posX, int posY, bool hideBlack)
@@ -1410,6 +1415,12 @@ int GenericGrid::drawLetter(char letter, RGBColor *color, int startX, int startY
         d[0][2]=d[1][2] = '1';
         offset=3;
     }
+    else if (letter == ':')
+    {
+        d[0][3] = d[1][3] = d[0][4] = d[1][4] = '1';
+        d[0][8] = d[1][8] = d[0][9] = d[1][9] = '1';
+        offset = 3;
+    }
 
     else
     {
@@ -1429,6 +1440,26 @@ int GenericGrid::drawLetter(char letter, RGBColor *color, int startX, int startY
 
     }
 
+    /*
+     * OK, time to really apply changes
+     */
+
+    int finalX = startX + offset;
+    if (onDummy)
+    {
+        if (finalX >= dummy_width)
+        {
+            // DOn't do it
+            return 0;
+        }
+    }
+    else if (finalX >= gridWidth)
+    {
+        // Don't do it
+        return 0;
+    }
+
+    // Set colors
     for (x = 0; x < 20; x++)
     {
         for (y=0; y<40; y++)

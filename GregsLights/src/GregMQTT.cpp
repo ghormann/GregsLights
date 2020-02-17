@@ -126,6 +126,36 @@ void GregMQTT::on_message(const struct mosquitto_message *message)
             printf("Setting noShow to %s becasuse of %s\n", (newMode? "True" : "False"), data.c_str());
         }
     }
+    else if (strncmp("/christmas/power/", message->topic,17) ==0 )
+    {
+        std::string strJson = std::string(reinterpret_cast<char*>(message->payload));
+        Json::Value root;
+        Json::Reader reader;
+        bool parsingSuccessful = reader.parse( strJson.c_str(), root );     //parse process
+        if ( !parsingSuccessful )
+        {
+            std::cout  << "Failed to parse"
+                       << reader.getFormattedErrorMessages()
+                       << std::endl;
+        }
+        else
+        {
+            double power = 0;
+            for (Json::Value::iterator it=root.begin(); it!=root.end(); ++it)
+            {
+                power += it->asDouble();
+            }
+            if (powerCallback)
+            {
+                powerCallback->setPowerCallback(power);
+            }
+            else
+            {
+                std::cout << "Now Power Callback! Power: " << power << std::endl;
+            }
+        }
+
+    }
     else if (strcmp("/christmas/clock/setTimeCheck", message->topic) ==0)
     {
         if (message->payload != NULL)
@@ -183,6 +213,11 @@ void GregMQTT::on_message(const struct mosquitto_message *message)
     }
 }
 
+void GregMQTT::setPowerCallback(PowerCallbackInterface *ptr)
+{
+    this->powerCallback = ptr;
+}
+
 void GregMQTT::on_connect(int rc)
 {
     debug("Calling on_connect");
@@ -200,6 +235,7 @@ void GregMQTT::on_connect(int rc)
         subscribe(NULL, "/christmas/clock/setNoShow");
         subscribe(NULL, "/christmas/clock/setTimeCheck");
         subscribe(NULL, "/christmas/clock/setDebug");
+        subscribe(NULL, "/christmas/power/#");
     }
 }
 

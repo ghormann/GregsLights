@@ -45,6 +45,7 @@ public:
     void setDummyBackground(RGBColor *bgColor);
     void setDummyBackground(RGBColor *bgColor, int xStart, int yStart, int xEnd, int yEnd);
     void setBackground(RGBColor *bgColor);
+    void setBackground(RGBColor *bgColor, int xStart, int yStart, int xEnd, int yEnd);
     void wipeToRight(RGBColor *color, double delay);
     void wipeDown(RGBColor *color, double delay);
     void setDisplayPosition(int x, int y);

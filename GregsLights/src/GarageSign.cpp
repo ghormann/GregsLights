@@ -1,8 +1,12 @@
 #include "../include/GarageSign.h"
+#include <sstream>
 
-GarageSign::GarageSign(E131Network *net[], GregMQTT *mqtt) : GenericGrid(GARAGE_SIGN_WIDTH,GARAGE_SIGN_HEIGHT,GARAGE_SIGN_WIDTH,GARAGE_SIGN_HEIGHT)
+GarageSign::GarageSign(E131Network *net[], GregMQTT *mqtt) : GenericGrid(GARAGE_SIGN_WIDTH,GARAGE_SIGN_HEIGHT,GARAGE_SIGN_WIDTH,GARAGE_SIGN_HEIGHT), PowerCallbackInterface()
 {
     this->mqtt = mqtt;
+    mqtt->setPowerCallback(this);
+    amps = 0;
+    ampsChanged = true;
 
     //TODO Change me to a real network
     for (int i =0; i < GARAGE_SIGN_WIDTH; i++)
@@ -25,11 +29,11 @@ RGBLight *GarageSign::getBoard(int x, int y)
 {
     if (x >= GARAGE_SIGN_WIDTH)
     {
-        throw "Illegae value of X for GarageSign getBoard";
+        throw "Illegal value of X for GarageSign getBoard";
     }
     if (y >= GARAGE_SIGN_HEIGHT)
     {
-        throw "Illegae value of X for GarageSign getBoard";
+        throw "Illegal value of X for GarageSign getBoard";
     }
 
     return board[(x*GARAGE_SIGN_HEIGHT) + y];
@@ -39,19 +43,31 @@ RGBLight *GarageSign::getPixal(int x, int y)
 {
     if (x >= GARAGE_SIGN_WIDTH)
     {
-        throw "Illegae value of X for GarageSign getBoard";
+        throw "Illegal value of X for GarageSign getBoard";
     }
     if (y >= GARAGE_SIGN_HEIGHT)
     {
-        throw "Illegae value of X for GarageSign getBoard";
+        throw "Illegal value of X for GarageSign getBoard";
     }
 
     return pixals[(x*GARAGE_SIGN_HEIGHT) + y];
 }
 
+void GarageSign::setPowerCallback(double amps) {
+    this->amps = amps;
+    this->ampsChanged = true;
+}
+
 void GarageSign::showPower() {
-    setBackground(RGBColor::BLUE);
-    gjhSleep(2.0);
+    int watts = amps * 115;
+    std::ostringstream powerMsg;
+    powerMsg << "POWER: " << watts << " WATTS";
+
+    setBackground(RGBColor::DARKGREEN, 0, 0, 160, GARAGE_SIGN_HEIGHT);
+    this->writeText(RGBColor::WHITE,2,2, "106.7 FM",false);
+
+    setBackground(RGBColor::RED, 160, 0,GARAGE_SIGN_WIDTH, GARAGE_SIGN_HEIGHT);
+    this->writeText(RGBColor::WHITE,160,2,powerMsg.str(),false);
 
 }
 
@@ -75,7 +91,15 @@ void GarageSign::run() {
         return;
     }
 
-    showPower();
+    // Wait in a tight loop to update if
+    // signalled.   Needs changed to a ThreadWakeup.
+    for (int i = 0; i < 1000;i++) {
+        if (ampsChanged) {
+            showPower();
+            ampsChanged = false;
+        }
+        gjhSleep(0.1);
+    }
 }
 
 void GarageSign::test() {
