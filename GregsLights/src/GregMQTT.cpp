@@ -198,9 +198,20 @@ void GregMQTT::on_message(const struct mosquitto_message *message)
         || (strcmp("/christmas/personsNameLow", message->topic) == 0)
     )
     {
-        if (message->payload != NULL)
+        std::string strJson = std::string(reinterpret_cast<char*>(message->payload));
+        Json::Value root;
+        Json::Reader reader;
+        bool parsingSuccessful = reader.parse( strJson.c_str(), root );     //parse process
+        if ( !parsingSuccessful )
         {
-            std::string name = std::string(reinterpret_cast<char*>(message->payload));
+            std::cout  << "Failed to parse"
+                       << reader.getFormattedErrorMessages()
+                       << std::endl;
+        }
+        else
+        {
+
+            std::string name = root.get("name", "NO NAME" ).asString();
             std::transform(name.begin(), name.end(),name.begin(), ::toupper);
             // Push name only if not in queue already
             std::lock_guard<std::mutex> lock(name_queue_mutex);

@@ -5,7 +5,6 @@
 		<Option title="GregsLights" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="include/;" />
 		<Build>
 			<Target title="Debug">
 				<Option output="bin/Debug/GregsLights" prefix_auto="1" extension_auto="1" />
@@ -110,9 +109,7 @@
 		<Unit filename="src/GregsDisplay.cpp" />
 		<Unit filename="src/MessageGenerator.cpp" />
 		<Unit filename="src/RGBPicture.cpp" />
-		<Unit filename="src/Sign.cpp">
-			<Option virtualFolder="include/" />
-		</Unit>
+		<Unit filename="src/Sign.cpp" />
 		<Unit filename="src/Snowmen.cpp" />
 		<Unit filename="src/TextDisplay.cpp" />
 		<Unit filename="src/TimeInfo.cpp" />
