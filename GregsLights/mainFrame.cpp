@@ -272,8 +272,6 @@ void drawGrid(int xoffset, int yoffset, int pixSpacing, GenericGrid * grid)
             glEnd();
         }
     }
-
-
 }
 
 void BasicGLPane::render( wxPaintEvent& evt )
@@ -300,9 +298,10 @@ void BasicGLPane::render( wxPaintEvent& evt )
     glEnd();
 
     // Sign
-    model->getSign()->lockSign();
+    model->getSign()->lockGrid();
     drawGrid(130,100,2,model->getSign());
-    model->getSign()->releaseSign();
+    model->getSign()->releaseGrid();
+
     // Snowmen
     model->getSnowmen()->lockSnowmen();
     drawGrid(0,250,1,model->getSnowmen()->getSnowmen(SNOWMAN_LEFT));
@@ -335,6 +334,7 @@ void BasicGLPane::render( wxPaintEvent& evt )
             glEnd();
         }
     }
+
 
     drawGrid(25,500,1,model->getGarageSign());
 

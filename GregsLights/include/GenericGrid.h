@@ -81,8 +81,8 @@ public:
     virtual void scrollMerry();
     void plotQuadBezierSegAA(int x0, int y0, int x1, int y1, int x2, int y2, RGBColor *color);
     void archBallOverTime(double radius,double r_x, double r_y, int start_x, int stop_x, double width, double timeDuration, RGBColor *color);
-    void lockSign();
-    void releaseSign();
+    void lockGrid();
+    void releaseGrid();
     pthread_mutex_t* getLock();
 
 protected:

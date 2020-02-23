@@ -13,7 +13,7 @@ GenericGrid::GenericGrid(int width_, int height_, int dummy_width_, int dummy_he
     if (pthread_mutex_init(&lock, NULL) != 0)
     {
         printf("\n mutex init failed\n");
-        throw "Mutext init failed for Snowmen";
+        throw "Mutext init failed for Generic Grid";
     }
 
     //ctor
@@ -34,12 +34,12 @@ pthread_mutex_t*  GenericGrid::getLock()
     return &lock;
 }
 
-void GenericGrid::lockSign()
+void GenericGrid::lockGrid()
 {
     pthread_mutex_lock(&lock);
 }
 
-void GenericGrid::releaseSign()
+void GenericGrid::releaseGrid()
 {
     pthread_mutex_unlock(&lock);
 }
@@ -315,7 +315,7 @@ void GenericGrid::setDisplayPosition(int xOffset, int yOffset)
 {
     this->currentX = xOffset;
     this->currentY = yOffset;
-    lockSign();
+    lockGrid();
     for (int i =0; i < this->gridWidth; i++)
     {
         for (int j = 0; j < this->gridHeight; j++)
@@ -323,7 +323,7 @@ void GenericGrid::setDisplayPosition(int xOffset, int yOffset)
             this->getPixal(i,j)->copyFrom(this->getBoard(i+xOffset,j+yOffset));
         }
     }
-    releaseSign();
+    releaseGrid();
     // Debug
     //printf("%d    %d\n", xOffset, yOffset);
     //sleep(1);
