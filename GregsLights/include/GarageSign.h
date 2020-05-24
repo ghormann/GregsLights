@@ -7,7 +7,7 @@
 #include "TimeInfo.h"
 #include "GenericGrid.h"
 #include "GregMQTT.h"
-#define GARAGE_SIGN_WIDTH 400
+#define GARAGE_SIGN_WIDTH 240
 #define GARAGE_SIGN_HEIGHT 20
 
 class GarageSign: public GenericGrid, public PowerCallbackInterface

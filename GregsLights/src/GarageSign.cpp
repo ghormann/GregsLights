@@ -61,13 +61,19 @@ void GarageSign::setPowerCallback(double amps) {
 void GarageSign::showPower() {
     int watts = amps * 115;
     std::ostringstream powerMsg;
-    powerMsg << "POWER: " << watts << " WATTS";
+    if (watts < 1000) {
+        powerMsg << "  ";
+    } else if (watts < 10000) {
+        powerMsg << " ";
+    }
+    powerMsg << watts;
 
     setBackground(RGBColor::DARKGREEN, 0, 0, 160, GARAGE_SIGN_HEIGHT);
-    this->writeText(RGBColor::WHITE,2,2, "106.7 FM",false);
+    this->writeText(RGBColor::WHITE,2,2, "106.7FM",false);
 
-    setBackground(RGBColor::RED, 160, 0,GARAGE_SIGN_WIDTH, GARAGE_SIGN_HEIGHT);
-    this->writeText(RGBColor::WHITE,160,2,powerMsg.str(),false);
+    setBackground(RGBColor::RED, 90, 0,GARAGE_SIGN_WIDTH, GARAGE_SIGN_HEIGHT);
+    this->writeText(RGBColor::WHITE,94,2,powerMsg.str(),false);
+    this->writeText(RGBColor::WHITE,160,2,"WATTS",false);
 
 }
 
