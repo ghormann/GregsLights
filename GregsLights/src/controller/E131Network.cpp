@@ -8,6 +8,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <iostream>
 
 
 E131Network::E131Network(char *ipAddr, int universeNumber, int numChannels)
@@ -20,11 +21,13 @@ E131Network::E131Network(char *ipAddr, int universeNumber, int numChannels)
 
     if (universeNumber == 0 || universeNumber >= 64000)
     {
+        std::cout << "universe number must be between 1 and 63999" << std::endl;
         throw "universe number must be between 1 and 63999";
     }
 
     if (numChannels > 512)
     {
+        std::cout << "max channels on E1.31 is 512" << std::endl;
         throw "max channels on E1.31 is 512";
     }
 
@@ -49,6 +52,7 @@ E131Network::E131Network(char *ipAddr, int universeNumber, int numChannels)
     remoteaddr.sin_port = htons(E131_PORT);
     if (inet_aton(ipAddr, &remoteaddr.sin_addr)==0)
     {
+        std::cout << "inet_aton() failed for remote addr" << std::endl;
         throw  "inet_aton() failed for remote addr\n";
     }
 
@@ -57,11 +61,13 @@ E131Network::E131Network(char *ipAddr, int universeNumber, int numChannels)
     // Setup Socket
     if ((fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
     {
+        std::cout << "cannot create socket" << std::endl;
         throw "cannot create socket" ;
     }
 
     if(bind(fd,( struct sockaddr *) &myaddr, sizeof(myaddr))<0)
     {
+        std::cout << "Bind to Socked failed" << std::endl;
         throw "Bind to Socked failed";
     }
     }
@@ -271,6 +277,7 @@ bool E131Network::doUpdate(bool force)
         int slen=sizeof(remoteaddr);
         //datagram->SendTo(remoteAddr, data, E131_PACKET_LEN - (512 - num_channels));
          if (sendto(fd, data, E131_PACKET_LEN - (512 - num_channels), 0, (struct sockaddr *)&remoteaddr, slen)==-1) {
+            std::cout << "Error during sentdto in E1.31" << std::endl;
             throw "Error during sentdto in E1.31";
 		}
 		change = true;
@@ -292,8 +299,10 @@ RGBLight* E131Network::getRGB(int start)
 
 Bulb* E131Network::getBulb(int channel)
 {
-    if (channel < 0 || channel > 512)
+    if (channel < 0 || channel > 512) {
+        std::cout << "Invalid Channel" << std::endl;
         throw "Invalid Channel";
+    }
     E131Bulb *rc = new E131Bulb(data+126+channel, &(this->xNetwork_E131_changed));
     return  rc;
 }

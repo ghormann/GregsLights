@@ -336,7 +336,9 @@ void BasicGLPane::render( wxPaintEvent& evt )
     }
 
 
+    model->getGarageSign()->lockGrid();
     drawGrid(25,500,1,model->getGarageSign());
+    model->getGarageSign()->releaseGrid();
 
 
 

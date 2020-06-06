@@ -6,8 +6,9 @@
 #include "../include/controller/NetworkCollection.h"
 #include "../include/controller/Bush.h"
 #include "../include/Sign.h"
+#include "../include/GarageSign.h"
 #include <string.h>
-
+#include <iostream>
 
 
 DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
@@ -41,6 +42,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     // name: 5,2,6,5 I Fairly good.
     networkClock = new NetworkCollection("Clock", 5,2,6,1, true);
     networkSnowman = new NetworkCollection("Snowmen", 50,1,99,1,false);
+    networkP10 = new NetworkCollection("P10", 50,1,99,1,false);
 
 
     //LORNetwork *lor = new LORNetwork((char*) "/dev/ttyUSB0", sendDMX);
@@ -66,6 +68,16 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     E131Network *clockNetwork[2];
     clockNetwork[0] = new E131Network(signIP, 30, 512);  // port 2 130
     clockNetwork[1] = new E131Network(signIP, 31, 512);  // port 2 130
+
+    // P10
+    E131Network *p10[GARAGE_E131_COUNT];
+    for (int i = 0; i < GARAGE_E131_COUNT; i++) {
+        //std::cout << "Creating P10: " << i << std::endl;
+        p10[i] = new E131Network("192.168.1.148", i+1, 512);
+        if (sendDMX) {
+            networkP10->addNetwork(p10[i]);
+        }
+    }
 
     //DMX port
     E131Network *clockE131 = new E131Network(signIP, 100, 512); // Universe 100 of Sign Controller
@@ -115,7 +127,8 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     /*
      * Setup Garage Sign
     */
-    garageSign = new GarageSign(NULL,mqtt);
+    garageSign = new GarageSign(p10,mqtt);
+    networkP10->setClientLock(this->garageSign->getLock());
 
 }
 

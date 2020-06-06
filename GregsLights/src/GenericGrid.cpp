@@ -494,7 +494,7 @@ int GenericGrid::drawLetter(char letter, RGBColor *color, int startX, int startY
 }
 
 
-int GenericGrid::drawLetter(char letter, RGBColor *color, int startX, int startY, bool onDummy)
+int GenericGrid::drawLetter(char letter, RGBColor *color, int startX, int startY, bool onDummy, int weight)
 {
     int x=0;
     int y=0;
@@ -591,7 +591,7 @@ int GenericGrid::drawLetter(char letter, RGBColor *color, int startX, int startY
         {
             d[2][y]=d[3][y]='1';
         }
-        d[0][1]=d[1][1]='1';
+        d[1][0]=d[0][1]=d[1][1]='1';
         for (x=0; x<6; x++)
         {
             d[x][13]='1';
@@ -679,7 +679,7 @@ int GenericGrid::drawLetter(char letter, RGBColor *color, int startX, int startY
         d[5][1]=d[6][1]=d[4][2]=d[5][2]='1';
         d[4][2]=d[5][2]=d[3][3]=d[4][3]='1';
         d[2][4]=d[3][4]='1';
-        d[2][5]=d[4][5]=d[5][5]=d[6][5]=d[7][5]='1';
+        d[2][5]=d[3][5]=d[4][5]=d[5][5]=d[6][5]=d[7][5]='1';
         d[1][6]=d[2][6]=d[3][6]=d[7][6]=d[8][6]='1';
         d[7][7]='1';
         for(y=7; y<11; y++)
@@ -1444,7 +1444,7 @@ int GenericGrid::drawLetter(char letter, RGBColor *color, int startX, int startY
      * OK, time to really apply changes
      */
 
-    int finalX = startX + offset;
+    int finalX = startX + (offset*weight);
     if (onDummy)
     {
         if (finalX >= dummy_width)
@@ -1466,20 +1466,33 @@ int GenericGrid::drawLetter(char letter, RGBColor *color, int startX, int startY
         {
             if (d[x][y] == '1')
             {
+                int realx = startX + (x*weight);
+                int realy = startY + (y*weight);
                 if (onDummy)
                 {
-                    this->getBoard(startX+x, startY+y)->set(color);
+                    for (int i = 0; i < weight; i++)
+                    {
+                        for (int j = 0; j < weight; j++)
+                        {
+                            this->getBoard(realx+i, realy+j)->set(color);
+                        }
+                    }
                 }
                 else
                 {
-                    this->getPixal(startX+x, startY+y)->set(color);
+                    for (int i = 0; i < weight; i++)
+                    {
+                        for (int j = 0; j < weight; j++)
+                        {
+                            this->getPixal(realx+i, realy+j)->set(color);
+                        }
+                    }
                 }
             }
         }
     }
 
-    return offset;
-
+    return offset * weight;
 }
 
 int GenericGrid::drawLetterSmall(char letter, RGBColor* color, int startX, int startY)
@@ -1845,11 +1858,11 @@ int GenericGrid::writeText(RGBColor *fgColor, int x, int y, string str)
     return this->writeText(fgColor,x,y,str, true);
 }
 
-int GenericGrid::writeText(RGBColor *fgColor, int x, int y, string str, bool onDummy)
+int GenericGrid::writeText(RGBColor *fgColor, int x, int y, string str, bool onDummy, int weight)
 {
     for ( std::string::iterator it=str.begin(); it!=str.end(); ++it)
     {
-        x += drawLetter(*it,fgColor,x,y, onDummy) + 2;
+        x += drawLetter(*it,fgColor,x,y, onDummy, weight) + (2 * weight);
     }
 
     return x;
