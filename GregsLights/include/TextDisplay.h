@@ -4,6 +4,9 @@
 #include "DisplayModel.h"
 #include <curses.h>
 
+/* border for cursers.h conflicts with a funciton name in Magick++.h */
+#undef border
+
 class TextDisplay
 {
     public:

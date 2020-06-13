@@ -23,6 +23,7 @@ class RGBColor
         static RGBColor *UNKNOWN;
         static RGBColor *LIGHTBROWN;
         static RGBColor *DARKGREEN;
+        static RGBColor *DARKRED;
         static RGBColor * getRandom();
 
     protected:

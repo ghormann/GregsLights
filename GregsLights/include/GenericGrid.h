@@ -59,6 +59,7 @@ public:
     void drawSpecial(int x, int y, GRID_SPECIAL type);
     int writeText(RGBColor *fgColor, int x, int y, std::string text);
     int writeText(RGBColor *fgColor, int x, int y, std::string text, bool onDummy, int weight=1);
+    void writeTextNew(RGBColor *fgColor, int x, int y, std::string &text, bool onDummy, int fontSize=12);
     int writeTextSmall(RGBColor *fgColor, int x, int y, std::string text);
     void scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, double speed);
     void candyCane();

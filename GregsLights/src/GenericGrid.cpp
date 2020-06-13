@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cmath>
 #include <assert.h>
+#include <Magick++.h>
 
 using namespace std;
 
@@ -1858,6 +1859,63 @@ int GenericGrid::writeTextSmall(RGBColor *fgColor, int x, int y, string str)
 int GenericGrid::writeText(RGBColor *fgColor, int x, int y, string str)
 {
     return this->writeText(fgColor,x,y,str, true);
+}
+
+void GenericGrid::writeTextNew(RGBColor *fgColor, int x, int y, std::string &text, bool onDummy, int fontSize)
+{
+    int width = onDummy ? dummy_width : gridWidth;
+    int height = onDummy ? dummy_height : gridHeight;
+
+    Magick::Image image(Magick::Geometry(width,height), Magick::Color("black"));
+    image.quiet(true);
+    image.depth(8);
+    //image.font(font);
+    image.fontPointsize(fontSize);
+    //image.antiAlias(antialias);
+
+    Magick::TypeMetric metrics;
+    image.fontTypeMetrics(text, &metrics);
+    image.magick("RGB");
+    double rr = fgColor->getRed();
+    double rg = fgColor->getGreen();
+    double rb = fgColor->getBlue();
+    rr /= 100.0f;
+    rg /= 100.0f;
+    rb /= 100.0f;
+
+    // Color to use when drawing letters
+    image.fillColor(Magick::Color(Magick::Color::scaleDoubleToQuantum(rr),
+                                  Magick::Color::scaleDoubleToQuantum(rg),
+                                  Magick::Color::scaleDoubleToQuantum(rb)));
+
+
+    // Need to fix position
+    Magick::Geometry position(0,0, x, y+(fontSize * 0.7));
+    //image.annotate(text, Magick::CenterGravity);
+    image.annotate(text, position, Magick::NorthWestGravity);
+    Magick::Blob blob;
+    image.write( &blob );
+
+    uint8_t* imgData = (uint8_t*)blob.data();
+
+    int pos = 0;
+    for (y=0; y < height; y++)
+    {
+        for (x = 0; x < width; x++)
+        {
+            int r = imgData[pos++];
+            int g = imgData[pos++];
+            int b = imgData[pos++];
+
+            // Because we don't want to overwrite the background, we don't write if everything is zero
+            if (r==0 && g ==0 && b == 0) {
+                continue;
+            }
+
+            RGBLight * pix = onDummy ? this->getBoard(x,y) : this->getPixal(x,y);
+            pix->set(r,g,b);
+        }
+    }
 }
 
 int GenericGrid::writeText(RGBColor *fgColor, int x, int y, string str, bool onDummy, int weight)

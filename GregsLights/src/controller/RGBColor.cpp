@@ -66,3 +66,4 @@ RGBColor* RGBColor::GREY = new RGBColor(25,25,25);
 RGBColor* RGBColor::BROWN = new RGBColor(50,20,0);
 RGBColor* RGBColor::LIGHTBROWN = new RGBColor(81,56,0);
 RGBColor* RGBColor::DARKGREEN = new RGBColor(0,15,0);
+RGBColor* RGBColor::DARKRED = new RGBColor(15,0,0);

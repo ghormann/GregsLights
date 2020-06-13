@@ -5,6 +5,7 @@
 #include <wx/timer.h>
 #include "../include/Snowmen.h"
 #include <iostream>
+#include <Magick++.h>
 
 // include OpenGL
 #ifdef __WXMAC__
@@ -44,6 +45,8 @@ int MyApp::OnExit()
 
 bool MyApp::OnInit()
 {
+    Magick::InitializeMagick(NULL);
+
     // Init x Positions
     for (int i=0; i<6; i++)
     {

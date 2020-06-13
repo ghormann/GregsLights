@@ -3,6 +3,7 @@
  * Author: Greg Hormann - ghormann@gmail.com
  */
 
+
 #include <iostream>
 #include <cstdlib>
 #include <signal.h>
@@ -10,6 +11,10 @@
 #include "include/DisplayTester.h"
 #include "include/TextDisplay.h"
 #include "include/GregsDisplay.h"
+
+#include <Magick++.h>
+
+
 
 using namespace std;
 DisplayModel *model = 0;
@@ -40,6 +45,7 @@ int main(int argc, char *argv[])
     sigIntHandler.sa_flags = 0;
     sigaction(SIGINT, &sigIntHandler, NULL);
 
+    Magick::InitializeMagick(NULL);
 
     /*
     * Parse Arguments
