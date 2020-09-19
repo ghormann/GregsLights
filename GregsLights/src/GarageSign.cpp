@@ -102,16 +102,27 @@ void GarageSign::showPower()
     }
     powerMsg << watts;
 
-    this->lockGrid();
-    setBackground(RGBColor::DARKGREEN, 0, 0, 128, GARAGE_SIGN_HEIGHT);
-    this->writeTextNew(RGBColor::WHITE,0,2, FM_STATION,false, 32);
-    this->writeTextNew(RGBColor::WHITE,10,34, RADIO,false, 14);
+    int radio_left = 0;
+    int power_left = 134;
 
-    setBackground(RGBColor::DARKRED, 131, 0,GARAGE_SIGN_WIDTH, GARAGE_SIGN_HEIGHT);
+    // Switch sides every hour
+    if ((TimeInfo::getInstance()->getHourOfDay() %2) == 0)
+    {
+        radio_left = 220;
+        power_left = 0;
+    }
+
+    this->lockGrid();
+    this->setBackground(RGBColor::BLACK);
+    setBackground(RGBColor::DARKGREEN, radio_left, 0, radio_left+128, GARAGE_SIGN_HEIGHT);
+    this->writeTextNew(RGBColor::WHITE,radio_left,2, FM_STATION,false, 32);
+    this->writeTextNew(RGBColor::WHITE,radio_left,32, RADIO,false, 16);
+
+    setBackground(RGBColor::DARKRED, power_left, 0,power_left+216, GARAGE_SIGN_HEIGHT);
     std::string msg = powerMsg.str();
-    this->writeTextNew(RGBColor::WHITE,145,0,msg,false,32);
-    this->writeTextNew(RGBColor::WHITE,242,2,units,false, 32);
-    this->writeTextNew(RGBColor::WHITE,150,34, footer,false, 14);
+    this->writeTextNew(RGBColor::WHITE,power_left+14,2,msg,false,32);
+    this->writeTextNew(RGBColor::WHITE,power_left+111,2,units,false, 32);
+    this->writeTextNew(RGBColor::WHITE,power_left+13,32, footer,false, 16);
 
     this->releaseGrid();
 
