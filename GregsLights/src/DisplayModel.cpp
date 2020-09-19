@@ -73,7 +73,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     E131Network *p10[GARAGE_E131_COUNT];
     for (int i = 0; i < GARAGE_E131_COUNT; i++) {
         //std::cout << "Creating P10: " << i << std::endl;
-        p10[i] = new E131Network("192.168.1.148", i+1, 512);
+        p10[i] = new E131Network("192.168.1.147", i+1, 512);
         if (sendDMX) {
             networkP10->addNetwork(p10[i]);
         }
