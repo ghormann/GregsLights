@@ -126,6 +126,32 @@ void GregMQTT::on_message(const struct mosquitto_message *message)
             printf("Setting noShow to %s becasuse of %s\n", (newMode? "True" : "False"), data.c_str());
         }
     }
+    else if (strcmp("/christmas/todayPower", message->topic) ==0 )
+    {
+        std::string strJson = std::string(reinterpret_cast<char*>(message->payload));
+        Json::Value root;
+        Json::Reader reader;
+        bool parsingSuccessful = reader.parse( strJson.c_str(), root );     //parse process
+        if ( !parsingSuccessful )
+        {
+            std::cout  << "Failed to parse todayPower"
+                       << reader.getFormattedErrorMessages()
+                       << std::endl;
+        }
+        else
+        {
+            double kwh = root.get("kwh", 0.0 ).asDouble();
+            double dollars = root.get("dollars", 0.0).asDouble();
+            if (powerCallback)
+            {
+                powerCallback->setCurrentPowerCallback(dollars, kwh);
+            }
+            else
+            {
+                std::cout << "Now Power Callback! Power: " << std::endl;
+            }
+        }
+    }
     else if (strncmp("/christmas/power/", message->topic,17) ==0 )
     {
         std::string strJson = std::string(reinterpret_cast<char*>(message->payload));
@@ -247,6 +273,7 @@ void GregMQTT::on_connect(int rc)
         subscribe(NULL, "/christmas/clock/setTimeCheck");
         subscribe(NULL, "/christmas/clock/setDebug");
         subscribe(NULL, "/christmas/power/#");
+        subscribe(NULL, "/christmas/todayPower");
     }
 }
 

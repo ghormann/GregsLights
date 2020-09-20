@@ -111,6 +111,12 @@ int TimeInfo::getHourOfDay()
     return tm_now->tm_hour;
 }
 
+int TimeInfo::getSecondsOfDay()
+{
+    tick();
+    return tm_now->tm_sec;
+}
+
 int TimeInfo::getSecondsUntil()
 {
     tick();

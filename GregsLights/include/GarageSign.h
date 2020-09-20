@@ -21,6 +21,7 @@ public:
     virtual RGBLight * getPixal(int x, int y);  /* Overriden */
     virtual RGBLight * getBoard(int x, int y); /* Overridden */
     virtual void setPowerCallback(double power); /* Overridden */
+    virtual void setCurrentPowerCallback(double dollars, double kwh);
 
 
 private:
@@ -28,6 +29,8 @@ private:
     GregMQTT *mqtt;
     double amps;
     bool ampsChanged;
+    double dollars;
+    double kwh;
     RGBLight *pixals[GARAGE_SIGN_WIDTH * GARAGE_SIGN_HEIGHT];
     RGBLight *board[ GARAGE_SIGN_WIDTH * GARAGE_SIGN_HEIGHT];
 

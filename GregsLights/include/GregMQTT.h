@@ -14,6 +14,7 @@ class PowerCallbackInterface
 {
 public:
     virtual void setPowerCallback(double power) = 0;
+    virtual void setCurrentPowerCallback(double dollars, double kwh) = 0;
 };
 
 class GregMQTT : public mosqpp::mosquittopp

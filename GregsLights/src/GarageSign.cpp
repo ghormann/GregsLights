@@ -1,6 +1,7 @@
 #include "../include/GarageSign.h"
 #include <sstream>
 #include <iostream>
+#include <iomanip>
 
 GarageSign::GarageSign(E131Network *net[], GregMQTT *mqtt) : GenericGrid(GARAGE_SIGN_WIDTH,GARAGE_SIGN_HEIGHT,GARAGE_SIGN_WIDTH,GARAGE_SIGN_HEIGHT), PowerCallbackInterface()
 {
@@ -76,6 +77,13 @@ RGBLight *GarageSign::getPixal(int x, int y)
     return pixals[(y*GARAGE_SIGN_WIDTH) + x];
 }
 
+void GarageSign::setCurrentPowerCallback(double dollars, double kwh)
+{
+    this->kwh = kwh;
+    this->dollars = dollars;
+    this->ampsChanged = true;
+}
+
 void GarageSign::setPowerCallback(double amps)
 {
     this->amps = amps;
@@ -122,9 +130,35 @@ void GarageSign::showPower()
     this->writeTextNew(RGBColor::WHITE,radio_left,32, RADIO,false, 16);
 
     setBackground(RGBColor::DARKRED, power_left, 0,power_left+216, GARAGE_SIGN_HEIGHT);
-    this->writeTextNew(RGBColor::WHITE,power_left+14,2,msg,false,32);
-    this->writeTextNew(RGBColor::WHITE,power_left+111,2,units,false, 32);
-    this->writeTextNew(RGBColor::WHITE,power_left+13,32, footer,false, 16);
+    if (TimeInfo::getInstance()->getSecondsOfDay() < 45)
+    {
+        this->writeTextNew(RGBColor::WHITE,power_left+14,2,msg,false,32);
+        this->writeTextNew(RGBColor::WHITE,power_left+111,2,units,false, 32);
+        this->writeTextNew(RGBColor::WHITE,power_left+13,32, footer,false, 16);
+    }
+    else
+    {
+        std::ostringstream todayMsg;
+        std::ostringstream line2;
+        todayMsg << "$" << std::setprecision(2);
+        todayMsg << std::fixed << this->dollars;
+        todayMsg << " Spent on";
+        std::string m = todayMsg.str();
+        this->writeTextNew(RGBColor::WHITE,power_left+14,2,m,false,24);
+
+        if (kwh < 100)
+        {
+            line2 << std::setprecision(2) << std::fixed  << kwh;
+        }
+        else
+        {
+            line2 << std::setprecision(1) << std::fixed  << kwh;
+        }
+        line2 << " KWh Today";
+        m = line2.str();
+        this->writeTextNew(RGBColor::WHITE,power_left+14,26,m,false,24);
+        sprintf(message, "%s %s", todayMsg.str().c_str(), m.c_str());
+    }
     this->releaseGrid();
 
 }

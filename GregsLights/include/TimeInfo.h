@@ -10,6 +10,7 @@ public:
     static TimeInfo* getInstance();
     virtual ~TimeInfo();
     int getHourOfDay();
+    int getSecondsOfDay();
     int getSecondsUntil();
     int getHoursUntil();
     int getNextYear();
