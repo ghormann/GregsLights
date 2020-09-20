@@ -112,6 +112,9 @@ void GarageSign::showPower()
         power_left = 0;
     }
 
+    std::string msg = powerMsg.str();
+    sprintf(message, "%s Watts", msg.c_str());
+
     this->lockGrid();
     this->setBackground(RGBColor::BLACK);
     setBackground(RGBColor::DARKGREEN, radio_left, 0, radio_left+128, GARAGE_SIGN_HEIGHT);
@@ -119,11 +122,9 @@ void GarageSign::showPower()
     this->writeTextNew(RGBColor::WHITE,radio_left,32, RADIO,false, 16);
 
     setBackground(RGBColor::DARKRED, power_left, 0,power_left+216, GARAGE_SIGN_HEIGHT);
-    std::string msg = powerMsg.str();
     this->writeTextNew(RGBColor::WHITE,power_left+14,2,msg,false,32);
     this->writeTextNew(RGBColor::WHITE,power_left+111,2,units,false, 32);
     this->writeTextNew(RGBColor::WHITE,power_left+13,32, footer,false, 16);
-
     this->releaseGrid();
 
 }
@@ -151,13 +152,14 @@ void GarageSign::run()
     }
 
     // Wait in a tight loop to update if
-    // signalled.   Needs changed to a ThreadWakeup.
+    // signalled.   Does waste a little CPU.
     for (int i = 0; i < 1000; i++)
     {
         if (ampsChanged)
         {
             showPower();
             ampsChanged = false;
+            break;
         }
         gjhSleep(0.1);
     }
