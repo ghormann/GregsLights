@@ -28,7 +28,6 @@ private:
     GregMQTT *mqtt;
     double amps;
     bool ampsChanged;
-    char message[80];
     RGBLight *pixals[GARAGE_SIGN_WIDTH * GARAGE_SIGN_HEIGHT];
     RGBLight *board[ GARAGE_SIGN_WIDTH * GARAGE_SIGN_HEIGHT];
 
