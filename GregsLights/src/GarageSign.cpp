@@ -3,14 +3,13 @@
 #include <iostream>
 #include <iomanip>
 
-GarageSign::GarageSign(E131Network *net[], GregMQTT *mqtt) : GenericGrid(GARAGE_SIGN_WIDTH,GARAGE_SIGN_HEIGHT,GARAGE_SIGN_WIDTH,GARAGE_SIGN_HEIGHT), PowerCallbackInterface()
+GarageSign::GarageSign(DDPOutput *net, GregMQTT *mqtt) : GenericGrid(GARAGE_SIGN_WIDTH,GARAGE_SIGN_HEIGHT,GARAGE_SIGN_WIDTH,GARAGE_SIGN_HEIGHT), PowerCallbackInterface()
 {
     this->mqtt = mqtt;
     mqtt->setPowerCallback(this);
     amps = 0;
     ampsChanged = true;
 
-    int netId = 0;
     int cnt = 0;
 
     //TODO Change me to a real network
@@ -25,16 +24,11 @@ GarageSign::GarageSign(E131Network *net[], GregMQTT *mqtt) : GenericGrid(GARAGE_
             //std::cout << " Garage (" << x << ", " << y << ") POS: " << pos << std::endl;
 
 
-            pixals[pos] = new RGBLight(net[netId]->getBulb(cnt), net[netId]->getBulb(cnt+1), net[netId]->getBulb(cnt+2));
+            pixals[pos] = new RGBLight(net->getBulb(cnt), net->getBulb(cnt+1), net->getBulb(cnt+2));
             //pixals[pos] = new RGBLight(new DummyBulb(), new DummyBulb(), new DummyBulb());
             board[pos] = new RGBLight(new DummyBulb(), new DummyBulb(), new DummyBulb());
 
             cnt += 3;
-            if (cnt >= 510)
-            {
-                ++netId;
-                cnt = 0;
-            }
         }
     }
 }

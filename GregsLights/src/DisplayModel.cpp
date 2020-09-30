@@ -3,6 +3,7 @@
 #include "../include/controller/OpenDMXNetwork.h"
 #include "../include/controller/LORNetwork.h"
 #include "../include/controller/E131Network.h"
+#include "../include/controller/DDPOutput.h"
 #include "../include/controller/NetworkCollection.h"
 #include "../include/controller/Bush.h"
 #include "../include/Sign.h"
@@ -70,13 +71,9 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     clockNetwork[1] = new E131Network(signIP, 31, 512);  // port 2 130
 
     // P10
-    E131Network *p10[GARAGE_E131_COUNT];
-    for (int i = 0; i < GARAGE_E131_COUNT; i++) {
-        //std::cout << "Creating P10: " << i << std::endl;
-        p10[i] = new E131Network("192.168.1.147", i+1, 512);
-        if (sendDMX) {
-            networkP10->addNetwork(p10[i]);
-        }
+    DDPOutput *p10 = new DDPOutput("192.168.1.147",GARAGE_PIXELS,1);
+    if (sendDMX) {
+        networkP10->addNetwork(p10);
     }
 
     //DMX port

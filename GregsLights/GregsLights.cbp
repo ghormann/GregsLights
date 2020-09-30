@@ -82,6 +82,7 @@
 		<Unit filename="include/TextDisplay.h" />
 		<Unit filename="include/TimeInfo.h" />
 		<Unit filename="include/controller/Bulb.h" />
+		<Unit filename="include/controller/DDPOutput.h" />
 		<Unit filename="include/controller/DummyBulb.h" />
 		<Unit filename="include/controller/E131Network.h" />
 		<Unit filename="include/controller/FadeableBulb.h" />
@@ -116,6 +117,7 @@
 		<Unit filename="src/TextDisplay.cpp" />
 		<Unit filename="src/TimeInfo.cpp" />
 		<Unit filename="src/controller/Bulb.cpp" />
+		<Unit filename="src/controller/DDPOutput.cpp" />
 		<Unit filename="src/controller/DummyBulb.cpp" />
 		<Unit filename="src/controller/E131Network.cpp" />
 		<Unit filename="src/controller/FadeableBulb.cpp" />

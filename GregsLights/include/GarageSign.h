@@ -3,18 +3,18 @@
 
 #include "controller/DummyBulb.h"
 #include "controller/RGBLight.h"
-#include "controller/E131Network.h"
+#include "controller/DDPOutput.h"
 #include "TimeInfo.h"
 #include "GenericGrid.h"
 #include "GregMQTT.h"
 #define GARAGE_SIGN_WIDTH ((32*11))
 #define GARAGE_SIGN_HEIGHT ((16*3))
-#define GARAGE_E131_COUNT 100
+#define GARAGE_PIXELS ((GARAGE_SIGN_WIDTH) * (GARAGE_SIGN_HEIGHT))
 
 class GarageSign: public GenericGrid, public PowerCallbackInterface
 {
 public:
-    GarageSign(E131Network *net[], GregMQTT *mqtt);
+    GarageSign(DDPOutput *net, GregMQTT *mqtt);
     virtual ~GarageSign();
     void test();
     void run();
