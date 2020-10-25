@@ -4,14 +4,16 @@
 #define MESSAGE_GENERATOR_SIZE 16
 
 #include "TimeInfo.h"
+#include <string>
 
 class MessageGenerator
 {
 public:
     MessageGenerator(TimeInfo *ti);
     virtual ~MessageGenerator();
-    char * getMessage();
+    std::string getMessage();
     const char * getGreeting();
+    std::string getStartDate();
 
 protected:
 private:

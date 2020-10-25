@@ -413,7 +413,7 @@ std::string Sign::wrapName(std::string name)
 void Sign::run()
 {
     double textSpeed = 0.02;
-    char *msg = NULL;
+    std::string msg;
 
     if (timeInfo->isDebug()) {
         test();
@@ -487,9 +487,9 @@ void Sign::run()
         case 7:
             msg = generator->getMessage();
             //sprintf(message, msg);
-            strcpy(message, msg);
+            strcpy(message, msg.c_str());
             this->sendStatus();
-            scrollText(RGBColor::getRandom(), RGBColor::BLACK, msg, textSpeed);
+            scrollText(RGBColor::getRandom(), RGBColor::BLACK, (char*)msg.c_str(), textSpeed);
             break;
         case 8:
             if (numSeconds > 0)

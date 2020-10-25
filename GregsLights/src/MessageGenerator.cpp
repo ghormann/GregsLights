@@ -34,8 +34,9 @@ void MessageGenerator::checkClear()
     this->clear();
 }
 
-char * getStartDate() {
-    return "FULL DISPLAY STARTS NOV 30";
+std::string MessageGenerator::getStartDate() {
+    std::string s = "OUR FULL DISPLAY STARTS NOV 26";
+    return s;
 }
 
 const char * MessageGenerator::getGreeting()
@@ -43,9 +44,13 @@ const char * MessageGenerator::getGreeting()
     return isChristmas ? "MERRY CHRISTMAS " : "HAPPY NEW YEAR ";
 }
 
-char * MessageGenerator::getMessage()
+std::string MessageGenerator::getMessage()
 {
     checkClear();
+
+    if (timeInfo->isNoShow()) {
+        sprintf(this->message,getStartDate().c_str());
+    }
 
     int i = 11;
     while (bitmap[i] == 1)
@@ -70,7 +75,7 @@ char * MessageGenerator::getMessage()
             return "WISHING YOU A GREAT NEW YEAR";
     case 2:
         if (timeInfo->isNoShow()) {
-            return getStartDate();
+            return (char*) getStartDate().c_str();
         }
         if (isChristmas)
             if (timeInfo->getSecondsUntil() <= 0)
@@ -98,7 +103,7 @@ char * MessageGenerator::getMessage()
         return "THANKS FOR VISITING US";
     case 5:
         if (timeInfo->isNoShow()) {
-            return getStartDate();
+            return (char*) getStartDate().c_str();
         }
         if (isChristmas)
             return "+ HAVE YOU BEEN NAUGHTY OR NICE? +";
@@ -106,7 +111,7 @@ char * MessageGenerator::getMessage()
             return "MADE YOUR RESOLUTIONS FOR THE NEW YEAR?";
     case 6:
         if (timeInfo->isNoShow()) {
-            return getStartDate();
+            return (char*) getStartDate().c_str();
         }
         if (timeInfo->getSecondsUntil() > 0)
             if (isChristmas)
@@ -127,25 +132,25 @@ char * MessageGenerator::getMessage()
             return "$ HAPPY HOLIDAYS #";
     case 10:
         if (timeInfo->isNoShow()) {
-            return getStartDate();
+            return (char*) getStartDate().c_str();
         }
         return "LISTEN TO THE LIGHTS AT 106.7 FM";
 
     case 11:
     case 12:
         if (timeInfo->isNoShow()) {
-            return getStartDate();
+            return (char*) getStartDate().c_str();
         }
         return "TEXT YOUR FIRST NAME TO 513-854-1352 AND SEE YOUR NAME IN LIGHTS!";
     case 13:
     case 14:
         if (timeInfo->isNoShow()) {
-            return getStartDate();
+            return (char*) getStartDate().c_str();
         }
         return "TEXT YOUR FIRST NAME TO 513-854-1352 FOR A PERSONALIZED MESSAGE.";
     case 15:
         if (timeInfo->isNoShow()) {
-            return getStartDate();
+            return (char*) getStartDate().c_str();
         }
         const char * when = timeInfo->isNewYears() ? "THE NEW YEAR" : "CHRISTMAS";
         if (timeInfo->getHoursUntil() > 1)

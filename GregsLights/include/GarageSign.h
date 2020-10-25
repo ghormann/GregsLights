@@ -27,6 +27,7 @@ public:
 private:
     void showPower();
     GregMQTT *mqtt;
+    void showStartDate();
     double amps;
     bool ampsChanged;
     double dollars;

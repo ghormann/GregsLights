@@ -9,6 +9,8 @@ GarageSign::GarageSign(DDPOutput *net, GregMQTT *mqtt) : GenericGrid(GARAGE_SIGN
     mqtt->setPowerCallback(this);
     amps = 0;
     ampsChanged = true;
+    this->generator = new MessageGenerator(TimeInfo::getInstance());
+
 
     int cnt = 0;
 
@@ -179,17 +181,47 @@ void GarageSign::run()
         return;
     }
 
-    // Wait in a tight loop to update if
-    // signalled.   Does waste a little CPU.
-    for (int i = 0; i < 1000; i++)
+    if (TimeInfo::getInstance()->isNoShow())
     {
-        if (ampsChanged)
+        showStartDate();
+    }
+    else
+    {
+
+        // Wait in a tight loop to update if
+        // signalled.   Does waste a little CPU.
+        for (int i = 0; i < 1000; i++)
         {
-            showPower();
-            ampsChanged = false;
-            break;
+            if (ampsChanged)
+            {
+                showPower();
+                ampsChanged = false;
+                break;
+            }
+            gjhSleep(0.1);
         }
-        gjhSleep(0.1);
+    }
+}
+
+void GarageSign::showStartDate()
+{
+    std::string s = generator->getStartDate();
+    this->writeTextNew(RGBColor::getRandom(),0,2, s,false,20);
+    gjhSleep(3.0);
+
+    int i = rand() % 3;
+    switch(i)
+    {
+    case 0:
+        wipeDown(RGBColor::BLACK, 0.1);
+        break;
+    case 1:
+        wipeToRight(RGBColor::BLACK, 0.005);
+        gjhSleep(1.0);
+        break;
+    case 2:
+        gjhSleep(1.0);
+        break;
     }
 }
 
