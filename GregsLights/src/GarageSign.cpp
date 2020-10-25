@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iostream>
 #include <iomanip>
+#include <vector>
 
 GarageSign::GarageSign(DDPOutput *net, GregMQTT *mqtt) : GenericGrid(GARAGE_SIGN_WIDTH,GARAGE_SIGN_HEIGHT,GARAGE_SIGN_WIDTH,GARAGE_SIGN_HEIGHT), PowerCallbackInterface()
 {
@@ -126,20 +127,62 @@ void GarageSign::showPower()
     this->writeTextNew(RGBColor::WHITE,radio_left,32, RADIO,false, 16);
 
     setBackground(RGBColor::DARKRED, power_left, 0,power_left+216, GARAGE_SIGN_HEIGHT);
-    if (TimeInfo::getInstance()->getSecondsOfDay() < 45)
+    this->writeTextNew(RGBColor::WHITE,power_left+14,2,msg,false,32);
+    this->writeTextNew(RGBColor::WHITE,power_left+111,2,units,false, 32);
+    this->writeTextNew(RGBColor::WHITE,power_left+13,32, footer,false, 16);
+
+    this->releaseGrid();
+
+}
+
+void GarageSign::showPowerToday()
+{
+    int power_left = 134;
+    double duration = 0.06;
+    int cnt = 0;
+    int max = 174;
+    std::string startsWith = "clark_Plug";
+    std::vector<RGBPicture> pics;
+
+    RGBPicture::findStartsWith(startsWith, pics);
+    std::vector<RGBPicture>::iterator it;
+
+    setBackground(RGBColor::BLACK);
+
+    it = pics.begin();
+
+    // Ever other time we want to show the back half of the moveie
+    if ((timeInfo->getMinuteOfDay() % 2)  == 0)
     {
-        this->writeTextNew(RGBColor::WHITE,power_left+14,2,msg,false,32);
-        this->writeTextNew(RGBColor::WHITE,power_left+111,2,units,false, 32);
-        this->writeTextNew(RGBColor::WHITE,power_left+13,32, footer,false, 16);
+        max = 900;
+        // Run off some pictures
+        for (int i = 0; i < 175; i++)
+        {
+            if (it != pics.end())
+            {
+                it++;
+            }
+        }
     }
-    else
+
+    for(; it != pics.end(); it++)
     {
+        // decided not to display all images
+        if (++cnt > max)
+        {
+            break;
+        }
+        RGBPicture p = (*it);
         std::ostringstream todayMsg;
         std::ostringstream line2;
         todayMsg << "$" << std::setprecision(2);
         todayMsg << std::fixed << this->dollars;
         todayMsg << " Spent on";
         std::string m = todayMsg.str();
+        this->lockGrid();
+
+        this->showPictureNow(p,20,0,false);
+        setBackground(RGBColor::DARKRED, power_left, 0,power_left+216, GARAGE_SIGN_HEIGHT);
         this->writeTextNew(RGBColor::WHITE,power_left+14,2,m,false,24);
 
         if (kwh < 100)
@@ -153,15 +196,16 @@ void GarageSign::showPower()
         line2 << " KWh Today";
         m = line2.str();
         this->writeTextNew(RGBColor::WHITE,power_left+14,26,m,false,24);
+        this->releaseGrid();
         sprintf(message, "%s %s", todayMsg.str().c_str(), m.c_str());
-    }
-    this->releaseGrid();
 
+        gridSleep(duration);
+    }
 }
+
 
 void GarageSign::run()
 {
-
     TimeInfo *timeInfo = TimeInfo::getInstance();
 
     if (timeInfo->isDebug())
@@ -194,12 +238,17 @@ void GarageSign::run()
         {
             if (ampsChanged)
             {
+                if (timeInfo->getSecondsOfDay() > 47)
+                {
+                    showPowerToday();
+                }
                 showPower();
                 ampsChanged = false;
                 break;
             }
             gjhSleep(0.1);
         }
+
     }
 }
 

@@ -71,7 +71,7 @@ public:
     void showPictureNowCenter(RGBPicture &pic,bool hideBlack);
     void showPictureDummy(RGBPicture &pic, int posX, int posY,bool hideBlack);
     void spiral(RGBColor *color);
-    void showMovie(std::string &startsWith, int cnt, double duration, int x, int y);
+    void showMovie(std::string &startsWith, int cnt, double duration, int x, int y, bool setBlackFirst = true);
     void showMovieCenter(std::string &startsWith, int cnt, double duration);
     void interruptThread();
     int getGridHeight();

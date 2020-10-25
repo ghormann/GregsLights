@@ -11,6 +11,7 @@ public:
     virtual ~TimeInfo();
     int getHourOfDay();
     int getSecondsOfDay();
+    int getMinuteOfDay();
     int getSecondsUntil();
     int getHoursUntil();
     int getNextYear();

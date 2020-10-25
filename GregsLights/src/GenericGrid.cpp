@@ -1908,7 +1908,8 @@ void GenericGrid::writeTextNew(RGBColor *fgColor, int x, int y, std::string &tex
             int b = imgData[pos++];
 
             // Because we don't want to overwrite the background, we don't write if everything is zero
-            if (r==0 && g ==0 && b == 0) {
+            if (r==0 && g ==0 && b == 0)
+            {
                 continue;
             }
 
@@ -2611,10 +2612,13 @@ void GenericGrid::showMovieCenter(std::string &startsWith, int cnt, double durat
 
 }
 
-void GenericGrid::showMovie(string &startsWith, int cnt, double duration, int x, int y)
+void GenericGrid::showMovie(string &startsWith, int cnt, double duration, int x, int y, bool setBlackFirst)
 {
     vector<RGBPicture> pics;
-    this->setBackground(RGBColor::BLACK);
+    if (setBlackFirst)
+    {
+        this->setBackground(RGBColor::BLACK);
+    }
     RGBPicture::findStartsWith(startsWith, pics);
     sprintf(message, "Show Movie: %s", startsWith.c_str());
 

@@ -107,15 +107,22 @@ void TimeInfo::tick()
 
 int TimeInfo::getHourOfDay()
 {
-    tick();
+    time(&t_now);
     return tm_now->tm_hour;
 }
 
 int TimeInfo::getSecondsOfDay()
 {
-    tick();
+    time(&t_now);
     return tm_now->tm_sec;
 }
+
+int TimeInfo::getMinuteOfDay()
+{
+    time(&t_now);
+    return tm_now->tm_min;
+}
+
 
 int TimeInfo::getSecondsUntil()
 {
@@ -125,6 +132,7 @@ int TimeInfo::getSecondsUntil()
 
 int TimeInfo::getHoursUntil()
 {
+    // tick() done by getSecodnsUntil()
     double d = getSecondsUntil();
     d = d/3600;
     return (int) round(d);
