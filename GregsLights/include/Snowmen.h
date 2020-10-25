@@ -23,7 +23,7 @@
 
 #define write_data(pause)  usleep((pause) * 1000000)
 
-enum right_type {Snowman, Trump};
+enum right_type {Snowman, Trump, Biden};
 
 class SnowmenGrid: public GenericGrid
 {

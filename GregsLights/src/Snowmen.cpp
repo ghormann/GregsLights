@@ -26,7 +26,7 @@ Snowmen::Snowmen(bool skipTime,  E131Network *network[])
     hatStatus[SNOWMAN_LEFT] = true;
     hatStatus[SNOWMAN_RIGHT] = true;
     noseBallColor = RGBColor::WHITE;
-    who_right = Trump;
+    who_right = Biden;
 
     //ctor
     timeinfo = TimeInfo::getInstance();
@@ -444,6 +444,12 @@ void Snowmen::drawMouth(int pos, double mouthPos)
             x -= 4;
             y+=22;
         }
+        else if (who_right == Biden)
+        {
+            x -= 2;
+            y+=24;
+            mouthPos *= 1.5;
+        }
 
 
         who->drawCircle(x+1,y-1,mouthPos,RGBColor::BLACK);
@@ -466,6 +472,14 @@ void Snowmen::eatSnowball(int pos)
 
         // Drump has a lower mouth
         if (who_right == Trump)
+        {
+            end_splash_y = 24;
+            for (int i =0; i < 18; i++)
+            {
+                pos_y[i] += 20;
+            }
+        }
+        else if (who_right == Biden)
         {
             end_splash_y = 24;
             for (int i =0; i < 18; i++)
@@ -895,6 +909,18 @@ void Snowmen::drawSnowmen(int pos, bool withHat, int offset)
             if (pic)
             {
                 who->showPictureNow(*pic,0,20+topOffset,true);
+            }
+        }
+    }
+    else if (who_right == Biden)
+    {
+        // use Biden
+        if (pos == SNOWMAN_RIGHT)
+        {
+            RGBPicture *pic = RGBPicture::getPicture("biden_left.png");
+            if (pic)
+            {
+                who->showPictureNow(*pic,6,20+topOffset,true);
             }
         }
     }
@@ -1483,7 +1509,8 @@ void Snowmen::cannonShot(int snowmen_pos)
     groundSnowLevel[snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT] = 0;
     noseBalls[snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT] = 0;
     hatStatus[snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT] = false;
-    if (snowmen_pos == SNOWMAN_LEFT) {
+    if (snowmen_pos == SNOWMAN_LEFT)
+    {
         who_right = Snowman;
     }
 
