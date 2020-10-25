@@ -26,6 +26,7 @@ Snowmen::Snowmen(bool skipTime,  E131Network *network[])
     hatStatus[SNOWMAN_LEFT] = true;
     hatStatus[SNOWMAN_RIGHT] = true;
     noseBallColor = RGBColor::WHITE;
+    who_right = Trump;
 
     //ctor
     timeinfo = TimeInfo::getInstance();
@@ -437,6 +438,14 @@ void Snowmen::drawMouth(int pos, double mouthPos)
     {
         x=SNOWMEN_WIDTH/2-8;
         y=SNOWMEN_HEIGHT-60;
+
+        if (who_right == Trump)
+        {
+            x -= 4;
+            y+=22;
+        }
+
+
         who->drawCircle(x+1,y-1,mouthPos,RGBColor::BLACK);
         who->drawCircle(x,y-1,mouthPos,RGBColor::BLACK);
     }
@@ -452,11 +461,25 @@ void Snowmen::eatSnowball(int pos)
 
     if (pos == SNOWMAN_LEFT)
     {
+        int end_splash_y = 16;
         who = getSnowmen(SNOWMAN_RIGHT);
+
+        // Drump has a lower mouth
+        if (who_right == Trump)
+        {
+            end_splash_y = 24;
+            for (int i =0; i < 18; i++)
+            {
+                pos_y[i] += 20;
+            }
+        }
+
         throwLeft(true);
         do_middle(pos,10,6,16,SNOWBALL_DURATION);
-        ball_line(this->getSplashGrid(SNOWMAN_RIGHT), 0, 8, SPLASH_GRID_WIDTH, 16, BALL_SIZE_2IN);
+        if (who_right)
+            ball_line(this->getSplashGrid(SNOWMAN_RIGHT), 0, 8, SPLASH_GRID_WIDTH, end_splash_y, BALL_SIZE_2IN);
         int x = 0;
+
         for (int i = 0; i< 18; i++, x=x+2)
         {
             mouth = (i+1) * .3;
@@ -586,13 +609,14 @@ void Snowmen::test_snowmen()
     }
 }
 
-void Snowmen::setAllOff() {
-            // Turn things off
-            getSplashGrid(SNOWMAN_LEFT)->setBackground(RGBColor::BLACK);
-            getSplashGrid(SNOWMAN_RIGHT)->setBackground(RGBColor::BLACK);
-            getSnowmen(SNOWMAN_LEFT)->setBackground(RGBColor::BLACK);
-            getSnowmen(SNOWMAN_RIGHT)->setBackground(RGBColor::BLACK);
-            getSkyGrid()->setBackground(RGBColor::BLACK);
+void Snowmen::setAllOff()
+{
+    // Turn things off
+    getSplashGrid(SNOWMAN_LEFT)->setBackground(RGBColor::BLACK);
+    getSplashGrid(SNOWMAN_RIGHT)->setBackground(RGBColor::BLACK);
+    getSnowmen(SNOWMAN_LEFT)->setBackground(RGBColor::BLACK);
+    getSnowmen(SNOWMAN_RIGHT)->setBackground(RGBColor::BLACK);
+    getSkyGrid()->setBackground(RGBColor::BLACK);
 
 
 }
@@ -784,34 +808,96 @@ void Snowmen::drawSnowmen(int pos, bool withHat, int offset)
     int topOffset = 3*offset;
     int midOffset = 2*offset;
     GenericGrid * who = getSnowmen(pos);
-    //TOP
-    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-65+topOffset,10,RGBColor::WHITE);
-    //Mid
-    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-45+midOffset,14,RGBColor::WHITE);
-    //Bottom
-    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-20+offset,20,RGBColor::WHITE);
 
-    //Fix the one on edge points bottom
-    who->getPixal(SNOWMEN_WIDTH/2-20,SNOWMEN_HEIGHT-19+offset)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2-20,SNOWMEN_HEIGHT-21+offset)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2+20,SNOWMEN_HEIGHT-19+offset)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2+20,SNOWMEN_HEIGHT-21+offset)->set(RGBColor::WHITE);
+    // TODO: Make this a varialbe
+    if ((pos == SNOWMAN_LEFT) || (who_right == Snowman))
+    {
 
-    //Fix the one on edge points MID
-    who->getPixal(SNOWMEN_WIDTH/2-14,SNOWMEN_HEIGHT-46+midOffset)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2-14,SNOWMEN_HEIGHT-44+midOffset)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2+14,SNOWMEN_HEIGHT-46+midOffset)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2+14,SNOWMEN_HEIGHT-44+midOffset)->set(RGBColor::WHITE);
+        //TOP
+        who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-65+topOffset,10,RGBColor::WHITE);
+        //Mid
+        who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-45+midOffset,14,RGBColor::WHITE);
+        //Bottom
+        who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-20+offset,20,RGBColor::WHITE);
 
-    //Fix the one on edge points TOP
-    who->getPixal(SNOWMEN_WIDTH/2-10,SNOWMEN_HEIGHT-64+topOffset)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2-10,SNOWMEN_HEIGHT-66+topOffset)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2+10,SNOWMEN_HEIGHT-64+topOffset)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2+10,SNOWMEN_HEIGHT-66+topOffset)->set(RGBColor::WHITE);
+        //Fix the one on edge points bottom
+        who->getPixal(SNOWMEN_WIDTH/2-20,SNOWMEN_HEIGHT-19+offset)->set(RGBColor::WHITE);
+        who->getPixal(SNOWMEN_WIDTH/2-20,SNOWMEN_HEIGHT-21+offset)->set(RGBColor::WHITE);
+        who->getPixal(SNOWMEN_WIDTH/2+20,SNOWMEN_HEIGHT-19+offset)->set(RGBColor::WHITE);
+        who->getPixal(SNOWMEN_WIDTH/2+20,SNOWMEN_HEIGHT-21+offset)->set(RGBColor::WHITE);
 
-    who->getPixal(SNOWMEN_WIDTH/2-1,SNOWMEN_HEIGHT-75+topOffset)->set(RGBColor::WHITE);
-    who->getPixal(SNOWMEN_WIDTH/2+1,SNOWMEN_HEIGHT-75+topOffset)->set(RGBColor::WHITE);
+        //Fix the one on edge points MID
+        who->getPixal(SNOWMEN_WIDTH/2-14,SNOWMEN_HEIGHT-46+midOffset)->set(RGBColor::WHITE);
+        who->getPixal(SNOWMEN_WIDTH/2-14,SNOWMEN_HEIGHT-44+midOffset)->set(RGBColor::WHITE);
+        who->getPixal(SNOWMEN_WIDTH/2+14,SNOWMEN_HEIGHT-46+midOffset)->set(RGBColor::WHITE);
+        who->getPixal(SNOWMEN_WIDTH/2+14,SNOWMEN_HEIGHT-44+midOffset)->set(RGBColor::WHITE);
 
+        //Fix the one on edge points TOP
+        who->getPixal(SNOWMEN_WIDTH/2-10,SNOWMEN_HEIGHT-64+topOffset)->set(RGBColor::WHITE);
+        who->getPixal(SNOWMEN_WIDTH/2-10,SNOWMEN_HEIGHT-66+topOffset)->set(RGBColor::WHITE);
+        who->getPixal(SNOWMEN_WIDTH/2+10,SNOWMEN_HEIGHT-64+topOffset)->set(RGBColor::WHITE);
+        who->getPixal(SNOWMEN_WIDTH/2+10,SNOWMEN_HEIGHT-66+topOffset)->set(RGBColor::WHITE);
+
+        who->getPixal(SNOWMEN_WIDTH/2-1,SNOWMEN_HEIGHT-75+topOffset)->set(RGBColor::WHITE);
+        who->getPixal(SNOWMEN_WIDTH/2+1,SNOWMEN_HEIGHT-75+topOffset)->set(RGBColor::WHITE);
+        //Nose
+        int startX = SNOWMEN_WIDTH/2+8;
+        int endX = SNOWMEN_WIDTH/2+16;
+        y = SNOWMAN_NOSE_HEIGHT + topOffset;
+        if (pos == SNOWMAN_RIGHT)
+        {
+            startX -=23;
+            endX -=23;
+        }
+
+
+        for (x = startX; x < endX; x++)
+        {
+            who->getPixal(x,y)->set(RGBColor::ORANGE);
+            who->getPixal(x,y-1)->set(RGBColor::ORANGE);
+        }
+
+        // Eye
+        x = (pos==SNOWMAN_LEFT ? SNOWMEN_WIDTH/2+5 : SNOWMEN_WIDTH/2-4);
+        who->drawCircle(x,SNOWMEN_HEIGHT-70 + topOffset,1,RGBColor::BLACK);
+
+        //Buttons
+        who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-26+ midOffset,1,RGBColor::BLACK);
+        who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-38+ midOffset,1,RGBColor::BLACK);
+        who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-50+ midOffset,1,RGBColor::BLACK);
+
+        // Mouth
+        if (pos == SNOWMAN_LEFT)
+        {
+            x=SNOWMEN_WIDTH/2+8;
+            y=SNOWMEN_HEIGHT-60+ topOffset;
+            who->getPixal(x,y)->set(RGBColor::BLACK);
+            who->getPixal(x-1,y)->set(RGBColor::BLACK);
+            who->getPixal(x-2,y-1)->set(RGBColor::BLACK);
+            who->getPixal(x-3,y-2)->set(RGBColor::BLACK);
+        }
+        else
+        {
+            x=SNOWMEN_WIDTH/2-8;
+            y=SNOWMEN_HEIGHT-60+ topOffset;
+            who->getPixal(x,y)->set(RGBColor::BLACK);
+            who->getPixal(x+1,y)->set(RGBColor::BLACK);
+            who->getPixal(x+2,y-1)->set(RGBColor::BLACK);
+            who->getPixal(x+3,y-2)->set(RGBColor::BLACK);
+        }
+    }
+    else if (who_right == Trump)
+    {
+        // use trump
+        if (pos == SNOWMAN_RIGHT)
+        {
+            RGBPicture *pic = RGBPicture::getPicture("trump_left.png");
+            if (pic)
+            {
+                who->showPictureNow(*pic,0,20+topOffset,true);
+            }
+        }
+    }
 
 
     if (withHat)
@@ -825,51 +911,6 @@ void Snowmen::drawSnowmen(int pos, bool withHat, int offset)
     }
 
 
-    //Nose
-    int startX = SNOWMEN_WIDTH/2+8;
-    int endX = SNOWMEN_WIDTH/2+16;
-    y = SNOWMAN_NOSE_HEIGHT + topOffset;
-    if (pos == SNOWMAN_RIGHT)
-    {
-        startX -=23;
-        endX -=23;
-    }
-
-
-    for (x = startX; x < endX; x++)
-    {
-        who->getPixal(x,y)->set(RGBColor::ORANGE);
-        who->getPixal(x,y-1)->set(RGBColor::ORANGE);
-    }
-
-    // Eye
-    x = (pos==SNOWMAN_LEFT ? SNOWMEN_WIDTH/2+5 : SNOWMEN_WIDTH/2-4);
-    who->drawCircle(x,SNOWMEN_HEIGHT-70 + topOffset,1,RGBColor::BLACK);
-
-    //Buttons
-    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-26+ midOffset,1,RGBColor::BLACK);
-    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-38+ midOffset,1,RGBColor::BLACK);
-    who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-50+ midOffset,1,RGBColor::BLACK);
-
-    // Mouth
-    if (pos == SNOWMAN_LEFT)
-    {
-        x=SNOWMEN_WIDTH/2+8;
-        y=SNOWMEN_HEIGHT-60+ topOffset;
-        who->getPixal(x,y)->set(RGBColor::BLACK);
-        who->getPixal(x-1,y)->set(RGBColor::BLACK);
-        who->getPixal(x-2,y-1)->set(RGBColor::BLACK);
-        who->getPixal(x-3,y-2)->set(RGBColor::BLACK);
-    }
-    else
-    {
-        x=SNOWMEN_WIDTH/2-8;
-        y=SNOWMEN_HEIGHT-60+ topOffset;
-        who->getPixal(x,y)->set(RGBColor::BLACK);
-        who->getPixal(x+1,y)->set(RGBColor::BLACK);
-        who->getPixal(x+2,y-1)->set(RGBColor::BLACK);
-        who->getPixal(x+3,y-2)->set(RGBColor::BLACK);
-    }
 
     // Snowball Nose L1
     if (noseBalls[pos] > 0)
@@ -1172,7 +1213,7 @@ void Snowmen::ball_line(GenericGrid *grid, int start_x, int start_y, int end_x, 
 
 void Snowmen::throwLeftStickNose(bool arch)
 {
-    strcpy(message2, "TThrow Left Nose");
+    strcpy(message2, "Throw Left Nose");
 
     throwLeft(arch);
     if (arch)
@@ -1438,10 +1479,13 @@ void Snowmen::cannonShot(int snowmen_pos)
         write_data(SNOWBALL_DURATION/2);
         size_1in += 3.0;
     }
-    // Reset
+    // Reset -- Destroyed on is the reverse!
     groundSnowLevel[snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT] = 0;
     noseBalls[snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT] = 0;
     hatStatus[snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT] = false;
+    if (snowmen_pos == SNOWMAN_LEFT) {
+        who_right = Snowman;
+    }
 
     getSkyGrid()->writeText(RGBColor::GREEN,10,0,"GONE!", false);
     size_1in = 1;
@@ -1493,7 +1537,25 @@ void Snowmen::do_it_snowmen()
     }
 
     bool didSomething = true;
-    int id = rand()%15;
+    int id = -1;
+
+    /*
+     * Find the next option
+     * Some options are not valid if not using snowman
+     */
+
+    while (id < 0 )
+    {
+        id = rand()%15;
+        if (who_right != Snowman)
+        {
+            if (id < 4 || id == 6 || id ==7 ||id == 8 || id ==13 )
+            {
+                id = -1;
+            }
+        }
+    }
+
     int chance = 0;
     switch(id)
     {
@@ -1629,6 +1691,10 @@ void Snowmen::do_it_snowmen()
 
     case 14:
         chance = rand()%2;
+        if (who_right != Snowman)
+        {
+            chance = 0;
+        }
         eatSnowball(chance == 0 ? SNOWMAN_LEFT : SNOWMAN_RIGHT);
         break;
 

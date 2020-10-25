@@ -21,8 +21,9 @@
 
 #define SNOWMAN_NOSE_HEIGHT (SNOWMEN_HEIGHT-65)
 
-
 #define write_data(pause)  usleep((pause) * 1000000)
+
+enum right_type {Snowman, Trump};
 
 class SnowmenGrid: public GenericGrid
 {
@@ -99,6 +100,7 @@ private:
     void do_middle(int start_snowmen, int start_y, int high_y, int end_y,double duration);
     char message2[100];
     TimeInfo *timeinfo;
+    right_type who_right;
 };
 
 #endif // SNOWMEN_H
