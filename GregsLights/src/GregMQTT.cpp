@@ -93,6 +93,13 @@ GregMQTT::GregMQTT(bool enable, const char * _id) : mosquittopp(_id)
     }
 }
 
+int GregMQTT::getSnowmanVote() {
+    if (++snowmanVote > 2) {
+        snowmanVote = 0;
+    }
+    return snowmanVote;
+}
+
 std::string GregMQTT::getNextName()
 {
     // Mutext clearned when block ends

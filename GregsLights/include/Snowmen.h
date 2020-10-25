@@ -6,6 +6,7 @@
 #include "controller/E131Network.h"
 #include "TimeInfo.h"
 #include "GenericGrid.h"
+#include "GregMQTT.h"
 
 #define SNOWMEN_HEIGHT 95
 #define SNOWMEN_WIDTH 47
@@ -44,12 +45,13 @@ private:
 class Snowmen
 {
 public:
-    Snowmen(bool skipTime, E131Network * network[]);
+    Snowmen(bool skipTime, E131Network * network[], GregMQTT *mqtt);
     virtual ~Snowmen();
     void test_snowmen(void);
     void run();
     void setBulb(int i, Bulb *b);
     char * getMessage();
+    char * getMessageWho();
     SnowmenGrid *getSnowmen(int pos);
     SnowmenGrid *getSplashGrid(int pos);
     SnowmenGrid *getSkyGrid();
@@ -99,8 +101,10 @@ private:
     void ball_line(GenericGrid *grid, int start_x, int start_y, int end_x, int end_y, double ballSize);
     void do_middle(int start_snowmen, int start_y, int high_y, int end_y,double duration);
     char message2[100];
+    char message_who[30];
     TimeInfo *timeinfo;
     right_type who_right;
+    GregMQTT *mqtt;
 };
 
 #endif // SNOWMEN_H

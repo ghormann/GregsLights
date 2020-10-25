@@ -55,9 +55,10 @@ void TextDisplay::update()
     mvprintw(0, 0, "%-60s", model->getMessage(1));
     mvprintw(1, 0, "%-60s", model->getMessage(2));
     mvprintw(2, 0, "Snowmen: %-60s", model->getSnowmen()->getMessage());
-    mvprintw(3, 0, "Clock: %-60s", model->getClock()->getMessage());
-    mvprintw(4, 0, "Sign: %-60s", model->getSign()->getMessage());
-    mvprintw(5, 0, "Power: %-60s", model->getGarageSign()->getMessage());
+    mvprintw(3, 0, "Snowmen Who: %-60s", model->getSnowmen()->getMessageWho());
+    mvprintw(4, 0, "Clock: %-60s", model->getClock()->getMessage());
+    mvprintw(5, 0, "Sign: %-60s", model->getSign()->getMessage());
+    mvprintw(6, 0, "Power: %-60s", model->getGarageSign()->getMessage());
 
     mvprintw(0, 64, "Clock: %7d", clock->getSecondsRemaining());
 

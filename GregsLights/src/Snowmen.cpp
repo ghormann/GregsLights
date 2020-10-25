@@ -14,19 +14,22 @@
 #define CANNON_BALL_SIZE_2IN 5.9
 
 
-Snowmen::Snowmen(bool skipTime,  E131Network *network[])
+Snowmen::Snowmen(bool skipTime,  E131Network *network[], GregMQTT *mqtt)
 {
     if (pthread_mutex_init(&lock, NULL) != 0)
     {
         printf("\n mutex init failed\n");
         throw "Mutext init failed for Snowmen";
     }
+    this->mqtt = mqtt;
     groundSnowLevel[SNOWMAN_LEFT] = groundSnowLevel[SNOWMAN_RIGHT]= 0;
     noseBalls[SNOWMAN_LEFT] = noseBalls[SNOWMAN_RIGHT] = 0;
     hatStatus[SNOWMAN_LEFT] = true;
     hatStatus[SNOWMAN_RIGHT] = true;
     noseBallColor = RGBColor::WHITE;
-    who_right = Biden;
+    who_right = Snowman;
+
+    sprintf(message_who, "SNOWMEN");
 
     //ctor
     timeinfo = TimeInfo::getInstance();
@@ -1509,10 +1512,6 @@ void Snowmen::cannonShot(int snowmen_pos)
     groundSnowLevel[snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT] = 0;
     noseBalls[snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT] = 0;
     hatStatus[snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT] = false;
-    if (snowmen_pos == SNOWMAN_LEFT)
-    {
-        who_right = Snowman;
-    }
 
     getSkyGrid()->writeText(RGBColor::GREEN,10,0,"GONE!", false);
     size_1in = 1;
@@ -1528,11 +1527,52 @@ void Snowmen::cannonShot(int snowmen_pos)
         size_1in += 1;
     }
 
+    // If SNowman right is being redrawn (throw from left)
+    // Use mqtt to find next snowman type
+    if (snowmen_pos == SNOWMAN_LEFT)
+    {
+        // need to choose next right snowmen
+        int who = mqtt->getSnowmanVote();
+        std::string line1 = "Next Up";
+        std::string name;
+        switch(who)
+        {
+        case 1:
+            who_right = Trump;
+            name = "Mr. Trump!";
+            getSkyGrid()->writeTextNew(RGBColor::WHITE,22,0, line1,false,12);
+            gjhSleep(1);
+            getSkyGrid()->writeTextNew(RGBColor::WHITE,14,12, name,false,12);
+            break;
+        case 2:
+            who_right = Biden;
+            name = "Mr. Biden!";
+            getSkyGrid()->writeTextNew(RGBColor::WHITE,22,0,line1,false,12);
+            gjhSleep(1);
+            getSkyGrid()->writeTextNew(RGBColor::WHITE,14,12, name,false,12);
+            break;
+        default:
+            who_right = Snowman;
+            name = "Snowmen";
+            break;
+        };
+
+        strcpy(message_who, name.c_str());
+    }
+
+
+
     // reset
     lockSnowmen();
     drawSnowmen(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT, false);
     releaseSnowmen();
     placeHatBack(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT);
+
+    if (who_right != Snowman)
+    {
+        gjhSleep(2);
+        getSkyGrid()->setBackground(RGBColor::BLACK);
+    }
 
 
 }
@@ -1785,4 +1825,10 @@ char * Snowmen::getMessage()
 {
     return message2;
 }
+
+char * Snowmen::getMessageWho()
+{
+    return message_who;
+}
+
 

@@ -29,6 +29,7 @@ public:
     void sendClockMessage(int t);
     void sendTimeInfo();
     void setPowerCallback(PowerCallbackInterface *ptr);
+    int getSnowmanVote();
     std::string getNextName();
 
 protected:
@@ -36,6 +37,7 @@ protected:
 
 private:
     bool isValid;
+    int snowmanVote = 0;
     PowerCallbackInterface *powerCallback;
     void debug(std::string mesg);
     std::deque<std::string> name_queue;
