@@ -7,6 +7,7 @@
 #include "TimeInfo.h"
 #include "GenericGrid.h"
 #include "GregMQTT.h"
+#include "RGBPicture.h"
 
 #define SNOWMEN_HEIGHT 95
 #define SNOWMEN_WIDTH 47
@@ -24,7 +25,19 @@
 
 #define write_data(pause)  usleep((pause) * 1000000)
 
-enum right_type {Snowman, Trump, Biden};
+class SnowmanPicture
+{
+    public:
+    RGBPicture *pic = NULL;
+    int pic_offset_x = 0;
+    int pic_offset_y = 0;
+    std::string name = "Snowman";
+    int mouth_offset_x = 0;
+    int mouth_offset_y = 0;
+    int splash_end_y = 0;
+    int splash_offset_y = 0;
+    int mouth_multiplier = 1;
+};
 
 class SnowmenGrid: public GenericGrid
 {
@@ -103,8 +116,10 @@ private:
     char message2[100];
     char message_who[30];
     TimeInfo *timeinfo;
-    right_type who_right;
+    SnowmanPicture *who_right;
     GregMQTT *mqtt;
+    void createSnowmanPictures();
+    std::vector<SnowmanPicture*> availSnowman;
 };
 
 #endif // SNOWMEN_H

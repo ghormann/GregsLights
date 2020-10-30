@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <iostream>
 #include "RGBPicture.h"
 
 
@@ -27,9 +28,6 @@ Snowmen::Snowmen(bool skipTime,  E131Network *network[], GregMQTT *mqtt)
     hatStatus[SNOWMAN_LEFT] = true;
     hatStatus[SNOWMAN_RIGHT] = true;
     noseBallColor = RGBColor::WHITE;
-    who_right = Snowman;
-
-    sprintf(message_who, "SNOWMEN");
 
     //ctor
     timeinfo = TimeInfo::getInstance();
@@ -287,11 +285,62 @@ Snowmen::Snowmen(bool skipTime,  E131Network *network[], GregMQTT *mqtt)
 
     RGBPicture::getAllPictures(); // Load all Pictures
     strcpy(message2, "Starting up");
+    createSnowmanPictures();
+    sprintf(message_who, who_right->name.c_str());
+
 }
 
 Snowmen::~Snowmen()
 {
     //dtor
+}
+
+void Snowmen::createSnowmanPictures()
+{
+    RGBPicture::getAllPictures(); // Load all Pictures
+
+    SnowmanPicture *regular = new SnowmanPicture();
+    availSnowman.push_back(regular);
+    this->who_right = regular;
+
+    SnowmanPicture *who = new SnowmanPicture();
+    who->pic_offset_x = 0;
+    who->pic_offset_y = 20;
+    who->splash_end_y = 24;
+    who->splash_offset_y= 20;
+    who->pic_offset_y = 20;
+    who->mouth_offset_x = -4;
+    who->mouth_offset_y = 22;
+    who->name = "Mr. Trump";
+    who->pic = RGBPicture::getPicture("trump_left.png");
+    availSnowman.push_back(who);
+
+    who = new SnowmanPicture();
+    who->pic_offset_x = 6;
+    who->pic_offset_y = 20;
+    who->splash_end_y = 24;
+    who->splash_offset_y= 20;
+    who->mouth_offset_x = -2;
+    who->mouth_offset_y = 24;
+    who->mouth_multiplier = 1.5;
+    who->name = "Mr. Biden";
+    who->pic = RGBPicture::getPicture("biden_left.png");
+    std::cout << "At load" << who->pic << std::endl;
+
+    who = new SnowmanPicture();
+    who->pic_offset_x = -2;
+    who->pic_offset_y = 24;
+    who->splash_end_y = 16;
+    who->splash_offset_y= 12;
+    who->mouth_offset_x = 4;
+    who->mouth_offset_y = 14;
+    who->name = "Hans Gruber";
+    who->pic = RGBPicture::getPicture("hans_gruber.png");
+    availSnowman.push_back(who);
+    this->who_right = who;
+
+
+
 }
 
 int SnowmenGrid::getPos(int x, int y)
@@ -442,18 +491,10 @@ void Snowmen::drawMouth(int pos, double mouthPos)
         x=SNOWMEN_WIDTH/2-8;
         y=SNOWMEN_HEIGHT-60;
 
-        if (who_right == Trump)
-        {
-            x -= 4;
-            y+=22;
-        }
-        else if (who_right == Biden)
-        {
-            x -= 2;
-            y+=24;
-            mouthPos *= 1.5;
-        }
-
+        // Handle offsets
+        x += who_right->mouth_offset_x;
+        y += who_right->mouth_offset_y;
+        mouthPos *= who_right->mouth_multiplier;
 
         who->drawCircle(x+1,y-1,mouthPos,RGBColor::BLACK);
         who->drawCircle(x,y-1,mouthPos,RGBColor::BLACK);
@@ -473,21 +514,13 @@ void Snowmen::eatSnowball(int pos)
         int end_splash_y = 16;
         who = getSnowmen(SNOWMAN_RIGHT);
 
-        // Drump has a lower mouth
-        if (who_right == Trump)
+        // Handle offsets
+        if (who_right->pic != NULL)
         {
-            end_splash_y = 24;
+            end_splash_y = who_right->splash_end_y;
             for (int i =0; i < 18; i++)
             {
-                pos_y[i] += 20;
-            }
-        }
-        else if (who_right == Biden)
-        {
-            end_splash_y = 24;
-            for (int i =0; i < 18; i++)
-            {
-                pos_y[i] += 20;
+                pos_y[i] += who_right->splash_offset_y;
             }
         }
 
@@ -827,7 +860,7 @@ void Snowmen::drawSnowmen(int pos, bool withHat, int offset)
     GenericGrid * who = getSnowmen(pos);
 
     // TODO: Make this a varialbe
-    if ((pos == SNOWMAN_LEFT) || (who_right == Snowman))
+    if ((pos == SNOWMAN_LEFT) || (who_right->pic == NULL))
     {
 
         //TOP
@@ -903,31 +936,11 @@ void Snowmen::drawSnowmen(int pos, bool withHat, int offset)
             who->getPixal(x+3,y-2)->set(RGBColor::BLACK);
         }
     }
-    else if (who_right == Trump)
+    else
     {
-        // use trump
-        if (pos == SNOWMAN_RIGHT)
-        {
-            RGBPicture *pic = RGBPicture::getPicture("trump_left.png");
-            if (pic)
-            {
-                who->showPictureNow(*pic,0,20+topOffset,true);
-            }
-        }
+        RGBPicture *pic = who_right->pic;
+        who->showPictureNow(*pic, who_right->pic_offset_x+0, who_right->pic_offset_y+topOffset,true);
     }
-    else if (who_right == Biden)
-    {
-        // use Biden
-        if (pos == SNOWMAN_RIGHT)
-        {
-            RGBPicture *pic = RGBPicture::getPicture("biden_left.png");
-            if (pic)
-            {
-                who->showPictureNow(*pic,6,20+topOffset,true);
-            }
-        }
-    }
-
 
     if (withHat)
     {
@@ -1532,32 +1545,18 @@ void Snowmen::cannonShot(int snowmen_pos)
     if (snowmen_pos == SNOWMAN_LEFT)
     {
         // need to choose next right snowmen
-        int who = mqtt->getSnowmanVote();
-        std::string line1 = "Next Up";
-        std::string name;
-        switch(who)
+        //int who = mqtt->getSnowmanVote();
+        int who = 1;
+        who_right = availSnowman.at(who);
+        if (who != 0)
         {
-        case 1:
-            who_right = Trump;
-            name = "Mr. Trump!";
+            std::string line1 = "Next Up";
             getSkyGrid()->writeTextNew(RGBColor::WHITE,22,0, line1,false,12);
             gjhSleep(1);
-            getSkyGrid()->writeTextNew(RGBColor::WHITE,14,12, name,false,12);
-            break;
-        case 2:
-            who_right = Biden;
-            name = "Mr. Biden!";
-            getSkyGrid()->writeTextNew(RGBColor::WHITE,22,0,line1,false,12);
-            gjhSleep(1);
-            getSkyGrid()->writeTextNew(RGBColor::WHITE,14,12, name,false,12);
-            break;
-        default:
-            who_right = Snowman;
-            name = "Snowmen";
-            break;
-        };
+            getSkyGrid()->writeTextNew(RGBColor::WHITE,14,12, who_right->name,false,12);
+        }
 
-        strcpy(message_who, name.c_str());
+        strcpy(message_who, who_right->name.c_str());
     }
 
 
@@ -1568,7 +1567,7 @@ void Snowmen::cannonShot(int snowmen_pos)
     releaseSnowmen();
     placeHatBack(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT);
 
-    if (who_right != Snowman)
+    if (who_right->pic != NULL)
     {
         gjhSleep(2);
         getSkyGrid()->setBackground(RGBColor::BLACK);
@@ -1614,7 +1613,7 @@ void Snowmen::do_it_snowmen()
     while (id < 0 )
     {
         id = rand()%15;
-        if (who_right != Snowman)
+        if (who_right->pic != NULL)
         {
             if (id < 4 || id == 6 || id ==7 ||id == 8 || id ==13 )
             {
@@ -1758,7 +1757,7 @@ void Snowmen::do_it_snowmen()
 
     case 14:
         chance = rand()%2;
-        if (who_right != Snowman)
+        if (who_right->pic != NULL)
         {
             chance = 0;
         }
