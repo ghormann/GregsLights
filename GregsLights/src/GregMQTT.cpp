@@ -94,7 +94,7 @@ GregMQTT::GregMQTT(bool enable, const char * _id) : mosquittopp(_id)
 }
 
 int GregMQTT::getSnowmanVote() {
-    if (++snowmanVote > 2) {
+    if (++snowmanVote > 3) {
         snowmanVote = 0;
     }
     return snowmanVote;
@@ -307,10 +307,15 @@ void GregMQTT::sendTimeInfo()
     this->myPublish("/christmas/timeinfo", output.c_str());
 }
 
-void GregMQTT::sendSignMessage(std::string msg)
+void GregMQTT::sendSignMessage(const std::string& msg)
 {
     this->myPublish("/christmas/sign", msg);
 }
+
+void GregMQTT::sendSnowmanJson(const std::string& msg) {
+    this->myPublish("/christmas/snowman/status", msg);
+}
+
 
 
 void GregMQTT::myPublish(std::string topic, std::string value)

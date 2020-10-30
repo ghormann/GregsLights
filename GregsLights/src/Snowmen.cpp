@@ -6,6 +6,7 @@
 #include <string.h>
 #include <iostream>
 #include "RGBPicture.h"
+#include <json/json.h>
 
 
 #define SNOWBALL_DURATION 0.015
@@ -313,7 +314,7 @@ void Snowmen::createSnowmanPictures()
     who->mouth_offset_y = 22;
     who->name = "Mr. Trump";
     who->pic = RGBPicture::getPicture("trump_left.png");
-    availSnowman.push_back(who);
+    //availSnowman.push_back(who);
 
     who = new SnowmanPicture();
     who->pic_offset_x = 6;
@@ -327,7 +328,7 @@ void Snowmen::createSnowmanPictures()
     who->pic = RGBPicture::getPicture("biden_left.png");
     std::cout << "At load" << who->pic << std::endl;
     this->who_right = who;
-    availSnowman.push_back(who);
+    //availSnowman.push_back(who);
 
     who = new SnowmanPicture();
     who->pic_offset_x = -2;
@@ -352,24 +353,33 @@ void Snowmen::createSnowmanPictures()
     who->show_misses = false;
     who->pic = RGBPicture::getPicture("mary_left.png");
     availSnowman.push_back(who);
-    //this->who_right = who;
-
 
     who = new SnowmanPicture();
     who->pic_offset_x = -8;
     who->pic_offset_y = 20;
-    who->splash_end_y = 16;
+    who->splash_end_y = 18;
     who->splash_offset_y= 12;
     who->mouth_offset_x = 0;
     who->mouth_offset_y = 17;
     who->mouth_multiplier = 1.5;
-    who->name = "Mary";
+    who->name = "Emily";
     who->show_misses = false;
     who->pic = RGBPicture::getPicture("emily_left.png");
     availSnowman.push_back(who);
-    //this->who_right = who;
 
-
+    who = new SnowmanPicture();
+    who->pic_offset_x = 1;
+    who->pic_offset_y = 20;
+    who->splash_end_y = 22;
+    who->splash_offset_y= 16;
+    who->mouth_offset_x = -7;
+    who->mouth_offset_y = 19;
+    who->mouth_multiplier = 1.2;
+    who->name = "Matt";
+    who->show_misses = true;
+    who->pic = RGBPicture::getPicture("matt_left.png");
+    availSnowman.push_back(who);
+    this->who_right = who;
 
 }
 
@@ -713,6 +723,7 @@ void Snowmen::run()
         else if (timeinfo->isDisplayHours())
         {
             do_it_snowmen();
+            publishMqtt();
         }
         else
         {
@@ -1400,7 +1411,8 @@ void Snowmen::drawGroundSnow(int pos, RGBColor *color)
     double level = groundSnowLevel[pos];
     int x,y;
 
-    if (pos == SNOWMAN_RIGHT && !(this->who_right->show_misses)) {
+    if (pos == SNOWMAN_RIGHT && !(this->who_right->show_misses))
+    {
         return;
     }
 
@@ -1578,8 +1590,11 @@ void Snowmen::cannonShot(int snowmen_pos)
     if (snowmen_pos == SNOWMAN_LEFT)
     {
         // need to choose next right snowmen
-        //int who = mqtt->getSnowmanVote();
-        int who = 1;
+        int who = mqtt->getSnowmanVote();
+        if (who >= availSnowman.size())
+        {
+            who = 0;
+        }
         who_right = availSnowman.at(who);
         if (who != 0)
         {
@@ -1854,6 +1869,29 @@ void Snowmen::do_it_snowmen()
 
 }
 
+void Snowmen::publishMqtt()
+{
+    Json::Value root;
+    Json::Value options;
+
+    std::vector<SnowmanPicture *>::iterator ptr;
+    int cnt = 0;
+    for (ptr = availSnowman.begin(); ptr < availSnowman.end(); ptr++) {
+        SnowmanPicture *pic = *(ptr);
+        Json::Value obj;
+        obj["id"] = cnt;
+        obj["name"] = pic->name;
+        options.append(obj);
+        ++cnt;
+    }
+
+    root["current"] = who_right->name;
+    root["available"] = options;
+
+    Json::FastWriter fastWriter;
+    std::string jsonMessage = fastWriter.write(root);
+    mqtt->sendSnowmanJson(jsonMessage);
+}
 
 char * Snowmen::getMessage()
 {

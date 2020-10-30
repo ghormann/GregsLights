@@ -25,7 +25,8 @@ public:
     virtual void on_connect(int rc);
     void on_message(const struct mosquitto_message *message);
     void on_log(int level, const char *str);
-    void sendSignMessage(std::string msg);
+    void sendSignMessage(const std::string& msg);
+    void sendSnowmanJson(const std::string& msg);
     void sendClockMessage(int t);
     void sendTimeInfo();
     void setPowerCallback(PowerCallbackInterface *ptr);
