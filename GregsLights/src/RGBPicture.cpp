@@ -23,7 +23,7 @@ using namespace std;
 
 #include "../include/RGBPicture.h"
 
-vector<RGBPicture> RGBPicture::allPictures;
+vector<RGBPicture *> RGBPicture::allPictures;
 
 RGBPicture::RGBPicture(char *file_name)
 {
@@ -50,6 +50,8 @@ RGBPicture::RGBPicture(char *file_name)
     }
 }
 
+bool comparePtrToPicture(RGBPicture* a, RGBPicture* b) { return (*a < *b); }
+
 bool RGBPicture::operator< ( const RGBPicture &str) const
 {
     return (shortName < str.shortName);
@@ -57,13 +59,13 @@ bool RGBPicture::operator< ( const RGBPicture &str) const
 
 RGBPicture * RGBPicture::getPicture(const string &name)
 {
-    vector<RGBPicture> all = getAllPictures(); // make sure it is loaded
-    vector<RGBPicture>::iterator it;
+    vector<RGBPicture *> all = getAllPictures(); // make sure it is loaded
+    vector<RGBPicture *>::iterator it;
     RGBPicture *p;
 
     for(it = all.begin(); it != all.end(); it++)
     {
-        p = &(*it);
+        p = (*it);
         if (name == p->getName())
         {
             return p;
@@ -104,26 +106,27 @@ bool RGBPicture::isMovie()
     return false;
 }
 
-void RGBPicture::findStartsWith(const string &startsWith, vector<RGBPicture> &results)
+void RGBPicture::findStartsWith(const string &startsWith, vector<RGBPicture *> &results)
 {
-    vector<RGBPicture> all = getAllPictures(); // make sure it is loaded
-    vector<RGBPicture>::iterator it;
+    vector<RGBPicture *> all = getAllPictures(); // make sure it is loaded
+    vector<RGBPicture *>::iterator it;
 
     for(it = all.begin(); it != all.end(); it++)
     {
-        RGBPicture p = (*it);
-        if (p.getName().find(startsWith) == 0)
+        RGBPicture* p = (*it);
+        if (p->getName().find(startsWith) == 0)
         {
             results.push_back(p);
         }
     }
 }
 
-vector<RGBPicture> &RGBPicture::getAllPictures()
+vector<RGBPicture *> &RGBPicture::getAllPictures()
 {
     if (allPictures.size() == 0 )
     {
         std::string dir = std::string("/home/ghormann/Documents/src/gregslights/GregsLights/resources");
+        std::cout << "Reading resources from: " << dir << std::endl;
         DIR *dp;
         struct dirent *dirp;
         if((dp  = opendir(dir.c_str())) == NULL)
@@ -141,14 +144,14 @@ vector<RGBPicture> &RGBPicture::getAllPictures()
             {
                 if( s.st_mode & S_IFREG )
                 {
-                    allPictures.push_back(RGBPicture( (char *)dirPtr));
+                    allPictures.push_back(new RGBPicture( (char *)dirPtr));
                 }
             }
         }
         closedir(dp);
 
         //sort the vector afer it has been created
-        std::sort(allPictures.begin(), allPictures.end());
+        std::sort(allPictures.begin(), allPictures.end(), comparePtrToPicture);
     }
     return allPictures;
 }

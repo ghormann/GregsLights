@@ -21,10 +21,10 @@ class RGBPicture
         void getSize(int &width, int &height);
         std::string &getName();
         bool isMovie();
-        static std::vector<RGBPicture> &getAllPictures();
+        static std::vector<RGBPicture *> &getAllPictures();
         bool operator< ( const RGBPicture &str) const;
         static RGBPicture * getPicture(const std::string &name);
-        static void findStartsWith(const std::string &startsWith, std::vector<RGBPicture> &results);
+        static void findStartsWith(const std::string &startsWith, std::vector<RGBPicture *> &results);
     protected:
     private:
         int check_if_png(char *file_name );
@@ -33,7 +33,7 @@ class RGBPicture
         int width;
         std::string shortName;
         png_byte* allData;
-        static std::vector<RGBPicture> allPictures;
+        static std::vector<RGBPicture *> allPictures;
 };
 
 #endif // RGBPICTURE_H

@@ -2600,11 +2600,11 @@ void GenericGrid::showPictureNowCenter(RGBPicture &pic,bool hideBlack)
 
 void GenericGrid::showMovieCenter(std::string &startsWith, int cnt, double duration)
 {
-    vector<RGBPicture> pics;
+    vector<RGBPicture *> pics;
     RGBPicture::findStartsWith(startsWith, pics);
-    RGBPicture p = pics.at(0);
+    RGBPicture * p = pics.at(0);
     int w,h;
-    p.getSize(w,h);
+    p->getSize(w,h);
 
     int y = (h > gridHeight ? 0 : (gridHeight-h)/2);
     int x = (w > gridWidth ? 0: (gridWidth - w)/2);
@@ -2614,7 +2614,7 @@ void GenericGrid::showMovieCenter(std::string &startsWith, int cnt, double durat
 
 void GenericGrid::showMovie(string &startsWith, int cnt, double duration, int x, int y, bool setBlackFirst)
 {
-    vector<RGBPicture> pics;
+    vector<RGBPicture *> pics;
     if (setBlackFirst)
     {
         this->setBackground(RGBColor::BLACK);
@@ -2624,12 +2624,12 @@ void GenericGrid::showMovie(string &startsWith, int cnt, double duration, int x,
 
     for (int i =0 ; i < cnt; i++)
     {
-        vector<RGBPicture>::iterator it;
+        vector<RGBPicture *>::iterator it;
 
         for(it = pics.begin(); it != pics.end(); it++)
         {
-            RGBPicture p = (*it);
-            this->showPictureNow(p,x,y,false);
+            RGBPicture *p = (*it);
+            this->showPictureNow(*p,x,y,false);
             gridSleep(duration);
         }
     }

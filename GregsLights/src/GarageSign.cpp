@@ -142,10 +142,10 @@ void GarageSign::showPowerToday()
     int cnt = 0;
     int max = 174;
     std::string startsWith = "clark_Plug";
-    std::vector<RGBPicture> pics;
+    std::vector<RGBPicture *> pics;
 
     RGBPicture::findStartsWith(startsWith, pics);
-    std::vector<RGBPicture>::iterator it;
+    std::vector<RGBPicture *>::iterator it;
 
     setBackground(RGBColor::BLACK);
 
@@ -172,7 +172,7 @@ void GarageSign::showPowerToday()
         {
             break;
         }
-        RGBPicture p = (*it);
+        RGBPicture * p = (*it);
         std::ostringstream todayMsg;
         std::ostringstream line2;
         todayMsg << "$" << std::setprecision(2);
@@ -181,7 +181,7 @@ void GarageSign::showPowerToday()
         std::string m = todayMsg.str();
         this->lockGrid();
 
-        this->showPictureNow(p,20,0,false);
+        this->showPictureNow(*p,20,0,false);
         setBackground(RGBColor::DARKRED, power_left, 0,power_left+216, GARAGE_SIGN_HEIGHT);
         this->writeTextNew(RGBColor::WHITE,power_left+14,2,m,false,24);
 
