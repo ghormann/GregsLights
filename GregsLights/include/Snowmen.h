@@ -36,7 +36,8 @@ class SnowmanPicture
     int mouth_offset_y = 0;
     int splash_end_y = 0;
     int splash_offset_y = 0;
-    int mouth_multiplier = 1;
+    double mouth_multiplier = 1;
+    bool show_misses = true;
 };
 
 class SnowmenGrid: public GenericGrid

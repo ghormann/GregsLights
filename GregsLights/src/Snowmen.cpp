@@ -326,6 +326,8 @@ void Snowmen::createSnowmanPictures()
     who->name = "Mr. Biden";
     who->pic = RGBPicture::getPicture("biden_left.png");
     std::cout << "At load" << who->pic << std::endl;
+    this->who_right = who;
+    availSnowman.push_back(who);
 
     who = new SnowmanPicture();
     who->pic_offset_x = -2;
@@ -337,7 +339,35 @@ void Snowmen::createSnowmanPictures()
     who->name = "Hans Gruber";
     who->pic = RGBPicture::getPicture("hans_gruber.png");
     availSnowman.push_back(who);
-    this->who_right = who;
+
+
+    who = new SnowmanPicture();
+    who->pic_offset_x = -4;
+    who->pic_offset_y = 22;
+    who->splash_end_y = 16;
+    who->splash_offset_y= 12;
+    who->mouth_offset_x = 5;
+    who->mouth_offset_y = 16;
+    who->name = "Mary";
+    who->show_misses = false;
+    who->pic = RGBPicture::getPicture("mary_left.png");
+    availSnowman.push_back(who);
+    //this->who_right = who;
+
+
+    who = new SnowmanPicture();
+    who->pic_offset_x = -8;
+    who->pic_offset_y = 20;
+    who->splash_end_y = 16;
+    who->splash_offset_y= 12;
+    who->mouth_offset_x = 0;
+    who->mouth_offset_y = 17;
+    who->mouth_multiplier = 1.5;
+    who->name = "Mary";
+    who->show_misses = false;
+    who->pic = RGBPicture::getPicture("emily_left.png");
+    availSnowman.push_back(who);
+    //this->who_right = who;
 
 
 
@@ -859,7 +889,6 @@ void Snowmen::drawSnowmen(int pos, bool withHat, int offset)
     int midOffset = 2*offset;
     GenericGrid * who = getSnowmen(pos);
 
-    // TODO: Make this a varialbe
     if ((pos == SNOWMAN_LEFT) || (who_right->pic == NULL))
     {
 
@@ -1371,6 +1400,10 @@ void Snowmen::drawGroundSnow(int pos, RGBColor *color)
     double level = groundSnowLevel[pos];
     int x,y;
 
+    if (pos == SNOWMAN_RIGHT && !(this->who_right->show_misses)) {
+        return;
+    }
+
     if (level <= 0)
     {
         return;
@@ -1621,6 +1654,8 @@ void Snowmen::do_it_snowmen()
             }
         }
     }
+
+    //id = 14;
 
     int chance = 0;
     switch(id)
