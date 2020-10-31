@@ -393,10 +393,25 @@ void Snowmen::createSnowmanPictures()
     who->mouth_offset_x = 4;
     who->mouth_offset_y = 18;
     who->mouth_multiplier = 1.2;
-    who->name_offset_x = 30;
+    who->name_offset_x = 6;
     who->name = "Buddy the Elf";
     who->show_misses = true;
     who->pic = RGBPicture::getPicture("buddy_left.png");
+    availSnowman.push_back(who);
+    //this->who_right = who;
+
+    who = new SnowmanPicture();
+    who->pic_offset_x = -4;
+    who->pic_offset_y = 17;
+    who->splash_end_y = 22;
+    who->splash_offset_y= 20;
+    who->mouth_offset_x = -2;
+    who->mouth_offset_y = 22;
+    who->mouth_multiplier = 1.2;
+    who->name_offset_x = 6;
+    who->name = "Red Among Us";
+    who->show_misses = true;
+    who->pic = RGBPicture::getPicture("among_us.png");
     availSnowman.push_back(who);
     this->who_right = who;
 
@@ -1691,7 +1706,7 @@ void Snowmen::do_it_snowmen()
         }
     }
 
-    if (++snowmanStepCount > 40)
+    if (++snowmanStepCount > 40) // 40
     {
         cannonShot(SNOWMAN_LEFT);
     }
