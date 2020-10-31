@@ -117,6 +117,7 @@ private:
     void ball_line(GenericGrid *grid, int start_x, int start_y, int end_x, int end_y, double ballSize);
     void do_middle(int start_snowmen, int start_y, int high_y, int end_y,double duration);
     char message2[100];
+    int snowmanStepCount = 0;
     char message_who[30];
     TimeInfo *timeinfo;
     SnowmanPicture *who_right;

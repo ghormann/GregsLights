@@ -1600,6 +1600,7 @@ void Snowmen::cannonShot(int snowmen_pos)
             who = 0;
         }
         who_right = availSnowman.at(who);
+        snowmanStepCount = 0;
         if (who != 0)
         {
             std::string line1 = "Next Up";
@@ -1674,6 +1675,11 @@ void Snowmen::do_it_snowmen()
             }
         }
     }
+
+    if (++snowmanStepCount > 40) {
+        cannonShot(SNOWMAN_LEFT);
+    }
+    sprintf(message_who, "%s (%d)", who_right->name.c_str(), snowmanStepCount);
 
     //id = 10;
 
