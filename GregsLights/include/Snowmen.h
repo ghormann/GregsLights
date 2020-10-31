@@ -36,6 +36,7 @@ class SnowmanPicture
     int mouth_offset_y = 0;
     int splash_end_y = 0;
     int splash_offset_y = 0;
+    int name_offset_x = 0;
     double mouth_multiplier = 1;
     bool show_misses = true;
 };

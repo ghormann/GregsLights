@@ -312,6 +312,7 @@ void Snowmen::createSnowmanPictures()
     who->pic_offset_y = 20;
     who->mouth_offset_x = -4;
     who->mouth_offset_y = 22;
+    who->name_offset_x = 14;
     who->name = "Mr. Trump";
     who->pic = RGBPicture::getPicture("trump_left.png");
     //availSnowman.push_back(who);
@@ -324,6 +325,7 @@ void Snowmen::createSnowmanPictures()
     who->mouth_offset_x = -2;
     who->mouth_offset_y = 24;
     who->mouth_multiplier = 1.5;
+    who->name_offset_x = 14;
     who->name = "Mr. Biden";
     who->pic = RGBPicture::getPicture("biden_left.png");
     //availSnowman.push_back(who);
@@ -335,6 +337,7 @@ void Snowmen::createSnowmanPictures()
     who->splash_offset_y= 12;
     who->mouth_offset_x = 4;
     who->mouth_offset_y = 14;
+    who->name_offset_x = 10;
     who->name = "Hans Gruber";
     who->pic = RGBPicture::getPicture("hans_gruber.png");
     availSnowman.push_back(who);
@@ -349,6 +352,7 @@ void Snowmen::createSnowmanPictures()
     who->mouth_offset_y = 16;
     who->name = "Mary";
     who->show_misses = false;
+    who->name_offset_x = 29;
     who->pic = RGBPicture::getPicture("mary_left.png");
     availSnowman.push_back(who);
 
@@ -360,6 +364,7 @@ void Snowmen::createSnowmanPictures()
     who->mouth_offset_x = 0;
     who->mouth_offset_y = 17;
     who->mouth_multiplier = 1.5;
+    who->name_offset_x = 28;
     who->name = "Emily";
     who->show_misses = false;
     who->pic = RGBPicture::getPicture("emily_left.png");
@@ -373,6 +378,7 @@ void Snowmen::createSnowmanPictures()
     who->mouth_offset_x = -7;
     who->mouth_offset_y = 19;
     who->mouth_multiplier = 1.2;
+    who->name_offset_x = 30;
     who->name = "Matt";
     who->show_misses = true;
     who->pic = RGBPicture::getPicture("matt_left.png");
@@ -1599,7 +1605,7 @@ void Snowmen::cannonShot(int snowmen_pos)
             std::string line1 = "Next Up";
             getSkyGrid()->writeTextNew(RGBColor::WHITE,22,0, line1,false,12);
             gjhSleep(1);
-            getSkyGrid()->writeTextNew(RGBColor::WHITE,14,12, who_right->name,false,12);
+            getSkyGrid()->writeTextNew(RGBColor::WHITE,who_right->name_offset_x,12, who_right->name,false,12);
         }
 
         publishMqtt();
@@ -1669,7 +1675,7 @@ void Snowmen::do_it_snowmen()
         }
     }
 
-    //id = 14;
+    //id = 10;
 
     int chance = 0;
     switch(id)
