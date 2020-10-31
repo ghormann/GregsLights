@@ -287,7 +287,7 @@ Snowmen::Snowmen(bool skipTime,  E131Network *network[], GregMQTT *mqtt)
     RGBPicture::getAllPictures(); // Load all Pictures
     strcpy(message2, "Starting up");
     createSnowmanPictures();
-    sprintf(message_who, who_right->name.c_str());
+    strcpy(message_who, who_right->name.c_str());
 
 }
 
@@ -326,8 +326,6 @@ void Snowmen::createSnowmanPictures()
     who->mouth_multiplier = 1.5;
     who->name = "Mr. Biden";
     who->pic = RGBPicture::getPicture("biden_left.png");
-    std::cout << "At load" << who->pic << std::endl;
-    this->who_right = who;
     //availSnowman.push_back(who);
 
     who = new SnowmanPicture();
@@ -379,7 +377,7 @@ void Snowmen::createSnowmanPictures()
     who->show_misses = true;
     who->pic = RGBPicture::getPicture("matt_left.png");
     availSnowman.push_back(who);
-    this->who_right = who;
+    //this->who_right = who;
 
 }
 
@@ -1467,9 +1465,9 @@ void Snowmen::cannonShot(int snowmen_pos)
     GenericGrid *cannon_grid = getSplashGrid(snowmen_pos);
     GenericGrid *end_splash_Grid = getSplashGrid(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT);
     GenericGrid *end_snowman = getSnowmen(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT);
-    int x,y,dx, splash_x, splash_y, snowman_x;
+    int x,y,dx, splash_x, splash_y, snowman_x = 0;
     double size_1in = CANNON_BALL_SIZE_1IN;
-    static int dy[] = {24,22,20,19,18,17,16,15,14,13,12,11,11,10,10,9,9,8,8,8,7,7,7,6,6,6,5,5,5,5,5,6,6,6,7,7,7,8,8,9,9,10,10,11,11,12,12, 13, 13, 14, 14, 15, 15, 15, 15,15, 15,15,15,15,15,15,15,0,0,0,0,0,0,0};
+    static int dy[] = {24,22,20,19,18,17,16,15,14,13,12,11,11,10,10,9,9,8,8,8,7,7,7,6,6,6,5,5,5,5,5,6,6,6,7,7,7,8,8,9,9,10,10,11,11,12,12, 13, 13, 14, 14, 15, 15, 15, 15,15, 15,15,15,15,15,15,15,0,0,0,0,0,0,0,0,0,0,0,0};
 
     strcpy(message2, "Cannon Shot");
 
@@ -1591,7 +1589,7 @@ void Snowmen::cannonShot(int snowmen_pos)
     {
         // need to choose next right snowmen
         int who = mqtt->getSnowmanVote();
-        if (who >= availSnowman.size())
+        if (who >= (int)availSnowman.size())
         {
             who = 0;
         }
@@ -1604,6 +1602,7 @@ void Snowmen::cannonShot(int snowmen_pos)
             getSkyGrid()->writeTextNew(RGBColor::WHITE,14,12, who_right->name,false,12);
         }
 
+        publishMqtt();
         strcpy(message_who, who_right->name.c_str());
     }
 

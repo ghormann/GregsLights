@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 MessageGenerator::MessageGenerator(TimeInfo *ti)
 {
@@ -49,7 +50,8 @@ std::string MessageGenerator::getMessage()
     checkClear();
 
     if (timeInfo->isNoShow()) {
-        sprintf(this->message,getStartDate().c_str());
+        const char *s = getStartDate().c_str();
+        strcpy(this->message,s);
     }
 
     int i = 11;

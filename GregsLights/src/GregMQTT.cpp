@@ -93,10 +93,8 @@ GregMQTT::GregMQTT(bool enable, const char * _id) : mosquittopp(_id)
     }
 }
 
-int GregMQTT::getSnowmanVote() {
-    if (++snowmanVote > 3) {
-        snowmanVote = 0;
-    }
+int GregMQTT::getSnowmanVote()
+{
     return snowmanVote;
 }
 
@@ -131,6 +129,35 @@ void GregMQTT::on_message(const struct mosquitto_message *message)
             }
             TimeInfo::getInstance()->setNoShow(newMode);
             printf("Setting noShow to %s becasuse of %s\n", (newMode? "True" : "False"), data.c_str());
+        }
+    }
+    else if (strcmp("/christmas/vote/snowmenQueue", message->topic) ==0 )
+    {
+        std::string strJson = std::string(reinterpret_cast<char*>(message->payload));
+        Json::Value root;
+        Json::Reader reader;
+        bool parsingSuccessful = reader.parse( strJson.c_str(), root );     //parse process
+        if ( !parsingSuccessful )
+        {
+            std::cout  << "Failed to parse snowmenQueue"
+                       << reader.getFormattedErrorMessages()
+                       << std::endl;
+        }
+        else
+        {
+            if (root.isArray())
+            {
+
+                if (! root.empty())
+                {
+                    Json::Value first = root.get( (int)0, 0);
+                    snowmanVote = first.get("id", 2).asInt();
+                }
+                else
+                {
+                    std::cout << "SnowmenQueue was empty!!!" << std::endl;
+                }
+            }
         }
     }
     else if (strcmp("/christmas/todayPower", message->topic) ==0 )
@@ -281,6 +308,7 @@ void GregMQTT::on_connect(int rc)
         subscribe(NULL, "/christmas/clock/setDebug");
         subscribe(NULL, "/christmas/power/#");
         subscribe(NULL, "/christmas/todayPower");
+        subscribe(NULL, "/christmas/vote/snowmenQueue");
     }
 }
 
@@ -312,7 +340,8 @@ void GregMQTT::sendSignMessage(const std::string& msg)
     this->myPublish("/christmas/sign", msg);
 }
 
-void GregMQTT::sendSnowmanJson(const std::string& msg) {
+void GregMQTT::sendSnowmanJson(const std::string& msg)
+{
     this->myPublish("/christmas/snowman/status", msg);
 }
 
