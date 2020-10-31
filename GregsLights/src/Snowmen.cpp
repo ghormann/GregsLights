@@ -385,6 +385,21 @@ void Snowmen::createSnowmanPictures()
     availSnowman.push_back(who);
     //this->who_right = who;
 
+    who = new SnowmanPicture();
+    who->pic_offset_x = 7;
+    who->pic_offset_y = 17;
+    who->splash_end_y = 22;
+    who->splash_offset_y= 16;
+    who->mouth_offset_x = 4;
+    who->mouth_offset_y = 18;
+    who->mouth_multiplier = 1.2;
+    who->name_offset_x = 30;
+    who->name = "Buddy the Elf";
+    who->show_misses = true;
+    who->pic = RGBPicture::getPicture("buddy_left.png");
+    availSnowman.push_back(who);
+    this->who_right = who;
+
 }
 
 int SnowmenGrid::getPos(int x, int y)
@@ -1676,12 +1691,13 @@ void Snowmen::do_it_snowmen()
         }
     }
 
-    if (++snowmanStepCount > 40) {
+    if (++snowmanStepCount > 40)
+    {
         cannonShot(SNOWMAN_LEFT);
     }
     sprintf(message_who, "%s (%d)", who_right->name.c_str(), snowmanStepCount);
 
-    //id = 10;
+    //id = 14;
 
     int chance = 0;
     switch(id)
@@ -1887,7 +1903,8 @@ void Snowmen::publishMqtt()
 
     std::vector<SnowmanPicture *>::iterator ptr;
     int cnt = 0;
-    for (ptr = availSnowman.begin(); ptr < availSnowman.end(); ptr++) {
+    for (ptr = availSnowman.begin(); ptr < availSnowman.end(); ptr++)
+    {
         SnowmanPicture *pic = *(ptr);
         Json::Value obj;
         obj["id"] = cnt;
