@@ -275,12 +275,16 @@ void GarageSign::showTextNumber()
     this->writeTextNew(RGBColor::WHITE,222,2,num, false,20);
     this->writeTextNew(RGBColor::RED,44,24,bottom, false,20);
     this->releaseGrid();
+
+    sprintf(message, "%s %s", top.c_str(), num.c_str());
+
 }
 
 void GarageSign::showStartDate()
 {
     std::string s = generator->getStartDate();
     this->writeTextNew(RGBColor::getRandom(),0,2, s,false,20);
+    strncpy(message,s.c_str(),60);
     gjhSleep(3.0);
 
     int i = rand() % 3;
