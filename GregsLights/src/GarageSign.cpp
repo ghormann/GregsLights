@@ -231,25 +231,50 @@ void GarageSign::run()
     }
     else
     {
+        int secondsOfMinute = timeInfo->getSecondsOfDay();
 
-        // Wait in a tight loop to update if
-        // signalled.   Does waste a little CPU.
-        for (int i = 0; i < 1000; i++)
+        // Display Phone number between 21-33 seconds
+        if (secondsOfMinute > 20 && secondsOfMinute < 25)
         {
-            if (ampsChanged)
+            showTextNumber();
+            gjhSleep(13.0);
+        }
+        // Display Total power after 47 seconds
+        else if (secondsOfMinute > 47)
+        {
+            showPowerToday();
+        }
+        else
+        {
+            // Display realtime power
+            // Wait in a tight loop to update if
+            // signalled.   Does waste a little CPU.
+            for (int i = 0; i < 1000; i++)
             {
-                if (timeInfo->getSecondsOfDay() > 47)
+                if (ampsChanged)
                 {
-                    showPowerToday();
+                    showPower();
+                    ampsChanged = false;
+                    break;
                 }
-                showPower();
-                ampsChanged = false;
-                break;
+                gjhSleep(0.1);
             }
-            gjhSleep(0.1);
         }
 
     }
+}
+
+void GarageSign::showTextNumber()
+{
+    std::string top = "Text your First Name to";
+    std::string num = "513-854-1352";
+    std::string bottom = "to become part of the display";
+    this->lockGrid();
+    this->setBackground(RGBColor::DARKGREEN);
+    this->writeTextNew(RGBColor::RED,2,2,top, false,20);
+    this->writeTextNew(RGBColor::WHITE,222,2,num, false,20);
+    this->writeTextNew(RGBColor::RED,44,24,bottom, false,20);
+    this->releaseGrid();
 }
 
 void GarageSign::showStartDate()

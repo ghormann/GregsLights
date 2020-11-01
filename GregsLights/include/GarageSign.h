@@ -26,6 +26,7 @@ public:
 
 private:
     void showPower();
+    void showTextNumber();
     void showPowerToday();
     GregMQTT *mqtt;
     void showStartDate();
