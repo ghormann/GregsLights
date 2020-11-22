@@ -749,6 +749,7 @@ void Snowmen::run()
 {
     while(1)
     {
+        publishMqtt();
         if (timeinfo->isDebug())
         {
             test_snowmen();
@@ -757,7 +758,6 @@ void Snowmen::run()
         else if (timeinfo->isDisplayHours())
         {
             do_it_snowmen();
-            publishMqtt();
         }
         else
         {
