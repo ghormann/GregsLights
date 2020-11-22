@@ -28,6 +28,8 @@ private:
     void showPower();
     void showTextNumber();
     void showPowerToday();
+    void showPowerTodayVideo();
+    void drawRadio(int radio_left);
     GregMQTT *mqtt;
     void showStartDate();
     double amps;

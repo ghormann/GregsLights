@@ -87,12 +87,20 @@ void GarageSign::setPowerCallback(double amps)
     this->ampsChanged = true;
 }
 
+// Note: Assumes Grid is already locked
+void GarageSign::drawRadio(int radio_left) {
+    std::string FM_STATION = "106.7FM";
+    std::string RADIO = "RADIO STATION";
+    setBackground(RGBColor::DARKGREEN, radio_left, 0, radio_left+128, GARAGE_SIGN_HEIGHT);
+    this->writeTextNew(RGBColor::WHITE,radio_left,2, FM_STATION,false, 32);
+    this->writeTextNew(RGBColor::WHITE,radio_left,32, RADIO,false, 16);
+
+}
+
 void GarageSign::showPower()
 {
     int watts = amps * 115;
-    std::string FM_STATION = "106.7FM";
     std::string units = "Watts";
-    std::string RADIO = "RADIO STATION";
     std::string footer = "TO POWER THE LIGHTS";
 
     std::ostringstream powerMsg;
@@ -122,9 +130,7 @@ void GarageSign::showPower()
 
     this->lockGrid();
     this->setBackground(RGBColor::BLACK);
-    setBackground(RGBColor::DARKGREEN, radio_left, 0, radio_left+128, GARAGE_SIGN_HEIGHT);
-    this->writeTextNew(RGBColor::WHITE,radio_left,2, FM_STATION,false, 32);
-    this->writeTextNew(RGBColor::WHITE,radio_left,32, RADIO,false, 16);
+    drawRadio(radio_left);
 
     setBackground(RGBColor::DARKRED, power_left, 0,power_left+216, GARAGE_SIGN_HEIGHT);
     this->writeTextNew(RGBColor::WHITE,power_left+14,2,msg,false,32);
@@ -134,8 +140,43 @@ void GarageSign::showPower()
     this->releaseGrid();
 
 }
-
 void GarageSign::showPowerToday()
+{
+    int power_left = 134;
+
+    std::ostringstream todayMsg;
+    std::ostringstream line2;
+    todayMsg << "$" << std::setprecision(2);
+    todayMsg << std::fixed << this->dollars;
+    todayMsg << " Spent on";
+    std::string m = todayMsg.str();
+    this->lockGrid();
+
+    setBackground(RGBColor::BLACK);
+    drawRadio(0);
+
+    setBackground(RGBColor::DARKRED, power_left, 0,power_left+216, GARAGE_SIGN_HEIGHT);
+    this->writeTextNew(RGBColor::WHITE,power_left+14,2,m,false,24);
+
+    if (kwh < 100)
+    {
+        line2 << std::setprecision(2) << std::fixed  << kwh;
+    }
+    else
+    {
+        line2 << std::setprecision(1) << std::fixed  << kwh;
+    }
+    line2 << " KWh Today";
+    m = line2.str();
+    this->writeTextNew(RGBColor::WHITE,power_left+14,26,m,false,24);
+    this->releaseGrid();
+    sprintf(message, "%s %s", todayMsg.str().c_str(), m.c_str());
+
+    gridSleep(0.5);
+
+}
+
+void GarageSign::showPowerTodayVideo()
 {
     int power_left = 134;
     double duration = 0.06;
@@ -237,10 +278,10 @@ void GarageSign::run()
         if (secondsOfMinute > 20 && secondsOfMinute < 25)
         {
             showTextNumber();
-            gjhSleep(13.0);
+            gjhSleep(6.0);
         }
         // Display Total power after 47 seconds
-        else if (secondsOfMinute > 47)
+        else if (secondsOfMinute > 52)
         {
             showPowerToday();
         }
