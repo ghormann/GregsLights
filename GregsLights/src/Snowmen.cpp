@@ -346,7 +346,7 @@ void Snowmen::createSnowmanPictures()
     who = new SnowmanPicture();
     who->pic_offset_x = -4;
     who->pic_offset_y = 22;
-    who->splash_end_y = 16;
+    who->splash_end_y = 18;
     who->splash_offset_y= 12;
     who->mouth_offset_x = 5;
     who->mouth_offset_y = 16;
@@ -355,6 +355,7 @@ void Snowmen::createSnowmanPictures()
     who->name_offset_x = 29;
     who->pic = RGBPicture::getPicture("mary_left.png");
     availSnowman.push_back(who);
+    this->who_right = who;
 
     who = new SnowmanPicture();
     who->pic_offset_x = -8;
@@ -413,7 +414,38 @@ void Snowmen::createSnowmanPictures()
     who->show_misses = true;
     who->pic = RGBPicture::getPicture("among_us.png");
     availSnowman.push_back(who);
+    //this->who_right = who;
+
+    who = new SnowmanPicture();
+    who->pic_offset_x = -4;
+    who->pic_offset_y = 20;
+    who->splash_end_y = 16;
+    who->splash_offset_y= 10;
+    who->mouth_offset_x = 7;
+    who->mouth_offset_y = 17;
+    who->mouth_multiplier = 1.2;
+    who->name_offset_x = 4;
+    who->name = "Clark Griswold";
+    who->show_misses = true;
+    who->pic = RGBPicture::getPicture("clark_left.png");
+    availSnowman.push_back(who);
+    //this->who_right = who;
+
+    who = new SnowmanPicture();
+    who->pic_offset_x = -22;
+    who->pic_offset_y = 20;
+    who->splash_end_y = 24;
+    who->splash_offset_y= 22;
+    who->mouth_offset_x = 0;
+    who->mouth_offset_y = 25;
+    who->mouth_multiplier = 1.1;
+    who->name_offset_x = 8;
+    who->name = "Cousin Eddie";
+    who->show_misses = false;
+    who->pic = RGBPicture::getPicture("cousin_eddie.png");
+    availSnowman.push_back(who);
     this->who_right = who;
+
 
 }
 
