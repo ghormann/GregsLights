@@ -105,7 +105,7 @@ private:
     void eatSnowball(int pos);
     void drawMouth(int pos, double mouthPos);
     void setAllOff();
-    void publishMqtt();
+    void publishMqtt(bool reset = false);
     RGBColor *noseBallColor;
     pthread_mutex_t lock;
     double groundSnowLevel[2];

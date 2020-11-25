@@ -1662,6 +1662,7 @@ void Snowmen::cannonShot(int snowmen_pos)
             who = 0;
         }
         who_right = availSnowman.at(who);
+        publishMqtt(true); // Reset snowmen vote
         snowmanStepCount = 0;
         if (who != 0)
         {
@@ -1943,7 +1944,7 @@ void Snowmen::do_it_snowmen()
 
 }
 
-void Snowmen::publishMqtt()
+void Snowmen::publishMqtt(bool reset)
 {
     Json::Value root;
     Json::Value options;
@@ -1962,6 +1963,7 @@ void Snowmen::publishMqtt()
 
     root["current"] = who_right->name;
     root["available"] = options;
+    root["reset"] = reset;
 
     Json::FastWriter fastWriter;
     std::string jsonMessage = fastWriter.write(root);
