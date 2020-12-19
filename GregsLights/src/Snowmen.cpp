@@ -1656,15 +1656,10 @@ void Snowmen::cannonShot(int snowmen_pos)
     if (snowmen_pos == SNOWMAN_LEFT)
     {
         // need to choose next right snowmen
-        int who = mqtt->getSnowmanVote();
-        if (who >= (int)availSnowman.size())
-        {
-            who = 0;
-        }
-        who_right = availSnowman.at(who);
+        updateSnowmanFromMQTT();
         publishMqtt(true); // Reset snowmen vote
         snowmanStepCount = 0;
-        if (who != 0)
+        if (who_right->pic != NULL)
         {
             std::string line1 = "Next Up";
             getSkyGrid()->writeTextNew(RGBColor::WHITE,22,0, line1,false,12);
@@ -1692,6 +1687,29 @@ void Snowmen::cannonShot(int snowmen_pos)
 
 
 }
+
+void Snowmen::updateSnowmanFromMQTT()
+{
+    int who = mqtt->getSnowmanVote();
+    if (who >= (int)availSnowman.size())
+    {
+        who = 0;
+    }
+    if (who == 0)
+    {
+        if (++nonSpecialSnowmanCount > 2)
+        {
+            // If the Snowman has been standard for a long time then
+            // force change.
+            who = rand()% ((int)availSnowman.size());
+            nonSpecialSnowmanCount = 0;
+        }
+    } else {
+        nonSpecialSnowmanCount = 0;
+    }
+    who_right = availSnowman.at(who);
+}
+
 
 void Snowmen::do_it_snowmen()
 {

@@ -104,6 +104,7 @@ private:
     void duckSnowman(int pos);
     void eatSnowball(int pos);
     void drawMouth(int pos, double mouthPos);
+    void updateSnowmanFromMQTT();
     void setAllOff();
     void publishMqtt(bool reset = false);
     RGBColor *noseBallColor;
@@ -118,6 +119,7 @@ private:
     void do_middle(int start_snowmen, int start_y, int high_y, int end_y,double duration);
     char message2[100];
     int snowmanStepCount = 0;
+    int nonSpecialSnowmanCount = 0;
     char message_who[30];
     TimeInfo *timeinfo;
     SnowmanPicture *who_right;
