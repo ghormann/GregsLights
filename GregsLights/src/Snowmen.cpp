@@ -1633,9 +1633,7 @@ void Snowmen::cannonShot(int snowmen_pos)
         size_1in += 3.0;
     }
     // Reset -- Destroyed on is the reverse!
-    groundSnowLevel[snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT] = 0;
-    noseBalls[snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT] = 0;
-    hatStatus[snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT] = false;
+    resetSnowmen(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT);
 
     getSkyGrid()->writeText(RGBColor::GREEN,10,0,"GONE!", false);
     size_1in = 1;
@@ -1686,6 +1684,12 @@ void Snowmen::cannonShot(int snowmen_pos)
     }
 
 
+}
+
+void Snowmen::resetSnowmen(int pos) {
+    groundSnowLevel[pos] = 0;
+    noseBalls[pos] = 0;
+    hatStatus[pos] = false;
 }
 
 void Snowmen::updateSnowmanFromMQTT()
@@ -1760,6 +1764,8 @@ void Snowmen::do_it_snowmen()
     if (++snowmanStepCount > 40) // 40
     {
         cannonShot(SNOWMAN_LEFT);
+        // Need to return, other wise something invalid can occur
+        return;
     }
     sprintf(message_who, "%s (%d)", who_right->name.c_str(), snowmanStepCount);
 

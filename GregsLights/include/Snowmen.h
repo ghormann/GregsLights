@@ -106,6 +106,7 @@ private:
     void drawMouth(int pos, double mouthPos);
     void updateSnowmanFromMQTT();
     void setAllOff();
+    void resetSnowmen(int pos);
     void publishMqtt(bool reset = false);
     RGBColor *noseBallColor;
     pthread_mutex_t lock;
