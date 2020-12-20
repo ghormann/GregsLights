@@ -1697,7 +1697,7 @@ void Snowmen::updateSnowmanFromMQTT()
     }
     if (who == 0)
     {
-        if (++nonSpecialSnowmanCount > 2)
+        if (++nonSpecialSnowmanCount > 5)
         {
             // If the Snowman has been standard for a long time then
             // force change.
