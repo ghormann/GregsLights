@@ -25,4 +25,4 @@ Build from Make file using
 
 ### Contributions ###
 
-* Huge thanks to the xLights team (https://github.com/smeighan/xLights).  Much of the Serial Level control code is modeled after their design.
+* Huge thanks to the xLights team (https://github.com/smeighan/xLights).  Much of the Serial port and E131 Level code is modeled after their design.
