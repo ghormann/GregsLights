@@ -36,7 +36,7 @@ void MessageGenerator::checkClear()
 }
 
 std::string MessageGenerator::getStartDate() {
-    std::string s = "OUR FULL DISPLAY STARTS NOV 26";
+    std::string s = "OUR FULL DISPLAY STARTS NOV 23";
     return s;
 }
 
