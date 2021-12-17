@@ -446,6 +446,21 @@ void Snowmen::createSnowmanPictures()
     availSnowman.push_back(who);
     this->who_right = who;
 
+    who = new SnowmanPicture();
+    who->pic_offset_x = -6;
+    who->pic_offset_y = 10;
+    who->splash_end_y = 24;
+    who->splash_offset_y= 22;
+    who->mouth_offset_x = 0;
+    who->mouth_offset_y = 20;
+    who->mouth_multiplier = 1.1;
+    who->name_offset_x = 8;
+    who->name = "Tom Nook";
+    who->show_misses = true;
+    who->pic = RGBPicture::getPicture("tom_nook.png");
+    availSnowman.push_back(who);
+    this->who_right = who;
+
 
 }
 
