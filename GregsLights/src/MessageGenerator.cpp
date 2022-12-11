@@ -143,13 +143,13 @@ std::string MessageGenerator::getMessage()
         if (timeInfo->isNoShow()) {
             return (char*) getStartDate().c_str();
         }
-        return "TEXT YOUR FIRST NAME TO 513-854-1352 AND SEE YOUR NAME IN LIGHTS!";
+        return "TEXT YOUR FIRST NAME TO 888-887-1423 AND SEE YOUR NAME IN LIGHTS!";
     case 13:
     case 14:
         if (timeInfo->isNoShow()) {
             return (char*) getStartDate().c_str();
         }
-        return "TEXT YOUR FIRST NAME TO 513-854-1352 FOR A PERSONALIZED MESSAGE.";
+        return "TEXT YOUR FIRST NAME TO 888-887-1423 FOR A PERSONALIZED MESSAGE.";
     case 15:
         if (timeInfo->isNoShow()) {
             return (char*) getStartDate().c_str();

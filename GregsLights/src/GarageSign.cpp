@@ -308,7 +308,7 @@ void GarageSign::run()
 void GarageSign::showTextNumber()
 {
     std::string top = "Text your First Name to";
-    std::string num = "513-854-1352";
+    std::string num = "888-887-1423";
     std::string bottom = "to become part of the display";
     this->lockGrid();
     this->setBackground(RGBColor::DARKGREEN);
