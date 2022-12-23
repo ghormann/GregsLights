@@ -36,6 +36,7 @@ private:
     int maxPixels;
     int maxPackets;
     bool isShutdown;
+    bool sendData;
     unsigned char *data;
     struct sockaddr_in myaddr, remoteaddr;
     int fd;
@@ -47,6 +48,7 @@ public:
     DDPOutput(std::string ip, int numPixels, int startChannel);
     bool doUpdate(bool force);
     void setShutdown(bool val);
+    void setSendData(bool val);
     RGBLight* getRGB(int start);
     Bulb* getBulb(int channel);
 

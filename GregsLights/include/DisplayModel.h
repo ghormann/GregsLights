@@ -9,6 +9,7 @@
 #include "GarageSign.h"
 #include "Snowmen.h"
 #include "GregMQTT.h"
+#include "LargeGrid.h"
 
 #define HOUSE_LIGHT_START 1
 #define HOUSE_LIGHT_END   4
@@ -24,6 +25,7 @@ class DisplayModel
         DisplayModel(bool sendDMX, int skip_time_check, int show_new_year);
         virtual ~DisplayModel();
         CountdownClock *getClock();
+        LargeGrid* getLargeGrid();
         Sign * getSign();
         Snowmen * getSnowmen();
         GarageSign *getGarageSign();
@@ -45,6 +47,7 @@ class DisplayModel
         Sign *sign;
         Snowmen *snowmen;
         GarageSign *garageSign;
+        LargeGrid *largeGrid;
         bool skipTimeCheck;
         bool newYears;
 
