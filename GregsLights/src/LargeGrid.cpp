@@ -20,6 +20,9 @@ LargeGrid::LargeGrid(DDPOutput *net) : GenericGrid(LGRID_PIXAL_WIDTH,LGRID_PIXAL
     int networkPixel = 0;
     int dir = -1;  /* 1 = Down, -1 = up */
 
+    net->setSendData(false);
+    this->outputNetwork = net;
+
     /*
      * Remove this when done
      */
@@ -111,16 +114,9 @@ LargeGrid::LargeGrid(DDPOutput *net) : GenericGrid(LGRID_PIXAL_WIDTH,LGRID_PIXAL
 
 void LargeGrid::test()
 {
-    while(0)
+    while(1)
     {
-        setDummyBackground(RGBColor::BLACK,0,0,gridWidth,gridHeight+3);
-        RGBColor *color = RGBColor::getRandom();
-        writeText(color,13,0,"READY");
-        writeText(color,gridWidth/2-14,15,"TO");
-        writeText(color,10,30,"COUNT?");
-        setDisplayPosition(0,3);
-        gridSleep(0.25);
-
+        countdown(false);
     }
 
     //Roate Colors
@@ -167,7 +163,7 @@ void LargeGrid::test()
                 getPixal(i,j)->set(RGBColor::GREEN);
             }
 
-            gjhSleep(0.5);
+            gjhSleep(0.10);
             for (int j =0; j < LGRID_PIXAL_WIDTH; j++)
             {
                 getPixal(j,row)->set(15,15,15);
@@ -242,25 +238,42 @@ RGBLight *LargeGrid::getBoard(int x, int y)
 
 void LargeGrid::run()
 {
+    // Sleep during the day
     while (! TimeInfo::getInstance()->isDisplayHours())
     {
         sprintf(message, "Sleeping during day (%02d)",
                 TimeInfo::getInstance()->getHourOfDay());
         setBackground(RGBColor::BLACK);
-        gridSleep(5);;
+        this->outputNetwork->setSendData(false);
+        gridSleep(5);
     }
 
     int numSeconds = timeInfo->getSecondsUntil();
-    if (numSeconds < 33 && numSeconds > 0)
+
+    // It not close to countdown disable data sending and sleep
+    if (numSeconds > 50 || numSeconds <=0)
+    {
+        sprintf(message, "Not close to midnight; sleep");
+        setBackground(RGBColor::BLACK);
+        this->outputNetwork->setSendData(false);
+        gridSleep(1);
+        if (numSeconds > 100)
+        {
+            gridSleep(10);
+        }
+    }
+    else if (numSeconds < 33 && numSeconds > 0)
     {
         sprintf(message, "Booting up: Grid");
-//        interruptAble = false;
-//        countdown();
-//       interruptAble = true;
+        this->outputNetwork->setSendData(true);
+        countdown(false);
+        setBackground(RGBColor::BLACK);
+        gridSleep(0.1);
+
     }
     else
     {
-        sprintf(message, "Booting up: Grid");
+        gridSleep(0.5);
     }
 }
 

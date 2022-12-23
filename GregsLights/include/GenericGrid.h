@@ -55,7 +55,7 @@ public:
     int drawLetterSmall(char letter, RGBColor *color, int x, int y);
     char *getMessage();
     void testGridLayout();
-    void countdown();
+    void countdown(bool scrollMerry=false);
     void drawSpecial(int x, int y, GRID_SPECIAL type);
     int writeText(RGBColor *fgColor, int x, int y, std::string text);
     int writeText(RGBColor *fgColor, int x, int y, std::string text, bool onDummy, int weight=1);

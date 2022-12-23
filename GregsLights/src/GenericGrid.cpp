@@ -401,7 +401,7 @@ void GenericGrid::wipeDown(RGBColor *color, double delay)
     }
 }
 
-void GenericGrid::countdown()
+void GenericGrid::countdown(bool scrollMerry)
 {
     sprintf(message, "Countdown");
 
@@ -469,9 +469,12 @@ void GenericGrid::countdown()
 
     }
 
-    for (int i = 0; i< 15; i++)
+    if (scrollMerry)
     {
-        this->scrollMerry();
+        for (int i = 0; i< 15; i++)
+        {
+            this->scrollMerry();
+        }
     }
 }
 

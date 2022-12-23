@@ -73,7 +73,8 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     // P10
     DDPOutput *p10 = new DDPOutput("192.168.1.147",GARAGE_PIXELS,1);
     DDPOutput *mainGrid = new DDPOutput("192.168.1.156", LGRID_TOTAL_PIXALS, 9676);
-    if (sendDMX) {
+    if (sendDMX)
+    {
         networkP10->addNetwork(p10);
         networkP10->addNetwork(mainGrid);
     }
@@ -163,6 +164,12 @@ CountdownClock* DisplayModel::getClock()
     return clock;
 }
 
+LargeGrid* DisplayModel::getLargeGrid()
+{
+    return largeGrid;
+}
+
+
 void DisplayModel::setMessage(int i, char * msg)
 {
     if (i < 0 ||  i >= NUM_MESSAGE_BUFFERS)
@@ -182,7 +189,8 @@ char *DisplayModel::getMessage(int i)
     return messages[i];
 }
 
-GarageSign *DisplayModel::getGarageSign() {
+GarageSign *DisplayModel::getGarageSign()
+{
     return garageSign;
 }
 

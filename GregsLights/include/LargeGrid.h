@@ -20,7 +20,7 @@ using namespace std;
 class LargeGrid : public GenericGrid
 {
 public:
-    LargeGrid(DDPOutput net[]);
+    LargeGrid(DDPOutput *net);
     virtual ~LargeGrid();
     virtual RGBLight * getBoard(int x, int y);
     virtual RGBLight * getPixal(int x, int y);
@@ -30,6 +30,7 @@ public:
 protected:
 private:
     char message[80];
+    DDPOutput *outputNetwork;
     RGBLight *pixals[LGRID_TOTAL_PIXALS];
     RGBLight *board[ LGRID_DUMMY_HEIGHT * LGRID_DUMMY_WIDTH];
 

@@ -30,11 +30,13 @@ void GregsDisplay::run()
     pthread_t snowmen_t;
     pthread_t mqtt_t;
     pthread_t garage_t;
+    pthread_t large_grid_t;
 
     pthread_create(&(sign_t), NULL, GregsDisplay::signThread, (void*) this);
     pthread_create(&(garage_t), NULL, GregsDisplay::garageThread, (void*) this);
     pthread_create(&(snowmen_t), NULL, GregsDisplay::snowmenThread, (void*) this);
     pthread_create(&(mqtt_t), NULL, GregsDisplay::mqttThread, (void*) this);
+    pthread_create(&(large_grid_t), NULL, GregsDisplay::largeGridThread, (void*) this);
 
     getModel()->getClock()->setActive(true);
 }
@@ -83,4 +85,15 @@ void * GregsDisplay::signThread(void *args)
     }
     return NULL;
 }
+
+void * GregsDisplay::largeGridThread(void *args)
+{
+    GregsDisplay *ptr = (GregsDisplay *) args;
+    while (1)
+    {
+        ptr->getModel()->getLargeGrid()->run();
+    }
+    return NULL;
+}
+
 
