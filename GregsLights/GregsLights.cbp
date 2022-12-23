@@ -75,6 +75,7 @@
 		<Unit filename="include/GenericGrid.h" />
 		<Unit filename="include/GregMQTT.h" />
 		<Unit filename="include/GregsDisplay.h" />
+		<Unit filename="include/LargeGrid.h" />
 		<Unit filename="include/MessageGenerator.h" />
 		<Unit filename="include/RGBPicture.h" />
 		<Unit filename="include/Sign.h" />
@@ -110,6 +111,7 @@
 		<Unit filename="src/GenericGrid.cpp" />
 		<Unit filename="src/GregMQTT.cpp" />
 		<Unit filename="src/GregsDisplay.cpp" />
+		<Unit filename="src/LargeGrid.cpp" />
 		<Unit filename="src/MessageGenerator.cpp" />
 		<Unit filename="src/RGBPicture.cpp" />
 		<Unit filename="src/Sign.cpp" />

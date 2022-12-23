@@ -401,7 +401,7 @@ void GenericGrid::wipeDown(RGBColor *color, double delay)
     }
 }
 
-void GenericGrid::countdown()
+void GenericGrid::countdown(bool scrollMerry)
 {
     sprintf(message, "Countdown");
 
@@ -459,8 +459,9 @@ void GenericGrid::countdown()
             //setDummyBackground(RGBColor::BLACK,width/2-10,3,width/2+10,h-2);
             int pos = this->gridWidth/2 - (numseconds > 9 ? 7 : 13);
             sprintf(seconds_c, "%7d", numseconds);
-            pos += (drawLetter(seconds_c[5],RGBColor::BLACK,pos,posy) + 2);
-            drawLetter(seconds_c[6],RGBColor::BLACK,pos,posy);
+            setDummyBackground(RGBColor::BLACK,gridWidth/2 - 9,posy < 3? 0: posy-3,gridWidth/2 + 11,posy+20);
+            pos += (drawLetter(seconds_c[5],RGBColor::WHITE,pos,posy) + 2);
+            drawLetter(seconds_c[6],RGBColor::WHITE,pos,posy);
         }
         setDisplayPosition(0,0);
         gridSleep(0.05);
@@ -469,9 +470,12 @@ void GenericGrid::countdown()
 
     }
 
-    for (int i = 0; i< 15; i++)
+    if (scrollMerry)
     {
-        this->scrollMerry();
+        for (int i = 0; i< 15; i++)
+        {
+            this->scrollMerry();
+        }
     }
 }
 
@@ -1929,7 +1933,7 @@ int GenericGrid::writeText(RGBColor *fgColor, int x, int y, string str, bool onD
     return x;
 }
 
-void GenericGrid::scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, double speed)
+void GenericGrid::scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, double speed, int y)
 {
     sprintf(message, "Scroll: %s", text);
     setDummyBackground(bgColor);
@@ -1938,7 +1942,7 @@ void GenericGrid::scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, 
     int pos = gridWidth + 2;
     for (int i = 0; i < textLen; i++)
     {
-        pos += drawLetter(text[i],fgColor,pos,0) + 2;
+        pos += drawLetter(text[i],fgColor,pos,y) + 2;
     }
 
     setDisplayPosition(0,0);

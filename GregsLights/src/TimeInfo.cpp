@@ -57,7 +57,7 @@ void TimeInfo::updateTmChristmas()
 
     t_christmas = mktime(&tm_christmas);
     /* Debug */
-    //t_christmas = t_now + 60;
+    //t_christmas = t_now + 65;
 
 }
 

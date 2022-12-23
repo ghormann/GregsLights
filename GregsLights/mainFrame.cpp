@@ -302,7 +302,7 @@ void BasicGLPane::render( wxPaintEvent& evt )
 
     // Sign
     model->getSign()->lockGrid();
-    drawGrid(130,100,2,model->getSign());
+    drawGrid(10,100,2,model->getSign());
     model->getSign()->releaseGrid();
 
     // Snowmen
@@ -320,7 +320,7 @@ void BasicGLPane::render( wxPaintEvent& evt )
     {
         for (int i = 0; i  < 43; i++)
         {
-            int x = 50+ (CLOCK_DIGITS-digit) * 60 + digitX[i]*6;
+            int x = 5 + (CLOCK_DIGITS-digit) * 60 + digitX[i]*6;
             int y = 0 + digitY[i] * 6;
 
             RGBLight *pix = model->getClock()->getPixel(digit,i);
@@ -340,8 +340,12 @@ void BasicGLPane::render( wxPaintEvent& evt )
 
 
     model->getGarageSign()->lockGrid();
-    drawGrid(25,500,1,model->getGarageSign());
+    drawGrid(2,500,1,model->getGarageSign());
     model->getGarageSign()->releaseGrid();
+
+    model->getLargeGrid()->lockGrid();
+    drawGrid(500,2,2,model->getLargeGrid());
+    model->getLargeGrid()->releaseGrid();
 
 
 

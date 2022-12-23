@@ -12,7 +12,8 @@ DDPOutput::DDPOutput(std::string ip, int numPixels, int startChannel)
     this->lastPacketLength = DDP_PACKET_LEN;
     int chan = startChannel - 1;
     this->fd = 0;
-    this->isShutdown = false;
+    this->isShutdown = false; //send black
+    this->sendData = true;
 
     // Canculate max number of Packets
     this->maxPackets = (numPixels * 3) / DDP_CHANNELS_PER_PACKET;
@@ -174,6 +175,10 @@ void DDPOutput::setShutdown(bool val) {
     this->isShutdown = val;
 }
 
+void DDPOutput::setSendData(bool val) {
+    this->sendData = val;
+}
+
 RGBLight* DDPOutput::getRGB(int start)
 {
     if (start < 0 || start > maxPixels) {
@@ -200,6 +205,9 @@ Bulb* DDPOutput::getBulb(int channel)
 
 bool DDPOutput::doUpdate(bool force)
 {
+    if (! this->sendData) {
+        return true;
+    }
 
     if (this->isShutdown)
     {
