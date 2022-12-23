@@ -50,7 +50,7 @@ LargeGrid::LargeGrid(DDPOutput *net) : GenericGrid(LGRID_PIXAL_WIDTH,LGRID_PIXAL
         }
 
         //printf("x: %d, y: %d, networkPixal: %d, i: %d\n", x,y,networkPixel, i);
-        this->pixals[x * LGRID_PIXAL_HEIGHT + y] = net->getRGB(networkPixel);
+        this->pixals[x * LGRID_PIXAL_HEIGHT + y] = net->getRGB(networkPixel*3);
         y += dir;
         ++networkPixel;
     }
@@ -79,7 +79,7 @@ LargeGrid::LargeGrid(DDPOutput *net) : GenericGrid(LGRID_PIXAL_WIDTH,LGRID_PIXAL
         ++counter;
 
         //printf("x: %d, y: %d, networkPixal: %d - BACKWARDS\n", x,y,networkPixel);
-        this->pixals[x * LGRID_PIXAL_HEIGHT + y] = net->getRGB(networkPixel);
+        this->pixals[x * LGRID_PIXAL_HEIGHT + y] = net->getRGB(networkPixel*3);
         y += dir;
         ++networkPixel;
 
@@ -114,13 +114,14 @@ LargeGrid::LargeGrid(DDPOutput *net) : GenericGrid(LGRID_PIXAL_WIDTH,LGRID_PIXAL
 
 void LargeGrid::test()
 {
+    this->outputNetwork->setSendData(true);
     while(1)
     {
         countdown(false);
     }
 
     //Roate Colors
-    while(0)
+    while(1)
     {
         for (int x = 0; x < LGRID_PIXAL_WIDTH; x++)
         {
@@ -130,7 +131,7 @@ void LargeGrid::test()
             }
         }
 
-        gjhSleep(5);
+        gjhSleep(0.5);
 
         for (int x = 0; x < LGRID_PIXAL_WIDTH; x++)
         {
@@ -140,7 +141,17 @@ void LargeGrid::test()
             }
         }
 
-        gjhSleep(1);
+        gjhSleep(0.5);
+
+        for (int x = 0; x < LGRID_PIXAL_WIDTH; x++)
+        {
+            for (int y = 0; y < LGRID_PIXAL_HEIGHT; y++)
+            {
+                this->getPixal(x,y)->set(0,0,100);
+            }
+        }
+
+        gjhSleep(0.5);
     }
 
     // show lines
@@ -238,6 +249,7 @@ RGBLight *LargeGrid::getBoard(int x, int y)
 
 void LargeGrid::run()
 {
+    //test();
     // Sleep during the day
     while (! TimeInfo::getInstance()->isDisplayHours())
     {
@@ -251,7 +263,7 @@ void LargeGrid::run()
     int numSeconds = timeInfo->getSecondsUntil();
 
     // It not close to countdown disable data sending and sleep
-    if (numSeconds > 50 || numSeconds <=0)
+    if (numSeconds > 45 || numSeconds <=0)
     {
         sprintf(message, "Not close to midnight; sleep");
         setBackground(RGBColor::BLACK);
@@ -262,9 +274,18 @@ void LargeGrid::run()
             gridSleep(10);
         }
     }
-    else if (numSeconds < 33 && numSeconds > 0)
+    else if (numSeconds > 29)
     {
-        sprintf(message, "Booting up: Grid");
+        sprintf(message, "Ready to Countdown?");
+        this->outputNetwork->setSendData(true);
+        scrollText(RGBColor::WHITE, RGBColor::BLACK, "READY TO COUNT LOUD?", 0.01, 20);
+        sprintf(message, "Ready to Count?");
+
+        setBackground(RGBColor::BLACK);
+    }
+    else if (numSeconds < 30 && numSeconds > 0)
+    {
+        sprintf(message, "countdown");
         this->outputNetwork->setSendData(true);
         countdown(false);
         setBackground(RGBColor::BLACK);
