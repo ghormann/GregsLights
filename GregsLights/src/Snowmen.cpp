@@ -476,6 +476,22 @@ void Snowmen::createSnowmanPictures()
     availSnowman.push_back(who);
     this->who_right = who;
 
+    who = new SnowmanPicture();
+    who->pic_offset_x = -2;
+    who->pic_offset_y = 20;
+    who->splash_end_y = 24;
+    who->splash_offset_y= 22;
+    who->mouth_offset_x = 0;
+    who->mouth_offset_y = 25;
+    who->mouth_multiplier = 1.5;
+    who->name_offset_x = 4;
+    who->name = "Sonic";
+    who->show_misses = true;
+    who->pic = RGBPicture::getPicture("sonic_side_small.png");
+    availSnowman.push_back(who);
+    this->who_right = who;
+
+
 }
 
 int SnowmenGrid::getPos(int x, int y)
