@@ -11,6 +11,7 @@
 GregMQTT::GregMQTT(bool enable, const char * _id) : mosquittopp(_id)
 {
     isValid = enable;
+    powerCallback = NULL;
 
     if (enable)
     {
