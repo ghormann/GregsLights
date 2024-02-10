@@ -4,7 +4,7 @@ This is the software that runs our lighting display (http://thehormanns.net).   
 Required LIbaries (install using apt-get or simular)
 
 # Ubuntu 22.04
-sudo apt-get install build-essential libpng++-dev libgtk2.0-dev libgstreamer-plugins-base1.0-dev freeglut3-dev libmpg123-dev libwxgtk-media3.0-gtk3-dev libncurses5-dev libjsoncpp25  libjsoncpp-dev libmosquittopp1 libmosquittopp-dev libgraphicsmagick++1-dev graphicsmagick-libmagick-dev-compat
+sudo apt-get install build-essential libpng++-dev libgtk2.0-dev libgstreamer-plugins-base1.0-dev freeglut3-dev libmpg123-dev libwxgtk-media3.0-gtk3-dev libncurses5-dev libjsoncpp25  libjsoncpp-dev libmosquittopp1 libmosquittopp-dev libgraphicsmagick++1-dev graphicsmagick-libmagick-dev-compat cbp2make codeblocks
 
 # Ubuntu 18
 sudo apt-get install build-essential libpng++-dev libgtk2.0-dev libgstreamer-plugins-base1.0-dev freeglut3-dev libmpg123-dev libwxgtk-media3.0-dev libncurses5-dev libjsoncpp1 libjsoncpp-dev libmosquittopp1 libmosquittopp-dev libgraphicsmagick++1-dev graphicsmagick-libmagick-dev-compat
