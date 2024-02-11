@@ -414,7 +414,7 @@ void GenericGrid::countdown(bool scrollMerry)
 
     bool counting = true;
     int i = 0;
-    char seconds_c[11];
+    char seconds_c[14];
 
     while(counting)
     {
