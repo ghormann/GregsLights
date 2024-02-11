@@ -484,7 +484,7 @@ void Snowmen::createSnowmanPictures()
     who->mouth_offset_x = 0;
     who->mouth_offset_y = 25;
     who->mouth_multiplier = 1.5;
-    who->name_offset_x = 4;
+    who->name_offset_x = 28;
     who->name = "Sonic";
     who->show_misses = true;
     who->pic = RGBPicture::getPicture("sonic_side_small.png");
