@@ -499,7 +499,7 @@ void Snowmen::createSnowmanPictures()
     who->mouth_offset_x = -10;
     who->mouth_offset_y = 25;
     who->mouth_multiplier = 1.5;
-    who->name_offset_x = 28;
+    who->name_offset_x = 30;
     who->name = "Tails";
     who->show_misses = true;
     who->pic = RGBPicture::getPicture("tails_left.png");
