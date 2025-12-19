@@ -26,6 +26,7 @@ public:
 
 private:
     void showPower();
+    void showPopcorn();
     void showTextNumber();
     void showPowerToday();
     void showPowerTodayVideo();

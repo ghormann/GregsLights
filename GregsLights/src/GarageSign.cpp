@@ -97,6 +97,27 @@ void GarageSign::drawRadio(int radio_left) {
 
 }
 
+void GarageSign::showPopcorn() {
+    std::string FREE = "FREE POPCORN TONIGHT";
+
+    for (int i = 0; i < 3; i++) {
+        RGBColor *color = RGBColor::WHITE;
+        switch(i%3) {
+            case 1:
+                color = RGBColor::RED;
+                break;
+            case 2:
+                color = RGBColor::GREEN;
+                break;
+        }
+        this->lockGrid();
+        setBackground(RGBColor::DARKGREEN, 0, 0, GARAGE_SIGN_WIDTH, GARAGE_SIGN_HEIGHT);
+        this->writeTextNew(color,10,15, FREE,false, 26);
+        this->releaseGrid();
+        gridSleep(0.5);
+    }
+}
+
 void GarageSign::showPower()
 {
     int watts = amps * 115;
@@ -273,9 +294,14 @@ void GarageSign::run()
     else
     {
         int secondsOfMinute = timeInfo->getSecondsOfDay();
+        printf("Num Seconds: %d\n", secondsOfMinute);
+
+        if (secondsOfMinute > 10 && secondsOfMinute < 20) {
+            showPopcorn();
+        }
 
         // Display Phone number between 21-33 seconds
-        if (secondsOfMinute > 20 && secondsOfMinute < 25)
+        else if (secondsOfMinute > 20 && secondsOfMinute < 28)
         {
             showTextNumber();
             gjhSleep(6.0);
@@ -290,8 +316,12 @@ void GarageSign::run()
             // Display realtime power
             // Wait in a tight loop to update if
             // signalled.   Does waste a little CPU.
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 30; i++)
             {
+                if (i ==0) {
+                    // Always need to draw it once
+                    showPower();
+                }
                 if (ampsChanged)
                 {
                     showPower();
