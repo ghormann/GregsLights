@@ -23,6 +23,7 @@ public:
     GregMQTT(bool enabled, const char * _id);
     virtual ~GregMQTT();
     virtual void on_connect(int rc);
+    bool isPopcorn();
     void on_message(const struct mosquitto_message *message);
     void on_log(int level, const char *str);
     void sendSignMessage(const std::string& msg);
@@ -38,9 +39,11 @@ protected:
 
 private:
     bool isValid;
+    bool isPopcornEnabled;
     int snowmanVote = 0;
     PowerCallbackInterface *powerCallback;
     void debug(std::string mesg);
+    void setPopcorn(bool value);
     std::deque<std::string> name_queue;
     std::mutex name_queue_mutex;
 

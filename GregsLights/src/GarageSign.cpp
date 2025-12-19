@@ -294,9 +294,9 @@ void GarageSign::run()
     else
     {
         int secondsOfMinute = timeInfo->getSecondsOfDay();
-        printf("Num Seconds: %d\n", secondsOfMinute);
+        //printf("Num Seconds: %d\n", secondsOfMinute);
 
-        if (secondsOfMinute > 10 && secondsOfMinute < 20) {
+        if (mqtt->isPopcorn() &&  secondsOfMinute > 10 && secondsOfMinute < 20) {
             showPopcorn();
         }
 

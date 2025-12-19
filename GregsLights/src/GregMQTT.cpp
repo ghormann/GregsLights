@@ -11,6 +11,7 @@
 GregMQTT::GregMQTT(bool enable, const char * _id) : mosquittopp(_id)
 {
     isValid = enable;
+    isPopcornEnabled = false;
     powerCallback = NULL;
 
     if (enable)
@@ -110,6 +111,11 @@ std::string GregMQTT::getNextName()
         return name;
     }
     return std::string();
+}
+
+bool GregMQTT::isPopcorn()
+{
+    return this->isPopcornEnabled;
 }
 
 void GregMQTT::on_message(const struct mosquitto_message *message)
@@ -253,6 +259,24 @@ void GregMQTT::on_message(const struct mosquitto_message *message)
             printf("Setting Debug to %s becasuse of %s\n", (newMode? "True" : "False"), data.c_str());
         }
     }
+    else if (strcmp("/christmas/clock/setPopcorn", message->topic) ==0)
+    {
+        if (message->payload != NULL)
+        {
+            std::string data = std::string(reinterpret_cast<char*>(message->payload));
+            std::for_each(data.begin(), data.end(), [](char & c)
+            {
+                c = ::toupper(c);
+            });
+            bool newMode = false;
+            if (data.compare("TRUE") == 0)
+            {
+                newMode = true;
+            }
+            setPopcorn(newMode);
+            printf("Setting Popcorn to %s becasuse of %s\n", (newMode? "True" : "False"), data.c_str());
+        }
+    }
     else if (
         (strcmp("/christmas/personsName", message->topic) == 0)
         || (strcmp("/christmas/personsNameFront", message->topic) == 0)
@@ -307,10 +331,18 @@ void GregMQTT::on_connect(int rc)
         subscribe(NULL, "/christmas/clock/setNoShow");
         subscribe(NULL, "/christmas/clock/setTimeCheck");
         subscribe(NULL, "/christmas/clock/setDebug");
+        subscribe(NULL, "/christmas/clock/setPopcorn");
         subscribe(NULL, "/christmas/power/#");
         subscribe(NULL, "/christmas/todayPower");
         subscribe(NULL, "/christmas/vote/snowmenQueue");
     }
+}
+
+void GregMQTT::setPopcorn(bool value)
+{
+    this->isPopcornEnabled = value;
+    std::string s = value ? "true" : "false";
+    myPublish("/christmas/clock/popcorn", s);
 }
 
 void GregMQTT::sendClockMessage(int t)
