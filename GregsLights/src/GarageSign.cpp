@@ -99,6 +99,7 @@ void GarageSign::drawRadio(int radio_left) {
 
 void GarageSign::showPopcorn() {
     std::string FREE = "FREE POPCORN TONIGHT";
+    sprintf(message, "Flashing: %s", FREE.c_str());
 
     for (int i = 0; i < 3; i++) {
         RGBColor *color = RGBColor::WHITE;
@@ -296,18 +297,18 @@ void GarageSign::run()
         int secondsOfMinute = timeInfo->getSecondsOfDay();
         //printf("Num Seconds: %d\n", secondsOfMinute);
 
-        if (mqtt->isPopcorn() &&  secondsOfMinute > 10 && secondsOfMinute < 20) {
+        if (mqtt->isPopcorn() &&  secondsOfMinute > 4 && secondsOfMinute < 20) {
             showPopcorn();
         }
 
         // Display Phone number between 21-33 seconds
-        else if (secondsOfMinute > 20 && secondsOfMinute < 28)
+        else if (secondsOfMinute >= 20 && secondsOfMinute < 28)
         {
             showTextNumber();
             gjhSleep(6.0);
         }
-        // Display Total power after 47 seconds
-        else if (secondsOfMinute > 52)
+        // Display Total power after 50 seconds
+        else if (secondsOfMinute > 50)
         {
             showPowerToday();
         }
