@@ -11,6 +11,7 @@
 #include "include/DisplayTester.h"
 #include "include/TextDisplay.h"
 #include "include/GregsDisplay.h"
+#include "include/GregsConfig.h"
 
 #include <Magick++.h>
 
@@ -79,6 +80,7 @@ int main(int argc, char *argv[])
 
     try
     {
+        GregsConfig::getInstance(); // validates config; throws std::runtime_error if resources_path missing
         bool sendDMX = true;
         model = new DisplayModel(sendDMX, skip_time_check, show_new_year );
         sleep(1); // Allow threads to start up
@@ -100,6 +102,11 @@ int main(int argc, char *argv[])
             sleep(60);
         }
 
+    }
+    catch (const std::exception& e)
+    {
+        cerr << e.what() << endl;
+        return 1;
     }
     catch (const char* msg)
     {
