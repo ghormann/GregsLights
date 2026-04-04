@@ -26,6 +26,15 @@ Build from Make file using
   * make -f GregsLights.cbp.mak release
 
 
+### Command Line Options ###
+
+| Flag | Description |
+|------|-------------|
+| `-d` | Debug mode: runs `DisplayTester::testAll()` instead of the normal display loop |
+| `-t` | Skip time check: allows the display to run outside of normal scheduled hours |
+| `-y` | Show New Year mode |
+| `-l` | Plain console (log) mode: prints changed display values to stdout instead of using ncurses |
+
 ### Contributions ###
 
 * Huge thanks to the xLights team (https://github.com/smeighan/xLights).  Much of the Serial port and E131 Level code is modeled after their design.
