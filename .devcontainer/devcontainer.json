@@ -3,6 +3,10 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
+  "mounts": [
+    "source=gregs-lights-claude,target=/home/vscode/.claude,type=volume"
+  ],
+  "remoteUser": "vscode",
   "workspaceFolder": "/workspaces/GregsLights",
   "remoteEnv": {
     "DISPLAY": "${localEnv:DISPLAY}"

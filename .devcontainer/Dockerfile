@@ -29,3 +29,12 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
 
 # Install Claude CLI globally
 RUN npm install -g @anthropic-ai/claude-code
+
+# Create vscode user (matches standard devcontainer convention)
+RUN groupadd --gid 1000 vscode \
+    && useradd --uid 1000 --gid 1000 -m -s /bin/bash vscode \
+    && apt-get update && apt-get install -y sudo \
+    && echo "vscode ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/vscode \
+    && rm -rf /var/lib/apt/lists/*
+
+USER vscode
