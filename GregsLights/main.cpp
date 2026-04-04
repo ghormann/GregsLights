@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <stdexcept>
 #include <signal.h>
 #include "include/DisplayModel.h"
 #include "include/DisplayTester.h"
