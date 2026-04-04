@@ -92,9 +92,13 @@ int main(int argc, char *argv[])
         model = new DisplayModel(sendDMX, skip_time_check, show_new_year );
         sleep(1); // Allow threads to start up
         if (isLog == TRUE)
+        {
             new PlainDisplay(model);
+        }
         else
+        {
             new TextDisplay(model);
+        }
 
         if (isDebug == TRUE)
         {
