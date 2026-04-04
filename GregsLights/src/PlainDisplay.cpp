@@ -53,4 +53,5 @@ void PlainDisplay::update()
             last[i] = val;
         }
     }
+    fflush(stdout);
 }
