@@ -15,6 +15,11 @@ Add a `-l` command-line flag that selects a plain console (log) display mode ins
 
 ### Interface
 
+Define in `PlainDisplay.h`:
+```cpp
+#define PLAIN_DISPLAY_FIELD_COUNT 7
+```
+
 ```cpp
 class PlainDisplay {
 public:
@@ -23,7 +28,7 @@ public:
     void update();
 private:
     DisplayModel *model;
-    std::string last[7];
+    std::string last[PLAIN_DISPLAY_FIELD_COUNT];
     pthread_t display_t;
 };
 ```
