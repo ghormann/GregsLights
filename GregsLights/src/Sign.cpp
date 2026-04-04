@@ -2,6 +2,7 @@
 #include "../include/RGBPicture.h"
 #include "../include/controller/DummyBulb.h"
 #include "RGBPicture.h"
+#include "../include/GregsConfig.h"
 #include <string>
 #include <algorithm>
 
@@ -826,7 +827,8 @@ void Sign::test()
     if(0)
     {
         int x, y, picWidth, picHeight;
-        RGBPicture * picture = new RGBPicture("/home/ghormann/Documents/src/gregslights/GregsLights/resources/orig/test.png");
+        std::string testPngPath = GregsConfig::getInstance().getResourcesPath() + "/orig/test.png";
+        RGBPicture * picture = new RGBPicture((char*)testPngPath.c_str());
         picture->getSize(picWidth,picHeight);
         this->setDummyBackground(RGBColor::BLACK);
         for (x = 0; x < picWidth; x++)

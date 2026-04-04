@@ -1871,6 +1871,7 @@ void GenericGrid::writeTextNew(RGBColor *fgColor, int x, int y, std::string &tex
     int height = onDummy ? dummy_height : gridHeight;
 
     Magick::Image image(Magick::Geometry(width,height), Magick::Color("black"));
+    image.font("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf");
     image.quiet(true);
     image.depth(8);
     //image.font(font);
