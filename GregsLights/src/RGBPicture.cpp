@@ -3,6 +3,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <algorithm>    // std::sort
+#include "../include/GregsConfig.h"
 
 using namespace std;
 
@@ -125,7 +126,7 @@ vector<RGBPicture *> &RGBPicture::getAllPictures()
 {
     if (allPictures.size() == 0 )
     {
-        std::string dir = std::string("/home/ghormann/Documents/src/gregslights/GregsLights/resources");
+        std::string dir = GregsConfig::getInstance().getResourcesPath();
         std::cout << "Reading resources from: " << dir << std::endl;
         DIR *dp;
         struct dirent *dirp;
