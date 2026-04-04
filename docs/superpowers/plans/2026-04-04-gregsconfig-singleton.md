@@ -57,7 +57,7 @@ private:
     std::string mqttUsername;
     std::string mqttPassword;
     std::string mqttHost;
-    int mqttPort;
+    int mqttPort = 0;
 };
 
 #endif // GREGSCONFIG_H

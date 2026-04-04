@@ -1,6 +1,5 @@
 #include "../include/GregsConfig.h"
 #include <fstream>
-#include <iostream>
 #include <stdexcept>
 #include <json/json.h>
 
