@@ -11,6 +11,7 @@
 #include "include/DisplayModel.h"
 #include "include/DisplayTester.h"
 #include "include/TextDisplay.h"
+#include "include/PlainDisplay.h"
 #include "include/GregsDisplay.h"
 #include "include/GregsConfig.h"
 
@@ -38,6 +39,7 @@ int main(int argc, char *argv[])
     int skip_time_check = FALSE;
     int show_new_year = FALSE;
     int isDebug = FALSE;
+    int isLog = FALSE;
     int ch;
 
     //Setup SIgnal Handler
@@ -52,7 +54,7 @@ int main(int argc, char *argv[])
     /*
     * Parse Arguments
     */
-    while ((ch = getopt(argc, argv, "dDtTyY")) != -1)
+    while ((ch = getopt(argc, argv, "dDtTyYlL")) != -1)
     {
         switch (ch)
         {
@@ -68,9 +70,13 @@ int main(int argc, char *argv[])
         case 'T':
             skip_time_check = TRUE;
             break;
+        case 'l':
+        case 'L':
+            isLog = TRUE;
+            break;
         case '?':
         default:
-            printf("Usage: %s [-d] [-t] [-y]\n", argv[0]);
+            printf("Usage: %s [-d] [-t] [-y] [-l]\n", argv[0]);
             exit(1);
             break;
         }
@@ -85,7 +91,10 @@ int main(int argc, char *argv[])
         bool sendDMX = true;
         model = new DisplayModel(sendDMX, skip_time_check, show_new_year );
         sleep(1); // Allow threads to start up
-        new TextDisplay(model);
+        if (isLog == TRUE)
+            new PlainDisplay(model);
+        else
+            new TextDisplay(model);
 
         if (isDebug == TRUE)
         {
