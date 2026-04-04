@@ -30,7 +30,7 @@ Build from Make file using
 
 | Flag | Description |
 |------|-------------|
-| `-d` | Debug mode: runs `DisplayTester::testAll()` instead of the normal display loop |
+| `-d` | Debug mode: runs `DisplayTester::testAll()` instead of `GregsDisplay::run()` |
 | `-t` | Skip time check: allows the display to run outside of normal scheduled hours |
 | `-y` | Show New Year mode |
 | `-l` | Plain console (log) mode: prints changed display values to stdout instead of using ncurses |
