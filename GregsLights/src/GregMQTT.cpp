@@ -43,7 +43,7 @@ GregMQTT::GregMQTT(bool enable, const char * _id) : mosquittopp(_id)
         }
         catch (std::ifstream::failure const &e)
         {
-            std::cerr << "Exception reading greglist_config.json\n" << std::endl;
+            std::cerr << "Exception reading greglights_config.json\n" << std::endl;
             throw e;
         }
 
