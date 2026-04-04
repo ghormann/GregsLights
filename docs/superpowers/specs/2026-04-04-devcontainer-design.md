@@ -23,7 +23,7 @@ Both files live at the repo root under `.devcontainer/`.
 **Build-time only:**
 - `DEBIAN_FRONTEND=noninteractive` set as a build `ARG` (not persisted to the running container) to prevent apt-get interactive prompts (e.g., timezone configuration) during `docker build`
 
-**Apt packages (from README Ubuntu 22.04 list):**
+**Apt packages:**
 ```
 build-essential
 libpng++-dev
@@ -40,10 +40,11 @@ libmosquittopp-dev
 libgraphicsmagick++1-dev
 graphicsmagick-libmagick-dev-compat
 cbp2make
-codeblocks
 curl
 git
 ```
+
+Note: `codeblocks` (the IDE) is intentionally omitted — the project uses `cbp2make` + `make` for building; the full CodeBlocks GUI is unnecessary in a devcontainer.
 
 **Node.js 22:**
 - Installed via the NodeSource setup script (`setup_22.x`)
@@ -56,12 +57,11 @@ git
 
 - **Build:** references local `./Dockerfile`
 - **Workspace folder:** `/workspaces/GregsLights`
-- **Display forwarding:** `DISPLAY` and `WAYLAND_DISPLAY` environment variables forwarded from host; `/tmp/.X11-unix` mounted for X11 socket access (WSLg handles this automatically on WSL2)
+- **Display forwarding:** `DISPLAY` environment variable forwarded from host via `remoteEnv`. On WSLg (WSL2), this is sufficient — WSLg provides X11 via the DISPLAY proxy; no socket mount is needed or supported.
 - **No postCreateCommand** — builds are run manually by the developer
 
 **VS Code extensions:**
-- `ms-vscode.cpptools` — C/C++ IntelliSense and debugging
-- `ms-vscode.cpptools-extension-pack` — extended C++ tooling
+- `ms-vscode.cpptools-extension-pack` — C/C++ IntelliSense, debugging, and extended tooling (includes `ms-vscode.cpptools`)
 - `ms-vscode.makefile-tools` — Makefile support for the generated `.mak` files
 
 ## Build Workflow (inside container)
@@ -85,5 +85,6 @@ make -f GregsLights.cbp.mak graphics
 
 - **No Mosquitto broker service** — only client libraries (`libmosquittopp1`, `libmosquittopp-dev`) are installed. The broker runs externally.
 - **`DEBIAN_FRONTEND` scoped to build only** — kept as a Dockerfile `ARG` so it doesn't affect the interactive container session.
-- **X11 via WSLg** — on WSL2, WSLg automatically provides `DISPLAY` and X11 socket. No Xvfb or manual X server setup required.
+- **X11 via WSLg** — on WSL2, WSLg provides X11 through the `DISPLAY` env var proxy. The `/tmp/.X11-unix` socket is virtual and cannot be bind-mounted into Docker on WSLg, so only `DISPLAY` forwarding is used. No Xvfb or manual X server setup required.
+- **`WAYLAND_DISPLAY` omitted** — without also mounting `$XDG_RUNTIME_DIR`, forwarding the variable alone is non-functional. Dropped in favour of X11-only forwarding via `DISPLAY`.
 - **cbp2make included** — allows regenerating the Makefile after changes to `GregsLights.cbp`.
