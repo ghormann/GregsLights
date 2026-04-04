@@ -5,16 +5,11 @@
   },
   "workspaceFolder": "/workspaces/GregsLights",
   "remoteEnv": {
-    "DISPLAY": "${localEnv:DISPLAY}",
-    "WAYLAND_DISPLAY": "${localEnv:WAYLAND_DISPLAY}"
+    "DISPLAY": "${localEnv:DISPLAY}"
   },
-  "mounts": [
-    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached"
-  ],
   "customizations": {
     "vscode": {
       "extensions": [
-        "ms-vscode.cpptools",
         "ms-vscode.cpptools-extension-pack",
         "ms-vscode.makefile-tools"
       ]
