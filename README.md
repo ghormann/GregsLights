@@ -20,7 +20,7 @@ Basic source for setting up SSL: http://www.steves-internet-guide.com/mosquitto-
 
 
 Genereate a make file using: 
-  * ../../cbp2make -in GregsLights.cbp 
+  * cbp2make -in GregsLights.cbp 
 
 Build from Make file using
   * make -f GregsLights.cbp.mak release
