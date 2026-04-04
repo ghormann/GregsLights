@@ -18,7 +18,6 @@ RUN apt-get update && apt-get install -y \
     libgraphicsmagick++1-dev \
     graphicsmagick-libmagick-dev-compat \
     cbp2make \
-    codeblocks \
     curl \
     git \
     && rm -rf /var/lib/apt/lists/*
