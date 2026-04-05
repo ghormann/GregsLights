@@ -5,3 +5,11 @@
 docs
 README.md
 License.txt
+GregsLights/bin
+GregsLights/obj
+GregsLights/.objs
+GregsLights/GregsLights
+GregsLights/GregsLights.depend
+GregsLights/GregsLights.layout
+GregsLights/s.sh
+GregsLights/ca.crt
