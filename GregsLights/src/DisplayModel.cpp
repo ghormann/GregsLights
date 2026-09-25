@@ -178,6 +178,7 @@ void DisplayModel::setMessage(int i, char * msg)
     }
 
     strncpy(messages[i], msg, MAX_MESSAGE_LENGTH);
+    messages[i][MAX_MESSAGE_LENGTH] = 0;
 }
 
 char *DisplayModel::getMessage(int i)

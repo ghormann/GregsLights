@@ -192,7 +192,7 @@ void GarageSign::showPowerToday()
     m = line2.str();
     this->writeTextNew(RGBColor::WHITE,power_left+14,26,m,false,24);
     this->releaseGrid();
-    sprintf(message, "%s %s", todayMsg.str().c_str(), m.c_str());
+    snprintf(message, sizeof(message), "%s %s", todayMsg.str().c_str(), m.c_str());
 
     gridSleep(0.5);
 
@@ -260,7 +260,7 @@ void GarageSign::showPowerTodayVideo()
         m = line2.str();
         this->writeTextNew(RGBColor::WHITE,power_left+14,26,m,false,24);
         this->releaseGrid();
-        sprintf(message, "%s %s", todayMsg.str().c_str(), m.c_str());
+        snprintf(message, sizeof(message), "%s %s", todayMsg.str().c_str(), m.c_str());
 
         gridSleep(duration);
     }
@@ -348,7 +348,7 @@ void GarageSign::showTextNumber()
     this->writeTextNew(RGBColor::RED,44,24,bottom, false,20);
     this->releaseGrid();
 
-    sprintf(message, "%s %s", top.c_str(), num.c_str());
+    snprintf(message, sizeof(message), "%s %s", top.c_str(), num.c_str());
 
 }
 
@@ -356,7 +356,7 @@ void GarageSign::showStartDate()
 {
     std::string s = generator->getStartDate();
     this->writeTextNew(RGBColor::getRandom(),0,2, s,false,20);
-    strncpy(message,s.c_str(),60);
+    snprintf(message, sizeof(message), "%s", s.c_str());
     gjhSleep(3.0);
 
     int i = rand() % 3;

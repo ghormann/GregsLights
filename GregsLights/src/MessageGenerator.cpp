@@ -49,11 +49,6 @@ std::string MessageGenerator::getMessage()
 {
     checkClear();
 
-    if (timeInfo->isNoShow()) {
-        const char *s = getStartDate().c_str();
-        strcpy(this->message,s);
-    }
-
     int i = 11;
     while (bitmap[i] == 1)
     {
@@ -77,7 +72,7 @@ std::string MessageGenerator::getMessage()
             return "WISHING YOU A GREAT NEW YEAR";
     case 2:
         if (timeInfo->isNoShow()) {
-            return (char*) getStartDate().c_str();
+            return getStartDate();
         }
         if (isChristmas)
             if (timeInfo->getSecondsUntil() <= 0)
@@ -105,7 +100,7 @@ std::string MessageGenerator::getMessage()
         return "THANKS FOR VISITING US";
     case 5:
         if (timeInfo->isNoShow()) {
-            return (char*) getStartDate().c_str();
+            return getStartDate();
         }
         if (isChristmas)
             return "+ HAVE YOU BEEN NAUGHTY OR NICE? +";
@@ -113,7 +108,7 @@ std::string MessageGenerator::getMessage()
             return "MADE YOUR RESOLUTIONS FOR THE NEW YEAR?";
     case 6:
         if (timeInfo->isNoShow()) {
-            return (char*) getStartDate().c_str();
+            return getStartDate();
         }
         if (timeInfo->getSecondsUntil() > 0)
             if (isChristmas)
@@ -134,31 +129,31 @@ std::string MessageGenerator::getMessage()
             return "$ HAPPY HOLIDAYS #";
     case 10:
         if (timeInfo->isNoShow()) {
-            return (char*) getStartDate().c_str();
+            return getStartDate();
         }
         return "LISTEN TO THE LIGHTS AT 106.7 FM";
 
     case 11:
     case 12:
         if (timeInfo->isNoShow()) {
-            return (char*) getStartDate().c_str();
+            return getStartDate();
         }
         return "TEXT YOUR FIRST NAME TO 888-887-1423 AND SEE YOUR NAME IN LIGHTS!";
     case 13:
     case 14:
         if (timeInfo->isNoShow()) {
-            return (char*) getStartDate().c_str();
+            return getStartDate();
         }
         return "TEXT YOUR FIRST NAME TO 888-887-1423 FOR A PERSONALIZED MESSAGE.";
     case 15:
         if (timeInfo->isNoShow()) {
-            return (char*) getStartDate().c_str();
+            return getStartDate();
         }
         const char * when = timeInfo->isNewYears() ? "THE NEW YEAR" : "CHRISTMAS";
         if (timeInfo->getHoursUntil() > 1)
-            sprintf(message, "\\ ONLY %d HOURS UNTIL %s \\", timeInfo->getHoursUntil(), when);
+            snprintf(message, sizeof(message), "\\ ONLY %d HOURS UNTIL %s \\", timeInfo->getHoursUntil(), when);
         else
-            sprintf(message, "\\ ONLY %d MINUTES UNTIL %s \\", timeInfo->getSecondsUntil()/60, when);
+            snprintf(message, sizeof(message), "\\ ONLY %d MINUTES UNTIL %s \\", timeInfo->getSecondsUntil()/60, when);
         return message;
 
     }

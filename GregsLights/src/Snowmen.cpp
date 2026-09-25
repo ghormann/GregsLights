@@ -287,7 +287,7 @@ Snowmen::Snowmen(bool skipTime,  E131Network *network[], GregMQTT *mqtt)
     RGBPicture::getAllPictures(); // Load all Pictures
     strcpy(message2, "Starting up");
     createSnowmanPictures();
-    strcpy(message_who, who_right->name.c_str());
+    snprintf(message_who, sizeof(message_who), "%s", who_right->name.c_str());
 
 }
 
@@ -1755,7 +1755,7 @@ void Snowmen::cannonShot(int snowmen_pos)
         }
 
         publishMqtt();
-        strcpy(message_who, who_right->name.c_str());
+        snprintf(message_who, sizeof(message_who), "%s", who_right->name.c_str());
     }
 
 
@@ -1856,7 +1856,7 @@ void Snowmen::do_it_snowmen()
         // Need to return, other wise something invalid can occur
         return;
     }
-    sprintf(message_who, "%s (%d)", who_right->name.c_str(), snowmanStepCount);
+    snprintf(message_who, sizeof(message_who), "%s (%d)", who_right->name.c_str(), snowmanStepCount);
 
     //id = 14;
 

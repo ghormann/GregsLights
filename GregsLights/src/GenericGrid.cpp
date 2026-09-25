@@ -1936,7 +1936,7 @@ int GenericGrid::writeText(RGBColor *fgColor, int x, int y, string str, bool onD
 
 void GenericGrid::scrollText(RGBColor *fgColor, RGBColor *bgColor, char * text, double speed, int y)
 {
-    sprintf(message, "Scroll: %s", text);
+    snprintf(message, sizeof(message), "Scroll: %s", text);
     setDummyBackground(bgColor);
 
     int textLen = strlen(text);
@@ -2625,7 +2625,7 @@ void GenericGrid::showMovie(string &startsWith, int cnt, double duration, int x,
         this->setBackground(RGBColor::BLACK);
     }
     RGBPicture::findStartsWith(startsWith, pics);
-    sprintf(message, "Show Movie: %s", startsWith.c_str());
+    snprintf(message, sizeof(message), "Show Movie: %s", startsWith.c_str());
 
     for (int i =0 ; i < cnt; i++)
     {

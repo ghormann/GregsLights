@@ -454,7 +454,7 @@ void Sign::run()
         while (nextName.length() > 0)
         {
             std::string full_message = wrapName(nextName);
-            strncpy(message, full_message.c_str(), 79);
+            snprintf(message, sizeof(message), "%s", full_message.c_str());
             this->sendStatus();
             scrollText(RGBColor::getRandom(), RGBColor::BLACK, (char *)full_message.c_str(), textSpeed);
             nextName = this->mqtt->getNextName();
@@ -488,7 +488,7 @@ void Sign::run()
         case 7:
             msg = generator->getMessage();
             //sprintf(message, msg);
-            strcpy(message, msg.c_str());
+            snprintf(message, sizeof(message), "%s", msg.c_str());
             this->sendStatus();
             scrollText(RGBColor::getRandom(), RGBColor::BLACK, (char*)msg.c_str(), textSpeed);
             break;
