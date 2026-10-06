@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
     libgraphicsmagick++1-dev \
     graphicsmagick-libmagick-dev-compat \
     cbp2make \
+    fonts-liberation \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

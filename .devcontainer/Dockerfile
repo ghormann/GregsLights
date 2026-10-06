@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     libmosquittopp-dev \
     libgraphicsmagick++1-dev \
     graphicsmagick-libmagick-dev-compat \
+    fonts-liberation \
     cbp2make \
     curl \
     git \
