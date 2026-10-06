@@ -56,7 +56,7 @@
 			<Add option="-Wno-write-strings" />
 			<Add option="-pthread" />
 			<Add directory="/usr/include/jsoncpp/" />
-			<Add directory="/usr/include/GraphicsMagick&#x0A;" />
+			<Add option="-isystem /usr/include/GraphicsMagick" />
 		</Compiler>
 		<Linker>
 			<Add option="-pthread" />

@@ -11,7 +11,7 @@ AR = ar
 LD = g++
 WINDRES = windres
 
-INC = -I/usr/include/jsoncpp/ -I/usr/include/GraphicsMagick
+INC = -I/usr/include/jsoncpp/ -isystem /usr/include/GraphicsMagick
 
 CFLAGS = -Wall -std=c++0x -fexceptions -Wno-write-strings -pthread
 RESINC = 
