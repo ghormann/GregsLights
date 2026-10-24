@@ -9,6 +9,7 @@
 #include "../include/GarageSign.h"
 #include <json/json.h>
 #include <strings.h>
+#include <sys/time.h>
 
 
 #define SNOWBALL_DURATION 0.015
@@ -16,6 +17,18 @@
 #define BALL_SIZE_2IN   1.7
 #define CANNON_BALL_SIZE_1IN 11.9
 #define CANNON_BALL_SIZE_2IN 5.9
+
+/*
+ * Snowball flights are worked out in inches across the whole yard
+ * (see SNOWMAN_SKY_RAISE) so they move at the same speed everywhere.
+ */
+#define YARD_RIGHT_X (SNOWMEN_WIDTH + SPLASH_GRID_WIDTH*4 + SKY_GRID_WIDTH*2)
+#define SNOWBALL_RADIUS 3.2     /* Inches */
+#define CANNON_BALL_RADIUS 12.0
+#define FLIGHT_STEP 2.0         /* Inches per frame */
+#define FLIGHT_DELAY 0.01
+#define RELEASE_Y 17            /* Where a throw leaves the hand */
+#define OTHER_SIDE(pos) ((pos) == SNOWMAN_LEFT ? SNOWMAN_RIGHT : SNOWMAN_LEFT)
 
 
 Snowmen::Snowmen(bool skipTime,  E131Network *network[], GregMQTT *mqtt)
@@ -410,20 +423,18 @@ void Snowmen::createSnowmanPictures()
     //this->who_right = who;
 
     who = new SnowmanPicture();
-    who->pic_offset_x = -4;
-    who->pic_offset_y = 17;
-    who->splash_end_y = 22;
-    who->splash_offset_y= 20;
-    who->mouth_offset_x = -2;
-    who->mouth_offset_y = 22;
-    who->mouth_multiplier = 1.2;
-    who->name_offset_x = 6;
     who->name = "Red Among Us";
+    who->rig = RIG_CREWMATE;
+    who->armColor = new RGBColor(90, 5, 5);
+    who->mouth_offset_y = 2;
+    who->splash_offset_y = 2;
+    who->splash_end_y = 17;
+    who->nose_ball_dx = 1;
+    who->name_offset_x = 6;
+    who->show_misses = true;
     who->catchphrase = "Red looks sus...";
     who->signature = SIG_EJECT;
     who->signatureText = "Red was not The Impostor.";
-    who->show_misses = true;
-    who->pic = RGBPicture::getPicture("among_us.png");
     availSnowman.push_back(who);
     //this->who_right = who;
 
@@ -515,20 +526,18 @@ void Snowmen::createSnowmanPictures()
     this->who_right = who;
 
     who = new SnowmanPicture();
-    who->pic_offset_x = -3;
-    who->pic_offset_y = 20;
-    who->splash_end_y = 24;
-    who->splash_offset_y= 22;
-    who->mouth_offset_x = -10;
-    who->mouth_offset_y = 25;
-    who->mouth_multiplier = 1.5;
-    who->name_offset_x = 30;
     who->name = "Tails";
+    who->rig = RIG_TAILS;
+    who->armColor = new RGBColor(100, 45, 0);
+    who->mouth_offset_y = 4;
+    who->splash_offset_y = 4;
+    who->splash_end_y = 18;
+    who->nose_ball_dx = 1;
+    who->name_offset_x = 30;
+    who->show_misses = true;
     who->catchphrase = "Wait for me, Sonic!";
     who->signature = SIG_FLY;
     who->signatureText = "Look, I can fly!";
-    who->show_misses = true;
-    who->pic = RGBPicture::getPicture("tails_left.png");
     availSnowman.push_back(who);
     this->who_right = who;
 
@@ -551,22 +560,36 @@ void Snowmen::createSnowmanPictures()
     //this->who_right = who;
 
     who = new SnowmanPicture();
-    who->pic_offset_x = 0;
-    who->pic_offset_y = 0;
-    who->splash_end_y = 18;
-    who->splash_offset_y= 13;
-    who->mouth_offset_x = 2;
-    who->mouth_offset_y = 17;
-    who->mouth_multiplier = 1.2;
-    who->name_offset_x = 24;
     who->name = "Minion";
+    who->rig = RIG_MINION;
+    who->armColor = new RGBColor(100, 80, 0);
+    who->mouth_offset_y = 7;
+    who->splash_offset_y = 7;
+    who->splash_end_y = 19;
+    who->nose_ball_dx = 3;
+    who->name_offset_x = 24;
+    who->show_misses = true;
     who->catchphrase = "Bello!";
     who->signature = SIG_BANANA;
     who->signatureText = "BANANA!";
-    who->show_misses = true;
-    who->pic = RGBPicture::getPicture("minion_left.png");
     availSnowman.push_back(who);
     this->who_right = who;
+
+    who = new SnowmanPicture();
+    who->name = "Gingerbread Man";
+    who->rig = RIG_GINGERBREAD;
+    who->armColor = new RGBColor(65, 30, 8);
+    who->mouth_offset_x = 7;
+    who->mouth_offset_y = 1;
+    who->splash_offset_y = 1;
+    who->splash_end_y = 16;
+    who->nose_ball_dx = 5;
+    who->name_offset_x = 0;
+    who->show_misses = true;
+    who->catchphrase = "Run, run, as fast as you can!";
+    who->signature = SIG_RUN_AWAY;
+    who->signatureText = "You can't catch me, I'm the Gingerbread Man!";
+    availSnowman.push_back(who);
 
     useTestCharacter();
     animationSpeed = who_right->speed;
@@ -683,46 +706,24 @@ void Snowmen::releaseSnowmen()
 
 void Snowmen::duckSnowman(int pos)
 {
-    int pos_y[] = {8,10,12,14,16,18,20,22,24,26, 28, 30, 32, 32, 32, 32,32,32,32,32};
-    int duck[] = {1,2,3,4,5,6,7,8,9,8, 7,6,5,4,3,2,1,0};
     strcpy(message2, "Duck Snowman");
-    SnowmenGrid *who;
+    int target = OTHER_SIDE(pos);
+    double releaseX = (pos == SNOWMAN_LEFT ? 40 : YARD_RIGHT_X + 7);
+    double endX = (target == SNOWMAN_RIGHT ? YARD_RIGHT_X + SNOWMEN_WIDTH + 6 : -6);
 
-    if (pos == SNOWMAN_LEFT)
+    // Ducks as it gets close, it sails over the top
+    pos == SNOWMAN_LEFT ? throwLeft(true) : throwRight(true);
+    ballFlight(pos, releaseX, RELEASE_Y, endX, 26, 2, SNOWBALL_RADIUS,
+               pos == SNOWMAN_RIGHT ? throwBallColor : RGBColor::WHITE, FLIGHT_DELAY, REACT_DUCK);
+
+    // Stand back up
+    for (int d = 9; d >= 0; d--)
     {
-        who = getSnowmen(SNOWMAN_RIGHT);
-        throwLeft(true);
-        do_middle(pos,8,1,8,SNOWBALL_DURATION);
-        ball_line(this->getSplashGrid(SNOWMAN_RIGHT), 0, 1, SPLASH_GRID_WIDTH, 6, BALL_SIZE_2IN);
-        int x = 0;
-        for (int i = 0; i< 18; i++, x=x+2)
-        {
-            lockSnowmen();
-            snowmen[SNOWMAN_RIGHT]->setBackground(RGBColor::BLACK);
-            drawSnowmen(SNOWMAN_RIGHT,hatStatus[SNOWMAN_RIGHT], duck[i]);
-            who->drawCircle(x*2,pos_y[i],BALL_SIZE_1IN,RGBColor::WHITE);
-            releaseSnowmen();
-            write_data(SNOWBALL_DURATION);
-            who->drawCircle(x*2,pos_y[i],BALL_SIZE_1IN,RGBColor::BLACK);
-        }
-    }
-    else
-    {
-        int x = 0;
-        who = getSnowmen(SNOWMAN_LEFT);
-        throwRight(true);
-        do_middle(pos,8,1,8,SNOWBALL_DURATION);
-        ball_line(this->getSplashGrid(SNOWMAN_LEFT), SPLASH_GRID_WIDTH, 0, 0, 6, BALL_SIZE_2IN);
-        for (int i = 0; i< 18; i++, x=x+2)
-        {
-            lockSnowmen();
-            snowmen[SNOWMAN_LEFT]->setBackground(RGBColor::BLACK);
-            drawSnowmen(SNOWMAN_LEFT,hatStatus[SNOWMAN_LEFT], duck[i]);
-            who->drawCircle(SNOWMEN_WIDTH - x*2,pos_y[i],BALL_SIZE_1IN,RGBColor::WHITE);
-            releaseSnowmen();
-            write_data(SNOWBALL_DURATION);
-            who->drawCircle(SNOWMEN_WIDTH - x*2,pos_y[i],BALL_SIZE_1IN,RGBColor::BLACK);
-        }
+        lockSnowmen();
+        snowmen[target]->setBackground(RGBColor::BLACK);
+        drawSnowmen(target, hatStatus[target], d);
+        releaseSnowmen();
+        write_data(SNOWBALL_DURATION * 2);
     }
 }
 
@@ -762,76 +763,39 @@ void Snowmen::drawMouth(int pos, double mouthPos)
 
 void Snowmen::eatSnowball(int pos)
 {
-    int pos_y[] = {32,33,34,34,36,38,100,100,100,100, 100, 100, 100, 100, 32, 32,32,32,32,32};
     strcpy(message2, "Eat Snowball");
-    SnowmenGrid *who;
-    double mouth = 0;
-
-    if (pos == SNOWMAN_LEFT)
+    int target = OTHER_SIDE(pos);
+    double releaseX = (pos == SNOWMAN_LEFT ? 40 : YARD_RIGHT_X + 7);
+    double mouthX, mouthY;
+    if (target == SNOWMAN_RIGHT)
     {
-        int end_splash_y = 16;
-        who = getSnowmen(SNOWMAN_RIGHT);
-
-        // Handle offsets
-        if (who_right->pic != NULL)
-        {
-            end_splash_y = who_right->splash_end_y;
-            for (int i =0; i < 18; i++)
-            {
-                pos_y[i] += who_right->splash_offset_y;
-            }
-        }
-
-        throwLeft(true);
-        do_middle(pos,10,6,16,SNOWBALL_DURATION);
-        if (who_right)
-            ball_line(this->getSplashGrid(SNOWMAN_RIGHT), 0, 8, SPLASH_GRID_WIDTH, end_splash_y, BALL_SIZE_2IN);
-        int x = 0;
-
-        for (int i = 0; i< 18; i++, x=x+2)
-        {
-            mouth = (i+1) * .3;
-            if (i > 8)
-            {
-                mouth = (17-i) * .3;
-            }
-            lockSnowmen();
-            snowmen[SNOWMAN_RIGHT]->setBackground(RGBColor::BLACK);
-            drawSnowmen(SNOWMAN_RIGHT,hatStatus[SNOWMAN_RIGHT]);
-            drawMouth(SNOWMAN_RIGHT,mouth);
-            who->drawCircle(x*2,pos_y[i],BALL_SIZE_1IN,RGBColor::WHITE);
-            releaseSnowmen();
-            write_data(SNOWBALL_DURATION);
-        }
+        mouthX = YARD_RIGHT_X + SNOWMEN_WIDTH/2 - 8 + who_right->mouth_offset_x;
+        mouthY = SNOWMEN_HEIGHT - 61 + who_right->mouth_offset_y;
     }
     else
     {
-        int x = 0;
-        who = getSnowmen(SNOWMAN_LEFT);
-        throwRight(true);
-        do_middle(pos,10,6,16,SNOWBALL_DURATION);
-        ball_line(this->getSplashGrid(SNOWMAN_LEFT), SPLASH_GRID_WIDTH, 8, 0, 16, BALL_SIZE_2IN);
-        for (int i = 0; i< 18; i++, x=x+2)
-        {
-            mouth = (i+1) * .3;
-            if (i > 8)
-            {
-                mouth = (17-i) * .3;
-            }
+        mouthX = SNOWMEN_WIDTH/2 + 8;
+        mouthY = SNOWMEN_HEIGHT - 61;
+    }
 
-            lockSnowmen();
-            snowmen[SNOWMAN_LEFT]->setBackground(RGBColor::BLACK);
-            drawSnowmen(SNOWMAN_LEFT,hatStatus[SNOWMAN_LEFT]);
-            drawMouth(SNOWMAN_LEFT,mouth);
-            who->drawCircle(SNOWMEN_WIDTH - x*2,pos_y[i],BALL_SIZE_1IN,RGBColor::WHITE);
-            releaseSnowmen();
-            write_data(SNOWBALL_DURATION);
-        }
+    // Mouth opens as it arrives
+    pos == SNOWMAN_LEFT ? throwLeft(true) : throwRight(true);
+    ballFlight(pos, releaseX, RELEASE_Y, mouthX, mouthY, 6, SNOWBALL_RADIUS,
+               pos == SNOWMAN_RIGHT ? throwBallColor : RGBColor::WHITE, FLIGHT_DELAY, REACT_EAT);
+
+    // Chew and close
+    for (int i = 9; i >= 0; i--)
+    {
+        lockSnowmen();
+        snowmen[target]->setBackground(RGBColor::BLACK);
+        drawSnowmen(target, hatStatus[target]);
+        drawMouth(target, i * 0.3);
+        releaseSnowmen();
+        write_data(SNOWBALL_DURATION * 2);
     }
     getSkyGrid()->writeText(RGBColor::GREEN,16,0,"YUM!", false);
     write_data(2.0);
     getSkyGrid()->setBackground(RGBColor::BLACK);
-
 }
 
 
@@ -952,30 +916,15 @@ void Snowmen::run()
     }
 }
 
-void Snowmen::hitNose(int snowmen, int start_y)
+void Snowmen::hitNose(int snowmen)
 {
     strcpy(message2, "Hit Nose");
-
-    GenericGrid *grid = getSnowmen(snowmen);
-    int pos_x = (snowmen == SNOWMAN_RIGHT ? 1 : SNOWMEN_WIDTH-1);
-    int i;
-    double dy = ((double)(SNOWMAN_NOSE_HEIGHT-1-start_y))/4;
-    double pos_y = start_y;
-    for (i =0; i < 4; i++)
-    {
-        grid->drawCircle(pos_x,pos_y, BALL_SIZE_1IN, RGBColor::WHITE);
-        write_data(SNOWBALL_DURATION);
-        grid->drawCircle(pos_x,(int)pos_y, BALL_SIZE_1IN, RGBColor::BLACK);
-        pos_x += (snowmen == SNOWMAN_RIGHT ? 2 : -2);
-        pos_y += dy;
-    }
-
     ++noseBalls[snowmen];
 
     lockSnowmen();
+    getSnowmen(snowmen)->setBackground(RGBColor::BLACK);
     drawSnowmen(snowmen, hatStatus[snowmen]);
     releaseSnowmen();
-
 }
 
 
@@ -1140,9 +1089,13 @@ void Snowmen::drawSnowmen(int pos, bool withHat, int offset, int xShift, int ySh
     int midOffset = 2*offset;
     GenericGrid * who = getSnowmen(pos);
 
-    if ((pos == SNOWMAN_LEFT) || (who_right->pic == NULL))
+    if (pos == SNOWMAN_RIGHT && who_right->pic == NULL && who_right->rig != RIG_SNOWMAN)
     {
-        xShift = yShift = 0;  // Only pictures move
+        drawRig(who, offset, xShift, yShift);
+    }
+    else if ((pos == SNOWMAN_LEFT) || (who_right->pic == NULL))
+    {
+        xShift = yShift = 0;  // Only characters move
 
         //TOP
         who->drawCircle(SNOWMEN_WIDTH/2,SNOWMEN_HEIGHT-65+topOffset,10,RGBColor::WHITE);
@@ -1238,18 +1191,18 @@ void Snowmen::drawSnowmen(int pos, bool withHat, int offset, int xShift, int ySh
     // Snowball Nose L1
     if (noseBalls[pos] > 0)
     {
-        x = (pos == SNOWMAN_RIGHT ? SNOWMEN_WIDTH - (SNOWMEN_WIDTH/2+14) : SNOWMEN_WIDTH/2+12);
-        who->drawCircle(x, SNOWMAN_NOSE_HEIGHT-1 + topOffset, BALL_SIZE_1IN, noseBallColor);
+        x = (pos == SNOWMAN_RIGHT ? SNOWMEN_WIDTH - (SNOWMEN_WIDTH/2+14) + who_right->nose_ball_dx + xShift : SNOWMEN_WIDTH/2+12);
+        who->drawCircle(x, SNOWMAN_NOSE_HEIGHT-1 + topOffset + yShift, BALL_SIZE_1IN, noseBallColor);
     }
 
     if (noseBalls[pos] > 1)
     {
-        x = (pos == SNOWMAN_RIGHT ? SNOWMEN_WIDTH - (SNOWMEN_WIDTH/2+18) : SNOWMEN_WIDTH/2+16);
-        who->drawCircle(x, SNOWMAN_NOSE_HEIGHT-1 + topOffset, BALL_SIZE_1IN, noseBallColor);
+        x = (pos == SNOWMAN_RIGHT ? SNOWMEN_WIDTH - (SNOWMEN_WIDTH/2+18) + who_right->nose_ball_dx + xShift : SNOWMEN_WIDTH/2+16);
+        who->drawCircle(x, SNOWMAN_NOSE_HEIGHT-1 + topOffset + yShift, BALL_SIZE_1IN, noseBallColor);
     }
 
     // If fading then draw nose again.
-    if (noseBallColor->getBlue() < 100)
+    if (noseBallColor->getBlue() < 100 && (pos == SNOWMAN_LEFT || who_right->isPlainSnowman()))
     {
 
         int startX = SNOWMEN_WIDTH/2+8;
@@ -1283,6 +1236,9 @@ void DrawLine(GenericGrid *grid, int startX, int endX, double mx, int b, RGBColo
     }
 }
 
+/*
+ * Wind up and release. ballFlight() carries it from there.
+ */
 void Snowmen::throwRight(bool loft)
 {
     const int sholder_x = 28;
@@ -1293,26 +1249,10 @@ void Snowmen::throwRight(bool loft)
     const int elbow_x[] = {SNOWMEN_WIDTH-1,SNOWMEN_WIDTH-2,SNOWMEN_WIDTH-3, SNOWMEN_WIDTH-4, SNOWMEN_WIDTH-5, SNOWMEN_WIDTH-5, SNOWMEN_WIDTH-6, SNOWMEN_WIDTH-7, SNOWMEN_WIDTH-8, SNOWMEN_WIDTH-9};
     const int elbow_y[] = {30,30,30, 30, 30, 30, 30, 30, 30, 30};
 
-    // For Arm away
-    const int hand_x[] = {SNOWMEN_WIDTH-41, SNOWMEN_WIDTH-42, SNOWMEN_WIDTH-43, SNOWMEN_WIDTH-44, SNOWMEN_WIDTH-43, SNOWMEN_WIDTH-42};
-    const int hand_y[] = {20, 26, 32, 38, 44, 50};
-    const int ball2_x[] = {2,0, SPLASH_GRID_WIDTH-0, SPLASH_GRID_WIDTH-3, SPLASH_GRID_WIDTH-6, SPLASH_GRID_WIDTH-9, SPLASH_GRID_WIDTH-12, SPLASH_GRID_WIDTH-15, SPLASH_GRID_WIDTH-18, SPLASH_GRID_WIDTH-21, SPLASH_GRID_WIDTH-23};
-    int ball2_y[] = {17,17, 8, 8, 8, 8,  8,  8,  8, 8, 8};
 
 
     GenericGrid *right = getSnowmen(SNOWMAN_RIGHT);
-    GenericGrid *splash = getSplashGrid(SNOWMAN_RIGHT);
 
-    if (loft)
-    {
-        ball2_y[4] = 7;
-        ball2_y[5] = 6;
-        ball2_y[6] = 5;
-        ball2_y[7] = 4;
-        ball2_y[8] = 3;
-        ball2_y[9] = 2;
-        ball2_y[10] = 1;
-    }
 
     // Pull back the Arm
     for (int i = 0; i< 10; i++)
@@ -1321,9 +1261,9 @@ void Snowmen::throwRight(bool loft)
         right->setBackground(RGBColor::BLACK);
         drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
 
-        right->plotLineWidth(elbow_x[i],elbow_y[i],sholder_x,sholder_y,2.0,RGBColor::WHITE);
-        right->plotLineWidth(elbow_x[i],elbow_y[i],ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
-        right->drawCircle(ball_x[i],ball_y[i],BALL_SIZE_1IN, RGBColor::WHITE);
+        right->plotLineWidth(elbow_x[i],elbow_y[i],sholder_x,sholder_y,2.0,who_right->armColor);
+        right->plotLineWidth(elbow_x[i],elbow_y[i],ball_x[i],ball_y[i],2.0,who_right->armColor);
+        right->drawCircle(ball_x[i],ball_y[i],BALL_SIZE_1IN, throwBallColor);
         releaseSnowmen();
         write_data(SNOWBALL_DURATION);
     }
@@ -1335,52 +1275,16 @@ void Snowmen::throwRight(bool loft)
         right->setBackground(RGBColor::BLACK);
         drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
 
-        right->plotLineWidth(sholder_x,sholder_y,ball_x[i],ball_y[i],2.0,RGBColor::WHITE);
-        right->drawCircle(ball_x[i],ball_y[i],BALL_SIZE_1IN, RGBColor::WHITE);
+        right->plotLineWidth(sholder_x,sholder_y,ball_x[i],ball_y[i],2.0,who_right->armColor);
+        right->drawCircle(ball_x[i],ball_y[i],BALL_SIZE_1IN, throwBallColor);
         releaseSnowmen();
         write_data(SNOWBALL_DURATION);
-    }
-
-    // Move Arm Away
-    for (int i = 0; i< 6; i++)
-    {
-        lockSnowmen();
-        right->setBackground(RGBColor::BLACK);
-        drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
-
-        right->plotLineWidth(sholder_x,sholder_y,hand_x[i],hand_y[i],2.0,RGBColor::WHITE);
-        if (i < 2)
-        {
-            right->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_1IN, RGBColor::WHITE);
-        }
-        else
-        {
-            //printf("DEBUG: Splash %d as %d, %d\n", i, ball2_x[i], ball2_y[i]);
-            splash->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_2IN, RGBColor::WHITE);
-        }
-        releaseSnowmen();
-        write_data(SNOWBALL_DURATION);
-        if (i>=2)
-        {
-            splash->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_2IN, RGBColor::BLACK);
-        }
-    }
-
-    // Clean up Snowmen
-    lockSnowmen();
-    right->setBackground(RGBColor::BLACK);
-    drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
-    releaseSnowmen();
-
-    // Throw slpash
-    for (int i = 6; i < 11; i++)
-    {
-        splash->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_2IN, RGBColor::WHITE);
-        write_data(SNOWBALL_DURATION);
-        splash->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_2IN, RGBColor::BLACK);
     }
 }
 
+/*
+ * Wind up and release. ballFlight() carries it from there.
+ */
 void Snowmen::throwLeft(bool loft)
 {
     const int sholder_x = 16;
@@ -1390,25 +1294,9 @@ void Snowmen::throwLeft(bool loft)
     const int elbow_x[] = {1,2,3, 4, 5, 5, 6, 7, 8, 9};
     const int elbow_y[] = {30,30,30, 30, 30, 30, 30, 30, 30, 30};
 
-    // For Arm away
-    const int hand_x[] = {41, 42, 43, 44, 43, 42};
-    const int hand_y[] = {20, 26, 32, 38, 44, 50};
-    const int ball2_x[] = {44,48, 0, 3, 6, 9, 12, 15, 18, 21, 23};
-    int ball2_y[] = {17,17, 8, 8, 8, 8,  8,  8,  8, 8, 8};
 
-    if (loft)
-    {
-        ball2_y[4] = 7;
-        ball2_y[5] = 6;
-        ball2_y[6] = 5;
-        ball2_y[7] = 4;
-        ball2_y[8] = 3;
-        ball2_y[9] = 2;
-        ball2_y[10] = 1;
-    }
 
     GenericGrid *left = getSnowmen(SNOWMAN_LEFT);
-    GenericGrid *splash = getSplashGrid(SNOWMAN_LEFT);
 
     // Pull back the Arm
     for (int i = 0; i< 10; i++)
@@ -1436,215 +1324,64 @@ void Snowmen::throwLeft(bool loft)
         releaseSnowmen();
         write_data(SNOWBALL_DURATION);
     }
-
-    // Move Arm Away
-    for (int i = 0; i< 6; i++)
-    {
-        lockSnowmen();
-        left->setBackground(RGBColor::BLACK);
-        drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
-
-        left->plotLineWidth(sholder_x,sholder_y,hand_x[i],hand_y[i],2.0,RGBColor::WHITE);
-        if (i < 2)
-        {
-            left->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_1IN, RGBColor::WHITE);
-        }
-        else
-        {
-            splash->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_2IN, RGBColor::WHITE);
-        }
-        releaseSnowmen();
-        write_data(SNOWBALL_DURATION);
-        if (i>=2)
-        {
-            splash->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_2IN, RGBColor::BLACK);
-        }
-    }
-
-    // Clean up Snowmen
-    lockSnowmen();
-    left->setBackground(RGBColor::BLACK);
-    drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
-    releaseSnowmen();
-
-    // Throw slpash
-    for (int i = 6; i < 11; i++)
-    {
-        splash->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_2IN, RGBColor::WHITE);
-        write_data(SNOWBALL_DURATION);
-        splash->drawCircle(ball2_x[i],ball2_y[i],BALL_SIZE_2IN, RGBColor::BLACK);
-    }
-}
-
-void Snowmen::do_middle(int start_snowmen, int start_y, int high_y, int end_y, double duration, RGBColor *color)
-{
-    int x = 0;
-    int dx = 2;
-    if (start_snowmen == SNOWMAN_RIGHT)
-    {
-        dx = -2;
-        x = SKY_GRID_WIDTH - 1;
-    }
-    // GOing up
-    double dy = ((double)(high_y-start_y)) / ((double)SKY_GRID_WIDTH/4);
-    double y = (double) start_y;
-
-    // First Half
-    for (int i = 0; i < SKY_GRID_WIDTH/4; i++)
-    {
-        //printf("DEBUG: %d, %d, %f\n", x, (int)y, dy1);
-        skyGrid->drawCircle(x,(int)y, BALL_SIZE_2IN, color);
-        write_data(duration);
-        skyGrid->drawCircle(x,(int)y, BALL_SIZE_2IN, RGBColor::BLACK);
-        x += dx;
-        y += dy;
-    }
-
-    //Second Half
-    y = high_y;
-    dy = ((double)(end_y-high_y)) / ((double)SKY_GRID_WIDTH/4);
-    for (int i = 0; i <= SKY_GRID_WIDTH/4; i++)
-    {
-        //printf("DEBUG: %d, %d, %f\n", x, (int)y, dy1);
-        skyGrid->drawCircle(x,(int)y, BALL_SIZE_2IN, color);
-        write_data(duration);
-        skyGrid->drawCircle(x,(int)y, BALL_SIZE_2IN, RGBColor::BLACK);
-        x += dx;
-        y += dy;
-    }
-
-}
-
-// Used to have ball come across Splash gird
-void Snowmen::ball_line(GenericGrid *grid, int start_x, int start_y, int end_x, int end_y, double ballSize, RGBColor *color)
-{
-    int dx = (end_x > start_x) ? 1: -1;
-    double dy = ((double)(end_y-start_y)) / abs(start_x-end_x);
-
-    int x = start_x;
-    double y = (double)start_y;
-    while (x != end_x)
-    {
-        grid->drawCircle(x,(int)y,ballSize, color);
-        //printf("ball: %d, %d\n", x, (int)y);
-        write_data(SNOWBALL_DURATION);
-        grid->drawCircle(x,(int)y,ballSize, RGBColor::BLACK);
-        x += dx;
-        y += dy;
-    }
 }
 
 void Snowmen::throwLeftStickNose(bool arch)
 {
     strcpy(message2, "Throw Left Nose");
-
     throwLeft(arch);
-    if (arch)
-    {
-        do_middle(SNOWMAN_LEFT,8,1,8,SNOWBALL_DURATION);
-    }
-    else
-    {
-        do_middle(SNOWMAN_LEFT,18,14,18 -1,SNOWBALL_DURATION);
-    }
-    ball_line(this->getSplashGrid(SNOWMAN_RIGHT), 0, arch ? 0 : 8, SPLASH_GRID_WIDTH, 12, BALL_SIZE_2IN);
-    hitNose(SNOWMAN_RIGHT, 24);
+    ballFlight(SNOWMAN_LEFT, 40, RELEASE_Y,
+               YARD_RIGHT_X + SNOWMEN_WIDTH - (SNOWMEN_WIDTH/2+14) + who_right->nose_ball_dx, SNOWMAN_NOSE_HEIGHT - 1,
+               arch ? -6 : 16, SNOWBALL_RADIUS, RGBColor::WHITE, FLIGHT_DELAY);
+    hitNose(SNOWMAN_RIGHT);
 }
 
 void Snowmen::throwRightStickNose(bool arch)
 {
     strcpy(message2, "Throw Right Stick Nose");
-
     throwRight(arch);
-    if (arch)
-    {
-        do_middle(SNOWMAN_RIGHT,8,1,8,SNOWBALL_DURATION);
-    }
-    else
-    {
-        do_middle(SNOWMAN_RIGHT,18,14,18 -1,SNOWBALL_DURATION);
-    }
-    ball_line(this->getSplashGrid(SNOWMAN_LEFT), SPLASH_GRID_WIDTH,  arch ? 0 : 8, 0, 12, BALL_SIZE_2IN);
-    hitNose(SNOWMAN_LEFT, 24);
+    ballFlight(SNOWMAN_RIGHT, YARD_RIGHT_X + 7, RELEASE_Y, SNOWMEN_WIDTH/2 + 12, SNOWMAN_NOSE_HEIGHT - 1,
+               arch ? -6 : 16, SNOWBALL_RADIUS, throwBallColor, FLIGHT_DELAY);
+    hitNose(SNOWMAN_LEFT);
 }
 
 void Snowmen::throwHitHat(int pos)
 {
-    int pos_y[] = {10,10,11,11,12,12,13,13,14,14};
     strcpy(message2, "Throw Hit Hat");
-
-    GenericGrid *hat;
     if (pos == SNOWMAN_LEFT)
     {
-        hat = getSnowmen(SNOWMAN_RIGHT);
         throwLeft(true);
-        do_middle(pos,8,1,8,SNOWBALL_DURATION);
-        ball_line(this->getSplashGrid(SNOWMAN_RIGHT), 0, 0, SPLASH_GRID_WIDTH, 6, BALL_SIZE_2IN);
-        for (int x = 0; x< 10; x=x+2)
-        {
-            hat->drawCircle(x*2,pos_y[x],BALL_SIZE_1IN,RGBColor::WHITE);
-            write_data(SNOWBALL_DURATION);
-            hat->drawCircle(x*2,pos_y[x],BALL_SIZE_1IN,RGBColor::BLACK);
-        }
+        ballFlight(SNOWMAN_LEFT, 40, RELEASE_Y, YARD_RIGHT_X + 12, 13, -6, SNOWBALL_RADIUS, RGBColor::WHITE, FLIGHT_DELAY);
         hitHat(SNOWMAN_RIGHT);
     }
     else
     {
-        hat = getSnowmen(SNOWMAN_LEFT);
         throwRight(true);
-        do_middle(pos,8,1,8,SNOWBALL_DURATION);
-        ball_line(this->getSplashGrid(SNOWMAN_LEFT), SPLASH_GRID_WIDTH, 0, 0, 6, BALL_SIZE_2IN);
-        for (int x = 0; x< 10; x=x+2)
-        {
-            hat->drawCircle(SNOWMEN_WIDTH - x*2,pos_y[x],BALL_SIZE_1IN,RGBColor::WHITE);
-            write_data(SNOWBALL_DURATION);
-            hat->drawCircle(SNOWMEN_WIDTH - x*2,pos_y[x],BALL_SIZE_1IN,RGBColor::BLACK);
-        }
+        ballFlight(SNOWMAN_RIGHT, YARD_RIGHT_X + 7, RELEASE_Y, SNOWMEN_WIDTH - 12, 13, -6, SNOWBALL_RADIUS, throwBallColor, FLIGHT_DELAY);
         hitHat(SNOWMAN_LEFT);
     }
-
 }
 
 void Snowmen::throwGround(int pos, bool goHigh)
 {
-    GenericGrid *splash = getSplashGrid(pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT : SNOWMAN_LEFT);
+    int target = OTHER_SIDE(pos);
+    // Lands on the snow pile next to the other snowman
+    double groundX = (target == SNOWMAN_RIGHT ? YARD_RIGHT_X - 4 : SNOWMEN_WIDTH + 2);
     if (pos == SNOWMAN_LEFT)
     {
         throwLeft(goHigh);
+        ballFlight(pos, 40, RELEASE_Y, groundX, SNOWMEN_HEIGHT - 3, goHigh ? -8 : 12, SNOWBALL_RADIUS, RGBColor::WHITE, FLIGHT_DELAY);
     }
     else
     {
         throwRight(goHigh);
+        ballFlight(pos, YARD_RIGHT_X + 7, RELEASE_Y, groundX, SNOWMEN_HEIGHT - 3, goHigh ? -8 : 12, SNOWBALL_RADIUS, throwBallColor, FLIGHT_DELAY);
     }
 
-    if (goHigh)
-    {
-        do_middle(pos,8,1,SKY_GRID_HEIGHT-5,SNOWBALL_DURATION);
-        if (pos == SNOWMAN_LEFT)
-        {
-            splash->archBallOverTime(45,-22,50,0,26,BALL_SIZE_2IN,SNOWBALL_DURATION,RGBColor::WHITE);
-        }
-        else
-        {
-            splash->archBallOverTime(45,45,50,26,-2,BALL_SIZE_2IN,SNOWBALL_DURATION,RGBColor::WHITE);
-        }
-    }
-    else
-    {
-        do_middle(pos,18,16,SKY_GRID_HEIGHT +1,SNOWBALL_DURATION);
-        if (pos == SNOWMAN_LEFT)
-        {
-            splash->archBallOverTime(45,-22,55,0,26,BALL_SIZE_2IN,SNOWBALL_DURATION,RGBColor::WHITE);
-        }
-        else
-        {
-            splash->archBallOverTime(45,45,55,26,-2,BALL_SIZE_2IN,SNOWBALL_DURATION,RGBColor::WHITE);
-        }
-    }
-
-    ++groundSnowLevel[pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT : SNOWMAN_LEFT];
-    drawGroundSnow(pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT : SNOWMAN_LEFT, RGBColor::WHITE);
-
+    ++groundSnowLevel[target];
+    lockSnowmen();
+    drawGroundSnow(target, RGBColor::WHITE);
+    releaseSnowmen();
 }
 
 void Snowmen::drawGroundSnow(int pos, RGBColor *color)
@@ -1708,23 +1445,26 @@ void Snowmen::cannonShot(int snowmen_pos)
     GenericGrid *cannon_grid = getSplashGrid(snowmen_pos);
     GenericGrid *end_splash_Grid = getSplashGrid(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT);
     GenericGrid *end_snowman = getSnowmen(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT);
-    int x,y,dx, splash_x, splash_y, snowman_x = 0;
+    int y, snowman_x = 0;
     double size_1in = CANNON_BALL_SIZE_1IN;
-    static int dy[] = {24,22,20,19,18,17,16,15,14,13,12,11,11,10,10,9,9,8,8,8,7,7,7,6,6,6,5,5,5,5,5,6,6,6,7,7,7,8,8,9,9,10,10,11,11,12,12, 13, 13, 14, 14, 15, 15, 15, 15,15, 15,15,15,15,15,15,15,0,0,0,0,0,0,0,0,0,0,0,0};
+    // Muzzle and impact in yard inches
+    double muzzleX, muzzleY, impactX, impactY = 35;
 
     strcpy(message2, "Cannon Shot");
 
     if (snowmen_pos == SNOWMAN_LEFT)
     {
         cannon = RGBPicture::getPicture("cannon_right.png");
-        dx=+2;
-        x=0;
+        muzzleX = SNOWMEN_WIDTH + 19*2;
+        muzzleY = (20 + 3) * 2;
+        impactX = YARD_RIGHT_X + 12;
     }
     else
     {
         cannon = RGBPicture::getPicture("cannon_left.png");
-        dx=-2;
-        x=SKY_GRID_WIDTH;
+        muzzleX = YARD_RIGHT_X - SPLASH_GRID_WIDTH*2 + 3*2;
+        muzzleY = (20 + 2) * 2;
+        impactX = SNOWMEN_WIDTH - 12;
     }
 
     /*
@@ -1741,59 +1481,22 @@ void Snowmen::cannonShot(int snowmen_pos)
     }
 
     /*
-     * Fire across sky
+     * Fire: one arc up through the sky, same speed the whole way
      */
-    y=SKY_GRID_HEIGHT/2;
-    for (int i = 0; i < SKY_GRID_WIDTH/2+SPLASH_GRID_WIDTH/2+13; i++)
-    {
-        y=dy[i];
-        splash_x = i-44;
-        splash_y = (i-42)/2;
-        if (snowmen_pos == SNOWMAN_RIGHT)
-        {
-            splash_x = SPLASH_GRID_WIDTH - splash_x;
-        }
-        getSkyGrid()->drawCircle(x,y,CANNON_BALL_SIZE_2IN,RGBColor::WHITE);
-        if (i > 44)
-        {
-            end_splash_Grid->drawCircle(splash_x,splash_y,CANNON_BALL_SIZE_2IN, RGBColor::WHITE);
-        }
-        if (i > 60)
-        {
-            snowman_x = (i-70)*2;
-            if (snowmen_pos == SNOWMAN_RIGHT)
-            {
-                snowman_x = SNOWMEN_WIDTH - snowman_x;
-            }
-            end_snowman->drawCircle(snowman_x,splash_y*2,CANNON_BALL_SIZE_1IN, RGBColor::WHITE);
-        }
-
-        write_data(SNOWBALL_DURATION);
-        getSkyGrid()->drawCircle(x,y,CANNON_BALL_SIZE_2IN,RGBColor::BLACK);
-        if (i > 44)
-        {
-            end_splash_Grid->drawCircle(splash_x,splash_y,CANNON_BALL_SIZE_2IN, RGBColor::BLACK);
-        }
-        if (i > 60)
-        {
-            end_snowman->drawCircle(snowman_x,splash_y*2,CANNON_BALL_SIZE_1IN, RGBColor::BLACK);
-        }
-        x += dx;
-    }
+    cannonOnSplash[snowmen_pos] = cannon;
+    ballFlight(-1, muzzleX, muzzleY, impactX, impactY, -4, CANNON_BALL_RADIUS, RGBColor::WHITE, SNOWBALL_DURATION);
 
     /*
-     * Do Explosition
+     * Explosion
      */
-
-    splash_y = splash_y*2;
     for (int i = 0; i < 22; i++)
     {
-        snowman_x += (dx/2);
-        splash_y += 1;
-        end_snowman->drawCircle(snowman_x,splash_y,size_1in,RGBColor::WHITE);
+        lockSnowmen();
+        drawBallInYard(impactX, impactY + i, CANNON_BALL_RADIUS + i * 2.0, RGBColor::WHITE);
+        releaseSnowmen();
         write_data(SNOWBALL_DURATION);
-        size_1in += 2.0;
     }
+    size_1in = CANNON_BALL_SIZE_1IN + 44;
     // fill buttom
     end_snowman->drawCircle(SNOWMEN_HEIGHT,SNOWMEN_WIDTH/2,size_1in,RGBColor::WHITE);
 
@@ -1807,6 +1510,7 @@ void Snowmen::cannonShot(int snowmen_pos)
         write_data(SNOWBALL_DURATION/2);
         size_1in += 3.0;
     }
+    cannonOnSplash[snowmen_pos] = NULL;
     // Reset -- Destroyed on is the reverse!
     resetSnowmen(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT);
 
@@ -1834,7 +1538,7 @@ void Snowmen::cannonShot(int snowmen_pos)
         snowmanStepCount = 0;
         signatureCount = 0;
         animationSpeed = who_right->speed;
-        if (who_right->pic != NULL)
+        if (!who_right->isPlainSnowman())
         {
             std::string line1 = "Next Up";
             getSkyGrid()->writeTextNew(RGBColor::WHITE,22,0, line1,false,12);
@@ -1854,7 +1558,7 @@ void Snowmen::cannonShot(int snowmen_pos)
     releaseSnowmen();
     placeHatBack(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT);
 
-    if (who_right->pic != NULL)
+    if (!who_right->isPlainSnowman())
     {
         gjhSleep(2);
         getSkyGrid()->setBackground(RGBColor::BLACK);
@@ -1950,7 +1654,7 @@ void Snowmen::do_it_snowmen()
     /*
      * Make sure the signature move happens early, then sometimes after that
      */
-    if (who_right->pic != NULL && who_right->signature != SIG_NONE)
+    if (who_right->signature != SIG_NONE)
     {
         int chance = (testCharacter != NULL ? 2 : SNOWMAN_SIGNATURE_CHANCE);
         if ((signatureCount == 0 && snowmanStepCount >= SNOWMAN_SIGNATURE_BY_MOVE)
@@ -2248,6 +1952,9 @@ void Snowmen::signatureMove()
     case SIG_TWINKLE_LIGHTS:
         twinkleLights();
         break;
+    case SIG_RUN_AWAY:
+        characterRunAway();
+        break;
     default:
         break;
     }
@@ -2387,20 +2094,225 @@ void Snowmen::flyAcross(GenericGrid *grid, int pos, RGBPicture *pic, RGBColor *s
 }
 
 /*
+ * Where each grid sits in the yard, in inches
+ */
+void Snowmen::getYardAreas(YardArea areas[5])
+{
+    areas[0] = {snowmen[SNOWMAN_LEFT], 0, 0, 1, SNOWMAN_LEFT, true};
+    areas[1] = {splash[SNOWMAN_LEFT], SNOWMEN_WIDTH, 0, 2, SNOWMAN_LEFT, false};
+    areas[2] = {skyGrid, SNOWMEN_WIDTH + SPLASH_GRID_WIDTH*2, -SNOWMAN_SKY_RAISE, 2, SNOWMAN_LEFT, false};
+    areas[3] = {splash[SNOWMAN_RIGHT], SNOWMEN_WIDTH + SPLASH_GRID_WIDTH*2 + SKY_GRID_WIDTH*2, 0, 2, SNOWMAN_RIGHT, false};
+    areas[4] = {snowmen[SNOWMAN_RIGHT], YARD_RIGHT_X, 0, 1, SNOWMAN_RIGHT, true};
+}
+
+/*
+ * A ball at a yard position, drawn on every grid it overlaps at the
+ * right size for that grid's spacing
+ */
+void Snowmen::drawBallInYard(double x, double y, double radius, RGBColor *color)
+{
+    YardArea areas[5];
+    getYardAreas(areas);
+    for (auto &area : areas)
+    {
+        double gx = (x - area.x0) / area.density;
+        double gy = (y - area.y0) / area.density;
+        double r = radius / area.density;
+        if (gx + r < 0 || gy + r < 0 || gx - r >= area.grid->getGridWidth() || gy - r >= area.grid->getGridHeight())
+            continue;
+        area.grid->drawCircle((int)round(gx), (int)round(gy), r, color);
+    }
+}
+
+/*
+ * Puts back whatever a ball at this position was covering
+ */
+void Snowmen::eraseBallInYard(double x, double y, double radius)
+{
+    YardArea areas[5];
+    getYardAreas(areas);
+    for (auto &area : areas)
+    {
+        double gx = (x - area.x0) / area.density;
+        double gy = (y - area.y0) / area.density;
+        double r = radius / area.density + 1;
+        if (gx + r < 0 || gy + r < 0 || gx - r >= area.grid->getGridWidth() || gy - r >= area.grid->getGridHeight())
+            continue;
+        if (area.isSnowman)
+        {
+            area.grid->setBackground(RGBColor::BLACK);
+            drawSnowmen(area.pos, hatStatus[area.pos]);
+        }
+        else
+        {
+            area.grid->drawCircle((int)round(gx), (int)round(gy), r, RGBColor::BLACK);
+            if (area.grid == splash[area.pos])
+            {
+                if (cannonOnSplash[area.pos] != NULL)
+                    area.grid->showPictureNow(*cannonOnSplash[area.pos], 0, 20, true);
+                drawGroundSnow(area.pos, RGBColor::WHITE);
+            }
+        }
+    }
+}
+
+/*
+ * The throwing arm swinging down after the ball leaves the hand
+ */
+void Snowmen::armFollowThrough(int pos, int frame)
+{
+    const int hand_x[] = {41, 42, 43, 44, 43, 42};
+    const int hand_y[] = {20, 26, 32, 38, 44, 50};
+    GenericGrid *grid = snowmen[pos];
+    grid->setBackground(RGBColor::BLACK);
+    drawSnowmen(pos, hatStatus[pos]);
+    if (frame < 6)
+    {
+        if (pos == SNOWMAN_LEFT)
+            grid->plotLineWidth(16, 42, hand_x[frame], hand_y[frame], 2.0, RGBColor::WHITE);
+        else
+            grid->plotLineWidth(28, 42, SNOWMEN_WIDTH - hand_x[frame], hand_y[frame], 2.0, who_right->armColor);
+    }
+}
+
+/*
+ * One flight from (x0,y0) to (x1,y1) in yard inches, peaking at apexY
+ * over the middle of the sky. Lights only exist inside the grids, and
+ * the sky is the only grid between the splash grids, so the ball has to
+ * cross each splash/sky edge where both have lights (between r and
+ * 32-r inches down) or part of it disappears. The path is a smooth
+ * spline through those crossings and it moves the same distance every
+ * frame whichever grid it is on. thrower (or -1) gets its follow
+ * through; the other side can duck or open its mouth.
+ */
+void Snowmen::ballFlight(int thrower, double x0, double y0, double x1, double y1, double apexY,
+                         double radius, RGBColor *color, double delay, FlightReaction react)
+{
+    int target = (thrower < 0 ? (x1 > x0 ? SNOWMAN_RIGHT : SNOWMAN_LEFT) : OTHER_SIDE(thrower));
+    const double skyLeft = SNOWMEN_WIDTH + SPLASH_GRID_WIDTH*2;
+    const double skyRight = skyLeft + SKY_GRID_WIDTH*2;
+    const double skyBottom = SKY_GRID_HEIGHT*2 - SNOWMAN_SKY_RAISE;
+    double lowest = skyBottom - radius - 1;     // Visible band at the edges
+    double highest = radius + 1;
+    double topOfSky = -SNOWMAN_SKY_RAISE + radius;
+    if (apexY < topOfSky)
+        apexY = topOfSky;
+
+    // Waypoints: start, both sky edges, middle of the sky, end
+    std::vector<std::pair<double, double>> way;
+    way.push_back({x0, y0});
+    double edgeIn = (x1 > x0 ? skyLeft : skyRight);
+    double edgeOut = (x1 > x0 ? skyRight : skyLeft);
+    bool crossesSky = (fmin(x0, x1) < skyLeft && fmax(x0, x1) > skyRight);
+    if (crossesSky)
+    {
+        double yIn = fmax(highest, fmin(lowest, (y0 + apexY) / 2));
+        double yOut = fmax(highest, fmin(lowest, (y1 + apexY) / 2));
+        way.push_back({edgeIn, yIn});
+        way.push_back({(skyLeft + skyRight) / 2, apexY});
+        way.push_back({edgeOut, yOut});
+    }
+    way.push_back({x1, y1});
+
+    // Catmull-Rom spline through the waypoints, sampled finely
+    std::vector<std::pair<double, double>> path;
+    int n = way.size();
+    for (int i = 0; i < n - 1; i++)
+    {
+        auto p0 = way[i > 0 ? i - 1 : 0], p1 = way[i], p2 = way[i + 1], p3 = way[i + 2 < n ? i + 2 : n - 1];
+        for (int k = 0; k < 60; k++)
+        {
+            double t = k / 60.0, t2 = t * t, t3 = t2 * t;
+            double x = 0.5 * (2*p1.first + (-p0.first + p2.first)*t + (2*p0.first - 5*p1.first + 4*p2.first - p3.first)*t2
+                              + (-p0.first + 3*p1.first - 3*p2.first + p3.first)*t3);
+            double y = 0.5 * (2*p1.second + (-p0.second + p2.second)*t + (2*p0.second - 5*p1.second + 4*p2.second - p3.second)*t2
+                              + (-p0.second + 3*p1.second - 3*p2.second + p3.second)*t3);
+            path.push_back({x, y});
+        }
+    }
+    path.push_back(way[n - 1]);
+
+    // Walk it at a constant speed
+    std::vector<std::pair<double, double>> frames;
+    frames.push_back(path[0]);
+    double carried = 0;
+    for (size_t i = 1; i < path.size(); i++)
+    {
+        double seg = hypot(path[i].first - path[i-1].first, path[i].second - path[i-1].second);
+        carried += seg;
+        while (carried >= FLIGHT_STEP)
+        {
+            carried -= FLIGHT_STEP;
+            double back = (seg > 0 ? carried / seg : 0);
+            frames.push_back({path[i].first - (path[i].first - path[i-1].first) * back,
+                              path[i].second - (path[i].second - path[i-1].second) * back});
+        }
+    }
+    frames.push_back(path.back());
+
+    int count = frames.size();
+    double prevX = 0, prevY = 0;
+    for (int i = 0; i < count; i++)
+    {
+        double t = (double)i / (count - 1);
+        double x = frames[i].first;
+        double y = frames[i].second;
+
+        lockSnowmen();
+        if (i > 0)
+        {
+            eraseBallInYard(prevX, prevY, radius);
+        }
+        if (thrower >= 0 && i <= 6)
+        {
+            armFollowThrough(thrower, i);
+        }
+        if (react == REACT_DUCK)
+        {
+            int duck = (t < 0.5 ? 0 : (int)fmin(9, (t - 0.5) * 30));
+            snowmen[target]->setBackground(RGBColor::BLACK);
+            drawSnowmen(target, hatStatus[target], duck);
+        }
+        else if (react == REACT_EAT && t > 0.75)
+        {
+            snowmen[target]->setBackground(RGBColor::BLACK);
+            drawSnowmen(target, hatStatus[target]);
+            drawMouth(target, fmin(2.7, (t - 0.75) * 12));
+        }
+        // Eaten balls disappear into the mouth
+        if (!(react == REACT_EAT && i == count - 1))
+        {
+            drawBallInYard(x, y, radius, color);
+        }
+        releaseSnowmen();
+        write_data(delay);
+        prevX = x;
+        prevY = y;
+    }
+
+    lockSnowmen();
+    eraseBallInYard(prevX, prevY, radius);
+    if (react == REACT_DUCK)
+    {
+        snowmen[target]->setBackground(RGBColor::BLACK);
+        drawSnowmen(target, hatStatus[target], 9);
+    }
+    else if (react == REACT_EAT)
+    {
+        drawMouth(target, 2.7);
+    }
+    releaseSnowmen();
+}
+
+/*
  * Draws a 1" picture at a position in inches across the whole yard
  * (see SNOWMAN_SKY_RAISE). On the 2" splash and sky grids each pixel
  * covers four picture pixels, so it shows at the right physical size.
  */
 void Snowmen::drawPictureInYard(RGBPicture *pic, int x, int y)
 {
-    struct { GenericGrid *grid; int x0; int y0; int density; } areas[] =
-    {
-        {snowmen[SNOWMAN_LEFT], 0, 0, 1},
-        {splash[SNOWMAN_LEFT], SNOWMEN_WIDTH, 0, 2},
-        {skyGrid, SNOWMEN_WIDTH + SPLASH_GRID_WIDTH*2, -SNOWMAN_SKY_RAISE, 2},
-        {splash[SNOWMAN_RIGHT], SNOWMEN_WIDTH + SPLASH_GRID_WIDTH*2 + SKY_GRID_WIDTH*2, 0, 2},
-        {snowmen[SNOWMAN_RIGHT], SNOWMEN_WIDTH + SPLASH_GRID_WIDTH*4 + SKY_GRID_WIDTH*2, 0, 1},
-    };
+    YardArea areas[5];
+    getYardAreas(areas);
     int picWidth, picHeight;
     pic->getSize(picWidth, picHeight);
 
@@ -2570,6 +2482,7 @@ void Snowmen::characterFall()
 void Snowmen::characterFly()
 {
     strcpy(message2, "Fly");
+    flying = true;
     skyText(who_right->signatureText, RGBColor::YELLOW);
     slideCharacter(0, 0, 0, -SNOWMEN_HEIGHT, 25, 0.03);
     write_data(1.0);
@@ -2577,6 +2490,11 @@ void Snowmen::characterFly()
     // Little bounce on landing
     slideCharacter(0, 0, 0, -4, 2, 0.08);
     slideCharacter(0, -4, 0, 0, 2, 0.08);
+    flying = false;
+    lockSnowmen();
+    getSnowmen(SNOWMAN_RIGHT)->setBackground(RGBColor::BLACK);
+    drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
+    releaseSnowmen();
     getSkyGrid()->setBackground(RGBColor::BLACK);
 }
 
@@ -2654,41 +2572,22 @@ void Snowmen::characterEject()
 void Snowmen::bananaThrow()
 {
     strcpy(message2, "Banana Throw");
-    GenericGrid *right = getSnowmen(SNOWMAN_RIGHT);
     GenericGrid *left = getSnowmen(SNOWMAN_LEFT);
 
-    // Out of his hands and off to the left
-    for (int x = 14; x >= 0; x -= 2)
-    {
-        lockSnowmen();
-        right->setBackground(RGBColor::BLACK);
-        drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
-        right->drawCircle(x, 50 - (14 - x), BALL_SIZE_1IN, RGBColor::YELLOW);
-        releaseSnowmen();
-        write_data(SNOWBALL_DURATION * 2);
-    }
-    lockSnowmen();
-    right->setBackground(RGBColor::BLACK);
-    drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
-    releaseSnowmen();
-
-    ball_line(getSplashGrid(SNOWMAN_RIGHT), SPLASH_GRID_WIDTH, 8, 0, 4, BALL_SIZE_2IN, RGBColor::YELLOW);
-    do_middle(SNOWMAN_RIGHT, 8, 1, 8, SNOWBALL_DURATION, RGBColor::YELLOW);
-    ball_line(getSplashGrid(SNOWMAN_LEFT), SPLASH_GRID_WIDTH, 8, 0, 12, BALL_SIZE_2IN, RGBColor::YELLOW);
-
-    // Into the face
     int noseX = SNOWMEN_WIDTH/2 + 12;
     int noseY = SNOWMAN_NOSE_HEIGHT - 1;
-    for (int i = 0; i < 4; i++)
+    if (who_right->pic == NULL)
     {
-        int x = SNOWMEN_WIDTH - 1 - i * (SNOWMEN_WIDTH - 1 - noseX) / 3;
-        int y = 24 + i * (noseY - 24) / 3;
-        lockSnowmen();
-        left->setBackground(RGBColor::BLACK);
-        drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
-        left->drawCircle(x, y, BALL_SIZE_1IN, RGBColor::YELLOW);
-        releaseSnowmen();
-        write_data(SNOWBALL_DURATION);
+        // Drawn characters wind up and throw it
+        throwBallColor = RGBColor::YELLOW;
+        throwRight(true);
+        ballFlight(SNOWMAN_RIGHT, YARD_RIGHT_X + 7, RELEASE_Y, noseX, noseY, -6, SNOWBALL_RADIUS, RGBColor::YELLOW, FLIGHT_DELAY);
+        throwBallColor = RGBColor::WHITE;
+    }
+    else
+    {
+        // Pictures have no arm: it comes out of his hands
+        ballFlight(-1, YARD_RIGHT_X + 12, 50, noseX, noseY, -6, SNOWBALL_RADIUS, RGBColor::YELLOW, FLIGHT_DELAY);
     }
 
     // Splat
@@ -2777,6 +2676,248 @@ void Snowmen::twinkleLights()
 
     lockSnowmen();
     redrawYard(hatStatus[SNOWMAN_RIGHT]);
+    releaseSnowmen();
+}
+
+/*
+ * Seconds, for animation that keeps moving between frames (tails, legs)
+ */
+static double animationClock()
+{
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return tv.tv_sec % 10000 + tv.tv_usec / 1000000.0;
+}
+
+/*
+ * Filled box, clipped to the grid
+ */
+void Snowmen::fillBox(GenericGrid *g, int x0, int y0, int x1, int y1, RGBColor *color)
+{
+    for (int x = (x0 < 0 ? 0 : x0); x < x1 && x < g->getGridWidth(); x++)
+    {
+        for (int y = (y0 < 0 ? 0 : y0); y < y1 && y < g->getGridHeight(); y++)
+        {
+            g->getPixal(x, y)->set(color);
+        }
+    }
+}
+
+/*
+ * Draws the right character in code. Like the snowman, ducking squashes
+ * it: the head drops 3x the offset, the middle 2x and the bottom 1x.
+ */
+void Snowmen::drawRig(GenericGrid *g, int offset, int dx, int dy)
+{
+    int head = 3 * offset + dy;
+    int mid = 2 * offset + dy;
+    int low = offset + dy;
+    switch (who_right->rig)
+    {
+    case RIG_MINION:
+        drawMinion(g, head, mid, low, dx, dy);
+        break;
+    case RIG_CREWMATE:
+        drawCrewmate(g, head, mid, low, dx, dy);
+        break;
+    case RIG_TAILS:
+        drawTails(g, head, mid, low, dx, dy);
+        break;
+    case RIG_GINGERBREAD:
+        drawGingerbread(g, head, mid, low, dx, dy);
+        break;
+    default:
+        break;
+    }
+}
+
+void Snowmen::drawMinion(GenericGrid *g, int head, int mid, int low, int dx, int dy)
+{
+    static RGBColor *yellow = new RGBColor(100, 80, 0);
+    static RGBColor *denim = new RGBColor(10, 30, 90);
+    static RGBColor *dark = new RGBColor(8, 8, 8);
+    static RGBColor *metal = new RGBColor(45, 45, 50);
+    static RGBColor *iris = new RGBColor(45, 22, 5);
+
+    // Capsule body
+    g->drawCircle(24+dx, 32+head, 13, yellow);
+    fillBox(g, 11+dx, 32+head, 38+dx, 66+mid, yellow);
+
+    // Overalls: bib, straps and round bottom
+    fillBox(g, 11+dx, 62+mid, 38+dx, 74+low, denim);
+    g->drawCircle(24+dx, 72+low, 13, denim);
+    fillBox(g, 17+dx, 53+mid, 32+dx, 63+mid, denim);
+    g->plotLineWidth(17+dx, 54+mid, 12+dx, 47+head, 1.5, denim);
+    g->plotLineWidth(31+dx, 54+mid, 37+dx, 47+head, 1.5, denim);
+
+    // Legs and shoes
+    fillBox(g, 16+dx, 84+low, 22+dx, 89+low, denim);
+    fillBox(g, 27+dx, 84+low, 33+dx, 89+low, denim);
+    fillBox(g, 12+dx, 89+low, 23+dx, 92+low, dark);
+    fillBox(g, 26+dx, 89+low, 35+dx, 92+low, dark);
+
+    // Resting arm with a black glove
+    g->plotLineWidth(12+dx, 50+mid, 7+dx, 61+mid, 2.5, yellow);
+    g->drawCircle(7+dx, 62+mid, 2, dark);
+
+    // Goggle strap and one big goggle facing left
+    fillBox(g, 11+dx, 27+head, 38+dx, 32+head, dark);
+    g->drawCircle(17+dx, 29+head, 6, metal);
+    g->drawCircle(17+dx, 29+head, 4.5, RGBColor::WHITE);
+    g->drawCircle(15+dx, 29+head, 2, iris);
+    g->drawCircle(14+dx, 29+head, 0.8, dark);
+
+    // A few hairs (the hat covers them when it is on)
+    g->plotLineWidth(22+dx, 19+head, 20+dx, 14+head, 1, dark);
+    g->plotLineWidth(25+dx, 19+head, 26+dx, 13+head, 1, dark);
+    g->plotLineWidth(28+dx, 20+head, 31+dx, 15+head, 1, dark);
+
+    // Smile
+    g->plotLineWidth(13+dx, 40+head, 18+dx, 42+head, 1, dark);
+}
+
+void Snowmen::drawCrewmate(GenericGrid *g, int head, int mid, int low, int dx, int dy)
+{
+    static RGBColor *red = new RGBColor(90, 5, 5);
+    static RGBColor *shade = new RGBColor(45, 0, 0);
+    static RGBColor *visor = new RGBColor(40, 75, 95);
+
+    // Backpack behind (to the right, since it faces left)
+    fillBox(g, 37+dx, 38+head, 45+dx, 66+mid, shade);
+
+    // Bean shaped body
+    g->drawCircle(24+dx, 32+head, 14, red);
+    fillBox(g, 10+dx, 32+head, 39+dx, 74+mid, red);
+
+    // Legs
+    fillBox(g, 11+dx, 72+mid, 22+dx, 86+low, red);
+    fillBox(g, 27+dx, 72+mid, 38+dx, 86+low, red);
+    g->drawCircle(16+dx, 86+low, 5, red);
+    g->drawCircle(32+dx, 86+low, 5, red);
+
+    // Visor with a highlight
+    g->drawCircle(14+dx, 31+head, 5, visor);
+    g->drawCircle(22+dx, 31+head, 5, visor);
+    fillBox(g, 14+dx, 26+head, 23+dx, 37+head, visor);
+    fillBox(g, 11+dx, 28+head, 17+dx, 30+head, RGBColor::WHITE);
+}
+
+void Snowmen::drawTails(GenericGrid *g, int head, int mid, int low, int dx, int dy)
+{
+    static RGBColor *orange = new RGBColor(100, 45, 0);
+    static RGBColor *eye = new RGBColor(10, 45, 100);
+    static RGBColor *dark = new RGBColor(8, 8, 8);
+    static RGBColor *shoe = new RGBColor(90, 5, 5);
+    double t = animationClock();
+
+    // Two tails behind him, or a spinning propeller when flying. They must
+    // land in the same place on every redraw unless flying: some moves
+    // redraw without clearing first.
+    int pivotX = 33 + dx, pivotY = 58 + mid;
+    for (int k = 0; k < 2; k++)
+    {
+        double a;
+        if (flying)
+            a = t * 25 + k * M_PI;
+        else
+            a = -0.6 + k * 0.9;
+        int endX = pivotX + (int)(15 * cos(a));
+        int endY = pivotY + (int)(15 * sin(a) * (flying ? 0.5 : 1.0));
+        g->plotLineWidth(pivotX, pivotY, endX, endY, 5, orange);
+        g->drawCircle(endX, endY, 3, RGBColor::WHITE);
+    }
+
+    // Legs and red shoes
+    g->plotLineWidth(22+dx, 60+mid, 20+dx, 80+low, 3, orange);
+    g->plotLineWidth(28+dx, 60+mid, 30+dx, 80+low, 3, orange);
+    fillBox(g, 13+dx, 80+low, 24+dx, 86+low, shoe);
+    fillBox(g, 26+dx, 80+low, 37+dx, 86+low, shoe);
+    fillBox(g, 16+dx, 82+low, 21+dx, 84+low, RGBColor::WHITE);
+    fillBox(g, 29+dx, 82+low, 34+dx, 84+low, RGBColor::WHITE);
+
+    // Body with white chest, resting arm with a glove
+    g->drawCircle(25+dx, 51+mid, 9, orange);
+    g->drawCircle(22+dx, 53+mid, 6, RGBColor::WHITE);
+    g->plotLineWidth(19+dx, 46+mid, 14+dx, 59+mid, 2.5, orange);
+    g->drawCircle(14+dx, 60+mid, 2.5, RGBColor::WHITE);
+
+    // Head, ears and forehead tufts
+    g->plotLineWidth(20+dx, 22+head, 22+dx, 11+head, 4, orange);
+    g->plotLineWidth(22+dx, 11+head, 26+dx, 21+head, 4, orange);
+    g->plotLineWidth(28+dx, 21+head, 31+dx, 10+head, 4, orange);
+    g->plotLineWidth(31+dx, 10+head, 34+dx, 22+head, 4, orange);
+    g->drawCircle(25+dx, 30+head, 11, orange);
+    g->plotLineWidth(16+dx, 23+head, 10+dx, 25+head, 2, orange);
+    g->plotLineWidth(16+dx, 26+head, 10+dx, 29+head, 2, orange);
+
+    // White muzzle, black nose, big blue eye
+    g->drawCircle(16+dx, 35+head, 5, RGBColor::WHITE);
+    g->drawCircle(20+dx, 37+head, 4, RGBColor::WHITE);
+    g->drawCircle(11+dx, 33+head, 1.5, dark);
+    g->drawCircle(20+dx, 27+head, 3.5, RGBColor::WHITE);
+    g->drawCircle(18+dx, 27+head, 1.5, eye);
+}
+
+void Snowmen::drawGingerbread(GenericGrid *g, int head, int mid, int low, int dx, int dy)
+{
+    static RGBColor *cookie = new RGBColor(65, 30, 8);
+    static RGBColor *gumRed = new RGBColor(100, 0, 0);
+    static RGBColor *gumGreen = new RGBColor(0, 100, 0);
+    static RGBColor *dark = new RGBColor(8, 8, 8);
+
+    // Legs and arms swing while running
+    int swing = running ? (int)(6 * sin(animationClock() * 18)) : 0;
+    int lfX = 15 - swing, rfX = 33 + swing;
+    g->plotLineWidth(20+dx, 66+mid, lfX+dx, 87+low, 7, cookie);
+    g->plotLineWidth(28+dx, 66+mid, rfX+dx, 87+low, 7, cookie);
+    g->plotLineWidth(17+dx, 48+mid, 6+dx, 60+mid + swing, 6, cookie);
+    g->plotLineWidth(31+dx, 48+mid, 42+dx, 60+mid - swing, 6, cookie);
+
+    g->drawCircle(24+dx, 56+mid, 12, cookie);
+    fillBox(g, 20+dx, 36+head, 29+dx, 46+mid, cookie);  // Neck
+    g->drawCircle(24+dx, 30+head, 10, cookie);
+
+    // Icing squiggles on the wrists and ankles
+    int ends[][2] = {{6, 57 + swing}, {42, 57 - swing}, {lfX, 83}, {rfX, 83}};
+    for (int i = 0; i < 4; i++)
+    {
+        int x = ends[i][0] + dx;
+        int y = ends[i][1] + (i < 2 ? mid : low);
+        g->plotLineWidth(x-3, y, x-1, y-2, 1, RGBColor::WHITE);
+        g->plotLineWidth(x-1, y-2, x+1, y, 1, RGBColor::WHITE);
+        g->plotLineWidth(x+1, y, x+3, y-2, 1, RGBColor::WHITE);
+    }
+
+    // Gumdrop buttons
+    g->drawCircle(24+dx, 49+mid, 1.5, gumRed);
+    g->drawCircle(24+dx, 56+mid, 1.5, gumGreen);
+    g->drawCircle(24+dx, 63+mid, 1.5, gumRed);
+
+    // Face: icing eyes and smile
+    g->drawCircle(20+dx, 27+head, 1.5, RGBColor::WHITE);
+    g->drawCircle(27+dx, 27+head, 1.5, RGBColor::WHITE);
+    g->drawCircle(20+dx, 27+head, 0.5, dark);
+    g->drawCircle(27+dx, 27+head, 0.5, dark);
+    g->plotLineWidth(19+dx, 34+head, 22+dx, 36+head, 1, RGBColor::WHITE);
+    g->plotLineWidth(22+dx, 36+head, 26+dx, 34+head, 1, RGBColor::WHITE);
+}
+
+/*
+ * Gingerbread Man runs off with his legs going, taunts, and runs back
+ */
+void Snowmen::characterRunAway()
+{
+    strcpy(message2, "Run Away");
+    running = true;
+    slideCharacter(0, 0, SNOWMEN_WIDTH + 10, 0, 18, 0.05);
+    skyText(who_right->signatureText, RGBColor::YELLOW);
+    write_data(2.5);
+    getSkyGrid()->setBackground(RGBColor::BLACK);
+    slideCharacter(SNOWMEN_WIDTH + 10, 0, 0, 0, 18, 0.05);
+    running = false;
+    lockSnowmen();
+    getSnowmen(SNOWMAN_RIGHT)->setBackground(RGBColor::BLACK);
+    drawSnowmen(SNOWMAN_RIGHT, hatStatus[SNOWMAN_RIGHT]);
     releaseSnowmen();
 }
 

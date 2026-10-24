@@ -41,7 +41,40 @@ enum SignatureMove
     SIG_EJECT,          /* Floats away into space */
     SIG_BANANA,         /* Throws a yellow snowball at the left snowman */
     SIG_EAT_EVERYTHING, /* Eats every snowball thrown at him */
-    SIG_TWINKLE_LIGHTS  /* Plugs in 25,000 twinkle lights on the left snowman, garage too */
+    SIG_TWINKLE_LIGHTS, /* Plugs in 25,000 twinkle lights on the left snowman, garage too */
+    SIG_RUN_AWAY        /* Runs off and back: "You can't catch me!" */
+};
+
+/*
+ * Characters drawn in code instead of from a picture. They follow the
+ * snowman's layout (head at y 20-40 facing left, shoulder at 28,42) so
+ * they can do every move, including throwing back.
+ */
+enum CharacterRig
+{
+    RIG_SNOWMAN,
+    RIG_MINION,
+    RIG_CREWMATE,
+    RIG_TAILS,
+    RIG_GINGERBREAD
+};
+
+/* What the target does while a snowball flies at it */
+enum FlightReaction
+{
+    REACT_NONE,
+    REACT_DUCK,
+    REACT_EAT
+};
+
+struct YardArea
+{
+    GenericGrid *grid;
+    int x0;         /* Top left corner in inches */
+    int y0;
+    int density;    /* Inches between lights */
+    int pos;        /* SNOWMAN_LEFT/RIGHT side, for redrawing */
+    bool isSnowman;
 };
 
 class GarageSign;
@@ -76,6 +109,10 @@ class SnowmanPicture
     SignatureMove signature = SIG_NONE;
     std::string signatureText = "";     /* On the sky during the signature move */
     double speed = 1.0;                 /* > 1 speeds up all animation while it is up */
+    CharacterRig rig = RIG_SNOWMAN;     /* How to draw it when there is no picture */
+    RGBColor *armColor = RGBColor::WHITE;
+    int nose_ball_dx = 0;               /* Moves stuck snowballs onto its face */
+    bool isPlainSnowman() { return pic == NULL && rig == RIG_SNOWMAN; }
 };
 
 class SnowmenGrid: public GenericGrid
@@ -137,7 +174,7 @@ private:
     void placeHatBack(int pos);
     void throwLeft(bool loft);
     void throwRight(bool loft);
-    void hitNose(int snowmen, int start_y);
+    void hitNose(int snowmen);
     void hitHat(int pos);
     void duckSnowman(int pos);
     void eatSnowball(int pos);
@@ -154,14 +191,19 @@ private:
     SnowmenGrid *snowmen[2];
     SnowmenGrid *splash[2];
     SnowmenGrid *skyGrid;
-    void ball_line(GenericGrid *grid, int start_x, int start_y, int end_x, int end_y, double ballSize, RGBColor *color = RGBColor::WHITE);
-    void do_middle(int start_snowmen, int start_y, int high_y, int end_y,double duration, RGBColor *color = RGBColor::WHITE);
     // Signature moves
     void signatureMove();
     void skyText(const std::string &text, RGBColor *color);
     void slideCharacter(int fromX, int fromY, int toX, int toY, int frames, double delay, RGBColor *trail = NULL);
     void flyAcross(GenericGrid *grid, int pos, RGBPicture *pic, RGBColor *streak, int fromX, int toX, int y, int step);
     void drawPictureInYard(RGBPicture *pic, int x, int y);
+    void getYardAreas(YardArea areas[5]);
+    void drawBallInYard(double x, double y, double radius, RGBColor *color);
+    void eraseBallInYard(double x, double y, double radius);
+    void ballFlight(int thrower, double x0, double y0, double x1, double y1, double apexY,
+                    double radius, RGBColor *color, double delay, FlightReaction react = REACT_NONE);
+    void armFollowThrough(int pos, int frame);
+    RGBPicture *cannonOnSplash[2] = {NULL, NULL};  /* Redrawn when a ball passes over it */
     void redrawYard(bool withRightHat);
     void stealHat();
     void characterFall();
@@ -171,6 +213,17 @@ private:
     void bananaThrow();
     void twinkleLights();
     void useTestCharacter();
+    void characterRunAway();
+    // Drawn characters
+    void drawRig(GenericGrid *g, int offset, int dx, int dy);
+    void drawMinion(GenericGrid *g, int head, int mid, int low, int dx, int dy);
+    void drawCrewmate(GenericGrid *g, int head, int mid, int low, int dx, int dy);
+    void drawTails(GenericGrid *g, int head, int mid, int low, int dx, int dy);
+    void drawGingerbread(GenericGrid *g, int head, int mid, int low, int dx, int dy);
+    void fillBox(GenericGrid *g, int x0, int y0, int x1, int y1, RGBColor *color);
+    RGBColor *throwBallColor = RGBColor::WHITE;  /* Right side's snowball */
+    bool flying = false;    /* Tails spins his tails */
+    bool running = false;   /* Legs swing */
     double animationSpeed = 1.0;
     bool hatStolen = false;       /* Right character is wearing the left snowman's hat */
     int signatureCount = 0;       /* Signature moves by the current character */
