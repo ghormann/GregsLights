@@ -21,6 +21,11 @@
 #define SNOWMAN_RIGHT 1
 #define SNOWMAN_LEFT  0
 
+/* Throws before the right snowman is replaced. Shorter when someone is waiting on a vote */
+#define SNOWMAN_STEPS 40
+#define SNOWMAN_STEPS_VOTE_WAITING 10
+#define SNOWMAN_MIN_MOVES 4  /* Before a random cannon shot can replace it */
+
 #define SNOWMAN_NOSE_HEIGHT (SNOWMEN_HEIGHT-65)
 
 #define write_data(pause)  usleep((pause) * 1000000)

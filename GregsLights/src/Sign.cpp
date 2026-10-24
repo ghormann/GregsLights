@@ -361,10 +361,46 @@ void Sign::toGo(clockUnits units)
 }
 
 
+/*
+ * Returns how many times this name has been shown tonight (including now).
+ * The night rolls over at noon so late Christmas Eve counts as one night.
+ */
+int Sign::countNameVisit(const std::string &name)
+{
+    struct tm tm_now;
+    time_t t = time(NULL) - 12*60*60;
+    localtime_r(&t, &tm_now);
+    if (tm_now.tm_yday != nameVisitsDay)
+    {
+        nameVisits.clear();
+        nameVisitsDay = tm_now.tm_yday;
+    }
+    return ++nameVisits[name];
+}
+
 std::string Sign::wrapName(std::string name)
 {
     std::string full_message = std::string("");
-    int i = rand() % 6;
+    bool isChristmas = !timeInfo->isNewYears();
+    int visits = countNameVisit(name);
+
+    if (visits == 2)
+    {
+        full_message += "WELCOME BACK, ";
+        full_message += name;
+        full_message += "! ";
+        full_message += std::string(generator->getGreeting());
+        return full_message;
+    }
+    if (visits > 2)
+    {
+        full_message += name;
+        full_message += " AGAIN? WE LOVE IT! ";
+        full_message += std::string(generator->getGreeting());
+        return full_message;
+    }
+
+    int i = rand() % 11;
     switch(i)
     {
     case 0:
@@ -402,6 +438,36 @@ std::string Sign::wrapName(std::string name)
         full_message += name;
         full_message += "! ";
         full_message += std::string(generator->getGreeting());
+        full_message += "!";
+        break;
+    case 6:
+        full_message += name;
+        if (isChristmas)
+            full_message += " IS ON THE NICE LIST!";
+        else
+            full_message += ", HAVE A GREAT NEW YEAR!";
+        break;
+    case 7:
+        if (isChristmas)
+            full_message += "SANTA SAYS HI TO ";
+        else
+            full_message += "CHEERS TO ";
+        full_message += name;
+        full_message += "!";
+        break;
+    case 8:
+        full_message += "THE SNOWMEN SAY HI, ";
+        full_message += name;
+        full_message += "!";
+        break;
+    case 9:
+        full_message += name;
+        full_message += ", THANKS FOR STOPPING BY! ";
+        full_message += std::string(generator->getGreeting());
+        break;
+    case 10:
+        full_message += "EVERYBODY WAVE AT ";
+        full_message += name;
         full_message += "!";
         break;
     }
@@ -461,6 +527,31 @@ void Sign::run()
         }
         setDummyBackground(RGBColor::BLACK);
         setDisplayPosition(0,0);
+
+        if (!timeInfo->isNoShow())
+        {
+            // About to hit a milestone. Longest pattern is ~30s, so check
+            // far enough ahead that we never miss it.
+            int milestone = timeInfo->getNextMilestone(75);
+            if (milestone > 0)
+            {
+                milestoneShow(milestone);
+                return;
+            }
+
+            // Let people know one is coming
+            milestone = timeInfo->getNextMilestone(15*60);
+            if (milestone > 0 && time(NULL) - lastMilestoneAnnounce >= 120)
+            {
+                lastMilestoneAnnounce = time(NULL);
+                msg = generator->getMilestoneAnnouncement(milestone);
+                snprintf(message, sizeof(message), "%s", msg.c_str());
+                this->sendStatus();
+                scrollText(RGBColor::getRandom(), RGBColor::BLACK, (char*)msg.c_str(), textSpeed);
+                return;
+            }
+        }
+
         checkClear();
 
         int i = 13;
@@ -515,6 +606,55 @@ void Sign::run()
             break;
         }
     }
+}
+
+void Sign::showCentered(RGBColor *fgColor, RGBColor *bgColor, const std::string &text)
+{
+    // Draw once in the background color to measure it
+    setDummyBackground(bgColor);
+    int width = writeText(bgColor, 0, 3, text);
+    setDummyBackground(bgColor);
+    int x = (SIGN_WIDTH - width)/2;
+    writeText(fgColor, (x < 0 ? 0 : x), 3, text);
+    setDisplayPosition(0,0);
+}
+
+/*
+ * Clock is about to hit a fun number (1,234,567 or 2,000,000).
+ * Build up to it, count down the last few seconds, then celebrate.
+ */
+void Sign::milestoneShow(int milestone)
+{
+    std::string number = MessageGenerator::formatNumber(milestone);
+    snprintf(message, sizeof(message), "Milestone: %s", number.c_str());
+    this->sendStatus();
+
+    std::string watch = "WATCH THE CLOCK HIT " + number + "!";
+    while (timeInfo->getSecondsUntil() - milestone > 25)
+    {
+        scrollText(RGBColor::getRandom(), RGBColor::BLACK, (char*)watch.c_str(), 0.02);
+    }
+
+    // Count down the last few seconds
+    int remaining = timeInfo->getSecondsUntil() - milestone;
+    while (remaining > 0)
+    {
+        showCentered(remaining <= 5 ? RGBColor::RED : RGBColor::WHITE, RGBColor::BLACK, std::to_string(remaining));
+        gridSleep(0.1);
+        remaining = timeInfo->getSecondsUntil() - milestone;
+    }
+
+    // Celebrate!
+    snprintf(message, sizeof(message), "Hit Milestone: %s", number.c_str());
+    this->sendStatus();
+    RGBColor *colors[] = {RGBColor::RED, RGBColor::GREEN, RGBColor::PURPLE, RGBColor::WHITE};
+    for (int i = 0; i < 16; i++)
+    {
+        showCentered(colors[i%4], RGBColor::BLACK, number);
+        gridSleep(0.4);
+    }
+    std::string hit = "WE HIT " + number + "! THANKS FOR WATCHING WITH US!";
+    scrollText(RGBColor::getRandom(), RGBColor::BLACK, (char*)hit.c_str(), 0.02);
 }
 
 void Sign::checkClear()

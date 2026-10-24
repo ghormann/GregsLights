@@ -5,6 +5,7 @@
 #include <string>
 #include <deque>
 #include <mutex>
+#include <atomic>
 
 
 # define GJH_SSL_VERIFY_PEER                 0x01
@@ -32,6 +33,8 @@ public:
     void sendTimeInfo();
     void setPowerCallback(PowerCallbackInterface *ptr);
     int getSnowmanVote();
+    bool hasSnowmanVote();
+    void clearSnowmanVote();
     std::string getNextName();
 
 protected:
@@ -41,6 +44,7 @@ private:
     bool isValid;
     bool isPopcornEnabled;
     int snowmanVote = 0;
+    std::atomic<bool> snowmanVotePending{false};
     PowerCallbackInterface *powerCallback;
     void debug(std::string mesg);
     void setPopcorn(bool value);

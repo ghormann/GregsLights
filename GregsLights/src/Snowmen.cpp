@@ -1784,6 +1784,7 @@ void Snowmen::resetSnowmen(int pos) {
 void Snowmen::updateSnowmanFromMQTT()
 {
     int who = mqtt->getSnowmanVote();
+    mqtt->clearSnowmanVote();
     if (who >= (int)availSnowman.size())
     {
         who = 0;
@@ -1831,6 +1832,7 @@ void Snowmen::do_it_snowmen()
     }
 
     bool didSomething = true;
+    bool characterMove = true;  /* False when just cleaning up the scene */
     int id = -1;
 
     /*
@@ -1850,13 +1852,14 @@ void Snowmen::do_it_snowmen()
         }
     }
 
-    if (++snowmanStepCount > 40) // 40
+    int stepLimit = mqtt->hasSnowmanVote() ? SNOWMAN_STEPS_VOTE_WAITING : SNOWMAN_STEPS;
+    if (snowmanStepCount >= stepLimit)
     {
         cannonShot(SNOWMAN_LEFT);
         // Need to return, other wise something invalid can occur
         return;
     }
-    snprintf(message_who, sizeof(message_who), "%s (%d)", who_right->name.c_str(), snowmanStepCount);
+    snprintf(message_who, sizeof(message_who), "%s (%d/%d)", who_right->name.c_str(), snowmanStepCount, stepLimit);
 
     //id = 14;
 
@@ -1867,6 +1870,7 @@ void Snowmen::do_it_snowmen()
         if (noseBalls[SNOWMAN_LEFT]>=2 || noseBalls[SNOWMAN_RIGHT] >=2)
         {
             fadeNoseBalls();
+            characterMove = false;
         }
         else
         {
@@ -1877,6 +1881,7 @@ void Snowmen::do_it_snowmen()
         if (noseBalls[SNOWMAN_LEFT]>=2 || noseBalls[SNOWMAN_RIGHT] >=2)
         {
             fadeNoseBalls();
+            characterMove = false;
         }
         else
         {
@@ -1887,6 +1892,7 @@ void Snowmen::do_it_snowmen()
         if (noseBalls[SNOWMAN_LEFT]>=2 || noseBalls[SNOWMAN_RIGHT] >=2)
         {
             fadeNoseBalls();
+            characterMove = false;
         }
         else
         {
@@ -1897,6 +1903,7 @@ void Snowmen::do_it_snowmen()
         if (noseBalls[SNOWMAN_LEFT]>=2 || noseBalls[SNOWMAN_RIGHT] >=2)
         {
             fadeNoseBalls();
+            characterMove = false;
         }
         else
         {
@@ -1907,6 +1914,7 @@ void Snowmen::do_it_snowmen()
         if (groundSnowLevel[SNOWMAN_RIGHT] >= 3)
         {
             fadeSnow();
+            characterMove = false;
         }
         else
         {
@@ -1917,6 +1925,7 @@ void Snowmen::do_it_snowmen()
         if (groundSnowLevel[SNOWMAN_RIGHT] >= 3)
         {
             fadeSnow();
+            characterMove = false;
         }
         else
         {
@@ -1927,6 +1936,7 @@ void Snowmen::do_it_snowmen()
         if (groundSnowLevel[SNOWMAN_LEFT] >= 3)
         {
             fadeSnow();
+            characterMove = false;
         }
         else
         {
@@ -1938,6 +1948,7 @@ void Snowmen::do_it_snowmen()
         if (groundSnowLevel[SNOWMAN_LEFT] >= 3)
         {
             fadeSnow();
+            characterMove = false;
         }
         else
         {
@@ -1965,8 +1976,9 @@ void Snowmen::do_it_snowmen()
         }
         break;
     case 10:
+        // Replaces the right snowman, so give it a chance to do something first
         chance = rand()%4;
-        if (chance == 0)
+        if (chance == 0 && snowmanStepCount >= SNOWMAN_MIN_MOVES)
             cannonShot(SNOWMAN_LEFT);
         else
             didSomething = false;
@@ -2004,6 +2016,13 @@ void Snowmen::do_it_snowmen()
 
     default:
         break;
+    }
+
+    // Only count things the snowmen actually did. cannonShot(SNOWMAN_LEFT)
+    // already reset the count for the new snowman.
+    if (didSomething && characterMove && id != 10)
+    {
+        ++snowmanStepCount;
     }
 
     // wait between
