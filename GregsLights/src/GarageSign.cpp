@@ -290,7 +290,7 @@ void GarageSign::run()
 
     if (TimeInfo::getInstance()->isNoShow())
     {
-        powerSurgeRequested = false;
+        hallelujahRequested = false;
         showStartDate();
     }
     else
@@ -310,10 +310,10 @@ void GarageSign::run()
         {
             showMilestone(milestone);
         }
-        else if (powerSurgeRequested)
+        else if (hallelujahRequested)
         {
-            powerSurgeRequested = false;
-            showPowerSurge();
+            hallelujahRequested = false;
+            showHallelujah();
         }
         else if (mqtt->isPopcorn() &&  secondsOfMinute > 4 && secondsOfMinute < 20) {
             showPopcorn();
@@ -323,13 +323,13 @@ void GarageSign::run()
         else if (secondsOfMinute >= 20 && secondsOfMinute < 28)
         {
             showTextNumber();
-            sleepUnlessSurge(6.0);
+            sleepUnlessHallelujah(6.0);
         }
         // Milestone coming up soon
         else if (comingMilestone > 0 && secondsOfMinute >= 28 && secondsOfMinute < 40)
         {
             showMilestoneComing(comingMilestone);
-            sleepUnlessSurge(6.0);
+            sleepUnlessHallelujah(6.0);
         }
         // Display Total power after 50 seconds
         else if (secondsOfMinute > 50)
@@ -347,7 +347,7 @@ void GarageSign::run()
                     // Always need to draw it once
                     showPower();
                 }
-                if (ampsChanged || powerSurgeRequested)
+                if (ampsChanged || hallelujahRequested)
                 {
                     showPower();
                     ampsChanged = false;
@@ -427,51 +427,50 @@ void GarageSign::showMilestoneComing(int milestone)
 }
 
 /*
- * Clark Griswold plugs in the lights (asked for by the snowmen)
+ * Clark Griswold plugs in his lights (asked for by the snowmen)
  */
-void GarageSign::requestPowerSurge()
+void GarageSign::requestHallelujah()
 {
-    powerSurgeRequested = true;
+    hallelujahRequested = true;
 }
 
-void GarageSign::sleepUnlessSurge(double seconds)
+void GarageSign::sleepUnlessHallelujah(double seconds)
 {
-    for (double t = 0; t < seconds && !powerSurgeRequested; t += 0.1)
+    for (double t = 0; t < seconds && !hallelujahRequested; t += 0.1)
     {
         gjhSleep(0.1);
     }
 }
 
-void GarageSign::showPowerSurge()
+/*
+ * A string of twinkle lights lights up around the edge, then Hallelujah!
+ */
+void GarageSign::showHallelujah()
 {
-    // Same timing as Snowmen::powerSurge()
-    double flicker[] = {0.3, 0.1, 0.5, 0.1, 1.0};
-    RGBColor *colors[] = {RGBColor::RED, RGBColor::GREEN, RGBColor::YELLOW, RGBColor::BLUE, RGBColor::PURPLE};
+    RGBColor *colors[] = {RGBColor::RED, RGBColor::GREEN, RGBColor::BLUE, RGBColor::YELLOW, RGBColor::ORANGE, RGBColor::PURPLE};
     std::string text = "HALLELUJAH!";
+    int spacing = 8;
+    int bulbs = GARAGE_SIGN_WIDTH / spacing;
 
-    sprintf(message, "Power Surge");
-    for (int i = 0; i < 5; i++)
+    sprintf(message, "Hallelujah");
+    for (int frame = 0; frame < 40; frame++)
     {
-        if (i % 2 == 0)
-        {
-            this->lockGrid();
-            setBackground(RGBColor::BLACK);
-            this->releaseGrid();
-        }
-        else
-        {
-            showPower();
-        }
-        gjhSleep(flicker[i]);
-    }
-
-    for (int i = 0; i < 10; i++)
-    {
+        int lit = (frame < 10 ? (frame + 1) * bulbs / 10 : bulbs);  // Plugging in
         this->lockGrid();
         setBackground(RGBColor::BLACK);
-        writeCentered(colors[i % 5], 4, text, 34);
+        if (frame >= 10)
+        {
+            writeCentered(colors[(frame / 3) % 6], 6, text, 30);
+        }
+        for (int i = 0; i < lit; i++)
+        {
+            RGBColor *c = colors[(i + frame / 2) % 6];  // Chase
+            int x = i * spacing + spacing / 2;
+            setBackground(c, x, 0, x + 2, 2);
+            setBackground(c, GARAGE_SIGN_WIDTH - x - 2, GARAGE_SIGN_HEIGHT - 2, GARAGE_SIGN_WIDTH - x, GARAGE_SIGN_HEIGHT);
+        }
         this->releaseGrid();
-        gjhSleep(0.25);
+        gjhSleep(0.1);
     }
 }
 

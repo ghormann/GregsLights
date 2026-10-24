@@ -41,10 +41,17 @@ enum SignatureMove
     SIG_EJECT,          /* Floats away into space */
     SIG_BANANA,         /* Throws a yellow snowball at the left snowman */
     SIG_EAT_EVERYTHING, /* Eats every snowball thrown at him */
-    SIG_POWER_SURGE     /* Plugs in the lights: everything flickers, garage too */
+    SIG_TWINKLE_LIGHTS  /* Plugs in 25,000 twinkle lights on the left snowman, garage too */
 };
 
 class GarageSign;
+
+/*
+ * Physical layout in inches, left to right: left snowman, left splash,
+ * sky, right splash, right snowman. Snowman grids have 1" spacing,
+ * splash and sky have 2". The sky hangs this much higher than the rest.
+ */
+#define SNOWMAN_SKY_RAISE 16
 
 #define SNOWMAN_NOSE_HEIGHT (SNOWMEN_HEIGHT-65)
 
@@ -154,13 +161,15 @@ private:
     void skyText(const std::string &text, RGBColor *color);
     void slideCharacter(int fromX, int fromY, int toX, int toY, int frames, double delay, RGBColor *trail = NULL);
     void flyAcross(GenericGrid *grid, int pos, RGBPicture *pic, RGBColor *streak, int fromX, int toX, int y, int step);
+    void drawPictureInYard(RGBPicture *pic, int x, int y);
+    void redrawYard(bool withRightHat);
     void stealHat();
     void characterFall();
     void characterFly();
     void characterDash();
     void characterEject();
     void bananaThrow();
-    void powerSurge();
+    void twinkleLights();
     void useTestCharacter();
     double animationSpeed = 1.0;
     bool hatStolen = false;       /* Right character is wearing the left snowman's hat */

@@ -438,7 +438,7 @@ void Snowmen::createSnowmanPictures()
     who->name_offset_x = 4;
     who->name = "Clark Griswold";
     who->catchphrase = "Fun old-fashioned family Christmas!";
-    who->signature = SIG_POWER_SURGE;
+    who->signature = SIG_TWINKLE_LIGHTS;
     who->signatureText = "Hallelujah!";
     who->show_misses = true;
     who->pic = RGBPicture::getPicture("clark_left.png");
@@ -2245,8 +2245,8 @@ void Snowmen::signatureMove()
         write_data(2.0);
         getSkyGrid()->setBackground(RGBColor::BLACK);
         break;
-    case SIG_POWER_SURGE:
-        powerSurge();
+    case SIG_TWINKLE_LIGHTS:
+        twinkleLights();
         break;
     default:
         break;
@@ -2387,8 +2387,87 @@ void Snowmen::flyAcross(GenericGrid *grid, int pos, RGBPicture *pic, RGBColor *s
 }
 
 /*
- * The Grinch lifts the left snowman's hat, carries it across the
- * yard and wears it until he is replaced.
+ * Draws a 1" picture at a position in inches across the whole yard
+ * (see SNOWMAN_SKY_RAISE). On the 2" splash and sky grids each pixel
+ * covers four picture pixels, so it shows at the right physical size.
+ */
+void Snowmen::drawPictureInYard(RGBPicture *pic, int x, int y)
+{
+    struct { GenericGrid *grid; int x0; int y0; int density; } areas[] =
+    {
+        {snowmen[SNOWMAN_LEFT], 0, 0, 1},
+        {splash[SNOWMAN_LEFT], SNOWMEN_WIDTH, 0, 2},
+        {skyGrid, SNOWMEN_WIDTH + SPLASH_GRID_WIDTH*2, -SNOWMAN_SKY_RAISE, 2},
+        {splash[SNOWMAN_RIGHT], SNOWMEN_WIDTH + SPLASH_GRID_WIDTH*2 + SKY_GRID_WIDTH*2, 0, 2},
+        {snowmen[SNOWMAN_RIGHT], SNOWMEN_WIDTH + SPLASH_GRID_WIDTH*4 + SKY_GRID_WIDTH*2, 0, 1},
+    };
+    int picWidth, picHeight;
+    pic->getSize(picWidth, picHeight);
+
+    for (auto &area : areas)
+    {
+        if (area.density == 1)
+        {
+            area.grid->showPictureNow(*pic, x - area.x0, y - area.y0, true);
+            continue;
+        }
+
+        int gw = area.grid->getGridWidth();
+        int gh = area.grid->getGridHeight();
+        for (int gx = 0; gx < gw; gx++)
+        {
+            int px = area.x0 + gx * 2 - x;   // Picture pixel under this light
+            if (px < -1 || px >= picWidth)
+                continue;
+            for (int gy = 0; gy < gh; gy++)
+            {
+                int py = area.y0 + gy * 2 - y;
+                if (py < -1 || py >= picHeight)
+                    continue;
+
+                // Average the lit picture pixels this light covers
+                int r = 0, g = 0, b = 0, lit = 0;
+                for (int dx = 0; dx < 2; dx++)
+                {
+                    for (int dy = 0; dy < 2; dy++)
+                    {
+                        int sx = px + dx, sy = py + dy;
+                        if (sx < 0 || sy < 0 || sx >= picWidth || sy >= picHeight)
+                            continue;
+                        int pr, pg, pb;
+                        pic->getRGB(sx, sy, pr, pg, pb);
+                        if (pr || pg || pb)
+                        {
+                            r += pr; g += pg; b += pb; ++lit;
+                        }
+                    }
+                }
+                if (lit >= 2)
+                {
+                    area.grid->getPixal(gx, gy)->set(r/lit, g/lit, b/lit);
+                }
+            }
+        }
+    }
+}
+
+/*
+ * Clears every grid back to the snowmen and ground snow
+ */
+void Snowmen::redrawYard(bool withRightHat)
+{
+    for (int pos = SNOWMAN_LEFT; pos <= SNOWMAN_RIGHT; pos++)
+    {
+        snowmen[pos]->setBackground(RGBColor::BLACK);
+        splash[pos]->setBackground(RGBColor::BLACK);
+        drawSnowmen(pos, pos == SNOWMAN_RIGHT ? withRightHat : hatStatus[pos]);
+    }
+    skyGrid->setBackground(RGBColor::BLACK);
+}
+
+/*
+ * The Grinch lifts the left snowman's hat, it sails across the
+ * yard and he wears it until he is replaced.
  */
 void Snowmen::stealHat()
 {
@@ -2404,58 +2483,67 @@ void Snowmen::stealHat()
     }
 
     RGBPicture *hat = RGBPicture::getPicture("small_hat_0g.png");
-    GenericGrid *left = getSnowmen(SNOWMAN_LEFT);
-    GenericGrid *right = getSnowmen(SNOWMAN_RIGHT);
+    const int startX = 7;  // Where hats sit on a snowman grid
+    const int endX = SNOWMEN_WIDTH + SPLASH_GRID_WIDTH*4 + SKY_GRID_WIDTH*2 + 7;
+    const int hatY = -2;
 
     // Out with the old hat
     if (hatStatus[SNOWMAN_RIGHT])
     {
         hitHat(SNOWMAN_RIGHT);
     }
+    hatStatus[SNOWMAN_LEFT] = false;
+
+    /*
+     * The hat's lit part is 20x15 at (7,10) in the picture. Only the sky
+     * has lights above the top of the other grids, so it moves level
+     * while crossing between grids and only arcs up once it is entirely
+     * over the sky. That way it never gets cut off.
+     */
+    const int level = -9;   // Lit part at the top row of the splash grids
+    const int skyStart = SNOWMEN_WIDTH + SPLASH_GRID_WIDTH*2 - 7;
+    const int skyEnd = skyStart + SKY_GRID_WIDTH*2 - 20;
+    const int peak = 14;    // How far it rises over the sky
 
     // Lift it off
-    hatStatus[SNOWMAN_LEFT] = false;
-    for (int y = -2; y >= -8; y--)
+    for (int y = hatY; y >= level; y--)
     {
         lockSnowmen();
-        left->setBackground(RGBColor::BLACK);
-        drawSnowmen(SNOWMAN_LEFT, false);
-        left->showPictureNow(*hat, 7, y, true);
+        redrawYard(false);
+        drawPictureInYard(hat, startX, y);
         releaseSnowmen();
-        write_data(0.05);
+        write_data(0.04);
     }
 
-    // Carry it across the yard
-    flyAcross(left, SNOWMAN_LEFT, hat, NULL, 7, SNOWMEN_WIDTH, -8, 2);
-    flyAcross(getSplashGrid(SNOWMAN_LEFT), SNOWMAN_LEFT, hat, NULL, -28, SPLASH_GRID_WIDTH, -8, 2);
-    flyAcross(getSkyGrid(), SNOWMAN_LEFT, hat, NULL, -28, SKY_GRID_WIDTH, -10, 2);
-    flyAcross(getSplashGrid(SNOWMAN_RIGHT), SNOWMAN_RIGHT, hat, NULL, -28, SPLASH_GRID_WIDTH, -8, 2);
-
-    // Bring it in from the left and put it on
-    for (int x = -28; x <= 7; x += 2)
+    // Across the yard
+    for (int x = startX; x <= endX; x += 3)
     {
+        int y = level;
+        if (x > skyStart && x < skyEnd)
+        {
+            y -= (int)(peak * sin(M_PI * (x - skyStart) / (skyEnd - skyStart)));
+        }
         lockSnowmen();
-        right->setBackground(RGBColor::BLACK);
-        drawSnowmen(SNOWMAN_RIGHT, false);
-        right->showPictureNow(*hat, x, -8, true);
+        redrawYard(false);
+        drawPictureInYard(hat, x, y);
         releaseSnowmen();
-        write_data(0.02);
-    }
-    for (int y = -8; y <= -2; y++)
-    {
-        lockSnowmen();
-        right->setBackground(RGBColor::BLACK);
-        drawSnowmen(SNOWMAN_RIGHT, false);
-        right->showPictureNow(*hat, 7, y, true);
-        releaseSnowmen();
-        write_data(0.05);
+        write_data(0.025);
     }
 
+    // Put it on
     hatStolen = true;
+    for (int y = level; y <= hatY; y++)
+    {
+        lockSnowmen();
+        redrawYard(false);
+        drawPictureInYard(hat, endX, y);
+        releaseSnowmen();
+        write_data(0.04);
+    }
+
     hatStatus[SNOWMAN_RIGHT] = true;
     lockSnowmen();
-    right->setBackground(RGBColor::BLACK);
-    drawSnowmen(SNOWMAN_RIGHT, true);
+    redrawYard(true);
     releaseSnowmen();
 
     skyText(who_right->signatureText, RGBColor::GREEN);
@@ -2620,47 +2708,76 @@ void Snowmen::bananaThrow()
 }
 
 /*
- * Clark plugs in the lights. Everything flickers (the garage sign
- * too), then Hallelujah!
+ * Clark plugs in: strings of twinkle lights wrap the left snowman and
+ * hang across the yard, light up one by one, then chase and twinkle.
+ * The garage sign joins in.
  */
-void Snowmen::powerSurge()
+void Snowmen::twinkleLights()
 {
-    strcpy(message2, "Power Surge");
-    // Same timing as GarageSign::showPowerSurge()
-    double flicker[] = {0.3, 0.1, 0.5, 0.1, 1.0};
+    strcpy(message2, "Twinkle Lights");
+    RGBColor *colors[] = {RGBColor::RED, RGBColor::GREEN, RGBColor::BLUE, RGBColor::YELLOW, RGBColor::ORANGE, RGBColor::PURPLE};
+    struct Light { GenericGrid *grid; int x; int y; int size; };
+    std::vector<Light> lights;
+
+    // Around the left snowman (same circles as drawSnowmen)
+    struct { int y; int r; } balls[] = {{SNOWMEN_HEIGHT-65, 10}, {SNOWMEN_HEIGHT-45, 14}, {SNOWMEN_HEIGHT-20, 20}};
+    for (auto &ball : balls)
+    {
+        int count = ball.r;  // More lights on the bigger balls
+        for (int i = 0; i < count; i++)
+        {
+            double a = 2 * M_PI * i / count;
+            int x = SNOWMEN_WIDTH/2 + (int)((ball.r - 1) * cos(a));
+            int y = ball.y + (int)((ball.r - 1) * sin(a));
+            if (y < SNOWMEN_HEIGHT - 1)
+                lights.push_back({snowmen[SNOWMAN_LEFT], x, y, 1});
+        }
+    }
+    // Hanging strings: across the splash grids and drooping along the sky
+    for (int x = 1; x < SPLASH_GRID_WIDTH; x += 3)
+    {
+        int droop = (int)(2 * sin(M_PI * x / SPLASH_GRID_WIDTH));
+        lights.push_back({splash[SNOWMAN_LEFT], x, 1 + droop, 0});
+        lights.push_back({splash[SNOWMAN_RIGHT], x, 1 + droop, 0});
+    }
+    for (int x = 1; x < SKY_GRID_WIDTH; x += 3)
+    {
+        int droop = (int)(3 * fabs(sin(M_PI * x / 24.0)));
+        lights.push_back({skyGrid, x, SKY_GRID_HEIGHT - 6 + droop, 0});
+    }
 
     if (garageSign != NULL)
     {
-        garageSign->requestPowerSurge();
+        garageSign->requestHallelujah();
     }
 
-    for (int i = 0; i < 5; i++)
+    // Light up one by one as the plug goes in, then chase and twinkle
+    int total = lights.size();
+    for (int frame = 0; frame < 70; frame++)
     {
+        int lit = (frame < 20 ? (frame + 1) * total / 20 : total);
         lockSnowmen();
-        if (i % 2 == 0)
+        redrawYard(hatStatus[SNOWMAN_RIGHT]);
+        if (frame >= 25)
         {
-            getSnowmen(SNOWMAN_LEFT)->setBackground(RGBColor::BLACK);
-            getSplashGrid(SNOWMAN_LEFT)->setBackground(RGBColor::BLACK);
-            getSplashGrid(SNOWMAN_RIGHT)->setBackground(RGBColor::BLACK);
-            getSkyGrid()->setBackground(RGBColor::BLACK);
+            skyText(who_right->signatureText, RGBColor::YELLOW);
         }
-        else
+        for (int i = 0; i < lit; i++)
         {
-            drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
-            drawGroundSnow(SNOWMAN_RIGHT, RGBColor::WHITE);
+            RGBColor *c = colors[(i + frame / 3) % 6];
+            if (frame >= 20 && rand() % 12 == 0)
+            {
+                c = RGBColor::WHITE;  // Twinkle
+            }
+            lights[i].grid->drawCircle(lights[i].x, lights[i].y, lights[i].size, c);
         }
         releaseSnowmen();
-        gjhSleep(flicker[i]);
+        write_data(0.08);
     }
 
     lockSnowmen();
-    drawSnowmen(SNOWMAN_LEFT, hatStatus[SNOWMAN_LEFT]);
-    drawGroundSnow(SNOWMAN_RIGHT, RGBColor::WHITE);
+    redrawYard(hatStatus[SNOWMAN_RIGHT]);
     releaseSnowmen();
-
-    skyText(who_right->signatureText, RGBColor::YELLOW);
-    write_data(2.5);
-    getSkyGrid()->setBackground(RGBColor::BLACK);
 }
 
 void Snowmen::publishMqtt(bool reset)
