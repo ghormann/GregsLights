@@ -24,7 +24,7 @@
  */
 #define YARD_RIGHT_X (SNOWMEN_WIDTH + SPLASH_GRID_WIDTH*4 + SKY_GRID_WIDTH*2)
 #define SNOWBALL_RADIUS 3.2     /* Inches */
-#define CANNON_BALL_RADIUS 12.0
+#define CANNON_BALL_RADIUS 8.0
 #define FLIGHT_STEP 2.0         /* Inches per frame */
 #define FLIGHT_DELAY 0.01
 #define RELEASE_Y 17            /* Where a throw leaves the hand */
@@ -1439,9 +1439,61 @@ void Snowmen::fadeSnow()
 
 }
 
+/*
+ * Cannon on a splash grid (2" lights), laid out for the left side and
+ * mirrored on the right. The barrel points at the spot where the ball can
+ * cross into the sky with every light lit (see ballFlight), so the ball
+ * comes straight out of it. Breech at (7,38), muzzle at (17,21).
+ */
+void Snowmen::drawCannon(int pos, int dropY, int recoil, int flash)
+{
+    static RGBColor *brass = new RGBColor(80, 50, 5);
+    static RGBColor *brassBright = new RGBColor(100, 80, 25);
+    static RGBColor *band = new RGBColor(35, 18, 0);
+    static RGBColor *wood = new RGBColor(50, 20, 3);
+    static RGBColor *spoke = new RGBColor(90, 55, 15);
+    static RGBColor *flashOuter = new RGBColor(100, 40, 0);
+    GenericGrid *g = splash[pos];
+    auto X = [&](double x) { int v = (int)round(x - recoil); return pos == SNOWMAN_LEFT ? v : SPLASH_GRID_WIDTH - 1 - v; };
+    auto Y = [&](double y) { return (int)round(y + dropY); };
+    const double bx = 7, by = 38, mx = 17, my = 21;
+    const double len = hypot(mx - bx, my - by);
+    const double px = (my - by) / len, py = -(mx - bx) / len;   // Across the barrel
+
+    // Trail resting on the ground
+    g->plotLineWidth(X(8), Y(41), X(1), Y(47), 4, wood);
+
+    // Barrel with two bands, breech knob and a bright muzzle ring
+    g->plotLineWidth(X(bx), Y(by), X(mx), Y(my), 7, brass);
+    for (double t : {0.3, 0.65})
+    {
+        double cx = bx + (mx - bx) * t, cy = by + (my - by) * t;
+        g->plotLineWidth(X(cx - 3.5*px), Y(cy - 3.5*py), X(cx + 3.5*px), Y(cy + 3.5*py), 1, band);
+    }
+    g->drawCircle(X(bx - 1), Y(by + 2), 2.5, brass);
+    g->drawCircle(X(mx), Y(my), 4, brassBright);
+    g->drawCircle(X(mx + 0.5), Y(my - 1), 2, band);
+
+    // Wheel in front of the barrel
+    g->drawCircle(X(8), Y(41), 6, wood);
+    for (int k = 0; k < 4; k++)
+    {
+        double a = k * M_PI / 4;
+        g->plotLineWidth(X(8 - 5*cos(a)), Y(41 - 5*sin(a)), X(8 + 5*cos(a)), Y(41 + 5*sin(a)), 1, spoke);
+    }
+    g->drawCircle(X(8), Y(41), 1.5, brassBright);
+
+    // Muzzle flash
+    if (flash > 0)
+    {
+        double fx = mx + (mx - bx) / len * 4, fy = my + (my - by) / len * 4;
+        g->drawCircle(X(fx), Y(fy), 1.5 + flash, flashOuter);
+        g->drawCircle(X(fx), Y(fy), flash, RGBColor::YELLOW);
+    }
+}
+
 void Snowmen::cannonShot(int snowmen_pos)
 {
-    RGBPicture *cannon;
     GenericGrid *cannon_grid = getSplashGrid(snowmen_pos);
     GenericGrid *end_splash_Grid = getSplashGrid(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT);
     GenericGrid *end_snowman = getSnowmen(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT);
@@ -1452,38 +1504,49 @@ void Snowmen::cannonShot(int snowmen_pos)
 
     strcpy(message2, "Cannon Shot");
 
+    // Muzzle (see drawCannon) in yard inches
+    muzzleY = 21 * 2;
     if (snowmen_pos == SNOWMAN_LEFT)
     {
-        cannon = RGBPicture::getPicture("cannon_right.png");
-        muzzleX = SNOWMEN_WIDTH + 19*2;
-        muzzleY = (20 + 3) * 2;
+        muzzleX = SNOWMEN_WIDTH + 17*2;
         impactX = YARD_RIGHT_X + 12;
     }
     else
     {
-        cannon = RGBPicture::getPicture("cannon_left.png");
-        muzzleX = YARD_RIGHT_X - SPLASH_GRID_WIDTH*2 + 3*2;
-        muzzleY = (20 + 2) * 2;
+        muzzleX = YARD_RIGHT_X - SPLASH_GRID_WIDTH*2 + (SPLASH_GRID_WIDTH - 1 - 17)*2;
         impactX = SNOWMEN_WIDTH - 12;
     }
 
     /*
-     * Drop the cannon
+     * Drop the cannon in, with a little bounce when it lands
      */
-    for (y=-30; y <=20; y++)
+    int drop[] = {-48, -42, -36, -30, -25, -20, -15, -11, -7, -4, -1, 0, -2, -1, 0};
+    for (y = 0; y < (int)(sizeof(drop)/sizeof(drop[0])); y++)
     {
         lockSnowmen();
         cannon_grid->setBackground(RGBColor::BLACK);
         drawGroundSnow(snowmen_pos, RGBColor::WHITE);
-        cannon_grid->showPictureNow(*cannon,0,y,true);
+        drawCannon(snowmen_pos, drop[y], 0);
         releaseSnowmen();
-        write_data(SNOWBALL_DURATION);
+        write_data(SNOWBALL_DURATION * 3);
     }
+    cannonUp[snowmen_pos] = true;
+    write_data(0.4);
 
     /*
-     * Fire: one arc up through the sky, same speed the whole way
+     * Fire: flash and recoil, then one arc up through the sky
      */
-    cannonOnSplash[snowmen_pos] = cannon;
+    int recoil[] = {0, 1, 2, 2, 1, 1, 0};
+    int flash[] = {2, 4, 3, 2, 1, 0, 0};
+    for (int i = 0; i < 7; i++)
+    {
+        lockSnowmen();
+        cannon_grid->setBackground(RGBColor::BLACK);
+        drawGroundSnow(snowmen_pos, RGBColor::WHITE);
+        drawCannon(snowmen_pos, 0, recoil[i], flash[i]);
+        releaseSnowmen();
+        write_data(0.04);
+    }
     ballFlight(-1, muzzleX, muzzleY, impactX, impactY, -4, CANNON_BALL_RADIUS, RGBColor::WHITE, SNOWBALL_DURATION);
 
     /*
@@ -1510,7 +1573,7 @@ void Snowmen::cannonShot(int snowmen_pos)
         write_data(SNOWBALL_DURATION/2);
         size_1in += 3.0;
     }
-    cannonOnSplash[snowmen_pos] = NULL;
+    cannonUp[snowmen_pos] = false;
     // Reset -- Destroyed on is the reverse!
     resetSnowmen(snowmen_pos == SNOWMAN_LEFT ? SNOWMAN_RIGHT: SNOWMAN_LEFT);
 
@@ -2148,8 +2211,8 @@ void Snowmen::eraseBallInYard(double x, double y, double radius)
             area.grid->drawCircle((int)round(gx), (int)round(gy), r, RGBColor::BLACK);
             if (area.grid == splash[area.pos])
             {
-                if (cannonOnSplash[area.pos] != NULL)
-                    area.grid->showPictureNow(*cannonOnSplash[area.pos], 0, 20, true);
+                if (cannonUp[area.pos])
+                    drawCannon(area.pos, 0, 0);
                 drawGroundSnow(area.pos, RGBColor::WHITE);
             }
         }

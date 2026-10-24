@@ -203,7 +203,8 @@ private:
     void ballFlight(int thrower, double x0, double y0, double x1, double y1, double apexY,
                     double radius, RGBColor *color, double delay, FlightReaction react = REACT_NONE);
     void armFollowThrough(int pos, int frame);
-    RGBPicture *cannonOnSplash[2] = {NULL, NULL};  /* Redrawn when a ball passes over it */
+    void drawCannon(int pos, int dropY, int recoil, int flash = 0);
+    bool cannonUp[2] = {false, false};  /* Redrawn when a ball passes over it */
     void redrawYard(bool withRightHat);
     void stealHat();
     void characterFall();
