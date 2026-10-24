@@ -7,6 +7,7 @@
 #include "TimeInfo.h"
 #include "GenericGrid.h"
 #include "GregMQTT.h"
+#include <atomic>
 #define GARAGE_SIGN_WIDTH ((32*11))
 #define GARAGE_SIGN_HEIGHT ((16*3))
 #define GARAGE_PIXELS ((GARAGE_SIGN_WIDTH) * (GARAGE_SIGN_HEIGHT))
@@ -22,6 +23,7 @@ public:
     virtual RGBLight * getBoard(int x, int y); /* Overridden */
     virtual void setPowerCallback(double power); /* Overridden */
     virtual void setCurrentPowerCallback(double dollars, double kwh);
+    void requestHallelujah();
 
 
 private:
@@ -32,6 +34,9 @@ private:
     void showPowerTodayVideo();
     void showMilestone(int milestone);
     void showMilestoneComing(int milestone);
+    void showHallelujah();
+    void sleepUnlessHallelujah(double seconds);
+    std::atomic<bool> hallelujahRequested{false};
     void writeCentered(RGBColor *fgColor, int y, std::string text, int fontSize, int left = 0, int width = GARAGE_SIGN_WIDTH);
     void drawRadio(int radio_left);
     GregMQTT *mqtt;

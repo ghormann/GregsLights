@@ -290,6 +290,7 @@ void GarageSign::run()
 
     if (TimeInfo::getInstance()->isNoShow())
     {
+        hallelujahRequested = false;
         showStartDate();
     }
     else
@@ -309,6 +310,11 @@ void GarageSign::run()
         {
             showMilestone(milestone);
         }
+        else if (hallelujahRequested)
+        {
+            hallelujahRequested = false;
+            showHallelujah();
+        }
         else if (mqtt->isPopcorn() &&  secondsOfMinute > 4 && secondsOfMinute < 20) {
             showPopcorn();
         }
@@ -317,13 +323,13 @@ void GarageSign::run()
         else if (secondsOfMinute >= 20 && secondsOfMinute < 28)
         {
             showTextNumber();
-            gjhSleep(6.0);
+            sleepUnlessHallelujah(6.0);
         }
         // Milestone coming up soon
         else if (comingMilestone > 0 && secondsOfMinute >= 28 && secondsOfMinute < 40)
         {
             showMilestoneComing(comingMilestone);
-            gjhSleep(6.0);
+            sleepUnlessHallelujah(6.0);
         }
         // Display Total power after 50 seconds
         else if (secondsOfMinute > 50)
@@ -341,7 +347,7 @@ void GarageSign::run()
                     // Always need to draw it once
                     showPower();
                 }
-                if (ampsChanged)
+                if (ampsChanged || hallelujahRequested)
                 {
                     showPower();
                     ampsChanged = false;
@@ -418,6 +424,54 @@ void GarageSign::showMilestoneComing(int milestone)
     this->releaseGrid();
 
     snprintf(message, sizeof(message), "%s", line1.c_str());
+}
+
+/*
+ * Clark Griswold plugs in his lights (asked for by the snowmen)
+ */
+void GarageSign::requestHallelujah()
+{
+    hallelujahRequested = true;
+}
+
+void GarageSign::sleepUnlessHallelujah(double seconds)
+{
+    for (double t = 0; t < seconds && !hallelujahRequested; t += 0.1)
+    {
+        gjhSleep(0.1);
+    }
+}
+
+/*
+ * A string of twinkle lights lights up around the edge, then Hallelujah!
+ */
+void GarageSign::showHallelujah()
+{
+    RGBColor *colors[] = {RGBColor::RED, RGBColor::GREEN, RGBColor::BLUE, RGBColor::YELLOW, RGBColor::ORANGE, RGBColor::PURPLE};
+    std::string text = "HALLELUJAH!";
+    int spacing = 8;
+    int bulbs = GARAGE_SIGN_WIDTH / spacing;
+
+    sprintf(message, "Hallelujah");
+    for (int frame = 0; frame < 40; frame++)
+    {
+        int lit = (frame < 10 ? (frame + 1) * bulbs / 10 : bulbs);  // Plugging in
+        this->lockGrid();
+        setBackground(RGBColor::BLACK);
+        if (frame >= 10)
+        {
+            writeCentered(colors[(frame / 3) % 6], 6, text, 30);
+        }
+        for (int i = 0; i < lit; i++)
+        {
+            RGBColor *c = colors[(i + frame / 2) % 6];  // Chase
+            int x = i * spacing + spacing / 2;
+            setBackground(c, x, 0, x + 2, 2);
+            setBackground(c, GARAGE_SIGN_WIDTH - x - 2, GARAGE_SIGN_HEIGHT - 2, GARAGE_SIGN_WIDTH - x, GARAGE_SIGN_HEIGHT);
+        }
+        this->releaseGrid();
+        gjhSleep(0.1);
+    }
 }
 
 void GarageSign::showTextNumber()

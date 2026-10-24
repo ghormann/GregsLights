@@ -25,10 +25,38 @@
 #define SNOWMAN_STEPS 40
 #define SNOWMAN_STEPS_VOTE_WAITING 10
 #define SNOWMAN_MIN_MOVES 4  /* Before a random cannon shot can replace it */
+#define SNOWMAN_SIGNATURE_BY_MOVE 2  /* Force the signature move if it hasn't happened by now */
+#define SNOWMAN_SIGNATURE_CHANCE 6   /* Otherwise 1 in N moves is the signature move */
+
+/*
+ * Each character's special move. Set in createSnowmanPictures().
+ */
+enum SignatureMove
+{
+    SIG_NONE,
+    SIG_STEAL_HAT,      /* Grinch: steals the left snowman's hat and keeps it */
+    SIG_FALL,           /* Slow motion fall off the bottom */
+    SIG_FLY,            /* Flies up out of sight and floats back down */
+    SIG_DASH,           /* Zooms off and runs around the yard */
+    SIG_EJECT,          /* Floats away into space */
+    SIG_BANANA,         /* Throws a yellow snowball at the left snowman */
+    SIG_EAT_EVERYTHING, /* Eats every snowball thrown at him */
+    SIG_TWINKLE_LIGHTS  /* Plugs in 25,000 twinkle lights on the left snowman, garage too */
+};
+
+class GarageSign;
+
+/*
+ * Physical layout in inches, left to right: left snowman, left splash,
+ * sky, right splash, right snowman. Snowman grids have 1" spacing,
+ * splash and sky have 2". The sky hangs this much higher than the rest.
+ */
+#define SNOWMAN_SKY_RAISE 16
 
 #define SNOWMAN_NOSE_HEIGHT (SNOWMEN_HEIGHT-65)
 
-#define write_data(pause)  usleep((pause) * 1000000)
+/* animationSpeed > 1 speeds up everything while a fast character (Sonic) is up */
+#define write_data(pause)  usleep((pause) * 1000000 / animationSpeed)
 
 class SnowmanPicture
 {
@@ -44,6 +72,10 @@ class SnowmanPicture
     int name_offset_x = 0;
     double mouth_multiplier = 1;
     bool show_misses = true;
+    std::string catchphrase = "";       /* On the sky when it arrives */
+    SignatureMove signature = SIG_NONE;
+    std::string signatureText = "";     /* On the sky during the signature move */
+    double speed = 1.0;                 /* > 1 speeds up all animation while it is up */
 };
 
 class SnowmenGrid: public GenericGrid
@@ -78,6 +110,7 @@ public:
     void lockSnowmen();
     void releaseSnowmen();
     pthread_mutex_t* getLock();
+    void setGarageSign(GarageSign *g);
 protected:
     void throwLeftStickNose(bool arch);
     void throwRightStickNose(bool arch);
@@ -100,7 +133,7 @@ protected:
         */
     void do_it_snowmen();
 private:
-    void drawSnowmen(int pos, bool withHat = true, int offset=0);
+    void drawSnowmen(int pos, bool withHat = true, int offset=0, int xShift=0, int yShift=0);
     void placeHatBack(int pos);
     void throwLeft(bool loft);
     void throwRight(bool loft);
@@ -121,8 +154,28 @@ private:
     SnowmenGrid *snowmen[2];
     SnowmenGrid *splash[2];
     SnowmenGrid *skyGrid;
-    void ball_line(GenericGrid *grid, int start_x, int start_y, int end_x, int end_y, double ballSize);
-    void do_middle(int start_snowmen, int start_y, int high_y, int end_y,double duration);
+    void ball_line(GenericGrid *grid, int start_x, int start_y, int end_x, int end_y, double ballSize, RGBColor *color = RGBColor::WHITE);
+    void do_middle(int start_snowmen, int start_y, int high_y, int end_y,double duration, RGBColor *color = RGBColor::WHITE);
+    // Signature moves
+    void signatureMove();
+    void skyText(const std::string &text, RGBColor *color);
+    void slideCharacter(int fromX, int fromY, int toX, int toY, int frames, double delay, RGBColor *trail = NULL);
+    void flyAcross(GenericGrid *grid, int pos, RGBPicture *pic, RGBColor *streak, int fromX, int toX, int y, int step);
+    void drawPictureInYard(RGBPicture *pic, int x, int y);
+    void redrawYard(bool withRightHat);
+    void stealHat();
+    void characterFall();
+    void characterFly();
+    void characterDash();
+    void characterEject();
+    void bananaThrow();
+    void twinkleLights();
+    void useTestCharacter();
+    double animationSpeed = 1.0;
+    bool hatStolen = false;       /* Right character is wearing the left snowman's hat */
+    int signatureCount = 0;       /* Signature moves by the current character */
+    SnowmanPicture *testCharacter = NULL;
+    GarageSign *garageSign = NULL;
     char message2[100];
     int snowmanStepCount = 0;
     int nonSpecialSnowmanCount = 0;
