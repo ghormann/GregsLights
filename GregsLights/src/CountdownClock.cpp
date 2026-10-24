@@ -8,6 +8,8 @@ CountdownClock::CountdownClock(bool skip_time_check, bool show_new_year, E131Net
     this->active = false;
     this->reset = true;
     this->sparkel = false;
+    this->celebrating = false;
+    this->celebrationColor = RGBColor::WHITE;
     this->clock_t = 0;
     this->lastTick = 0;
     this->color = RGBColor::WHITE;
@@ -129,6 +131,24 @@ void CountdownClock::tick()
         this->mqtt->sendClockMessage(num_seconds);
     }
 
+    /*
+     * Just hit a milestone number. Sparkle and change colors
+     * every second while celebrating.
+     */
+    bool wasCelebrating = celebrating;
+    celebrating = (num_seconds > 0 && !timeinfo->isNoShow()
+                   && timeinfo->getRecentMilestone(num_seconds, MILESTONE_CELEBRATE_SECONDS) > 0);
+    if (celebrating)
+    {
+        static RGBColor *colors[] = {RGBColor::RED, RGBColor::GREEN, RGBColor::PURPLE, RGBColor::BLUE, RGBColor::ORANGE};
+        celebrationColor = colors[num_seconds % 5];
+        hasChange = true; /* Force redraw so sparkle moves */
+    }
+    else if (wasCelebrating)
+    {
+        hasChange = true; /* Back to normal color */
+    }
+
     if (timeinfo->isDebug()) {
         sprintf(message, "Test Mode");
         test();
@@ -150,7 +170,7 @@ void CountdownClock::tick()
     {
         reset = false;
         this->special[SPECIAL_SIGN_ON]->setIntensity(100);
-        sprintf(message, "Running");
+        sprintf(message, celebrating ? "Milestone!" : "Running");
         if (num_seconds <= 0)
         {
             num_seconds = 0;
@@ -163,7 +183,8 @@ void CountdownClock::tick()
         else
         {
             double temp = num_seconds;
-            switch(displayUnits)
+            // Always show the milestone number itself
+            switch(celebrating ? SECONDS : displayUnits)
             {
             case MINUTES:
                 temp = temp/60;
@@ -341,8 +362,8 @@ void CountdownClock::setDigit(int digit, int val)
         RGBColor *digitColor = RGBColor::BLACK;
         if (data[i] > 0)
         {
-            digitColor = color; /* Current color */
-            if (this->sparkel)
+            digitColor = celebrating ? celebrationColor : color; /* Current color */
+            if (this->sparkel || celebrating)
             {
                 int random_number = rand() % 55;
                 if (random_number == 0)
@@ -357,7 +378,7 @@ void CountdownClock::setDigit(int digit, int val)
 
 bool CountdownClock::isSparkel()
 {
-    return this->sparkel;
+    return this->sparkel || this->celebrating;
 }
 
 void CountdownClock::setDigitColor(RGBColor *c)

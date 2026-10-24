@@ -84,6 +84,19 @@ int GregMQTT::getSnowmanVote()
     return snowmanVote;
 }
 
+/*
+ * True when someone has voted for a snowman that hasn't been shown yet
+ */
+bool GregMQTT::hasSnowmanVote()
+{
+    return snowmanVotePending;
+}
+
+void GregMQTT::clearSnowmanVote()
+{
+    snowmanVotePending = false;
+}
+
 std::string GregMQTT::getNextName()
 {
     // Mutext clearned when block ends
@@ -143,9 +156,11 @@ void GregMQTT::on_message(const struct mosquitto_message *message)
                 {
                     Json::Value first = root.get( (int)0, 0);
                     snowmanVote = first.get("id", 2).asInt();
+                    snowmanVotePending = true;
                 }
                 else
                 {
+                    snowmanVotePending = false;
                     std::cout << "SnowmenQueue was empty!!!" << std::endl;
                 }
             }

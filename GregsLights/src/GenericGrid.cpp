@@ -1924,6 +1924,21 @@ void GenericGrid::writeTextNew(RGBColor *fgColor, int x, int y, std::string &tex
     }
 }
 
+/*
+ * Width in pixels that writeTextNew() will use for this text
+ */
+int GenericGrid::getTextWidthNew(const std::string &text, int fontSize)
+{
+    Magick::Image image(Magick::Geometry(1,1), Magick::Color("black"));
+    image.font("/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf");
+    image.quiet(true);
+    image.fontPointsize(fontSize);
+
+    Magick::TypeMetric metrics;
+    image.fontTypeMetrics(text, &metrics);
+    return (int) metrics.textWidth();
+}
+
 int GenericGrid::writeText(RGBColor *fgColor, int x, int y, string str, bool onDummy, int weight)
 {
     for ( std::string::iterator it=str.begin(); it!=str.end(); ++it)

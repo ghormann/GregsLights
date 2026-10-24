@@ -1,7 +1,7 @@
 #ifndef MESSAGEGENERATOR_H
 #define MESSAGEGENERATOR_H
 
-#define MESSAGE_GENERATOR_SIZE 16
+#define MESSAGE_GENERATOR_SIZE 21
 
 #include "TimeInfo.h"
 #include <string>
@@ -14,6 +14,9 @@ public:
     std::string getMessage();
     const char * getGreeting();
     std::string getStartDate();
+    std::string getMilestoneAnnouncement(int milestone);
+    std::string getMilestoneTime(int milestone);
+    static std::string formatNumber(int n);
 
 protected:
 private:

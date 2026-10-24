@@ -3,6 +3,9 @@
 
 #include <time.h>
 
+/* How long the clock, sign and garage celebrate after hitting a milestone */
+#define MILESTONE_CELEBRATE_SECONDS 15
+
 
 class TimeInfo
 {
@@ -25,6 +28,11 @@ public:
     void setNoShow(bool b);
     void setNewYear(bool b);
     void setDebug(bool b);
+    int getSleepsUntil();
+    static bool isMilestone(int seconds);
+    int getNextMilestone(int withinSeconds);
+    int getRecentMilestone(int secondsUntil, int withinSeconds);
+    time_t getTimeAtSecondsUntil(int seconds);
 protected:
     void tick();
 private:

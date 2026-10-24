@@ -8,6 +8,9 @@
 #include "TimeInfo.h"
 #include "GenericGrid.h"
 #include "GregMQTT.h"
+#include <map>
+#include <string>
+#include <time.h>
 
 #define SIGN_OPTIONS 14
 #define SIGN_E11_COUNT 12
@@ -54,6 +57,12 @@ class Sign: public GenericGrid
         void moveBall(int x, RGBColor *bgColor, int snowballY);
         void toGo(clockUnits);
         std::string wrapName(std::string name);
+        int countNameVisit(const std::string &name);
+        void milestoneShow(int milestone);
+        void showCentered(RGBColor *fgColor, RGBColor *bgColor, const std::string &text);
+        std::map<std::string, int> nameVisits;
+        int nameVisitsDay = -1;
+        time_t lastMilestoneAnnounce = 0;
         CountdownClock *clock;
         GregMQTT *mqtt;
         char useMap[SIGN_OPTIONS];

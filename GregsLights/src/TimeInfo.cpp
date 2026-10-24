@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <math.h>
+#include <string>
 
 TimeInfo* TimeInfo::m_pInstance = NULL;
 
@@ -171,4 +172,79 @@ bool TimeInfo::isDisplayHours()
 
     return true;
 
+}
+
+/*
+ * Number of nights to sleep before Christmas morning
+ */
+int TimeInfo::getSleepsUntil()
+{
+    struct tm tm_today;
+    time_t t = time(NULL);
+    localtime_r(&t, &tm_today);
+    int sleeps = tm_christmas.tm_yday - tm_today.tm_yday;
+    return (sleeps < 0 ? 0 : sleeps);
+}
+
+/*
+ * Clock values worth watching: round numbers (1,200,000), repeated
+ * digits (222222) and digit runs (1234567 or 654321).
+ */
+bool TimeInfo::isMilestone(int seconds)
+{
+    if (seconds < 10000)
+        return false;
+    if (seconds % 100000 == 0)
+        return true;
+    if (seconds < 100000 && seconds % 10000 == 0)
+        return true;
+
+    std::string digits = std::to_string(seconds);
+    bool same = true;
+    bool up = true;
+    bool down = true;
+    for (size_t i = 1; i < digits.size(); i++)
+    {
+        same = same && (digits[i] == digits[i-1]);
+        up = up && (digits[i] == digits[i-1] + 1);
+        down = down && (digits[i] == digits[i-1] - 1);
+    }
+    return same || up || down;
+}
+
+/*
+ * Returns the next milestone the clock will hit in the next
+ * withinSeconds, or -1 if none.
+ */
+int TimeInfo::getNextMilestone(int withinSeconds)
+{
+    int now = getSecondsUntil();
+    for (int i = 1; i <= withinSeconds; i++)
+    {
+        if (isMilestone(now - i))
+            return now - i;
+    }
+    return -1;
+}
+
+/*
+ * Returns the milestone the clock hit in the last withinSeconds
+ * (including right now), or -1 if none.
+ */
+int TimeInfo::getRecentMilestone(int secondsUntil, int withinSeconds)
+{
+    for (int i = 0; i < withinSeconds; i++)
+    {
+        if (isMilestone(secondsUntil + i))
+            return secondsUntil + i;
+    }
+    return -1;
+}
+
+/*
+ * Wall clock time when the countdown will show the given seconds
+ */
+time_t TimeInfo::getTimeAtSecondsUntil(int seconds)
+{
+    return t_christmas - seconds;
 }

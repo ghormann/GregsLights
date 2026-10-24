@@ -57,6 +57,8 @@ class CountdownClock
         Bulb *special[8];
         bool active;
         bool sparkel;
+        bool celebrating;      /* Just hit a milestone number */
+        RGBColor *celebrationColor;
         char message[100];
         int lastTick;
         clockUnits displayUnits;

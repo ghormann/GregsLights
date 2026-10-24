@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 MessageGenerator::MessageGenerator(TimeInfo *ti)
 {
@@ -37,6 +38,48 @@ void MessageGenerator::checkClear()
 
 std::string MessageGenerator::getStartDate() {
     std::string s = "OUR FULL DISPLAY STARTS NOV 23";
+    return s;
+}
+
+/*
+ * 1234567 -> "1,234,567"
+ */
+std::string MessageGenerator::formatNumber(int n)
+{
+    std::string digits = std::to_string(n);
+    std::string result;
+    int len = digits.size();
+    for (int i = 0; i < len; i++)
+    {
+        if (i > 0 && (len - i) % 3 == 0)
+        {
+            result += ',';
+        }
+        result += digits[i];
+    }
+    return result;
+}
+
+/*
+ * Time of day the clock will show the milestone ("8:14 PM")
+ */
+std::string MessageGenerator::getMilestoneTime(int milestone)
+{
+    char when[20];
+    struct tm tm_when;
+    time_t t = timeInfo->getTimeAtSecondsUntil(milestone);
+    localtime_r(&t, &tm_when);
+    strftime(when, sizeof(when), "%-I:%M %p", &tm_when);
+    return std::string(when);
+}
+
+std::string MessageGenerator::getMilestoneAnnouncement(int milestone)
+{
+    std::string s = "AT ";
+    s += getMilestoneTime(milestone);
+    s += " WATCH THE CLOCK HIT ";
+    s += formatNumber(milestone);
+    s += "!";
     return s;
 }
 
@@ -146,6 +189,7 @@ std::string MessageGenerator::getMessage()
         }
         return "TEXT YOUR FIRST NAME TO 888-887-1423 FOR A PERSONALIZED MESSAGE.";
     case 15:
+    {
         if (timeInfo->isNoShow()) {
             return getStartDate();
         }
@@ -155,7 +199,55 @@ std::string MessageGenerator::getMessage()
         else
             snprintf(message, sizeof(message), "\\ ONLY %d MINUTES UNTIL %s \\", timeInfo->getSecondsUntil()/60, when);
         return message;
-
+    }
+    case 16:
+        if (timeInfo->isNoShow()) {
+            return getStartDate();
+        }
+        if (!isChristmas)
+            return "TIME TO START THOSE RESOLUTIONS!";
+        if (timeInfo->getSecondsUntil() <= 0)
+            return "HOPE SANTA WAS GOOD TO YOU!";
+        if (timeInfo->getSleepsUntil() <= 1)
+            return "SANTA IS LOADING HIS SLEIGH RIGHT NOW!";
+        snprintf(message, sizeof(message), "ONLY %d MORE SLEEPS UNTIL CHRISTMAS!", timeInfo->getSleepsUntil());
+        return message;
+    case 17:
+        if (timeInfo->isNoShow()) {
+            return getStartDate();
+        }
+        if (!isChristmas)
+            return "NEW YEAR, NEW LIGHTS... SAME CLOCK!";
+        if (timeInfo->getHourOfDay() >= 21 || timeInfo->getHourOfDay() < 6)
+            return "IT IS LATE... HE KNOWS WHEN YOU ARE SLEEPING!";
+        return "SANTA IS CHECKING HIS LIST... TWICE!";
+    case 18:
+        if (timeInfo->isNoShow()) {
+            return getStartDate();
+        }
+        return "WAVE AT THE SNOWMEN... THEY LOVE AN AUDIENCE!";
+    case 19:
+        if (timeInfo->isNoShow()) {
+            return getStartDate();
+        }
+        if (!isChristmas)
+        {
+            snprintf(message, sizeof(message), "BRING ON %d!", timeInfo->getNextYear());
+            return message;
+        }
+        if (timeInfo->getSleepsUntil() >= 2)
+        {
+            snprintf(message, sizeof(message), "RUDOLPH IS STRETCHING... TAKEOFF IN %d DAYS!", timeInfo->getSleepsUntil());
+            return message;
+        }
+        return "RUDOLPH'S NOSE IS WARMED UP AND READY!";
+    case 20:
+        if (timeInfo->isNoShow()) {
+            return getStartDate();
+        }
+        if (isChristmas)
+            return "COOKIES FOR SANTA... CARROTS FOR THE REINDEER!";
+        return "HAPPY HOLIDAYS FROM OUR HOUSE TO YOURS!";
     }
 
     return "SHOULD NOT GET HERE";

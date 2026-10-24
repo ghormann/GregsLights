@@ -297,7 +297,19 @@ void GarageSign::run()
         int secondsOfMinute = timeInfo->getSecondsOfDay();
         //printf("Num Seconds: %d\n", secondsOfMinute);
 
-        if (mqtt->isPopcorn() &&  secondsOfMinute > 4 && secondsOfMinute < 20) {
+        // About to hit (or just hit) a milestone number on the clock
+        int milestone = timeInfo->getNextMilestone(30);
+        if (milestone < 0)
+        {
+            milestone = timeInfo->getRecentMilestone(timeInfo->getSecondsUntil(), MILESTONE_CELEBRATE_SECONDS);
+        }
+        int comingMilestone = timeInfo->getNextMilestone(15*60);
+
+        if (milestone > 0)
+        {
+            showMilestone(milestone);
+        }
+        else if (mqtt->isPopcorn() &&  secondsOfMinute > 4 && secondsOfMinute < 20) {
             showPopcorn();
         }
 
@@ -305,6 +317,12 @@ void GarageSign::run()
         else if (secondsOfMinute >= 20 && secondsOfMinute < 28)
         {
             showTextNumber();
+            gjhSleep(6.0);
+        }
+        // Milestone coming up soon
+        else if (comingMilestone > 0 && secondsOfMinute >= 28 && secondsOfMinute < 40)
+        {
+            showMilestoneComing(comingMilestone);
             gjhSleep(6.0);
         }
         // Display Total power after 50 seconds
@@ -334,6 +352,72 @@ void GarageSign::run()
         }
 
     }
+}
+
+void GarageSign::writeCentered(RGBColor *fgColor, int y, std::string text, int fontSize, int left, int width)
+{
+    int x = left + (width - getTextWidthNew(text, fontSize))/2;
+    this->writeTextNew(fgColor, (x < left ? left : x), y, text, false, fontSize);
+}
+
+/*
+ * Runs from ~30 seconds before a milestone until the celebration is over
+ */
+void GarageSign::showMilestone(int milestone)
+{
+    std::string number = MessageGenerator::formatNumber(milestone);
+    RGBColor *colors[] = {RGBColor::RED, RGBColor::GREEN, RGBColor::PURPLE, RGBColor::BLUE, RGBColor::ORANGE};
+    int i = 0;
+    int remaining = timeInfo->getSecondsUntil() - milestone;
+
+    while (remaining > -MILESTONE_CELEBRATE_SECONDS)
+    {
+        std::ostringstream line2;
+        this->lockGrid();
+        if (remaining > 0)
+        {
+            snprintf(message, sizeof(message), "Milestone %s in %d", number.c_str(), remaining);
+            setBackground(RGBColor::DARKGREEN);
+            writeCentered(RGBColor::WHITE, 2, "Watch the clock hit " + number + "!", 22);
+            line2 << remaining << (remaining == 1 ? " second" : " seconds");
+            writeCentered(remaining <= 5 ? RGBColor::YELLOW : RGBColor::RED, 26, line2.str(), 20);
+        }
+        else
+        {
+            snprintf(message, sizeof(message), "Hit Milestone: %s", number.c_str());
+            setBackground(RGBColor::BLACK);
+            writeCentered(colors[i % 5], 0, "WE HIT " + number + "!", 32);
+            line2 << "seconds until " << (timeInfo->isNewYears() ? "the New Year" : "Christmas");
+            writeCentered(RGBColor::WHITE, 32, line2.str(), 14);
+
+            // Twinkle
+            for (int j = 0; j < 60; j++)
+            {
+                getPixal(rand() % GARAGE_SIGN_WIDTH, rand() % GARAGE_SIGN_HEIGHT)->set(RGBColor::WHITE);
+            }
+            i++;
+        }
+        this->releaseGrid();
+        gridSleep(remaining > 0 ? 0.25 : 0.4);
+        remaining = timeInfo->getSecondsUntil() - milestone;
+    }
+}
+
+void GarageSign::showMilestoneComing(int milestone)
+{
+    std::ostringstream line2;
+    line2 << "seconds until " << (timeInfo->isNewYears() ? "the New Year" : "Christmas");
+
+    std::string line1 = "At " + generator->getMilestoneTime(milestone) + " watch the clock hit";
+    std::string bottom = MessageGenerator::formatNumber(milestone) + " " + line2.str();
+
+    this->lockGrid();
+    this->setBackground(RGBColor::DARKGREEN);
+    writeCentered(RGBColor::WHITE, 2, line1, 20);
+    writeCentered(RGBColor::RED, 24, bottom, 20);
+    this->releaseGrid();
+
+    snprintf(message, sizeof(message), "%s", line1.c_str());
 }
 
 void GarageSign::showTextNumber()

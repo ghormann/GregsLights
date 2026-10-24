@@ -30,6 +30,9 @@ private:
     void showTextNumber();
     void showPowerToday();
     void showPowerTodayVideo();
+    void showMilestone(int milestone);
+    void showMilestoneComing(int milestone);
+    void writeCentered(RGBColor *fgColor, int y, std::string text, int fontSize, int left = 0, int width = GARAGE_SIGN_WIDTH);
     void drawRadio(int radio_left);
     GregMQTT *mqtt;
     void showStartDate();
