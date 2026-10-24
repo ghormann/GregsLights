@@ -129,6 +129,7 @@ DisplayModel::DisplayModel(bool sendDMX, int skip_time_check, int show_new_year)
     */
     garageSign = new GarageSign(p10,mqtt);
     networkP10->setClientLock(this->garageSign->getLock());
+    this->snowmen->setGarageSign(this->garageSign);
 
     this->largeGrid = new LargeGrid(mainGrid);
 

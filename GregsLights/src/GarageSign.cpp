@@ -290,6 +290,7 @@ void GarageSign::run()
 
     if (TimeInfo::getInstance()->isNoShow())
     {
+        powerSurgeRequested = false;
         showStartDate();
     }
     else
@@ -309,6 +310,11 @@ void GarageSign::run()
         {
             showMilestone(milestone);
         }
+        else if (powerSurgeRequested)
+        {
+            powerSurgeRequested = false;
+            showPowerSurge();
+        }
         else if (mqtt->isPopcorn() &&  secondsOfMinute > 4 && secondsOfMinute < 20) {
             showPopcorn();
         }
@@ -317,13 +323,13 @@ void GarageSign::run()
         else if (secondsOfMinute >= 20 && secondsOfMinute < 28)
         {
             showTextNumber();
-            gjhSleep(6.0);
+            sleepUnlessSurge(6.0);
         }
         // Milestone coming up soon
         else if (comingMilestone > 0 && secondsOfMinute >= 28 && secondsOfMinute < 40)
         {
             showMilestoneComing(comingMilestone);
-            gjhSleep(6.0);
+            sleepUnlessSurge(6.0);
         }
         // Display Total power after 50 seconds
         else if (secondsOfMinute > 50)
@@ -341,7 +347,7 @@ void GarageSign::run()
                     // Always need to draw it once
                     showPower();
                 }
-                if (ampsChanged)
+                if (ampsChanged || powerSurgeRequested)
                 {
                     showPower();
                     ampsChanged = false;
@@ -418,6 +424,55 @@ void GarageSign::showMilestoneComing(int milestone)
     this->releaseGrid();
 
     snprintf(message, sizeof(message), "%s", line1.c_str());
+}
+
+/*
+ * Clark Griswold plugs in the lights (asked for by the snowmen)
+ */
+void GarageSign::requestPowerSurge()
+{
+    powerSurgeRequested = true;
+}
+
+void GarageSign::sleepUnlessSurge(double seconds)
+{
+    for (double t = 0; t < seconds && !powerSurgeRequested; t += 0.1)
+    {
+        gjhSleep(0.1);
+    }
+}
+
+void GarageSign::showPowerSurge()
+{
+    // Same timing as Snowmen::powerSurge()
+    double flicker[] = {0.3, 0.1, 0.5, 0.1, 1.0};
+    RGBColor *colors[] = {RGBColor::RED, RGBColor::GREEN, RGBColor::YELLOW, RGBColor::BLUE, RGBColor::PURPLE};
+    std::string text = "HALLELUJAH!";
+
+    sprintf(message, "Power Surge");
+    for (int i = 0; i < 5; i++)
+    {
+        if (i % 2 == 0)
+        {
+            this->lockGrid();
+            setBackground(RGBColor::BLACK);
+            this->releaseGrid();
+        }
+        else
+        {
+            showPower();
+        }
+        gjhSleep(flicker[i]);
+    }
+
+    for (int i = 0; i < 10; i++)
+    {
+        this->lockGrid();
+        setBackground(RGBColor::BLACK);
+        writeCentered(colors[i % 5], 4, text, 34);
+        this->releaseGrid();
+        gjhSleep(0.25);
+    }
 }
 
 void GarageSign::showTextNumber()
